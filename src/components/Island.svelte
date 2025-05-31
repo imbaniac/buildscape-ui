@@ -207,44 +207,56 @@
     />
   </g>
 
-  <!-- Flagpole -->
-  <line x1="0" y1="0" x2="0" y2={-200} stroke="#D4B483" stroke-width="8" />
+  <!-- Label shadow (diamond) -->
+  <polygon points="0,-40 60,0 0,40 -60,0" fill={darkColor} opacity="0.4" />
 
-  <!-- Large label using provided SVG -->
+  <!-- Flagpole -->
+  <line
+    x1="0"
+    y1="0"
+    x2="0"
+    y2={-195}
+    stroke="#fff"
+    opacity="0.8"
+    stroke-width="8"
+  />
+
+  <!-- Label -->
   <g transform="translate(-305, -370)">
-    <svg
+    <rect
+      x="0"
+      y="0"
       width="611"
       height="177"
-      viewBox="0 0 611 177"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <rect width="610.098" height="176.519" rx="48" fill="#998559" />
-      <rect
-        x="11.5752"
-        y="12.5391"
-        width="586.466"
-        height="150.957"
-        rx="24"
-        fill="#C6B38D"
-      />
-      <rect
-        x="23.1499"
-        y="24.5977"
-        width="563.316"
-        height="126.843"
-        rx="24"
-        fill="#A39066"
-      />
-    </svg>
+      rx="32"
+      fill="white"
+      opacity="0.8"
+      filter="url(#shadow)"
+    />
     <!-- Logo and name horizontally centered inside label -->
-    <g transform={`translate(${left}, 51)`}>
-      <g transform="scale(2.5)">{@html logo}</g>
+    <g transform={`translate(${left}, 50)`}>
+      <defs>
+        <clipPath id="logoClip">
+          <circle cx="37.5" cy="37.5" r="37.5" />
+        </clipPath>
+      </defs>
+      {#if typeof logo === "string"}
+        <image
+          href={logo}
+          x="0"
+          y="0"
+          width="75"
+          height="75"
+          clip-path="url(#logoClip)"
+        />
+      {:else}
+        <g transform="scale(2.5)">{@html logo}</g>
+      {/if}
       <text
         x={logoWidth + gap}
         y="42"
-        font-size="64"
-        fill="white"
+        font-size="72"
+        fill="#222"
         text-anchor="start"
         font-weight="bold"
         alignment-baseline="middle"
