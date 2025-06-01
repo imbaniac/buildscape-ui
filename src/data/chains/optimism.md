@@ -4,6 +4,13 @@ chainId: 10
 color: "#FF0420"
 darkColor: "#CC0319"
 logo: optimism.svg
+parentOrganization: Optimism Foundation
+technology:
+  type: Optimistic Rollup
+  settlementLayer: Ethereum
+  isL2: true
+  isEVM: true
+  stack: OP Stack
 contractLanguages:
   primary:
     name: Solidity

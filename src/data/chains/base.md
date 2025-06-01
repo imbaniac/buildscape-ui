@@ -4,6 +4,13 @@ chainId: 8453
 color: "#0052FF"
 darkColor: "#0041CC"
 logo: base.svg
+parentOrganization: Coinbase
+technology:
+  type: Optimistic Rollup
+  settlementLayer: Ethereum
+  isL2: true
+  isEVM: true
+  stack: OP Stack
 contractLanguages:
   primary:
     name: Solidity

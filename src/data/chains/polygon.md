@@ -4,6 +4,12 @@ chainId: 137
 color: "#6C00F6"
 darkColor: "#4700A8"
 logo: polygon.svg
+parentOrganization: Polygon Labs
+technology:
+  type: Sidechain
+  settlementLayer: Ethereum
+  isL2: false
+  isEVM: true
 contractLanguages:
   primary:
     name: Solidity

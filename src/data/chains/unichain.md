@@ -4,6 +4,13 @@ chainId: 130
 color: "#F50FB4"
 darkColor: "#C3008A"
 logo: unichain.svg
+parentOrganization: Uniswap Labs
+technology:
+  type: Optimistic Rollup
+  settlementLayer: Ethereum
+  isL2: true
+  isEVM: true
+  stack: OP Stack
 contractLanguages:
   primary:
     name: Solidity

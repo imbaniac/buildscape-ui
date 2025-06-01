@@ -8,6 +8,9 @@
     scale?: number;
     logo: any;
     onclick?: () => void;
+    editMode?: boolean;
+    onDragStart?: () => void;
+    onDragEnd?: () => void;
   }
 
   let {
@@ -18,6 +21,9 @@
     y = 0,
     scale = 1,
     logo,
+    editMode = false,
+    onDragStart,
+    onDragEnd,
     ...restProps
   }: Props = $props();
 
@@ -34,9 +40,11 @@
 
 <g
   transform={`translate(${x}, ${y})`}
-  class="island-group"
+  class="island-group {editMode ? 'edit-mode' : ''}"
   pointer-events="all"
-  style="cursor: pointer"
+  style="cursor: {editMode ? 'move' : 'pointer'}"
+  onpointerdown={editMode ? onDragStart : undefined}
+  onpointerup={editMode ? onDragEnd : undefined}
   {...restProps}
 >
   <!-- Island base -->
@@ -286,5 +294,11 @@
 
   .island-group:hover {
     filter: brightness(1.1);
+  }
+
+  .island-group.edit-mode:hover {
+    stroke: #333;
+    stroke-width: 3;
+    stroke-dasharray: 10 5;
   }
 </style>

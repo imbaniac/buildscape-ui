@@ -5,6 +5,7 @@ darkColor: "#1C8CC9"
 chainId: 42161
 nativeCurrency: ETH
 logo: arbitrum_one.svg
+parentOrganization: Offchain Labs
 technology:
   type: Optimistic Rollup
   settlementLayer: Ethereum

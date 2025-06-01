@@ -4,6 +4,7 @@ chainId: 1
 color: "#8A93B2"
 darkColor: "#6B7390"
 logo: ethereum.svg
+parentOrganization: Ethereum Foundation
 contractLanguages:
   primary:
     name: Solidity

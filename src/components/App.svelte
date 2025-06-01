@@ -4,12 +4,12 @@
   import YAML from "yaml";
   import Book from "./Book.svelte";
 
-  const initialViewBox = { x: 0, y: -2000, width: 2000, height: 5000 };
+  const initialViewBox = { x: -5000, y: -5000, width: 10000, height: 10000 };
   let svg = $state<SVGSVGElement>();
   let svgContainer = $state<HTMLDivElement>();
   let isPanning = $state(false);
   let startPoint = $state({ x: 0, y: 0 });
-  let scale = $state(1);
+  let scale = $state(1.5);
   let translateX = $state(0);
   let translateY = $state(0);
   let panStartTranslate = { x: 0, y: 0 };
@@ -32,6 +32,18 @@
   let metricsSpan: "1h" | "24h" | "7d" | "30d" = $state("24h");
   let loadingDynamic = $state(false);
   let activeTab = $state("Overview");
+
+  // Import positions statically
+  import savedPositions from "../data/positions.json";
+
+  // Edit mode state
+  let editMode = $state(false);
+  let islandPositions = $state<Record<string, { x: number; y: number }>>(
+    savedPositions && Object.keys(savedPositions).length > 0 ? savedPositions : {}
+  );
+  let isDraggingIsland = $state(false);
+  let draggedIsland = $state<string | null>(null);
+  let dragOffset = { x: 0, y: 0 };
 
   // Update import.meta.glob to use query syntax
   const chainMdModules = import.meta.glob("../data/chains/*.md", {
@@ -112,6 +124,32 @@
   // Example: how to get all chain names
   const allChainNames = Object.keys(staticChains);
 
+  // Initialize island positions with saved positions or calculated positions
+  $effect(() => {
+    // Only set default positions if we don't have any loaded positions
+    if (Object.keys(islandPositions).length === 0) {
+      // Use default circular positions
+      const positions: Record<string, { x: number; y: number }> = {};
+
+      // Ethereum at center
+      positions["ethereum"] = { x: 0, y: 0 };
+
+      // L2s in a circle with larger radius
+      const l2Chains = Object.entries(staticChains).filter(
+        ([_, chain]) => chain.chainId !== 1
+      );
+      l2Chains.forEach(([chainKey], i) => {
+        const angle = (2 * Math.PI * i) / l2Chains.length;
+        positions[chainKey] = {
+          x: 3000 * Math.cos(angle),
+          y: 3000 * Math.sin(angle),
+        };
+      });
+
+      islandPositions = positions;
+    }
+  });
+
   // Example: how to get static data for a chain
   // const ethStatic = staticChains['ethereum'];
   // Example: how to get dynamic loader for a chain
@@ -119,6 +157,56 @@
 
   function handlePointerDown(event: PointerEvent) {
     if (event.button === 0) {
+      // Check if we're clicking on an island in edit mode
+      if (editMode && event.target) {
+        const islandElement = (event.target as Element).closest(
+          ".island-group"
+        );
+        if (islandElement) {
+          // Find which chain this island represents by checking position
+          let chainName: string | null = null;
+          const transform = islandElement.getAttribute("transform");
+          if (transform) {
+            const match = transform.match(/translate\(([^,]+),\s*([^)]+)\)/);
+            if (match) {
+              const x = parseFloat(match[1]);
+              const y = parseFloat(match[2]);
+              // Find the chain with matching position
+              for (const [key, pos] of Object.entries(islandPositions)) {
+                if (Math.abs(pos.x - x) < 1 && Math.abs(pos.y - y) < 1) {
+                  chainName = key;
+                  break;
+                }
+              }
+            }
+          }
+
+          if (chainName) {
+            // Start dragging island
+            isDraggingIsland = true;
+            draggedIsland = chainName;
+            const pos = islandPositions[chainName];
+            if (pos && svg) {
+              const pt = svg.createSVGPoint();
+              pt.x = event.clientX;
+              pt.y = event.clientY;
+              const ctm = svg.getScreenCTM();
+              if (ctm) {
+                const svgP = pt.matrixTransform(ctm.inverse());
+                dragOffset = {
+                  x: svgP.x - pos.x,
+                  y: svgP.y - pos.y,
+                };
+              }
+            }
+          }
+          svgContainer?.setPointerCapture(event.pointerId);
+          event.preventDefault();
+          return;
+        }
+      }
+
+      // Normal panning
       isPanning = true;
       startPoint = {
         x: event.clientX,
@@ -134,6 +222,33 @@
   }
 
   function handlePointerMove(event: PointerEvent) {
+    if (isDraggingIsland && draggedIsland && svg) {
+      // Handle island dragging
+      if (animationFrame) {
+        cancelAnimationFrame(animationFrame);
+      }
+
+      animationFrame = requestAnimationFrame(() => {
+        if (!svg || !draggedIsland) return;
+
+        const pt = svg.createSVGPoint();
+        pt.x = event.clientX;
+        pt.y = event.clientY;
+        const ctm = svg.getScreenCTM();
+        if (ctm) {
+          const svgP = pt.matrixTransform(ctm.inverse());
+
+          // Calculate new position
+          const newX = svgP.x - dragOffset.x;
+          const newY = svgP.y - dragOffset.y;
+
+          // Update position without any boundaries
+          islandPositions[draggedIsland] = { x: newX, y: newY };
+        }
+      });
+      return;
+    }
+
     if (!isPanning) return;
 
     // Only mark as interacting if actually moving significant distance
@@ -161,6 +276,18 @@
   }
 
   function handlePointerUp(event: PointerEvent) {
+    if (isDraggingIsland) {
+      isDraggingIsland = false;
+      draggedIsland = null;
+      svgContainer?.releasePointerCapture(event.pointerId);
+
+      if (animationFrame) {
+        cancelAnimationFrame(animationFrame);
+        animationFrame = null;
+      }
+      return;
+    }
+
     if (isPanning) {
       isPanning = false;
       svgContainer?.releasePointerCapture(event.pointerId);
@@ -265,14 +392,54 @@
   }
 
   function resetView() {
-    scale = 1;
+    scale = 1.5;
     translateX = 0;
     translateY = 0;
   }
 
+  let showPositionsModal = $state(false);
+  let positionsJson = $state("");
+
+  function savePositions() {
+    positionsJson = JSON.stringify(islandPositions, null, 2);
+    showPositionsModal = true;
+  }
+
+  function copyPositions() {
+    navigator.clipboard
+      .writeText(positionsJson)
+      .then(() => {
+        alert("Positions copied to clipboard!");
+      })
+      .catch(() => {
+        alert("Failed to copy to clipboard. Please copy manually.");
+      });
+  }
+
+  function resetPositions() {
+    const positions: Record<string, { x: number; y: number }> = {};
+
+    // Ethereum at center
+    positions["ethereum"] = { x: 0, y: 0 };
+
+    // L2s in a circle with larger radius
+    const l2Chains = Object.entries(staticChains).filter(
+      ([_, chain]) => chain.chainId !== 1
+    );
+    l2Chains.forEach(([chainKey], i) => {
+      const angle = (2 * Math.PI * i) / l2Chains.length;
+      positions[chainKey] = {
+        x: 3000 * Math.cos(angle),
+        y: 3000 * Math.sin(angle),
+      };
+    });
+
+    islandPositions = positions;
+  }
+
   function openBookByName(chainName: string) {
-    // Prevent opening modal during active interactions
-    if (isInteracting || isPanning) {
+    // Prevent opening modal during active interactions or edit mode
+    if (isInteracting || isPanning || editMode) {
       return;
     }
 
@@ -343,7 +510,9 @@
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <div
   bind:this={svgContainer}
-  class="map-container {isPanning ? 'panning' : ''}"
+  class="map-container {isPanning ? 'panning' : ''} {isDraggingIsland
+    ? 'dragging-island'
+    : ''}"
   onpointerdown={handlePointerDown}
   onpointermove={handlePointerMove}
   onpointerup={handlePointerUp}
@@ -364,9 +533,9 @@
     </defs>
 
     <text
-      x="1000"
-      y="2800"
-      font-size="220"
+      x="0"
+      y="2500"
+      font-size="400"
       fill="#5A8BA8"
       text-anchor="middle"
       font-weight="bold"
@@ -384,9 +553,10 @@
       darkColor={staticChains["ethereum"]?.darkColor}
       logo={staticChains["ethereum"]?.logoUrl}
       scale={1.5}
-      x={1000}
-      y={600}
+      x={islandPositions["ethereum"]?.x || 0}
+      y={islandPositions["ethereum"]?.y || 0}
       onclick={() => openBookByName("ethereum")}
+      {editMode}
     />
 
     <!-- L2s in a circle, spaced further out, exclude chainId 1 -->
@@ -397,16 +567,16 @@
         darkColor={blockchain.darkColor}
         logo={blockchain.logoUrl}
         scale={0.8}
-        x={1000 +
-          1900 *
+        x={islandPositions[chainKey]?.x ||
+          3000 *
             Math.cos(
               (2 * Math.PI * i) /
                 Object.entries(staticChains).filter(
                   ([_, chain]) => chain.chainId !== 1
                 ).length
             )}
-        y={600 +
-          1200 *
+        y={islandPositions[chainKey]?.y ||
+          3000 *
             Math.sin(
               (2 * Math.PI * i) /
                 Object.entries(staticChains).filter(
@@ -414,12 +584,20 @@
                 ).length
             )}
         onclick={() => openBookByName(chainKey)}
+        {editMode}
       />
     {/each}
   </svg>
 
   <div class="controls">
     <button onclick={resetView}>Reset View</button>
+    <button onclick={() => (editMode = !editMode)} class:active={editMode}>
+      {editMode ? "Exit Edit Mode" : "Edit Mode"}
+    </button>
+    {#if editMode}
+      <button onclick={savePositions}>Save Positions</button>
+    {/if}
+    <button onclick={resetPositions}>Reset Positions</button>
   </div>
 </div>
 
@@ -432,6 +610,22 @@
   onClose={closeBook}
   onMetricsSpanChange={handleMetricsSpanChange}
 />
+
+{#if showPositionsModal}
+  <div
+    class="positions-modal-backdrop"
+    onclick={() => (showPositionsModal = false)}
+  >
+    <div class="positions-modal" onclick={(e) => e.stopPropagation()}>
+      <h2>Island Positions</h2>
+      <textarea readonly rows="20" cols="50">{positionsJson}</textarea>
+      <div class="modal-buttons">
+        <button onclick={copyPositions}>Copy to Clipboard</button>
+        <button onclick={() => (showPositionsModal = false)}>Close</button>
+      </div>
+    </div>
+  </div>
+{/if}
 
 <style>
   :global(html, body) {
@@ -450,6 +644,10 @@
   }
   .map-container.panning {
     cursor: grabbing;
+  }
+
+  .map-container.dragging-island {
+    cursor: move;
   }
 
   svg {
@@ -479,5 +677,61 @@
 
   button:hover {
     background-color: #f0f0f0;
+  }
+
+  button.active {
+    background-color: #4a90e2;
+    color: white;
+  }
+
+  button.active:hover {
+    background-color: #357abd;
+  }
+
+  .positions-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+
+  .positions-modal {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 600px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .positions-modal h2 {
+    margin: 0 0 15px 0;
+    font-size: 1.5em;
+  }
+
+  .positions-modal textarea {
+    flex: 1;
+    min-height: 300px;
+    font-family: monospace;
+    font-size: 12px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+  }
+
+  .modal-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    justify-content: flex-end;
   }
 </style>

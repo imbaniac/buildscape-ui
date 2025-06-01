@@ -4,6 +4,12 @@ chainId: 324
 color: "#0C18EC"
 darkColor: "#0E16A5"
 logo: zksync.png
+parentOrganization: Matter Labs
+technology:
+  type: ZK Rollup
+  settlementLayer: Ethereum
+  isL2: true
+  isEVM: true
 contractLanguages:
   primary:
     name: Solidity

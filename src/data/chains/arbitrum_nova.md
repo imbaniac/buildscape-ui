@@ -5,8 +5,10 @@ darkColor: "#b34f00"
 chainId: 42161
 nativeCurrency: ETH
 logo: arbitrum_nova.svg
+parentOrganization: Offchain Labs
+techStack: Arbitrum
 technology:
-  type: Optimistic Rollup
+  type: AnyTrust
   settlementLayer: Ethereum
   isL2: true
   isEVM: true
