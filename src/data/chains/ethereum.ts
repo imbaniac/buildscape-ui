@@ -6,6 +6,7 @@ export default async function getDynamicData(
   const lastBlock = baseBlock + Math.floor(Math.random() * 1000);
   const lastGas = Math.floor(Math.random() * 100) + 20;
   const lastBlockSize = (Math.random() * 2 + 1).toFixed(2);
+  const blockGasLimit = Math.floor(Math.random() * 1000000) + 1000000;
 
   // Metrics vary by span
   const multipliers = {

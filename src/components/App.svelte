@@ -9,7 +9,7 @@
   let svgContainer = $state<HTMLDivElement>();
   let isPanning = $state(false);
   let startPoint = $state({ x: 0, y: 0 });
-  let scale = 1;
+  let scale = $state(1);
   let translateX = $state(0);
   let translateY = $state(0);
   let panStartTranslate = { x: 0, y: 0 };
@@ -86,7 +86,7 @@
         ...frontmatter,
         logoUrl,
         description: content,
-        name,
+        name: frontmatter.name || name,
       };
     }
     return chains;

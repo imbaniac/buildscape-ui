@@ -21,14 +21,15 @@
     ...restProps
   }: Props = $props();
 
-  // Standardized label sizing - same for all islands regardless of scale
-  const labelWidth = 700; // Increased for better readability
+  // Dynamic label sizing based on content
   const logoSize = 120; // Larger logo size
   const gap = 40; // Slightly larger gap
   const charWidth = 48; // Larger character width for font-size 84
+  const padding = 200; // Padding on both sides
   let textWidth = String(name).length * charWidth;
   let contentWidth = logoSize + gap + textWidth;
-  let left = (labelWidth - contentWidth) / 2;
+  let labelWidth = contentWidth + padding; // Dynamic width
+  let left = padding / 2; // Start after left padding
 </script>
 
 <g
@@ -232,7 +233,7 @@
   />
 
   <!-- Label -->
-  <g transform="translate(-350, -380)">
+  <g transform="translate({-labelWidth / 2}, -380)">
     <rect
       x="0"
       y="0"
@@ -272,7 +273,7 @@
         alignment-baseline="middle"
         style="font-family: inherit; letter-spacing: 2px; dominant-baseline: middle;"
       >
-        {name?.charAt(0).toUpperCase() + name?.slice(1).toLowerCase()}
+        {name}
       </text>
     </g>
   </g>

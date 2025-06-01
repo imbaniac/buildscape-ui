@@ -49,4 +49,12 @@ bookmarks:
   - Tools
 ---
 
-ZKsync Era is a Layer 2 scaling solution for Ethereum based on zero-knowledge rollups. It offers high throughput and low fees while maintaining Ethereum-level security. ZKsync Era is fully EVM-compatible, allowing developers to deploy existing contracts and use familiar tools. The protocol is developed by Matter Labs and supported by a growing community. 
+zkSync Era is a Layer 2 zk-rollup that offers EVM compatibility with a few caveats. It uses validity proofs to batch transactions off-chain and post succinct proofs to Ethereum, providing strong security guarantees.
+
+However, developers should be aware that zkSync Era introduces some non-standard behaviors: contract deployment requires bytecode to be passed in a separate field, and transactions use EIP-712 signatures with custom fields for fees and paymasters.
+
+While most Solidity code works with minimal changes, tooling like Hardhat may need additional configuration. zkSync Era also supports native account abstraction, enabling features like gasless transactions and custom signature schemes.
+
+The network is currently operated by a centralized sequencer, but plans exist to decentralize this component over time.
+
+For developers seeking scalability without compromising on Ethereum’s security model, zkSync Era offers a compelling, though slightly unconventional, platform.

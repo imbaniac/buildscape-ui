@@ -50,4 +50,6 @@ bookmarks:
   - Tools
 ---
 
-Optimism is a fast, low-cost Layer 2 scaling solution for Ethereum, utilizing optimistic rollups to increase throughput and reduce fees. It is fully EVM-equivalent, allowing developers to deploy existing Ethereum contracts and use familiar tools. Optimism is governed by the Optimism Collective and its community. 
+Optimism is a Layer 2 rollup built on top of Ethereum using the OP Stack, aiming to scale Ethereum by offering cheaper and faster transactions while inheriting its security. It’s EVM-equivalent, so contracts written for Ethereum work out of the box, but the network is still largely centralized—transaction ordering is handled by a single sequencer, and fraud proofs aren’t fully live yet.
+
+What makes Optimism unique is its vision of a “Superchain”: multiple chains (like Base and Mode) built on the same stack and potentially governed collectively. That’s interesting for shared infrastructure, but also means changes to the protocol are influenced by a broader coalition, which may slow down or complicate decisions for individual developers.

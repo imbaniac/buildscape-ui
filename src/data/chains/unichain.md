@@ -49,4 +49,10 @@ bookmarks:
   - Tools
 ---
 
-Unichain is an EVM-compatible blockchain designed for interoperability and scalability. It supports the same smart contract languages and tools as Ethereum, making it easy for developers to migrate and deploy dApps. Unichain focuses on cross-chain communication and a seamless user experience. 
+Unichain is Uniswap Labs’ Layer 2 rollup built on the OP Stack, tailored specifically for DeFi applications. It offers 1-second block times at launch, with plans to reduce this to 250 milliseconds, aiming to improve UX for high-frequency trading and real-time market data.
+
+A unique feature is its use of a Trusted Execution Environment (TEE) for block production, built with Flashbots, which enforces fair sequencing and limits MEV exploitation—something most other rollups haven’t implemented natively. While it starts with a single sequencer, it supports permissionless fault proofs from day one, and plans to introduce a dedicated validator network (UVN) where participants earn a share of protocol revenue.
+
+Since it’s part of the OP Stack ecosystem, it benefits from shared infrastructure but also inherits its limitations—like centralized sequencing in early stages and upgrade dependencies from the broader Optimism governance process.
+
+For developers building latency-sensitive or MEV-aware DeFi apps, these design choices offer more predictability and control than most general-purpose L2s.

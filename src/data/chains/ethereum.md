@@ -50,4 +50,8 @@ bookmarks:
   - Tools
 ---
 
-Ethereum is the original smart contract blockchain, launched in 2015. It enables developers to build decentralized applications (dApps) using the Solidity and Vyper programming languages. Ethereum is secured by proof-of-stake consensus and is the home of the ERC-20 and ERC-721 token standards. The protocol is governed by open community discussion and formal improvement proposals (EIPs). 
+Ethereum is the original smart contract blockchain and the de facto standard for decentralized application development. It’s fully decentralized, with thousands of validators securing the network via proof-of-stake, and it prioritizes protocol stability and neutrality over rapid iteration.
+
+While Ethereum offers unmatched security and a massive ecosystem, it also comes with trade-offs: transaction fees can spike unpredictably during network congestion, and throughput is still limited despite recent upgrades like the Merge and Dencun. 
+
+The protocol is relatively slow-moving due to its strong emphasis on backward compatibility and community consensus, which is great if you care about long-term reliability but frustrating if you’re hoping for fast L1 innovation.
