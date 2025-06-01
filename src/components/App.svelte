@@ -6,17 +6,25 @@
 
   const initialViewBox = { x: 0, y: -2000, width: 2000, height: 5000 };
   let svg = $state<SVGSVGElement>();
-  let viewBox = $state(
-    `${initialViewBox.x} ${initialViewBox.y} ${initialViewBox.width} ${initialViewBox.height}`
-  );
+  let svgContainer = $state<HTMLDivElement>();
   let isPanning = $state(false);
   let startPoint = $state({ x: 0, y: 0 });
-  let viewBoxStart = { ...initialViewBox };
   let scale = 1;
-  let center = {
-    x: initialViewBox.x + initialViewBox.width / 2,
-    y: initialViewBox.y + initialViewBox.height / 2,
-  };
+  let translateX = $state(0);
+  let translateY = $state(0);
+  let panStartTranslate = { x: 0, y: 0 };
+  let animationFrame: number | null = null;
+
+  // Interaction state tracking
+  let isInteracting = $state(false);
+  let lastInteractionTime = 0;
+
+  // Smooth zoom system
+  let zoomDelta = 0;
+  let zoomMomentum = 0;
+  let zoomTarget: { x: number; y: number } | null = null;
+  let zoomAnimationFrame: number | null = null;
+  let lastZoomTime = 0;
   let modalOpen = $state(false);
   let selectedChainName: string | null = null;
   let selectedChainStatic: any = $state(null);
@@ -109,96 +117,173 @@
   // Example: how to get dynamic loader for a chain
   // const ethLoader = await getDynamicLoader('ethereum');
 
-  function handleMouseDown(event: MouseEvent) {
+  function handlePointerDown(event: PointerEvent) {
     if (event.button === 0) {
       isPanning = true;
       startPoint = {
         x: event.clientX,
         y: event.clientY,
       };
-      viewBoxStart = parseViewBox();
-      window.addEventListener("mousemove", handleMouseMove);
-      window.addEventListener("mouseup", handleMouseUp);
+      panStartTranslate = {
+        x: translateX,
+        y: translateY,
+      };
+      svgContainer?.setPointerCapture(event.pointerId);
       event.preventDefault();
     }
   }
 
-  function handleMouseMove(event: MouseEvent) {
-    if (isPanning) {
-      const dx =
-        (event.clientX - startPoint.x) *
-        (viewBoxStart.width / svg!.clientWidth);
-      const dy =
-        (event.clientY - startPoint.y) *
-        (viewBoxStart.height / svg!.clientHeight);
+  function handlePointerMove(event: PointerEvent) {
+    if (!isPanning) return;
 
-      const newViewBox = `${viewBoxStart.x - dx} ${viewBoxStart.y - dy} ${viewBoxStart.width} ${viewBoxStart.height}`;
-      viewBox = newViewBox;
+    // Only mark as interacting if actually moving significant distance
+    const moveDistance = Math.sqrt(
+      Math.pow(event.clientX - startPoint.x, 2) +
+        Math.pow(event.clientY - startPoint.y, 2)
+    );
+
+    if (moveDistance > 5) {
+      isInteracting = true;
+      lastInteractionTime = Date.now();
     }
+
+    if (animationFrame) {
+      cancelAnimationFrame(animationFrame);
+    }
+
+    animationFrame = requestAnimationFrame(() => {
+      const dx = event.clientX - startPoint.x;
+      const dy = event.clientY - startPoint.y;
+
+      translateX = panStartTranslate.x + dx;
+      translateY = panStartTranslate.y + dy;
+    });
   }
 
-  function handleMouseUp() {
-    isPanning = false;
-    window.removeEventListener("mousemove", handleMouseMove);
-    window.removeEventListener("mouseup", handleMouseUp);
+  function handlePointerUp(event: PointerEvent) {
+    if (isPanning) {
+      isPanning = false;
+      svgContainer?.releasePointerCapture(event.pointerId);
+
+      // Only set cooldown if we were actually interacting (moving)
+      if (isInteracting) {
+        setTimeout(() => {
+          isInteracting = false;
+        }, 100);
+      }
+
+      if (animationFrame) {
+        cancelAnimationFrame(animationFrame);
+        animationFrame = null;
+      }
+    }
   }
 
   function handleWheel(event: WheelEvent) {
     event.preventDefault();
 
-    const rect = svg!.getBoundingClientRect();
+    const now = Date.now();
+    const rect = svgContainer!.getBoundingClientRect();
     const mouseX = event.clientX - rect.left;
     const mouseY = event.clientY - rect.top;
 
-    // Convert mouse position to SVG coordinates
-    const viewBoxObj = parseViewBox();
-    const svgX = viewBoxObj.x + (mouseX / rect.width) * viewBoxObj.width;
-    const svgY = viewBoxObj.y + (mouseY / rect.height) * viewBoxObj.height;
+    // Set zoom target only once per gesture
+    if (!zoomTarget || now - lastZoomTime > 150) {
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      zoomTarget = {
+        x: mouseX - centerX,
+        y: mouseY - centerY,
+      };
+    }
 
-    // Calculate new scale
-    const zoomFactor = event.deltaY > 0 ? 0.95 : 1.05;
-    scale = Math.max(0.3, Math.min(5, scale * zoomFactor));
+    lastZoomTime = now;
+    isInteracting = true;
+    lastInteractionTime = now;
 
-    // Calculate new viewBox dimensions
-    const newWidth = initialViewBox.width / scale;
-    const newHeight = initialViewBox.height / scale;
+    // Accumulate zoom delta with momentum
+    const sensitivity = Math.abs(event.deltaY) < 10 ? 0.003 : 0.01; // Trackpad vs mouse wheel
+    const deltaContribution = -event.deltaY * sensitivity;
 
-    // Calculate new viewBox position to zoom toward mouse position
-    const newX = svgX - (mouseX / rect.width) * newWidth;
-    const newY = svgY - (mouseY / rect.height) * newHeight;
+    // Add to accumulated zoom with momentum
+    zoomDelta += deltaContribution;
+    zoomMomentum = deltaContribution * 0.3; // Momentum for smooth continuation
 
-    viewBox = `${newX} ${newY} ${newWidth} ${newHeight}`;
+    // Start smooth zoom loop if not running
+    if (!zoomAnimationFrame) {
+      smoothZoomLoop();
+    }
   }
 
-  function parseViewBox() {
-    const [x, y, width, height] = viewBox.split(" ").map(Number);
-    return { x, y, width, height };
-  }
+  function smoothZoomLoop() {
+    const step = () => {
+      // Apply accumulated zoom gradually
+      if (Math.abs(zoomDelta) > 0.001 || Math.abs(zoomMomentum) > 0.001) {
+        // Calculate zoom factor from accumulated delta
+        const zoomStep = zoomDelta * 0.3; // Apply 30% of accumulated zoom per frame
+        const momentumStep = zoomMomentum * 0.8; // Apply momentum
 
-  function zoomIn() {
-    scale = Math.min(5, scale * 1.05);
-    const newWidth = initialViewBox.width / scale;
-    const newHeight = initialViewBox.height / scale;
-    const newX = center.x - newWidth / 2;
-    const newY = center.y - newHeight / 2;
-    viewBox = `${newX} ${newY} ${newWidth} ${newHeight}`;
-  }
+        const totalStep = zoomStep + momentumStep;
+        const zoomFactor =
+          totalStep > 0
+            ? 1 + Math.min(totalStep, 0.05)
+            : 1 + Math.max(totalStep, -0.05);
 
-  function zoomOut() {
-    scale = Math.max(0.3, scale * 0.95);
-    const newWidth = initialViewBox.width / scale;
-    const newHeight = initialViewBox.height / scale;
-    const newX = center.x - newWidth / 2;
-    const newY = center.y - newHeight / 2;
-    viewBox = `${newX} ${newY} ${newWidth} ${newHeight}`;
+        const newScale = Math.max(0.3, Math.min(5, scale * zoomFactor));
+
+        if (zoomTarget && newScale !== scale) {
+          // Calculate the content point under the zoom target
+          const contentX = (zoomTarget.x - translateX) / scale;
+          const contentY = (zoomTarget.y - translateY) / scale;
+
+          // Update scale and adjust translation
+          scale = newScale;
+          translateX = zoomTarget.x - contentX * scale;
+          translateY = zoomTarget.y - contentY * scale;
+        }
+
+        // Reduce accumulated values
+        zoomDelta *= 0.7; // Decay accumulated zoom
+        zoomMomentum *= 0.9; // Decay momentum
+
+        zoomAnimationFrame = requestAnimationFrame(step);
+      } else {
+        // Animation complete
+        zoomDelta = 0;
+        zoomMomentum = 0;
+        zoomAnimationFrame = null;
+
+        // Clear interaction state after a delay
+        setTimeout(() => {
+          isInteracting = false;
+          zoomTarget = null;
+        }, 100);
+      }
+    };
+
+    zoomAnimationFrame = requestAnimationFrame(step);
   }
 
   function resetView() {
     scale = 1;
-    viewBox = `${initialViewBox.x} ${initialViewBox.y} ${initialViewBox.width} ${initialViewBox.height}`;
+    translateX = 0;
+    translateY = 0;
   }
 
   function openBookByName(chainName: string) {
+    // Prevent opening modal during active interactions
+    if (isInteracting || isPanning) {
+      return;
+    }
+
+    // Check if recent interaction happened (only for zoom, not clicks)
+    if (lastInteractionTime > 0) {
+      const timeSinceInteraction = Date.now() - lastInteractionTime;
+      if (timeSinceInteraction < 100) {
+        return;
+      }
+    }
+
     selectedChainName = chainName;
     selectedChainStatic = staticChains[chainName];
     modalOpen = true;
@@ -233,11 +318,17 @@
   }
 
   onMount(() => {
-    if (svg) {
-      svg.addEventListener("wheel", handleWheel, { passive: false });
+    if (svgContainer) {
+      svgContainer.addEventListener("wheel", handleWheel, { passive: false });
 
       return () => {
-        svg!.removeEventListener("wheel", handleWheel);
+        svgContainer?.removeEventListener("wheel", handleWheel);
+        if (animationFrame) {
+          cancelAnimationFrame(animationFrame);
+        }
+        if (zoomAnimationFrame) {
+          cancelAnimationFrame(zoomAnimationFrame);
+        }
       };
     }
   });
@@ -250,15 +341,21 @@
 </script>
 
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-<div class="map-container {isPanning ? 'panning' : ''}">
+<div
+  bind:this={svgContainer}
+  class="map-container {isPanning ? 'panning' : ''}"
+  onpointerdown={handlePointerDown}
+  onpointermove={handlePointerMove}
+  onpointerup={handlePointerUp}
+  onpointercancel={handlePointerUp}
+>
   <svg
     bind:this={svg}
-    {viewBox}
+    viewBox={`${initialViewBox.x} ${initialViewBox.y} ${initialViewBox.width} ${initialViewBox.height}`}
     xmlns="http://www.w3.org/2000/svg"
-    onmousedown={handleMouseDown}
-    onmouseleave={handleMouseUp}
     aria-label="Map of the EVM ecosystem"
     role="region"
+    style="transform: translate({translateX}px, {translateY}px) scale({scale}); transform-origin: center center;"
   >
     <defs>
       <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
@@ -323,8 +420,6 @@
 
   <div class="controls">
     <button onclick={resetView}>Reset View</button>
-    <button onclick={zoomIn}>Zoom In</button>
-    <button onclick={zoomOut}>Zoom Out</button>
   </div>
 </div>
 
@@ -351,6 +446,7 @@
     overflow: hidden;
     background-color: #87c1d3;
     cursor: grab;
+    touch-action: none; /* Prevent default touch behaviors */
   }
   .map-container.panning {
     cursor: grabbing;
@@ -359,6 +455,8 @@
   svg {
     width: 100%;
     height: 100%;
+    will-change: transform; /* Hint for hardware acceleration */
+    transition: none; /* Disable any default transitions for smooth panning */
   }
 
   .controls {
