@@ -7,6 +7,7 @@
     y?: number;
     scale?: number;
     logo: any;
+    onclick?: () => void;
   }
 
   let {
@@ -17,6 +18,7 @@
     y = 0,
     scale = 1,
     logo,
+    ...restProps
   }: Props = $props();
 
   // Flex-like centering for label content
@@ -29,7 +31,13 @@
   let left = (labelWidth - contentWidth) / 2;
 </script>
 
-<g transform={`translate(${x}, ${y}) scale(${scale})`} class="island-group">
+<g
+  transform={`translate(${x}, ${y}) scale(${scale})`}
+  class="island-group"
+  pointer-events="all"
+  style="cursor: pointer"
+  {...restProps}
+>
   <!-- Island base -->
   <g transform="translate(-931, -560)">
     <!-- Using the provided SVG path for the island -->

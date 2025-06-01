@@ -1,7 +1,8 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import Island from "./Island.svelte";
-  import { ethereum, evmBlockchains } from "./data.js";
+  import YAML from "yaml";
+  import Book from "./Book.svelte";
 
   const initialViewBox = { x: 0, y: -2000, width: 2000, height: 5000 };
   let svg = $state<SVGSVGElement>();
@@ -16,6 +17,97 @@
     x: initialViewBox.x + initialViewBox.width / 2,
     y: initialViewBox.y + initialViewBox.height / 2,
   };
+  let modalOpen = $state(false);
+  let selectedChainName: string | null = null;
+  let selectedChainStatic: any = $state(null);
+  let selectedChainDynamic: any = $state(null);
+  let metricsSpan: "1h" | "24h" | "7d" | "30d" = $state("24h");
+  let loadingDynamic = $state(false);
+  let activeTab = $state("Overview");
+
+  // Update import.meta.glob to use query syntax
+  const chainMdModules = import.meta.glob("../data/chains/*.md", {
+    eager: true,
+    query: "?raw",
+    import: "default",
+  });
+  const chainTsModules = import.meta.glob("../data/chains/*.ts");
+  const logoAssets = import.meta.glob("../lib/assets/chains/*", {
+    eager: true,
+    query: "?url",
+    import: "default",
+  });
+
+  function resolveLogoUrl(logoFilename: string): string | undefined {
+    for (const path in logoAssets) {
+      if (path.endsWith("/" + logoFilename)) {
+        return logoAssets[path] as string;
+      }
+    }
+    return undefined;
+  }
+
+  // Helper to extract YAML frontmatter and markdown body
+  function parseFrontmatterAndContent(raw: string): {
+    frontmatter: any;
+    content: string;
+  } {
+    const match = /^---\n([\s\S]*?)\n---\n?([\s\S]*)$/m.exec(raw);
+    if (match) {
+      const frontmatter = YAML.parse(match[1]);
+      const content = match[2].trim();
+      return { frontmatter, content };
+    }
+    // fallback: no frontmatter
+    return { frontmatter: {}, content: raw.trim() };
+  }
+
+  function loadStaticChains(): Record<string, any> {
+    const chains: Record<string, any> = {};
+    for (const path in chainMdModules) {
+      const raw = chainMdModules[path] as string;
+      if (!raw) continue;
+      const { frontmatter, content } = parseFrontmatterAndContent(raw);
+      const name = path.split("/").pop()?.replace(".md", "");
+      if (!name) continue;
+      let logoUrl = undefined;
+      if (frontmatter.logo) {
+        logoUrl = resolveLogoUrl(frontmatter.logo);
+      }
+      chains[name] = {
+        ...frontmatter,
+        logoUrl,
+        description: content,
+        name,
+      };
+    }
+    return chains;
+  }
+
+  const staticChains: Record<string, any> = loadStaticChains();
+
+  // Helper to get dynamic loader for a chain
+  async function getDynamicLoader(
+    chainName: string
+  ): Promise<null | ((span: string) => Promise<any>)> {
+    const tsPath = `../data/chains/${chainName}.ts`;
+    if (chainTsModules[tsPath]) {
+      const mod = await chainTsModules[tsPath]();
+      const loader = (mod as any).default;
+      if (typeof loader === "function") {
+        return loader as (span: string) => Promise<any>;
+      }
+    }
+    return null;
+  }
+
+  // Example: how to get all chain names
+  const allChainNames = Object.keys(staticChains);
+
+  // Example: how to get static data for a chain
+  // const ethStatic = staticChains['ethereum'];
+  // Example: how to get dynamic loader for a chain
+  // const ethLoader = await getDynamicLoader('ethereum');
 
   function handleMouseDown(event: MouseEvent) {
     if (event.button === 0) {
@@ -106,6 +198,40 @@
     viewBox = `${initialViewBox.x} ${initialViewBox.y} ${initialViewBox.width} ${initialViewBox.height}`;
   }
 
+  function openBookByName(chainName: string) {
+    selectedChainName = chainName;
+    selectedChainStatic = staticChains[chainName];
+    modalOpen = true;
+    loadDynamic(chainName, metricsSpan);
+  }
+
+  async function loadDynamic(
+    chainName: string,
+    span: "1h" | "24h" | "7d" | "30d"
+  ) {
+    loadingDynamic = true;
+    selectedChainDynamic = null;
+    const loader = await getDynamicLoader(chainName);
+    if (loader) {
+      selectedChainDynamic = await loader(span);
+    }
+    loadingDynamic = false;
+  }
+
+  function handleMetricsSpanChange(span: "1h" | "24h" | "7d" | "30d") {
+    metricsSpan = span;
+    if (selectedChainName) {
+      loadDynamic(selectedChainName, span);
+    }
+  }
+
+  function closeBook() {
+    modalOpen = false;
+    selectedChainName = null;
+    selectedChainStatic = null;
+    selectedChainDynamic = null;
+  }
+
   onMount(() => {
     if (svg) {
       svg.addEventListener("wheel", handleWheel, { passive: false });
@@ -113,6 +239,12 @@
       return () => {
         svg!.removeEventListener("wheel", handleWheel);
       };
+    }
+  });
+
+  $effect(() => {
+    if (modalOpen && selectedChainStatic) {
+      activeTab = selectedChainStatic.bookmarks?.[0] || "Overview";
     }
   });
 </script>
@@ -150,29 +282,41 @@
 
     <!-- Main Ethereum Island (center) -->
     <Island
-      name={ethereum.name}
-      color={ethereum.color}
-      darkColor={ethereum.darkColor}
-      logo={ethereum.logo}
+      name={staticChains["ethereum"]?.name}
+      color={staticChains["ethereum"]?.color}
+      darkColor={staticChains["ethereum"]?.darkColor}
+      logo={staticChains["ethereum"]?.logoUrl}
       scale={1.5}
       x={1000}
       y={600}
+      onclick={() => openBookByName("ethereum")}
     />
 
-    <!-- L2s in a circle, spaced further out -->
-    {#each Object.values(evmBlockchains) as blockchain, i}
+    <!-- L2s in a circle, spaced further out, exclude chainId 1 -->
+    {#each Object.entries(staticChains).filter(([_, chain]) => chain.chainId !== 1) as [chainKey, blockchain], i}
       <Island
         name={blockchain.name}
         color={blockchain.color}
         darkColor={blockchain.darkColor}
-        logo={blockchain.logo}
+        logo={blockchain.logoUrl}
         scale={0.8}
         x={1000 +
           1800 *
-            Math.cos((2 * Math.PI * i) / Object.keys(evmBlockchains).length)}
+            Math.cos(
+              (2 * Math.PI * i) /
+                Object.entries(staticChains).filter(
+                  ([_, chain]) => chain.chainId !== 1
+                ).length
+            )}
         y={600 +
           1120 *
-            Math.sin((2 * Math.PI * i) / Object.keys(evmBlockchains).length)}
+            Math.sin(
+              (2 * Math.PI * i) /
+                Object.entries(staticChains).filter(
+                  ([_, chain]) => chain.chainId !== 1
+                ).length
+            )}
+        onclick={() => openBookByName(chainKey)}
       />
     {/each}
   </svg>
@@ -183,6 +327,16 @@
     <button onclick={zoomOut}>Zoom Out</button>
   </div>
 </div>
+
+<Book
+  open={modalOpen}
+  chainStatic={selectedChainStatic}
+  chainDynamic={selectedChainDynamic}
+  {metricsSpan}
+  {loadingDynamic}
+  onClose={closeBook}
+  onMetricsSpanChange={handleMetricsSpanChange}
+/>
 
 <style>
   :global(html, body) {
