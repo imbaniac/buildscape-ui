@@ -301,7 +301,7 @@
         logo={blockchain.logoUrl}
         scale={0.8}
         x={1000 +
-          1800 *
+          1900 *
             Math.cos(
               (2 * Math.PI * i) /
                 Object.entries(staticChains).filter(
@@ -309,7 +309,7 @@
                 ).length
             )}
         y={600 +
-          1120 *
+          1200 *
             Math.sin(
               (2 * Math.PI * i) /
                 Object.entries(staticChains).filter(
