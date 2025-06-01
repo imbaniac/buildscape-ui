@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
   import Island from "./Island.svelte";
   import YAML from "yaml";
-  import Book from "./Book.svelte";
+  import { goto } from '$app/navigation';
 
   const initialViewBox = { x: -5000, y: -5000, width: 10000, height: 10000 };
   let svg = $state<SVGSVGElement>();
@@ -25,13 +25,6 @@
   let zoomTarget: { x: number; y: number } | null = null;
   let zoomAnimationFrame: number | null = null;
   let lastZoomTime = 0;
-  let modalOpen = $state(false);
-  let selectedChainName: string | null = null;
-  let selectedChainStatic: any = $state(null);
-  let selectedChainDynamic: any = $state(null);
-  let metricsSpan: "1h" | "24h" | "7d" | "30d" = $state("24h");
-  let loadingDynamic = $state(false);
-  let activeTab = $state("Overview");
 
   // Import positions statically
   import savedPositions from "../data/positions.json";
@@ -451,37 +444,7 @@
       }
     }
 
-    selectedChainName = chainName;
-    selectedChainStatic = staticChains[chainName];
-    modalOpen = true;
-    loadDynamic(chainName, metricsSpan);
-  }
-
-  async function loadDynamic(
-    chainName: string,
-    span: "1h" | "24h" | "7d" | "30d"
-  ) {
-    loadingDynamic = true;
-    selectedChainDynamic = null;
-    const loader = await getDynamicLoader(chainName);
-    if (loader) {
-      selectedChainDynamic = await loader(span);
-    }
-    loadingDynamic = false;
-  }
-
-  function handleMetricsSpanChange(span: "1h" | "24h" | "7d" | "30d") {
-    metricsSpan = span;
-    if (selectedChainName) {
-      loadDynamic(selectedChainName, span);
-    }
-  }
-
-  function closeBook() {
-    modalOpen = false;
-    selectedChainName = null;
-    selectedChainStatic = null;
-    selectedChainDynamic = null;
+    goto('/chain/' + chainName);
   }
 
   onMount(() => {
@@ -497,12 +460,6 @@
           cancelAnimationFrame(zoomAnimationFrame);
         }
       };
-    }
-  });
-
-  $effect(() => {
-    if (modalOpen && selectedChainStatic) {
-      activeTab = selectedChainStatic.bookmarks?.[0] || "Overview";
     }
   });
 </script>
@@ -600,16 +557,6 @@
     <button onclick={resetPositions}>Reset Positions</button>
   </div>
 </div>
-
-<Book
-  open={modalOpen}
-  chainStatic={selectedChainStatic}
-  chainDynamic={selectedChainDynamic}
-  {metricsSpan}
-  {loadingDynamic}
-  onClose={closeBook}
-  onMetricsSpanChange={handleMetricsSpanChange}
-/>
 
 {#if showPositionsModal}
   <div

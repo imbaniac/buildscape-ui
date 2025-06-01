@@ -77,12 +77,9 @@
               <div>Last Block Size: {chainDynamic.lastBlockSize}</div>
               <div>Tx/s: {chainDynamic.metrics.txPerSecond}</div>
               <div>Transactions: {chainDynamic.metrics.numTransactions}</div>
-              <div>Unique Users: {chainDynamic.metrics.uniqueUsers}</div>
+              <div>Users: {chainDynamic.metrics.uniqueUsers}</div>
               <div>
                 Contracts Deployed: {chainDynamic.metrics.contractsDeployed}
-              </div>
-              <div>
-                Developer Activity: {chainDynamic.metrics.developerActivity}
               </div>
             </div>
           {:else}

@@ -26,7 +26,6 @@ export default async function getDynamicData(
       numTransactions: Math.floor(10000 * m + Math.random() * 5000 * m),
       uniqueUsers: Math.floor(1000 * m + Math.random() * 500 * m),
       contractsDeployed: Math.floor(100 * m + Math.random() * 50 * m),
-      developerActivity: Math.floor(80 + Math.random() * 20),
     },
   };
 }
