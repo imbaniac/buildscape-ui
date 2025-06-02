@@ -21,9 +21,6 @@ docs:
   - https://era.zksync.io/docs/
 blockscanners:
   - https://explorer.zksync.io
-wallets:
-  - https://metamask.io
-  - https://walletconnect.com/
 testnets:
   - ZKsync Testnet
 rpcs:
@@ -42,17 +39,6 @@ sdks:
 tools:
   - https://getfoundry.sh/
   - https://hardhat.org/
-bookmarks:
-  - Overview
-  - Source
-  - Forums
-  - Docs
-  - Blockscanners
-  - Wallets
-  - Testnets
-  - RPCs
-  - SDKs
-  - Tools
 ---
 
 zkSync Era is a Layer 2 zk-rollup that offers EVM compatibility with a few caveats. It uses validity proofs to batch transactions off-chain and post succinct proofs to Ethereum, providing strong security guarantees.

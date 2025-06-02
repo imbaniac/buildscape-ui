@@ -49,16 +49,12 @@ forums:
     url: https://forum.arbitrum.foundation
   - name: Research Forum
     url: https://research.arbitrum.io
-bookmarks:
-  - Overview
-  - Source
-  - Forums
-  - Docs
-  - Blockscanners
-  - Testnets
-  - RPCs
-  - SDKs
-  - Tools
+sdks:
+  - https://docs.arbitrum.io/sdk
+  - https://docs.ethers.org/
+tools:
+  - https://getfoundry.sh/
+  - https://hardhat.org/
 ---
 
 Arbitrum One is a Layer 2 Optimistic Rollup that batches transactions off-chain and posts all transaction data directly to Ethereum, offering a trustless extension of the L1 with lower fees and higher throughput.

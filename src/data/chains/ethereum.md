@@ -5,6 +5,9 @@ color: "#8A93B2"
 darkColor: "#6B7390"
 logo: ethereum.svg
 parentOrganization: Ethereum Foundation
+technology:
+  isL2: false
+  isEVM: true
 contractLanguages:
   primary:
     name: Solidity
@@ -20,9 +23,6 @@ docs:
   - https://ethereum.org/en/developers/docs/
 blockscanners:
   - https://etherscan.io
-wallets:
-  - https://metamask.io
-  - https://walletconnect.com/
 testnets:
   - Sepolia
   - Holesky
@@ -42,17 +42,6 @@ sdks:
 tools:
   - https://getfoundry.sh/
   - https://hardhat.org/
-bookmarks:
-  - Overview
-  - Source
-  - Forums
-  - Docs
-  - Blockscanners
-  - Wallets
-  - Testnets
-  - RPCs
-  - SDKs
-  - Tools
 ---
 
 Ethereum is the original smart contract blockchain and the de facto standard for decentralized application development. It’s fully decentralized, with thousands of validators securing the network via proof-of-stake, and it prioritizes protocol stability and neutrality over rapid iteration.

@@ -1,6 +1,7 @@
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 import YAML from 'yaml';
+import type { BookmarkTab, WalletsByCategory } from '$lib/types';
 
 const chainMdModules = import.meta.glob('/src/data/chains/*.md', {
   eager: true,
@@ -13,6 +14,18 @@ const chainTsModules = import.meta.glob('/src/data/chains/*.ts');
 const logoAssets = import.meta.glob('/src/lib/assets/chains/*', {
   eager: true,
   query: '?url',
+  import: 'default',
+});
+
+const bookmarksModule = import.meta.glob('/src/data/bookmarks.md', {
+  eager: true,
+  query: '?raw',
+  import: 'default',
+});
+
+const walletsModule = import.meta.glob('/src/data/wallets.md', {
+  eager: true,
+  query: '?raw',
   import: 'default',
 });
 
@@ -36,6 +49,33 @@ function parseFrontmatterAndContent(raw: string): {
     return { frontmatter, content };
   }
   return { frontmatter: {}, content: raw.trim() };
+}
+
+function parseWallets(walletsContent: string): WalletsByCategory {
+  const lines = walletsContent.split('\n');
+  const walletsByCategory: WalletsByCategory = {};
+  let currentCategory = '';
+  let inTable = false;
+  
+  for (const line of lines) {
+    if (line.startsWith('## ')) {
+      currentCategory = line.substring(3).trim();
+      walletsByCategory[currentCategory] = [];
+      inTable = false;
+    } else if (line.includes('|---')) {
+      inTable = true;
+    } else if (inTable && line.startsWith('|') && !line.includes('Name')) {
+      const parts = line.split('|').map(p => p.trim()).filter(p => p);
+      if (parts.length >= 2) {
+        walletsByCategory[currentCategory].push({
+          name: parts[0],
+          url: parts[1]
+        });
+      }
+    }
+  }
+  
+  return walletsByCategory;
 }
 
 export const load: PageLoad = async ({ params, url }) => {
@@ -69,14 +109,27 @@ export const load: PageLoad = async ({ params, url }) => {
     dynamicLoader = (mod as any).default;
   }
 
+  // Parse bookmarks structure
+  const bookmarksRaw = bookmarksModule['/src/data/bookmarks.md'] as string;
+  const { frontmatter: bookmarksData } = parseFrontmatterAndContent(bookmarksRaw);
+  
+  // Parse wallets for EVM chains
+  let walletsByCategory: WalletsByCategory = {};
+  if (chainStatic.technology?.isEVM) {
+    const walletsRaw = walletsModule['/src/data/wallets.md'] as string;
+    walletsByCategory = parseWallets(walletsRaw);
+  }
+
   // Get URL parameters
-  const tab = url.searchParams.get('tab') || (chainStatic.bookmarks?.[0] || 'Overview');
+  const tab = url.searchParams.get('tab') || 'overview';
   const span = url.searchParams.get('span') || '24h';
 
   return {
     slug,
     chainStatic,
     dynamicLoader,
+    bookmarks: bookmarksData.tabs as BookmarkTab[],
+    walletsByCategory,
     initialTab: tab,
     initialSpan: span as '1h' | '24h' | '7d' | '30d',
   };

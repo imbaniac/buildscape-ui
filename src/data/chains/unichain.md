@@ -22,9 +22,6 @@ docs:
   - https://docs.unichain.org/
 blockscanners:
   - https://unichainscan.com
-wallets:
-  - https://metamask.io
-  - https://walletconnect.com/
 testnets:
   - UniTestnet
 rpcs:
@@ -43,17 +40,6 @@ sdks:
 tools:
   - https://getfoundry.sh/
   - https://hardhat.org/
-bookmarks:
-  - Overview
-  - Source
-  - Forums
-  - Docs
-  - Blockscanners
-  - Wallets
-  - Testnets
-  - RPCs
-  - SDKs
-  - Tools
 ---
 
 Unichain is Uniswap Labs’ Layer 2 rollup built on the OP Stack, tailored specifically for DeFi applications. It offers 1-second block times at launch, with plans to reduce this to 250 milliseconds, aiming to improve UX for high-frequency trading and real-time market data.

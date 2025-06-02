@@ -50,16 +50,12 @@ forums:
     url: https://forum.arbitrum.foundation
   - name: Research Forum
     url: https://research.arbitrum.io
-bookmarks:
-  - Overview
-  - Source
-  - Forums
-  - Docs
-  - Blockscanners
-  - Testnets
-  - RPCs
-  - SDKs
-  - Tools
+sdks:
+  - https://docs.arbitrum.io/sdk
+  - https://docs.ethers.org/
+tools:
+  - https://getfoundry.sh/
+  - https://hardhat.org/
 ---
 
 Arbitrum Nova is a Layer 2 blockchain built on the AnyTrust protocol, designed for applications requiring high throughput and low transaction costs, such as gaming and social platforms.

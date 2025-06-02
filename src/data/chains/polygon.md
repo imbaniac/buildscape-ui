@@ -21,9 +21,6 @@ docs:
   - https://docs.polygon.technology/
 blockscanners:
   - https://polygonscan.com
-wallets:
-  - https://metamask.io
-  - https://walletconnect.com/
 testnets:
   - Mumbai
 rpcs:
@@ -42,17 +39,6 @@ sdks:
 tools:
   - https://getfoundry.sh/
   - https://hardhat.org/
-bookmarks:
-  - Overview
-  - Source
-  - Forums
-  - Docs
-  - Blockscanners
-  - Wallets
-  - Testnets
-  - RPCs
-  - SDKs
-  - Tools
 ---
 
 Polygon PoS is a sidechain to Ethereum that offers fast and low-cost transactions, but with a distinct trust model: it relies on its own validator set and uses periodic checkpoints to Ethereum for finality, rather than inheriting Ethereum’s security directly like rollups do. This is why it’s technically not a Layer 2—because a true L2 relies on Ethereum for data availability and dispute resolution, while Polygon PoS operates independently and only posts snapshots to Ethereum.

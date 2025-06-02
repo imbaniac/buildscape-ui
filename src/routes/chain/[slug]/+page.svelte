@@ -4,6 +4,7 @@
   import { onMount } from "svelte";
   import { marked } from "marked";
   import type { PageData } from "./$types";
+  import type { BookmarkTab, BookmarkField, Wallet, WalletsByCategory } from "$lib/types";
 
   let { data }: { data: PageData } = $props();
 
@@ -28,15 +29,20 @@
   }
 
   let activeTab = $state(data.initialTab);
+  let activeGroup = $state(data.initialTab);
   let metricsSpan = $state<"1h" | "24h" | "7d" | "30d">(data.initialSpan);
   let chainDynamic = $state<any>(null);
   let loadingDynamic = $state(false);
+  
+  const tabGroups = $derived(
+    data.bookmarks.map((group: BookmarkTab) => ({
+      ...group,
+      isActive: group.id === activeTab || group.fields.some((f: BookmarkField) => f.field === activeTab)
+    }))
+  );
 
   $effect(() => {
-    const currentTab =
-      $page.url.searchParams.get("tab") ||
-      data.chainStatic.bookmarks?.[0] ||
-      "Overview";
+    const currentTab = $page.url.searchParams.get("tab") || "overview";
     const currentSpan = $page.url.searchParams.get("span") || "24h";
 
     // Only update URL if values have actually changed
@@ -45,6 +51,21 @@
       url.searchParams.set("tab", activeTab);
       url.searchParams.set("span", metricsSpan);
       goto(url.toString(), { replaceState: true, noScroll: true });
+    }
+  });
+  
+  function handleTabClick(tabId: string, groupId: string) {
+    activeTab = tabId;
+    activeGroup = groupId;
+  }
+  
+  $effect(() => {
+    // Update activeGroup based on activeTab
+    const group = data.bookmarks.find((g: BookmarkTab) => 
+      g.id === activeTab || g.fields.some((f: BookmarkField) => f.field === activeTab)
+    );
+    if (group) {
+      activeGroup = group.id;
     }
   });
 
@@ -123,6 +144,31 @@
           {/if}
           <h1 class="chain-title">{data.chainStatic.name}</h1>
           <div class="chain-subtitle">Chain ID: {data.chainStatic.chainId}</div>
+        </div>
+        
+        <div class="chain-metadata">
+          {#if data.chainStatic.parentOrganization}
+            <div class="metadata-org">Built by {data.chainStatic.parentOrganization}</div>
+          {/if}
+          <div class="metadata-tech">
+            {#if data.chainStatic.technology?.isL2}
+              <span class="tech-tag l2">L2</span>
+            {:else}
+              <span class="tech-tag l1">L1</span>
+            {/if}
+            {#if data.chainStatic.technology?.type}
+              <span class="tech-tag">{data.chainStatic.technology.type}</span>
+            {/if}
+            {#if data.chainStatic.technology?.stack}
+              <span class="tech-tag">{data.chainStatic.technology.stack}</span>
+            {/if}
+            {#if data.chainStatic.technology?.isEVM}
+              <span class="tech-tag evm">EVM Compatible</span>
+            {/if}
+          </div>
+          {#if data.chainStatic.technology?.settlementLayer}
+            <div class="metadata-settlement">Settles on {data.chainStatic.technology.settlementLayer}</div>
+          {/if}
         </div>
 
         {#if chainDynamic}
@@ -238,19 +284,21 @@
       <div class="page-content">
         <div class="tabs-container">
           <div class="tabs-header">
-            {#each data.chainStatic.bookmarks as tab}
-              <button
-                class="tab-button"
-                class:active={activeTab === tab}
-                onclick={() => (activeTab = tab)}
-              >
-                {tab}
-              </button>
+            {#each data.bookmarks as group}
+              {#if group.id !== 'wallets' || data.chainStatic.technology?.isEVM}
+                <button
+                  class="tab-button"
+                  class:active={tabGroups.find(g => g.id === group.id)?.isActive}
+                  onclick={() => handleTabClick(group.id, group.id)}
+                >
+                  {group.name}
+                </button>
+              {/if}
             {/each}
           </div>
 
           <div class="tab-content">
-            {#if activeTab === "Overview"}
+            {#if activeTab === "overview"}
               <div class="prose">
                 {@html marked.parse(data.chainStatic.description)}
 
@@ -285,98 +333,122 @@
                   </div>
                 </div>
               </div>
-            {:else if activeTab === "Source"}
-              <div class="links-list">
-                {#each data.chainStatic.sourceCode as link}
-                  <a href={link} target="_blank" class="link-item">
-                    <span class="link-icon">📁</span>
-                    <span>{link}</span>
-                  </a>
+            {:else if activeGroup === "resources"}
+              <div class="resources-sections">
+                {#each data.bookmarks.find((g: BookmarkTab) => g.id === 'resources')?.fields || [] as field}
+                  {#if data.chainStatic[field.field]?.length > 0}
+                    <div class="resource-section">
+                      <h4 class="section-title">{field.label}</h4>
+                      <div class="links-list">
+                        {#each data.chainStatic[field.field] || [] as link}
+                          {#if typeof link === 'string'}
+                            <a href={link} target="_blank" class="link-item">
+                              <span class="link-icon">{field.icon}</span>
+                              <span>{link}</span>
+                            </a>
+                          {:else}
+                            <a href={link.url} target="_blank" class="link-item">
+                              <span class="link-icon">{field.icon}</span>
+                              <span>{link.name}</span>
+                            </a>
+                          {/if}
+                        {/each}
+                      </div>
+                    </div>
+                  {/if}
                 {/each}
               </div>
-            {:else if activeTab === "Forums"}
+            {:else if activeGroup === "explorers"}
               <div class="links-list">
-                {#each data.chainStatic.forums as link}
-                  <a href={link} target="_blank" class="link-item">
-                    <span class="link-icon">💬</span>
-                    <span>{link}</span>
-                  </a>
-                {/each}
-              </div>
-            {:else if activeTab === "Docs"}
-              <div class="links-list">
-                {#each data.chainStatic.docs as link}
-                  <a href={link} target="_blank" class="link-item">
-                    <span class="link-icon">📚</span>
-                    <span>{link}</span>
-                  </a>
-                {/each}
-              </div>
-            {:else if activeTab === "Blockscanners"}
-              <div class="links-list">
-                {#each data.chainStatic.blockscanners as link}
+                {#each data.chainStatic.blockscanners || [] as link}
                   <a href={link} target="_blank" class="link-item">
                     <span class="link-icon">🔍</span>
                     <span>{link}</span>
                   </a>
                 {/each}
               </div>
-            {:else if activeTab === "Wallets"}
-              <div class="links-list">
-                {#each data.chainStatic.wallets as link}
-                  <a href={link} target="_blank" class="link-item">
-                    <span class="link-icon">👛</span>
-                    <span>{link}</span>
-                  </a>
-                {/each}
-              </div>
-            {:else if activeTab === "Testnets"}
-              <div class="links-list">
-                {#each data.chainStatic.testnets as net}
-                  <div class="link-item">
-                    <span class="link-icon">🧪</span>
-                    <span>{net}</span>
+            {:else if activeGroup === "development"}
+              {@const activeField = data.bookmarks.find((g: BookmarkTab) => g.id === 'development')?.fields.find((f: BookmarkField) => f.field === activeTab) || data.bookmarks.find((g: BookmarkTab) => g.id === 'development')?.fields[0]}
+              {#if activeField}
+                <div class="subtabs">
+                  {#each data.bookmarks.find((g: BookmarkTab) => g.id === 'development')?.fields || [] as field}
+                    <button
+                      class="subtab-button"
+                      class:active={activeTab === field.field || (activeTab === 'development' && field === activeField)}
+                      onclick={() => (activeTab = field.field)}
+                    >
+                      {field.label}
+                    </button>
+                  {/each}
+                </div>
+                {#if activeField.field === 'rpcs' && data.chainStatic.rpcs}
+                  <div class="rpc-section">
+                    {#if data.chainStatic.rpcs.public?.length}
+                      <h4>Public RPCs</h4>
+                      <div class="links-list">
+                        {#each data.chainStatic.rpcs.public as rpc}
+                          <div class="link-item">
+                            <span class="link-icon">🌐</span>
+                            <span>{rpc}</span>
+                          </div>
+                        {/each}
+                      </div>
+                    {/if}
+                    {#if data.chainStatic.rpcs.private?.length}
+                      <h4>Private RPCs</h4>
+                      <div class="links-list">
+                        {#each data.chainStatic.rpcs.private as rpc}
+                          <div class="link-item">
+                            <span class="link-icon">🔒</span>
+                            <span>{rpc}</span>
+                          </div>
+                        {/each}
+                      </div>
+                    {/if}
                   </div>
-                {/each}
-              </div>
-            {:else if activeTab === "RPCs"}
-              <div class="rpc-section">
-                <h4>Public RPCs</h4>
-                <div class="links-list">
-                  {#each data.chainStatic.rpcs?.public || [] as rpc}
-                    <div class="link-item">
-                      <span class="link-icon">🌐</span>
-                      <span>{rpc}</span>
+                {:else if activeField.field === 'testnets'}
+                  <div class="links-list">
+                    {#each data.chainStatic.testnets || [] as net}
+                      <div class="link-item">
+                        <span class="link-icon">{activeField.icon}</span>
+                        <span>{typeof net === 'string' ? net : net.name}</span>
+                      </div>
+                    {/each}
+                  </div>
+                {:else}
+                  <div class="links-list">
+                    {#each data.chainStatic[activeField.field] || [] as link}
+                      {#if typeof link === 'string'}
+                        <a href={link} target="_blank" class="link-item">
+                          <span class="link-icon">{activeField.icon}</span>
+                          <span>{link}</span>
+                        </a>
+                      {:else}
+                        <a href={link.url} target="_blank" class="link-item">
+                          <span class="link-icon">{activeField.icon}</span>
+                          <span>{link.name}</span>
+                        </a>
+                      {/if}
+                    {/each}
+                  </div>
+                {/if}
+              {/if}
+            {:else if activeTab === "wallets" && data.chainStatic.technology?.isEVM}
+              <div class="wallets-section">
+                {#each Object.entries(data.walletsByCategory as WalletsByCategory) as [category, wallets]}
+                  {#if wallets.length > 0}
+                    <div class="wallet-category">
+                      <h4 class="category-title">{category}</h4>
+                      <div class="wallets-grid">
+                        {#each wallets as wallet}
+                          <a href={wallet.url} target="_blank" class="wallet-item">
+                            <span class="wallet-icon">👛</span>
+                            <span class="wallet-name">{wallet.name}</span>
+                          </a>
+                        {/each}
+                      </div>
                     </div>
-                  {/each}
-                </div>
-
-                <h4>Private RPCs</h4>
-                <div class="links-list">
-                  {#each data.chainStatic.rpcs?.private || [] as rpc}
-                    <div class="link-item">
-                      <span class="link-icon">🔒</span>
-                      <span>{rpc}</span>
-                    </div>
-                  {/each}
-                </div>
-              </div>
-            {:else if activeTab === "SDKs"}
-              <div class="links-list">
-                {#each data.chainStatic.sdks as link}
-                  <a href={link} target="_blank" class="link-item">
-                    <span class="link-icon">🛠️</span>
-                    <span>{link}</span>
-                  </a>
-                {/each}
-              </div>
-            {:else if activeTab === "Tools"}
-              <div class="links-list">
-                {#each data.chainStatic.tools as link}
-                  <a href={link} target="_blank" class="link-item">
-                    <span class="link-icon">⚡</span>
-                    <span>{link}</span>
-                  </a>
+                  {/if}
                 {/each}
               </div>
             {:else}
@@ -547,7 +619,7 @@
   }
 
   .book-page-left .page-content {
-    overflow-y: visible;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 2.5rem;
@@ -582,6 +654,65 @@
     font-size: 1.1rem;
     color: #64748b;
     font-weight: 500;
+  }
+
+  .chain-metadata {
+    margin-top: 1.5rem;
+    padding: 1.25rem 0;
+    border-top: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+
+  .metadata-org {
+    font-size: 0.875rem;
+    color: #475569;
+    font-weight: 500;
+  }
+
+  .metadata-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tech-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #475569;
+    white-space: nowrap;
+  }
+
+  .tech-tag.l1 {
+    background: #fef3c7;
+    border-color: #fcd34d;
+    color: #92400e;
+  }
+
+  .tech-tag.l2 {
+    background: #dbeafe;
+    border-color: #60a5fa;
+    color: #1e40af;
+  }
+
+  .tech-tag.evm {
+    background: #e0e7ff;
+    border-color: #a5b4fc;
+    color: #3730a3;
+  }
+
+  .metadata-settlement {
+    font-size: 0.8125rem;
+    color: #64748b;
+    font-style: italic;
   }
 
   .network-status h3,
@@ -838,26 +969,42 @@
 
   .tabs-header {
     display: flex;
-    gap: 0.5rem;
-    border-bottom: 2px solid #e2e8f0;
-    margin-bottom: 3rem;
-    flex-wrap: wrap;
+    gap: 0;
+    border-bottom: 1px solid #e2e8f0;
+    margin-bottom: 2.5rem;
+    position: relative;
   }
 
   .tab-button {
-    padding: 1rem 2rem;
+    padding: 0.875rem 1.25rem;
     background: none;
     border: none;
     font-weight: 500;
-    font-size: 1rem;
+    font-size: 0.9375rem;
     color: #64748b;
     cursor: pointer;
     position: relative;
-    transition: all 0.2s;
-    border-bottom: 2px solid transparent;
-    margin-bottom: -2px;
+    transition: all 0.2s ease;
+    margin-bottom: -1px;
     font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
     letter-spacing: -0.01em;
+    flex: 1;
+    text-align: center;
+    min-width: 0;
+    white-space: nowrap;
+  }
+  
+  .tab-button::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #3b82f6;
+    transform: scaleX(0);
+    transition: transform 0.2s ease;
+    transform-origin: center;
   }
 
   .tab-button:hover {
@@ -866,7 +1013,11 @@
 
   .tab-button.active {
     color: #3b82f6;
-    border-bottom-color: #3b82f6;
+    font-weight: 600;
+  }
+  
+  .tab-button.active::after {
+    transform: scaleX(1);
   }
 
   .tab-content {
@@ -1088,6 +1239,106 @@
     margin-top: 0;
   }
 
+  .subtabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .subtab-button {
+    padding: 0.5rem 1rem;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+  }
+
+  .subtab-button:hover {
+    background: #f1f5f9;
+    color: #475569;
+  }
+
+  .subtab-button.active {
+    background: #3b82f6;
+    color: white;
+    border-color: #3b82f6;
+  }
+
+  .resources-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .resource-section h4.section-title,
+  .wallet-category h4.category-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 1rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+    letter-spacing: -0.01em;
+  }
+
+  .resource-section:first-child h4.section-title {
+    margin-top: 0;
+  }
+
+  .wallets-section {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .wallet-category:first-child h4.category-title {
+    margin-top: 0;
+  }
+
+  .wallets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .wallet-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 0.875rem;
+    background: #fafbfc;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #374151;
+    transition: all 0.2s;
+    font-size: 0.875rem;
+    font-weight: 450;
+  }
+
+  .wallet-item:hover {
+    background: #f1f5f9;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+
+  .wallet-icon {
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  .wallet-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   .no-content {
     text-align: center;
     padding: 3rem;
@@ -1145,6 +1396,10 @@
     .metrics-grid {
       grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     }
+
+    .wallets-grid {
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    }
   }
 
   @media (max-width: 640px) {
@@ -1182,12 +1437,20 @@
     }
 
     .tabs-header {
-      gap: 0.25rem;
+      gap: 0;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    
+    .tabs-header::-webkit-scrollbar {
+      display: none;
     }
 
     .tab-button {
-      padding: 0.5rem 1rem;
-      font-size: 0.875rem;
+      padding: 0.75rem 1rem;
+      font-size: 0.8125rem;
+      flex: 0 0 auto;
     }
   }
 </style>

@@ -22,9 +22,6 @@ docs:
   - https://community.optimism.io/docs/
 blockscanners:
   - https://optimistic.etherscan.io
-wallets:
-  - https://metamask.io
-  - https://walletconnect.com/
 testnets:
   - Sepolia
   - Goerli
@@ -44,17 +41,6 @@ sdks:
 tools:
   - https://getfoundry.sh/
   - https://hardhat.org/
-bookmarks:
-  - Overview
-  - Source
-  - Forums
-  - Docs
-  - Blockscanners
-  - Wallets
-  - Testnets
-  - RPCs
-  - SDKs
-  - Tools
 ---
 
 Optimism is a Layer 2 rollup built on top of Ethereum using the OP Stack, aiming to scale Ethereum by offering cheaper and faster transactions while inheriting its security. It’s EVM-equivalent, so contracts written for Ethereum work out of the box, but the network is still largely centralized—transaction ordering is handled by a single sequencer, and fraud proofs aren’t fully live yet.

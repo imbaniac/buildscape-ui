@@ -22,9 +22,6 @@ docs:
   - https://docs.base.org/
 blockscanners:
   - https://basescan.org
-wallets:
-  - https://metamask.io
-  - https://walletconnect.com/
 testnets:
   - Sepolia
 rpcs:
@@ -43,17 +40,6 @@ sdks:
 tools:
   - https://getfoundry.sh/
   - https://hardhat.org/
-bookmarks:
-  - Overview
-  - Source
-  - Forums
-  - Docs
-  - Blockscanners
-  - Wallets
-  - Testnets
-  - RPCs
-  - SDKs
-  - Tools
 ---
 
 Base is Coinbase’s Layer 2 network built on the OP Stack, offering full EVM compatibility and lower fees by batching transactions off-chain and settling them on Ethereum. It’s designed to be developer-friendly, allowing for easy deployment of Ethereum smart contracts without significant modifications.
