@@ -7,7 +7,8 @@
 | MetaMask        | https://metamask.io              |
 | Rabby Wallet    | https://rabby.io                 |
 | Coinbase Wallet | https://www.coinbase.com/wallet  |
-| BitKeep         | https://bitkeep.com              |
+| Rainbow         | https://rainbow.me               |
+| BitGet          | https://web3.bitget.com/         |
 | Exodus          | https://www.exodus.com           |
 
 ## Mobile Wallets
@@ -20,7 +21,7 @@
 | Rainbow         | https://rainbow.me               |
 | Argent          | https://www.argent.xyz           |
 | imToken         | https://token.im                 |
-| BitKeep         | https://bitkeep.com              |
+| BitGet          | https://web3.bitget.com/         |
 | Safe (ex Gnosis Safe) | https://safe.global        |
 | Exodus          | https://www.exodus.com           |
 

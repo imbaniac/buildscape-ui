@@ -442,7 +442,11 @@
                       <div class="wallets-grid">
                         {#each wallets as wallet}
                           <a href={wallet.url} target="_blank" class="wallet-item">
-                            <span class="wallet-icon">👛</span>
+                            {#if wallet.logo}
+                              <img src={wallet.logo} alt={wallet.name} class="wallet-logo" />
+                            {:else}
+                              <span class="wallet-icon">👛</span>
+                            {/if}
                             <span class="wallet-name">{wallet.name}</span>
                           </a>
                         {/each}
@@ -1331,6 +1335,14 @@
   .wallet-icon {
     font-size: 1rem;
     flex-shrink: 0;
+  }
+
+  .wallet-logo {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    flex-shrink: 0;
+    padding: 2px;
   }
 
   .wallet-name {

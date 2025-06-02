@@ -13,6 +13,7 @@ export interface BookmarkField {
 export interface Wallet {
   name: string;
   url: string;
+  logo?: string;
 }
 
 export type WalletsByCategory = Record<string, Wallet[]>;
