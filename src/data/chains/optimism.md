@@ -12,12 +12,11 @@ technology:
   isEVM: true
   stack: OP Stack
 contractLanguages:
-  primary:
-    name: Solidity
+  - name: Solidity
     url: https://soliditylang.org
-  others:
-    - name: Vyper
-      url: https://vyper.readthedocs.io
+    details: Primary
+  - name: Vyper
+    url: https://vyper.readthedocs.io
 docs:
   - https://community.optimism.io/docs/
 blockscanners:

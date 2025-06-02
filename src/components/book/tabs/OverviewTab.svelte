@@ -16,23 +16,14 @@
   <div>
     <p>This blockchain supports the following smart contract languages:</p>
     <div class="languages-grid">
-      <a
-        href={chainStatic.contractLanguages.primary.url}
-        target="_blank"
-        class="language-card primary"
-      >
-        <span class="language-name"
-          >{chainStatic.contractLanguages.primary.name}</span
-        >
-        <span class="language-badge">Primary</span>
-      </a>
-      {#if chainStatic.contractLanguages.others?.length}
-        {#each chainStatic.contractLanguages.others as lang}
-          <a href={lang.url} target="_blank" class="language-card">
-            <span class="language-name">{lang.name}</span>
-          </a>
-        {/each}
-      {/if}
+      {#each chainStatic.contractLanguages as lang}
+        <a href={lang.url} target="_blank" class="language-card" class:primary={lang.details === 'Primary'}>
+          <span class="language-name">{lang.name}</span>
+          {#if lang.details}
+            <span class="language-details">{lang.details}</span>
+          {/if}
+        </a>
+      {/each}
     </div>
   </div>
 </div>
@@ -163,7 +154,7 @@
     background: #f8fafc;
     border: 1px solid #e2e8f0;
     border-radius: 8px;
-    text-decoration: none;
+    text-decoration: none !important;
     transition: all 0.2s;
   }
 
@@ -188,12 +179,15 @@
     color: #1e293b;
   }
 
-  .language-badge {
+  .language-details {
     font-size: 0.75rem;
     font-weight: 500;
+    color: #6b7280;
+    line-height: 1.2;
+  }
+  
+  .language-card.primary .language-details {
     color: #4338ca;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
   }
 
   @media (max-width: 640px) {

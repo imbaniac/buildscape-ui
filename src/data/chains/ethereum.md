@@ -9,16 +9,15 @@ technology:
   isL2: false
   isEVM: true
 contractLanguages:
-  primary:
-    name: Solidity
+  - name: Solidity
     url: https://soliditylang.org
-  others:
-    - name: Vyper
-      url: https://vyper.readthedocs.io
-    - name: Yul / Yul+
-      url: https://docs.soliditylang.org/en/latest/yul.html
-    - name: Huff
-      url: https://huff.sh/
+    details: Primary
+  - name: Vyper
+    url: https://vyper.readthedocs.io
+  - name: Yul / Yul+
+    url: https://docs.soliditylang.org/en/latest/yul.html
+  - name: Huff
+    url: https://huff.sh/
 docs:
   - https://ethereum.org/en/developers/docs/
 blockscanners:

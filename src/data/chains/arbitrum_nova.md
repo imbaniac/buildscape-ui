@@ -13,16 +13,18 @@ technology:
   isL2: true
   isEVM: true
 contractLanguages:
-  primary:
-    name: Solidity
+  - name: Solidity
     url: https://soliditylang.org
-  others:
-    - name: Vyper
-      url: https://vyper.readthedocs.io
-    - name: Yul / Yul+
-      url: https://docs.soliditylang.org/en/latest/yul.html
-    - name: Huff
-      url: https://huff.sh/
+    details: Primary
+  - name: Rust / C / C++
+    url: https://docs.arbitrum.io/stylus/stylus-content-map
+    details: Compiled to WASM with Stylus
+  - name: Vyper
+    url: https://vyper.readthedocs.io
+  - name: Yul / Yul+
+    url: https://docs.soliditylang.org/en/latest/yul.html
+  - name: Huff
+    url: https://huff.sh/
 docs:
   - https://docs.arbitrum.io/welcome/get-started
 blockscanners:
@@ -62,4 +64,6 @@ Arbitrum Nova is a Layer 2 blockchain built on the AnyTrust protocol, designed f
 
 Unlike Arbitrum One, which is a fully trustless Optimistic Rollup, Nova introduces a mild trust assumption through a Data Availability Committee (DAC). This committee, comprising entities like Google Cloud, QuickNode, and Reddit, ensures off-chain data availability, allowing Nova to post only data availability certificates (DACerts) to Ethereum, thereby reducing costs and increasing efficiency. In cases where the DAC fails, Nova can fall back to posting full data on-chain, maintaining operational integrity.
 
-Both Nova and Arbitrum One utilize the Nitro technology stack, offering EVM compatibility and advanced features like calldata compression. However, developers should note that while Nova provides cost and speed advantages, it does so with a trade-off in decentralization compared to Arbitrum One.
+Both Nova and Arbitrum One utilize the Nitro technology stack, offering EVM compatibility and advanced features like calldata compression. Nova also supports Stylus, a WASM-based smart contract environment that runs alongside the EVM. This allows developers to write contracts in Rust, C, or C++ with near-native performance, while still maintaining full interoperability with Solidity-based contracts.
+
+However, developers should note that while Nova provides cost and speed advantages, it does so with a trade-off in decentralization compared to Arbitrum One.
