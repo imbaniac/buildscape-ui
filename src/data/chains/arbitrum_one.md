@@ -15,6 +15,9 @@ contractLanguages:
   - name: Solidity
     url: https://soliditylang.org
     details: Primary
+  - name: Rust / C / C++
+    url: https://docs.arbitrum.io/stylus/stylus-content-map
+    details: Compiled to WASM with Stylus
   - name: Vyper
     url: https://vyper.readthedocs.io
   - name: Yul / Yul+

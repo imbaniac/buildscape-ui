@@ -17,6 +17,10 @@ contractLanguages:
     details: Primary
   - name: Vyper
     url: https://vyper.readthedocs.io
+  - name: Yul / Yul+
+    url: https://docs.soliditylang.org/en/latest/yul.html
+  - name: Huff
+    url: https://huff.sh/
 docs:
   - https://docs.base.org/
 blockscanners:

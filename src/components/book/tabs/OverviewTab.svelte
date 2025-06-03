@@ -144,6 +144,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1rem;
+    padding: 0.25rem;
   }
 
   .language-card {
@@ -160,17 +161,21 @@
 
   .language-card:hover {
     background: #f1f5f9;
+    border-color: #cbd5e1;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   }
 
   .language-card.primary {
-    border-color: #4338ca;
     background: #f5f3ff;
+    border: 1px solid #4338ca;
   }
 
   .language-card.primary:hover {
     background: #ede9fe;
+    border: 1px solid #4338ca;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   }
 
   .language-name {

@@ -97,6 +97,8 @@
   .tab-content {
     flex: 1;
     overflow-y: auto;
+    overflow-x: visible;
+    padding-left: 4px;
     padding-right: 2rem;
   }
 

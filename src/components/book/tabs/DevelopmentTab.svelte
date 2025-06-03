@@ -39,6 +39,15 @@
   {:else if activeField.field === 'testnets'}
     <TestnetsSection testnets={chainStatic.testnets || []} />
   {:else if activeField.field === 'sdks' || activeField.field === 'tools'}
+    {#if activeField.field === 'sdks'}
+      <blockquote class="section-quote">
+        <p>Language-specific libraries for interacting with the blockchain - smart contract deployment, transaction signing, and RPC calls.</p>
+      </blockquote>
+    {:else if activeField.field === 'tools'}
+      <blockquote class="section-quote">
+        <p>Development environments, testing frameworks, and infrastructure services for building and deploying dApps.</p>
+      </blockquote>
+    {/if}
     <DevResourcesSection 
       resources={chainStatic[activeField.field] || []} 
       resourceType={activeField.field} 
@@ -82,5 +91,34 @@
     background: #3b82f6;
     color: white;
     border-color: #3b82f6;
+  }
+
+  .section-quote {
+    position: relative;
+    margin: 0 0 1.5rem 0;
+    padding: 0.75rem 1.25rem 0.75rem 2.5rem;
+    background: #fefefe;
+    border-left: 3px solid #d4a574;
+    font-style: italic;
+  }
+
+  .section-quote::before {
+    content: '"';
+    position: absolute;
+    top: 0.125rem;
+    left: 0.75rem;
+    font-size: 2rem;
+    font-family: Georgia, 'Times New Roman', serif;
+    color: #d4a574;
+    opacity: 0.3;
+  }
+
+  .section-quote p {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: #64748b;
+    line-height: 1.4;
+    font-family: Georgia, 'Times New Roman', serif;
+    letter-spacing: 0.01em;
   }
 </style>
