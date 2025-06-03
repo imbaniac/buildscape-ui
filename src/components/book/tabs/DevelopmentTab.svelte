@@ -121,4 +121,39 @@
     font-family: Georgia, 'Times New Roman', serif;
     letter-spacing: 0.01em;
   }
+
+  @media (max-width: 640px) {
+    .subtabs {
+      gap: 0.375rem;
+      margin-bottom: 1.5rem;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .subtabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .subtab-button {
+      padding: 0.375rem 0.75rem;
+      font-size: 0.75rem;
+      white-space: nowrap;
+      flex: 0 0 auto;
+    }
+
+    .section-quote {
+      padding: 0.625rem 1rem 0.625rem 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .section-quote::before {
+      font-size: 1.5rem;
+      left: 0.5rem;
+    }
+
+    .section-quote p {
+      font-size: 0.75rem;
+    }
+  }
 </style>

@@ -1,5 +1,6 @@
 <script lang="ts">
   import CloseButton from "./ui/CloseButton.svelte";
+  import { onMount } from "svelte";
 
   interface Props {
     onClose: () => void;
@@ -8,16 +9,76 @@
   }
 
   let { onClose, leftPage, rightPage }: Props = $props();
+  
+  // Mobile page state
+  let showRightPage = $state(false);
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let isMobile = $state(false);
+
+  onMount(() => {
+    isMobile = window.innerWidth <= 768;
+    
+    const handleResize = () => {
+      isMobile = window.innerWidth <= 768;
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  });
+
+  // Handle swipe gestures on mobile
+  function handleTouchStart(e: TouchEvent) {
+    if (!isMobile) return;
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }
+
+  function handleTouchEnd(e: TouchEvent) {
+    if (!isMobile) return;
+    const touchEndX = e.changedTouches[0].clientX;
+    const touchEndY = e.changedTouches[0].clientY;
+    
+    const deltaX = touchEndX - touchStartX;
+    const deltaY = Math.abs(touchEndY - touchStartY);
+    
+    // Only process horizontal swipes
+    if (Math.abs(deltaX) > 50 && deltaY < 100) {
+      if (deltaX > 0 && showRightPage) {
+        // Swipe right - go to left page
+        showRightPage = false;
+      } else if (deltaX < 0 && !showRightPage) {
+        // Swipe left - go to right page
+        showRightPage = true;
+      }
+    }
+  }
 </script>
 
-<div class="book-fullscreen">
+<div class="book-fullscreen" ontouchstart={handleTouchStart} ontouchend={handleTouchEnd}>
   <div class="book-header">
     <CloseButton onclick={onClose} />
+    {#if isMobile}
+      <div class="mobile-page-indicator">
+        <button 
+          class="page-dot" 
+          class:active={!showRightPage}
+          onclick={() => showRightPage = false}
+          aria-label="Show info page"
+        ></button>
+        <button 
+          class="page-dot" 
+          class:active={showRightPage}
+          onclick={() => showRightPage = true}
+          aria-label="Show details page"
+        ></button>
+      </div>
+    {/if}
   </div>
 
   <div class="book-spread">
     <!-- Left Page -->
-    <div class="book-page-wrapper book-page-wrapper-left">
+    <div class="book-page-wrapper book-page-wrapper-left" class:mobile-hidden={isMobile && showRightPage}>
       <div class="book-page book-page-left">
         {#if leftPage}
           {@render leftPage()}
@@ -29,7 +90,7 @@
     <div class="book-spine-effect"></div>
 
     <!-- Right Page -->
-    <div class="book-page-wrapper book-page-wrapper-right">
+    <div class="book-page-wrapper book-page-wrapper-right" class:mobile-hidden={isMobile && !showRightPage}>
       <div class="book-page book-page-right">
         {#if rightPage}
           {@render rightPage()}
@@ -292,9 +353,116 @@
     }
   }
 
+  @media (max-width: 768px) {
+    .book-fullscreen {
+      background: white;
+    }
+
+    .book-header {
+      height: 50px;
+      padding: 0 1rem;
+      background: white;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .book-spread {
+      flex-direction: column;
+      padding: 0;
+      height: 100vh;
+      top: 0;
+      transform: none;
+      left: 0;
+      gap: 0;
+      width: 100%;
+      max-width: none;
+    }
+
+    /* Hide all book decoration effects */
+    .book-spread::before,
+    .book-spine-effect,
+    .book-page-wrapper::before,
+    .book-page-wrapper::after {
+      display: none;
+    }
+
+    /* Single page view - only show one at a time */
+    .book-page-wrapper {
+      width: 100vw;
+      height: calc(100vh - 50px);
+      max-width: none;
+      max-height: none;
+      margin: 0 !important;
+      position: absolute;
+      top: 50px;
+      left: 0;
+    }
+
+    .book-page-wrapper {
+      display: none;
+    }
+
+    .book-page-wrapper-left:not(.mobile-hidden) {
+      display: block;
+    }
+
+    .book-page-wrapper-right:not(.mobile-hidden) {
+      display: block;
+    }
+
+    .book-page {
+      border-radius: 0;
+      box-shadow: none;
+      background: white;
+      height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .book-page-left,
+    .book-page-right {
+      border-radius: 0;
+      background: white;
+    }
+  }
+
   @media (max-width: 640px) {
     .book-spread {
       padding: 60px 10px 10px;
     }
+  }
+
+  /* Mobile page indicator */
+  .mobile-page-indicator {
+    display: flex;
+    gap: 10px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .page-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #cbd5e1;
+    border: none;
+    padding: 0;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+
+  .page-dot:hover {
+    background: #94a3b8;
+  }
+
+  .page-dot.active {
+    background: #3b82f6;
+    width: 24px;
+    border-radius: 5px;
+  }
+
+  .mobile-hidden {
+    display: none !important;
   }
 </style>

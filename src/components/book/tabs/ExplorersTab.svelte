@@ -413,17 +413,61 @@
   
   /* Responsive */
   @media (max-width: 640px) {
+    .explorers-modern {
+      gap: 1.5rem;
+    }
+
+    .explorer-section {
+      gap: 0.5rem;
+    }
+
+    .section-title {
+      font-size: 0.875rem;
+    }
+
+    .section-icon {
+      font-size: 0.875rem;
+    }
+
+    .explorer-cards {
+      gap: 0.375rem;
+    }
+
     .explorer-card {
-      padding: 0.875rem;
+      padding: 0.75rem;
+      gap: 0.75rem;
     }
     
     .explorer-logo {
-      width: 2.25rem;
-      height: 2.25rem;
-      font-size: 0.75rem;
+      width: 2rem;
+      height: 2rem;
+      font-size: 0.625rem;
+      border-radius: 6px;
     }
     
     .explorer-name {
+      font-size: 0.8125rem;
+    }
+
+    .explorer-url {
+      font-size: 0.6875rem;
+    }
+
+    .explorer-arrow {
+      width: 14px;
+      height: 14px;
+    }
+
+    .empty-state {
+      padding: 3rem 1.5rem;
+    }
+
+    .empty-state svg {
+      width: 40px;
+      height: 40px;
+    }
+
+    .empty-state p {
       font-size: 0.875rem;
     }
   }

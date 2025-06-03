@@ -130,4 +130,47 @@
       grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     }
   }
+
+  @media (max-width: 640px) {
+    .metrics-section {
+      margin-bottom: 0.5rem;
+    }
+
+    .metrics-section h3 {
+      font-size: 0.75rem;
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .metrics-tabs {
+      gap: 0.375rem;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    .metric-tab {
+      padding: 0.375rem 0.875rem;
+      font-size: 0.75rem;
+      border-radius: 6px;
+      flex: 1;
+      max-width: 80px;
+    }
+
+    .metrics-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.625rem;
+    }
+
+    .metrics-loading {
+      padding: 2rem;
+      font-size: 0.875rem;
+    }
+
+    .no-metrics {
+      padding: 2rem;
+      font-size: 0.875rem;
+    }
+  }
 </style>

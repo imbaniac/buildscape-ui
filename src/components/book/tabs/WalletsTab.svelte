@@ -101,4 +101,34 @@
       grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     }
   }
+
+  @media (max-width: 640px) {
+    .wallets-section {
+      gap: 1.5rem;
+    }
+
+    .wallet-category h4.category-title {
+      font-size: 0.875rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .wallets-grid {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+
+    .wallet-item {
+      padding: 0.75rem;
+      font-size: 0.8125rem;
+    }
+
+    .wallet-logo {
+      width: 20px;
+      height: 20px;
+    }
+
+    .wallet-icon {
+      font-size: 0.875rem;
+    }
+  }
 </style>

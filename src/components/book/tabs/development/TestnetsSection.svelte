@@ -172,7 +172,7 @@
       {/if}
       
       <!-- Faucets Section -->
-      {#if testnetInfo.faucets?.length > 0}
+      {#if testnetInfo.faucets && testnetInfo.faucets.length > 0}
         <div class="testnet-section">
           <h5 class="section-label">
             <span class="section-icon">💧</span>
@@ -201,7 +201,7 @@
       {/if}
       
       <!-- RPCs Section -->
-      {#if testnetInfo.rpcs?.length > 0}
+      {#if testnetInfo.rpcs && testnetInfo.rpcs.length > 0}
         <div class="testnet-section">
           <h5 class="section-label">
             <span class="section-icon">🔗</span>
@@ -559,5 +559,99 @@
   
   .rpc-copy-btn svg {
     transition: color 0.15s ease;
+  }
+
+  @media (max-width: 640px) {
+    .testnets-modern {
+      gap: 1rem;
+    }
+
+    .testnet-card {
+      padding: 1rem;
+    }
+
+    .testnet-header {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.75rem;
+    }
+
+    .testnet-name {
+      font-size: 1rem;
+    }
+
+    .testnet-chainid {
+      font-size: 0.75rem;
+    }
+
+    .testnet-actions {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.5rem;
+    }
+
+    .explorer-btn,
+    .wallet-btn {
+      justify-content: center;
+      padding: 0.625rem 0.875rem;
+      font-size: 0.8125rem;
+    }
+
+    .explorer-icon,
+    .wallet-icon {
+      width: 14px;
+      height: 14px;
+    }
+
+    .testnet-desc {
+      font-size: 0.8125rem;
+      margin-bottom: 1rem;
+    }
+
+    .testnet-section {
+      margin-top: 1rem;
+    }
+
+    .section-label {
+      font-size: 0.875rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-icon {
+      font-size: 0.875rem;
+    }
+
+    .faucet-pills {
+      gap: 0.5rem;
+    }
+
+    .faucet-pill {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.625rem;
+    }
+
+    .more-btn {
+      font-size: 0.75rem;
+      padding: 0.375rem 0.75rem;
+    }
+
+    .testnet-rpc-card {
+      padding: 0.5rem 0.75rem;
+      gap: 0.5rem;
+    }
+
+    .testnet-rpc-url {
+      font-size: 0.6875rem;
+    }
+
+    .rpc-copy-btn {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+
+    .rpc-copy-btn svg {
+      width: 12px;
+      height: 12px;
+    }
   }
 </style>

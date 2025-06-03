@@ -136,12 +136,38 @@
   
   /* Responsive */
   @media (max-width: 640px) {
+    .resources-modern {
+      gap: 1.5rem;
+    }
+
+    .resource-section {
+      gap: 0.5rem;
+    }
+
+    .section-title {
+      font-size: 0.875rem;
+    }
+
+    .section-icon {
+      font-size: 0.875rem;
+    }
+
+    .resource-list {
+      gap: 0.375rem;
+    }
+
     .resource-item {
-      padding: 0.625rem 0.875rem;
+      padding: 0.75rem;
+      gap: 0.75rem;
     }
     
     .resource-name {
       font-size: 0.8125rem;
+    }
+
+    .resource-arrow {
+      width: 12px;
+      height: 12px;
     }
   }
 </style>

@@ -55,4 +55,28 @@
   .with-tooltip {
     cursor: help;
   }
+
+  @media (max-width: 640px) {
+    .metric-card {
+      padding: 1rem 0.75rem;
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+      min-height: 80px;
+    }
+
+    .metric-label {
+      font-size: 0.6875rem;
+      letter-spacing: 0.25px;
+      text-align: center;
+      width: 100%;
+    }
+
+    .metric-value {
+      font-size: 1.25rem;
+      font-weight: 700;
+      text-align: center;
+      width: 100%;
+    }
+  }
 </style>

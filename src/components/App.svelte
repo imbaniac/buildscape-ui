@@ -2,14 +2,17 @@
   import { onMount } from "svelte";
   import Island from "./Island.svelte";
   import YAML from "yaml";
-  import { goto } from '$app/navigation';
+  import { goto } from "$app/navigation";
 
   const initialViewBox = { x: -5000, y: -5000, width: 10000, height: 10000 };
   let svg = $state<SVGSVGElement>();
   let svgContainer = $state<HTMLDivElement>();
   let isPanning = $state(false);
   let startPoint = $state({ x: 0, y: 0 });
+
+  // Start with a scale that works for both, adjust on mount
   let scale = $state(1.5);
+  let isMobileViewport = false;
   let translateX = $state(0);
   let translateY = $state(0);
   let panStartTranslate = { x: 0, y: 0 };
@@ -32,7 +35,9 @@
   // Edit mode state
   let editMode = $state(false);
   let islandPositions = $state<Record<string, { x: number; y: number }>>(
-    savedPositions && Object.keys(savedPositions).length > 0 ? savedPositions : {}
+    savedPositions && Object.keys(savedPositions).length > 0
+      ? savedPositions
+      : {}
   );
   let isDraggingIsland = $state(false);
   let draggedIsland = $state<string | null>(null);
@@ -349,7 +354,8 @@
             ? 1 + Math.min(totalStep, 0.05)
             : 1 + Math.max(totalStep, -0.05);
 
-        const newScale = Math.max(0.3, Math.min(5, scale * zoomFactor));
+        const minScale = isMobileViewport ? 1.0 : 0.3;
+        const newScale = Math.max(minScale, Math.min(5, scale * zoomFactor));
 
         if (zoomTarget && newScale !== scale) {
           // Calculate the content point under the zoom target
@@ -444,7 +450,7 @@
       }
     }
 
-    goto('/chain/' + chainName);
+    goto("/chain/" + chainName);
   }
 
   onMount(() => {
@@ -601,7 +607,8 @@
     width: 100%;
     height: 100%;
     will-change: transform; /* Hint for hardware acceleration */
-    transition: none; /* Disable any default transitions for smooth panning */
+    transition: none !important; /* Disable any default transitions for smooth panning */
+    transform-origin: center center;
   }
 
   .controls {
@@ -680,5 +687,12 @@
     gap: 10px;
     margin-top: 15px;
     justify-content: flex-end;
+  }
+
+  /* Hide controls on mobile */
+  @media (max-width: 768px) {
+    .controls {
+      display: none;
+    }
   }
 </style>

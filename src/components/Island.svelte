@@ -1,4 +1,5 @@
 <script lang="ts">
+
   interface Props {
     name: any;
     color: any;
@@ -27,11 +28,11 @@
     ...restProps
   }: Props = $props();
 
-  // Dynamic label sizing based on content
-  const logoSize = 120; // Larger logo size
-  const gap = 40; // Slightly larger gap
-  const charWidth = 48; // Larger character width for font-size 84
-  const padding = 200; // Padding on both sides
+  // Dynamic label sizing based on content - use desktop sizes for all devices
+  const logoSize = 120;
+  const gap = 40;
+  const charWidth = 48;
+  const padding = 200;
   let textWidth = String(name).length * charWidth;
   let contentWidth = logoSize + gap + textWidth;
   let labelWidth = contentWidth + padding; // Dynamic width

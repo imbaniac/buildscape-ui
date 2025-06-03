@@ -44,4 +44,16 @@
     transform: scale(1.1);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
+
+  @media (max-width: 640px) {
+    .close-button {
+      width: 36px;
+      height: 36px;
+    }
+
+    .close-button svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
 </style>

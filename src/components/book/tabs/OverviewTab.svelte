@@ -36,6 +36,7 @@
     max-width: 70ch;
     font-weight: 400;
     letter-spacing: -0.011em;
+    overflow-wrap: break-word;
   }
 
   .prose :global(h1) {
@@ -197,7 +198,33 @@
 
   @media (max-width: 640px) {
     .prose {
-      font-size: 0.9375rem;
+      font-size: 0.875rem;
+      line-height: 1.6;
+    }
+
+    .prose :global(h2) {
+      font-size: 1.25rem;
+    }
+
+    .prose :global(h3) {
+      font-size: 1.125rem;
+    }
+
+    .languages-grid {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+
+    .language-card {
+      padding: 1rem;
+    }
+
+    .language-name {
+      font-size: 0.875rem;
+    }
+
+    .language-details {
+      font-size: 0.6875rem;
     }
   }
 </style>

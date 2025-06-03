@@ -122,6 +122,7 @@
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
   }
 
@@ -216,5 +217,47 @@
     font-size: 0.9375rem;
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+  }
+
+  @media (max-width: 640px) {
+    .dev-resources {
+      gap: 0.375rem;
+    }
+
+    .resource-content {
+      padding: 0.75rem;
+      gap: 0.5rem;
+    }
+
+    .resource-name {
+      font-size: 0.8125rem;
+    }
+
+    .resource-desc {
+      font-size: 0.6875rem;
+    }
+
+    .resource-type {
+      font-size: 0.625rem;
+      padding: 0.125rem 0.375rem;
+    }
+
+    .resource-arrow {
+      width: 12px;
+      height: 12px;
+    }
+
+    .empty-state {
+      padding: 3rem 1.5rem;
+    }
+
+    .empty-state svg {
+      width: 40px;
+      height: 40px;
+    }
+
+    .empty-state p {
+      font-size: 0.875rem;
+    }
   }
 </style>

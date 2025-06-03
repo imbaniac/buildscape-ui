@@ -77,6 +77,7 @@
   .page-content {
     padding: 4rem;
     height: 100%;
+    overflow-x: hidden;
     font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   }
 
@@ -117,14 +118,18 @@
 
   @media (max-width: 640px) {
     .page-content {
-      padding: 2rem;
+      padding: 1rem;
+      height: calc(100vh - 50px);
     }
 
     .tab-content {
-      padding-right: 0.5rem;
+      padding-left: 0;
+      padding-right: 0;
+      overflow-x: hidden;
     }
 
     .tabs-header {
+      margin-bottom: 1.5rem;
       gap: 0;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
@@ -136,9 +141,10 @@
     }
 
     .tabs-header :global(.tab-button) {
-      padding: 0.75rem 1rem;
-      font-size: 0.8125rem;
+      padding: 0.625rem 0.875rem;
+      font-size: 0.75rem;
       flex: 0 0 auto;
+      white-space: nowrap;
     }
   }
 </style>

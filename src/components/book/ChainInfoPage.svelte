@@ -195,6 +195,7 @@
     padding-right: 3.5rem;
     height: 100%;
     overflow-y: auto;
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -445,37 +446,48 @@
 
   @media (max-width: 640px) {
     .page-content {
-      padding: 1.5rem;
-      padding-right: 2rem;
+      padding: 1.25rem 1rem;
+      gap: 0.75rem;
+      overflow-x: hidden;
+      height: calc(100vh - 50px);
+    }
+
+    .chain-header {
+      margin-bottom: 0.5rem;
     }
 
     .chain-subtitle {
       flex-direction: column;
-      gap: 0.625rem;
+      gap: 0.5rem;
+      font-size: 0.8125rem;
     }
 
     .add-wallet-btn {
-      padding: 0.375rem 0.625rem;
-      font-size: 0.6875rem;
+      padding: 0.625rem 1rem;
+      font-size: 0.875rem;
+      width: 100%;
+      max-width: 200px;
     }
 
     .add-wallet-btn svg {
-      width: 12px;
-      height: 12px;
+      width: 14px;
+      height: 14px;
     }
 
     .chain-logo {
       width: 60px;
       height: 60px;
+      margin-bottom: 0.75rem;
     }
 
     .chain-title {
       font-size: 1.75rem;
+      margin-bottom: 0.375rem;
     }
 
     .author-attribution {
-      margin: 1rem 0;
-      padding: 0 0.5rem;
+      margin: 0.75rem 0;
+      padding: 0 1rem;
     }
 
     .author-text {
@@ -483,7 +495,9 @@
     }
 
     .tech-stamps {
-      gap: 0.5rem;
+      gap: 0.375rem;
+      justify-content: center;
+      margin-bottom: 0.75rem;
     }
 
     .tech-stamp {
@@ -492,6 +506,7 @@
 
     .stamp-label {
       font-size: 0.5rem;
+      margin-bottom: 0.125rem;
     }
 
     .stamp-value {

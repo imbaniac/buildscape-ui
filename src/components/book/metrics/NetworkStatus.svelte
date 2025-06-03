@@ -109,4 +109,51 @@
       grid-template-columns: repeat(2, 1fr);
     }
   }
+
+  @media (max-width: 640px) {
+    .network-status {
+      margin-bottom: 1.25rem;
+    }
+
+    .network-status h3 {
+      font-size: 0.75rem;
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .status-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.625rem;
+    }
+
+    .status-item {
+      padding: 1rem 0.75rem;
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+      min-height: 80px;
+    }
+
+    .status-label {
+      font-size: 0.6875rem;
+      letter-spacing: 0.25px;
+      justify-content: center;
+      text-align: center;
+      width: 100%;
+    }
+
+    .status-value {
+      font-size: 1.25rem;
+      font-weight: 700;
+      text-align: center;
+      width: 100%;
+    }
+
+    .info-icon {
+      width: 12px;
+      height: 12px;
+      font-size: 9px;
+    }
+  }
 </style>
