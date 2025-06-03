@@ -20,25 +20,131 @@ contractLanguages:
 docs:
   - https://docs.base.org/
 blockscanners:
-  - https://basescan.org
+  - name: Basescan
+    url: https://basescan.org
 testnets:
-  - Sepolia
+  - name: Base Sepolia
+    chainId: 84532
+    url: https://base-sepolia.blockscout.com
+    description: Base's Sepolia testnet for deploying and testing applications on the Base Layer 2 network.
+    faucets:
+      - https://www.alchemy.com/faucets/base-sepolia
+      - https://faucets.chain.link/base-sepolia
+      - https://faucet.quicknode.com/base/sepolia
+      - https://learnweb3.io/faucets/base_sepolia/
+      - https://faucet.omni.network/base-sepolia
+      - https://tokentool.bitbond.com/faucet/base-sepolia
+      - https://getblock.io/faucet/base-sepolia/
+      - https://www.l2faucet.com/base
+    rpcs:
+      - https://sepolia.base.org
+      - https://base-sepolia.drpc.org
 rpcs:
-  public:
-    - https://mainnet.base.org
-  private:
-    - https://base-mainnet.infura.io/v3/YOUR-PROJECT-ID
+  - name: Base
+    url: https://mainnet.base.org
+    type: official
+  - name: Alchemy
+    url: https://www.alchemy.com/
+    type: private
+  - name: Infura
+    url: https://www.infura.io/
+    type: private
+  - name: QuickNode
+    url: https://www.quicknode.com/
+    type: private
+  - name: Ankr
+    url: https://rpc.ankr.com/base
+    type: public
+  - name: GetBlock
+    url: https://getblock.io/
+    type: private
+  - name: Chainstack
+    url: https://chainstack.com/
+    type: private
+  - name: dRPC
+    url: https://base.drpc.org
+    type: public
+  - name: Blast
+    url: https://base-mainnet.public.blastapi.io
+    type: public
+  - name: BlockPI
+    url: https://base.blockpi.network/v1/rpc/public
+    type: public
+  - name: Allnodes
+    url: https://base.publicnode.com
+    type: public
+  - name: Tenderly
+    url: https://tenderly.co/
+    type: private
+  - name: OnFinality
+    url: https://base.api.onfinality.io/public
+    type: public
+  - name: OMNIA
+    url: https://endpoints.omniatech.io/v1/base/mainnet/public
+    type: public
+  - name: SubQuery Network
+    url: https://base.rpc.subquery.network/public
+    type: public
+  - name: LlamaNodes
+    url: https://base.llamarpc.com
+    type: public
+  - name: LeoRPC
+    url: https://base.leorpc.com/?api_key=FREE
+    type: public
+  - name: Nodies
+    url: https://nodies.app/
+    type: private
+  - name: Polkachu
+    url: https://base-rpc.polkachu.com
+    type: public
+  - name: PublicNode
+    url: https://base.publicnode.com
+    type: public
+  - name: 1RPC
+    url: https://1rpc.io/base
+    type: public
+  - name: Lava Network
+    url: https://g.w.lavanet.xyz:443/gateway/base/rpc-http/f7ee0000000000000000000000000000
+    type: public
+  - name: Unifra
+    url: https://arb-mainnet-public.unifra.io
+    type: public
+  - name: BlockEden
+    url: https://api.blockeden.xyz/base/67nCBdZQSH9z3YqDDjdm
+    type: public
+  - name: ENVIO
+    url: https://base.rpc.hypersync.xyz/
+    type: public
+  - name: thirdweb
+    url: https://base.rpc.thirdweb.com/
+    type: public
+  - name: Croswap
+    url: https://base.croswap.com/rpc
+    type: public
 sourceCode:
   - https://github.com/base-org
 forums:
   - https://forum.base.org/
   - https://community.base.org/
 sdks:
-  - https://docs.base.org/developers/sdk
-  - https://docs.ethers.org/
+  - name: Base SDK
+    url: https://docs.base.org/developers/sdk
+    source: official
+    type: JS/TS
+    description: Official SDK for building on Base, including utilities for interacting with Base-specific features.
 tools:
-  - https://getfoundry.sh/
-  - https://hardhat.org/
+  - name: QuickNode SDK
+    url: https://www.quicknode.com/docs/base
+    type: free-tier
+    description: Developer toolkit with APIs, analytics, and dashboards for building apps on Base.
+  - name: Alchemy SDK
+    url: https://www.alchemy.com/base
+    type: free-tier
+    description: SDK and developer portal for RPC access, enhanced APIs, contract tracing, and debugging tools for Base.
+  - name: NodeReal SDK
+    url: https://nodereal.io/
+    type: free-tier
+    description: Full-stack development platform with RPCs, APIs, and contract analytics for scaling on Base.
 ---
 
 Base is Coinbase’s Layer 2 network built on the OP Stack, offering full EVM compatibility and lower fees by batching transactions off-chain and settling them on Ethereum. It’s designed to be developer-friendly, allowing for easy deployment of Ethereum smart contracts without significant modifications.

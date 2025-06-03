@@ -25,16 +25,16 @@ tabs:
     id: development
     fields:
       - field: rpcs
-        label: RPC Endpoints
+        label: RPC
         icon: 🌐
       - field: testnets
-        label: Test Networks
+        label: Testnets
         icon: 🧪
       - field: sdks
         label: SDKs & Libraries
         icon: 🛠️
       - field: tools
-        label: Developer Tools
+        label: Tools
         icon: ⚡
   - name: Wallets
     id: wallets

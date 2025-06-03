@@ -19,25 +19,101 @@ contractLanguages:
 docs:
   - https://era.zksync.io/docs/
 blockscanners:
-  - https://explorer.zksync.io
+  - name: zkSync Explorer
+    url: https://explorer.zksync.io
 testnets:
-  - ZKsync Testnet
+  - name: zkSync Sepolia
+    chainId: 300
+    url: https://sepolia.explorer.zksync.io
+    description: Primary testnet for zkSync Era, used for deploying and testing applications on the zkSync Layer 2 network.
+    faucets:
+      - https://www.alchemy.com/faucets/zksync-sepolia
+      - https://faucets.chain.link/zksync-sepolia
+      - https://faucet.quicknode.com/zksync/sepolia
+      - https://learnweb3.io/faucets/zksync_sepolia/
+      - https://faucet.chainstack.com/zksync-testnet-faucet
+      - https://getblock.io/faucet/zksync-sepolia/
+      - https://faucet.circle.com/
+      - https://formo.so/faucets
+    rpcs:
+      - https://sepolia.era.zksync.dev
+      - https://rpc.ankr.com/zksync_era_sepolia
 rpcs:
-  public:
-    - https://mainnet.era.zksync.io
-  private:
-    - https://zksync-mainnet.infura.io/v3/YOUR-PROJECT-ID
+  - name: zkSync Era
+    url: https://mainnet.era.zksync.io
+    type: official
+  - name: Alchemy
+    url: https://www.alchemy.com/
+    type: private
+  - name: Ankr
+    url: https://rpc.ankr.com/zksync_era
+    type: public
+  - name: Blast
+    url: https://zksync-mainnet.public.blastapi.io
+    type: public
+  - name: BlockPI
+    url: https://zksync-era.blockpi.network/v1/rpc/public
+    type: public
+  - name: Chainstack
+    url: https://chainstack.com/
+    type: private
+  - name: Chainbase
+    url: https://chainbase.online/
+    type: private
+  - name: dRPC
+    url: https://zksync.drpc.org
+    type: public
+  - name: GetBlock
+    url: https://getblock.io/
+    type: private
+  - name: Infura
+    url: https://www.infura.io/
+    type: private
+  - name: NOWNodes
+    url: https://nownodes.io/
+    type: private
+  - name: QuickNode
+    url: https://www.quicknode.com/
+    type: private
+  - name: Unifra
+    url: https://unifra.io/
+    type: private
+  - name: 1RPC
+    url: https://1rpc.io/zksync2-era
+    type: public
+  - name: LeoRPC
+    url: https://zksync.leorpc.com/?api_key=FREE
+    type: public
+  - name: LlamaNodes
+    url: https://zksync.llamarpc.com
+    type: public
+  - name: PublicNode
+    url: https://zksync.publicnode.com
+    type: public
+  - name: Polkachu
+    url: https://zksync-rpc.polkachu.com
+    type: public
+  - name: ENVIO
+    url: https://zksync.rpc.hypersync.xyz/
+    type: public
+  - name: thirdweb
+    url: https://zksync.rpc.thirdweb.com/
+    type: public
+  - name: Croswap
+    url: https://zksync.croswap.com/rpc
+    type: public
 sourceCode:
   - https://github.com/matter-labs/zksync-era
 forums:
   - https://community.zksync.io/
   - https://forum.zksync.io/
 sdks:
-  - https://era.zksync.io/docs/api/sdk.html
-  - https://docs.ethers.org/
-tools:
-  - https://getfoundry.sh/
-  - https://hardhat.org/
+  - name: zkSync SDK
+    url: https://era.zksync.io/docs/api/sdk.html
+    source: official
+    type: JS/TS
+    description: Official SDK for zkSync Era with support for native account abstraction and paymaster features.
+# Additional SDKs and tools are inherited from evm-common.md
 ---
 
 zkSync Era is a Layer 2 zk-rollup that offers EVM compatibility with a few caveats. It uses validity proofs to batch transactions off-chain and post succinct proofs to Ethereum, providing strong security guarantees.
