@@ -9,26 +9,50 @@
   let { chainStatic, bookmarks }: Props = $props();
   
   const resourcesTab = $derived(bookmarks.find((g: BookmarkTab) => g.id === 'resources'));
+  
+  // Get display name from URL or use provided name
+  function getDisplayName(link: any): string {
+    if (typeof link === 'string') {
+      try {
+        const url = new URL(link);
+        const domain = url.hostname.replace('www.', '');
+        return domain;
+      } catch {
+        return link;
+      }
+    }
+    return link.name || link.url;
+  }
+  
+  // Get URL from link
+  function getUrl(link: any): string {
+    return typeof link === 'string' ? link : link.url;
+  }
 </script>
 
-<div class="resources-sections">
+<div class="resources-modern">
   {#each resourcesTab?.fields || [] as field}
     {#if chainStatic[field.field]?.length > 0}
       <div class="resource-section">
-        <h4 class="section-title">{field.label}</h4>
-        <div class="links-list">
+        <h4 class="section-title">
+          <span class="section-icon">{field.icon}</span>
+          {field.label}
+        </h4>
+        <div class="resource-list">
           {#each chainStatic[field.field] || [] as link}
-            {#if typeof link === 'string'}
-              <a href={link} target="_blank" class="link-item">
-                <span class="link-icon">{field.icon}</span>
-                <span>{link}</span>
-              </a>
-            {:else}
-              <a href={link.url} target="_blank" class="link-item">
-                <span class="link-icon">{field.icon}</span>
-                <span>{link.name}</span>
-              </a>
-            {/if}
+            {@const url = getUrl(link)}
+            {@const name = getDisplayName(link)}
+            <a 
+              href={url} 
+              target="_blank" 
+              class="resource-item"
+            >
+              <span class="resource-name">{name}</span>
+              <svg class="resource-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M7 17L17 7"/>
+                <path d="M7 7h10v10"/>
+              </svg>
+            </a>
           {/each}
         </div>
       </div>
@@ -37,55 +61,87 @@
 </div>
 
 <style>
-  .resources-sections {
+  /* Modern Resources Design */
+  .resources-modern {
     display: flex;
     flex-direction: column;
-    gap: 2.5rem;
+    gap: 2rem;
   }
-
-  .resource-section h4.section-title {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #374151;
-    margin-bottom: 1rem;
-    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
-    letter-spacing: -0.01em;
-  }
-
-  .resource-section:first-child h4.section-title {
-    margin-top: 0;
-  }
-
-  .links-list {
+  
+  .resource-section {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.75rem;
   }
-
-  .link-item {
+  
+  .section-title {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    padding: 1rem 1.25rem;
-    background: #fafbfc;
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
-    text-decoration: none;
-    color: #374151;
-    transition: all 0.2s;
+    gap: 0.5rem;
     font-size: 0.9375rem;
-    line-height: 1.5;
-    font-weight: 450;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
   }
-
-  a.link-item:hover {
-    background: #f1f5f9;
-    transform: translateX(4px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  
+  .section-icon {
+    font-size: 1rem;
   }
-
-  .link-icon {
-    font-size: 1.25rem;
+  
+  /* Resource List */
+  .resource-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .resource-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.15s ease;
+  }
+  
+  .resource-item:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    transform: translateX(2px);
+  }
+  
+  .resource-name {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #1e293b;
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+  }
+  
+  .resource-arrow {
+    color: #cbd5e1;
+    transition: all 0.15s ease;
     flex-shrink: 0;
+  }
+  
+  .resource-item:hover .resource-arrow {
+    color: #64748b;
+    transform: translate(1px, -1px);
+  }
+  
+  /* Responsive */
+  @media (max-width: 640px) {
+    .resource-item {
+      padding: 0.625rem 0.875rem;
+    }
+    
+    .resource-name {
+      font-size: 0.8125rem;
+    }
   }
 </style>

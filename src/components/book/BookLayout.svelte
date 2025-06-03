@@ -67,12 +67,15 @@
   .book-spread {
     display: flex;
     height: 100vh;
-    max-height: 900px;
+    max-height: 950px;
     padding: 60px 60px 40px;
     gap: 0;
     align-items: center;
     justify-content: center;
-    position: relative;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     overflow: hidden;
   }
 
@@ -104,8 +107,8 @@
 
   .book-page-wrapper {
     position: relative;
-    height: calc(min(100vh, 900px) - 100px);
-    max-height: 800px;
+    height: calc(min(100vh, 950px) - 100px);
+    max-height: 850px;
     width: calc(50vw - 42px);
     max-width: 700px;
   }
@@ -179,8 +182,8 @@
     height: 100%;
     width: 100%;
     box-shadow:
-      0 20px 60px rgba(0, 0, 0, 0.2),
-      0 0 20px rgba(0, 0, 0, 0.1) inset;
+      0 10px 30px rgba(0, 0, 0, 0.15),
+      0 0 15px rgba(0, 0, 0, 0.05) inset;
     overflow: hidden;
     position: relative;
     z-index: 1;
