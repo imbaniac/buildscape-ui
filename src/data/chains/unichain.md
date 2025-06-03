@@ -128,10 +128,19 @@ rpcs:
     url: https://unichain.croswap.com/rpc
     type: public
 sourceCode:
-  - https://github.com/unichain/unichain
+  - name: Unichain Node
+    url: https://github.com/Uniswap/unichain-node
+    description: Everything required to run your own Unichain node
+  - name: Uniswap Organization
+    url: https://github.com/Uniswap
+    description: Main GitHub organization for Uniswap and Unichain development
 forums:
-  - https://forum.unichain.org/
-  - https://community.unichain.org/
+  - name: Uniswap Governance
+    url: https://gov.uniswap.org/
+    description: Uniswap governance forum that covers Unichain governance discussions
+  - name: Uniswap Discord
+    url: https://discord.com/invite/FCfyBSbCU5
+    description: Community Discord server for Uniswap and Unichain discussions
 sdks:
 # Additional SDKs and tools are inherited from evm-common.md
 ---

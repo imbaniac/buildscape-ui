@@ -2,17 +2,13 @@
   interface Props {
     active?: boolean;
     onclick: () => void;
-    children?: import('svelte').Snippet;
+    children?: import("svelte").Snippet;
   }
 
   let { active = false, onclick, children }: Props = $props();
 </script>
 
-<button
-  class="tab-button"
-  class:active
-  {onclick}
->
+<button class="tab-button" class:active {onclick}>
   {#if children}
     {@render children()}
   {/if}
@@ -20,7 +16,7 @@
 
 <style>
   .tab-button {
-    padding: 0.875rem 1rem;
+    padding: 0.5rem;
     background: none;
     border: none;
     font-weight: 500;
@@ -30,16 +26,17 @@
     position: relative;
     transition: all 0.2s ease;
     margin-bottom: -1px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto,
+      sans-serif;
     letter-spacing: -0.01em;
     flex: 1;
     text-align: center;
     min-width: 0;
     white-space: nowrap;
   }
-  
+
   .tab-button::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: 0;
     left: 0;
@@ -59,7 +56,7 @@
     color: #3b82f6;
     font-weight: 600;
   }
-  
+
   .tab-button.active::after {
     transform: scaleX(1);
   }

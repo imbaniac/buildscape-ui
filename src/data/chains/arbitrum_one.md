@@ -139,12 +139,22 @@ rpcs:
     url: https://arb1.croswap.com/rpc
     type: public
 sourceCode:
-  - https://github.com/OffchainLabs/arbitrum
+  - name: Arbitrum Protocol
+    url: https://github.com/OffchainLabs/arbitrum
+    description: Main repository for Arbitrum protocol implementation
+  - name: Arbitrum SDK
+    url: https://github.com/OffchainLabs/arbitrum-sdk
+    description: Official TypeScript SDK for asset bridging and cross-chain messaging
+  - name: Offchain Labs Organization
+    url: https://github.com/OffchainLabs
+    description: Main GitHub organization for Arbitrum development
 forums:
-  - name: Governance Forum
-    url: https://forum.arbitrum.foundation
-  - name: Research Forum
-    url: https://research.arbitrum.io
+  - name: Arbitrum Governance Forum
+    url: https://forum.arbitrum.foundation/
+    description: Official governance forum for Arbitrum DAO discussions and proposals
+  - name: Arbitrum Research Forum
+    url: https://research.arbitrum.io/
+    description: Community forum for researchers working to improve Arbitrum
 sdks:
   - name: Arbitrum SDK
     url: https://github.com/OffchainLabs/arbitrum-sdk

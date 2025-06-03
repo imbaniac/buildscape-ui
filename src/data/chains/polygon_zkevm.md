@@ -105,10 +105,22 @@ rpcs:
     url: https://polygon-zkevm.rpc.thirdweb.com/
     type: public
 sourceCode:
-  - https://github.com/0xPolygonHermez/zkevm-node
+  - name: zkEVM Node
+    url: https://github.com/0xPolygonHermez/cdk-erigon
+    description: Implementation of the Polygon zkEVM node
+  - name: Polygon Hermez Organization
+    url: https://github.com/0xPolygonHermez
+    description: GitHub organization for Polygon zkEVM development
+  - name: Polygon Organization
+    url: https://github.com/0xpolygon
+    description: Main GitHub organization for Polygon protocols
 forums:
-  - https://forum.polygon.technology/
-  - https://community.polygon.technology/
+  - name: Polygon Community Forum
+    url: https://forum.polygon.technology/
+    description: Official community forum for discussions, proposals, and support
+  - name: Polygon Governance Hub
+    url: https://governance.polygon.technology/
+    description: Governance discussions
 sdks:
 # Additional SDKs and tools are inherited from evm-common.md
 ---

@@ -135,10 +135,22 @@ rpcs:
     url: https://optimism.croswap.com/rpc
     type: public
 sourceCode:
-  - https://github.com/ethereum-optimism/optimism
+  - name: Optimism Monorepo
+    url: https://github.com/ethereum-optimism/optimism
+    description: Main repository for Optimism protocol implementation
+  - name: Ethereum Optimism Organization
+    url: https://github.com/ethereum-optimism
+    description: GitHub organization for Optimism development and OP Stack
 forums:
-  - https://gov.optimism.io/
-  - https://discord.gg/optimism
+  - name: Optimism Collective Governance
+    url: https://gov.optimism.io/
+    description: Official governance forum powered by Discourse for DAO discussions and proposals
+  - name: Optimism Community Hub
+    url: https://community.optimism.io/
+    description: Resource hub for the Optimism community and governance documentation
+  - name: Optimism Agora
+    url: https://vote.optimism.io/
+    description: Home of Token House governance and Retro Public Goods Funding (RPGF)
 sdks:
 # Additional SDKs and tools are inherited from evm-common.md
 ---

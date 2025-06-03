@@ -139,17 +139,22 @@ docs:
   - name: Arbitrum Nova – Web3 Libraries & Tools
     url: https://docs.arbitrum.io/build-decentralized-apps/reference/web3-libraries-tools
 sourceCode:
-  - name: Arbitrum Protocol (Monorepo)
+  - name: Arbitrum Protocol
     url: https://github.com/OffchainLabs/arbitrum
-  - name: Arbitrum SDK (TypeScript)
+    description: Main repository for Arbitrum protocol implementation
+  - name: Arbitrum SDK
     url: https://github.com/OffchainLabs/arbitrum-sdk
-  - name: Arbitrum SDK (Python)
-    url: https://github.com/justmert/arbitrum-python-sdk
+    description: Official TypeScript SDK for asset bridging and cross-chain messaging
+  - name: Offchain Labs Organization
+    url: https://github.com/OffchainLabs
+    description: Main GitHub organization for Arbitrum development
 forums:
-  - name: Governance Forum
-    url: https://forum.arbitrum.foundation
-  - name: Research Forum
-    url: https://research.arbitrum.io
+  - name: Arbitrum Governance Forum
+    url: https://forum.arbitrum.foundation/
+    description: Official governance forum for Arbitrum DAO discussions and proposals
+  - name: Arbitrum Research Forum
+    url: https://research.arbitrum.io/
+    description: Community forum for researchers working to improve Arbitrum
 sdks:
   - name: Arbitrum SDK
     url: https://github.com/OffchainLabs/arbitrum-sdk

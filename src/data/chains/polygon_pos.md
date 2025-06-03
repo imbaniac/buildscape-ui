@@ -136,10 +136,22 @@ rpcs:
     url: https://polygon.croswap.com/rpc
     type: public
 sourceCode:
-  - https://github.com/maticnetwork/bor
+  - name: Polygon Bor
+    url: https://github.com/maticnetwork/bor
+    description: Official client for Polygon PoS chain
+  - name: Polygon Organization
+    url: https://github.com/0xpolygon
+    description: Main GitHub organization for Polygon protocols (current)
+  - name: Polygon Legacy Organization
+    url: https://github.com/maticnetwork
+    description: Previous GitHub organization (Polygon/Matic) with legacy repositories
 forums:
-  - https://forum.polygon.technology/
-  - https://community.polygon.technology/
+  - name: Polygon Community Forum
+    url: https://forum.polygon.technology/
+    description: Official community forum for discussions, proposals, and support
+  - name: Polygon Governance Hub
+    url: https://governance.polygon.technology/
+    description: Governance discussions
 sdks:
 # Additional SDKs and tools are inherited from evm-common.md
 ---

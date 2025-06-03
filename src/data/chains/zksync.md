@@ -122,10 +122,22 @@ rpcs:
     url: https://zksync.croswap.com/rpc
     type: public
 sourceCode:
-  - https://github.com/matter-labs/zksync-era
+  - name: zkSync Era
+    url: https://github.com/matter-labs/zksync-era
+    description: Main repository for zkSync Era implementation
+  - name: zkSync Era Documentation
+    url: https://github.com/matter-labs/zksync-web-era-docs
+    description: Documentation source code for zkSync Era
+  - name: Matter Labs Organization
+    url: https://github.com/matter-labs
+    description: Main GitHub organization for zkSync development
 forums:
-  - https://community.zksync.io/
-  - https://forum.zksync.io/
+  - name: zkSync Community
+    url: https://community.zksync.io/
+    description: Official community forum for zkSync discussions and support
+  - name: zkSync Forum
+    url: https://forum.zksync.io/
+    description: Community governance and development discussions
 sdks:
   - name: zkSync SDK
     url: https://docs.zksync.io/zksync-era/sdk

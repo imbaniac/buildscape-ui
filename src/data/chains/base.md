@@ -139,10 +139,22 @@ rpcs:
     url: https://base.croswap.com/rpc
     type: public
 sourceCode:
-  - https://github.com/base-org
+  - name: Base Organization
+    url: https://github.com/base
+    description: Main GitHub organization for Base development (moved from base-org in 2025)
+  - name: Base Node
+    url: https://github.com/base/node
+    description: Everything required to run your own Base node
 forums:
-  - https://forum.base.org/
-  - https://community.base.org/
+  - name: Base Community Discord
+    url: https://discord.com/invite/buildonbase
+    description: Main community support and discussion channel
+  - name: Base on X (Twitter)
+    url: https://x.com/base
+    description: Official Base announcements and updates
+  - name: Base on Warpcast
+    url: https://warpcast.com/base
+    description: Base community on the decentralized social network
 sdks:
 tools:
 ---

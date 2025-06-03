@@ -175,10 +175,22 @@ rpcs:
     url: https://public-eth.nownodes.io/
     type: public
 sourceCode:
-  - https://github.com/ethereum/go-ethereum
+  - name: Go Ethereum (Geth)
+    url: https://github.com/ethereum/go-ethereum
+    description: Official Go implementation of the Ethereum protocol
+  - name: Ethereum Organization
+    url: https://github.com/ethereum
+    description: Main Ethereum GitHub organization with core repositories
 forums:
-  - https://ethereum-magicians.org/
-  - https://ethereum.stackexchange.com/
+  - name: Ethereum Magicians
+    url: https://ethereum-magicians.org/
+    description: Fellowship for maximizing technical opportunities and collaboration across the Ethereum community
+  - name: Ethereum Research Forum
+    url: https://ethresear.ch/
+    description: Semi-public forum for participating in Ethereum research with new findings and development opportunities
+  - name: Ethereum Stack Exchange
+    url: https://ethereum.stackexchange.com/
+    description: Q&A site for users of Ethereum and related technologies
 # SDKs and tools are inherited from evm-common.md
 ---
 
