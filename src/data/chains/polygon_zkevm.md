@@ -21,6 +21,13 @@ docs:
 blockscanners:
   - name: PolygonScan zkEVM
     url: https://zkevm.polygonscan.com
+    type: official
+  - name: OKLink
+    url: https://www.oklink.com/polygon-zkevm
+    type: alternative
+  - name: Blockscout
+    url: https://zkevm.blockscout.com
+    type: alternative
 testnets:
   - name: Cardona
     chainId: 2442

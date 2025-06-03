@@ -21,6 +21,19 @@ docs:
 blockscanners:
   - name: PolygonScan
     url: https://polygonscan.com
+    type: official
+  - name: OKLink
+    url: https://www.oklink.com/polygon
+    type: alternative
+  - name: Blockscout
+    url: https://polygon.blockscout.com
+    type: alternative
+  - name: DEX Guru
+    url: https://polygon.dex.guru
+    type: analytics
+  - name: DexScreener
+    url: https://dexscreener.com/polygon
+    type: analytics
 testnets:
   - name: Amoy
     chainId: 80002

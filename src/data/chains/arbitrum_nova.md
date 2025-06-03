@@ -26,14 +26,15 @@ contractLanguages:
   - name: Huff
     url: https://huff.sh/
 blockscanners:
-  - name: Arbiscan
-    url: https://www.arbiscan.io
+  - name: NovaScout
+    url: https://nova.arbiscan.io
+    type: official
   - name: Blockscout
-    url: https://arbitrum.blockscout.com
+    url: https://arbitrum-nova.blockscout.com/
+    type: alternative
   - name: OKLink
-    url: https://www.oklink.com/arbitrum-one
-  - name: DexGuru
-    url: https://arbitrum.dex.guru
+    url: https://www.oklink.com/arbitrum-nova
+    type: alternative
 testnets:
   - name: Sepolia
     chainId: 421614

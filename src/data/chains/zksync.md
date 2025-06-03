@@ -21,6 +21,19 @@ docs:
 blockscanners:
   - name: zkSync Explorer
     url: https://explorer.zksync.io
+    type: official
+  - name: Etherscan
+    url: https://era.zksync.network
+    type: alternative
+  - name: OKLink
+    url: https://www.oklink.com/zksync
+    type: alternative
+  - name: DEX Guru
+    url: https://zksync.dex.guru
+    type: analytics
+  - name: DexScreener
+    url: https://dexscreener.com/zksync
+    type: analytics
 testnets:
   - name: zkSync Sepolia
     chainId: 300

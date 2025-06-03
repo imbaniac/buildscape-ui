@@ -25,13 +25,20 @@ docs:
   - https://docs.arbitrum.io/welcome/get-started
 blockscanners:
   - name: Arbiscan
-    url: https://www.arbiscan.io
+    url: https://arbiscan.io
+    type: official
   - name: Blockscout
     url: https://arbitrum.blockscout.com
+    type: alternative
   - name: OKLink
-    url: https://www.oklink.com/arbitrum-one
+    url: https://www.oklink.com/arbitrum
+    type: alternative
   - name: DEX Guru
     url: https://arbitrum.dex.guru
+    type: analytics
+  - name: DexScreener
+    url: https://dexscreener.com/arbitrum
+    type: analytics
 testnets:
   - name: Sepolia
     chainId: 421614

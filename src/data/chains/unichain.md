@@ -21,7 +21,11 @@ docs:
   - https://docs.unichain.org/
 blockscanners:
   - name: UnichainScan
-    url: https://unichainscan.com
+    url: https://uniscan.xyz/
+    type: official
+  - name: Blockscout
+    url: https://unichain.blockscout.com/
+    type: alternative
 testnets:
   - name: Unichain Sepolia
     chainId: 1301

@@ -23,6 +23,19 @@ docs:
 blockscanners:
   - name: Etherscan
     url: https://etherscan.io
+    type: official
+  - name: Blockscout
+    url: https://eth.blockscout.com
+    type: alternative
+  - name: OKLink
+    url: https://www.oklink.com/eth
+    type: alternative
+  - name: DEX Guru
+    url: https://ethereum.dex.guru
+    type: analytics
+  - name: DexScreener
+    url: https://dexscreener.com/ethereum
+    type: analytics
 testnets:
   - name: Sepolia
     chainId: 11155111

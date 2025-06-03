@@ -22,6 +22,19 @@ docs:
 blockscanners:
   - name: Basescan
     url: https://basescan.org
+    type: official
+  - name: Blockscout
+    url: https://base.blockscout.com
+    type: alternative
+  - name: OKLink
+    url: https://www.oklink.com/base
+    type: alternative
+  - name: DEX Guru
+    url: https://base.dex.guru
+    type: analytics
+  - name: DexScreener
+    url: https://dexscreener.com/base
+    type: analytics
 testnets:
   - name: Base Sepolia
     chainId: 84532
