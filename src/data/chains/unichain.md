@@ -125,11 +125,6 @@ forums:
   - https://forum.unichain.org/
   - https://community.unichain.org/
 sdks:
-  - name: Unichain SDK
-    url: https://docs.unichain.org/sdk
-    source: official
-    type: JS/TS
-    description: Official SDK for building on Unichain with DeFi-optimized features.
 # Additional SDKs and tools are inherited from evm-common.md
 ---
 

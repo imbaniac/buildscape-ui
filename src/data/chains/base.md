@@ -127,24 +127,7 @@ forums:
   - https://forum.base.org/
   - https://community.base.org/
 sdks:
-  - name: Base SDK
-    url: https://docs.base.org/developers/sdk
-    source: official
-    type: JS/TS
-    description: Official SDK for building on Base, including utilities for interacting with Base-specific features.
 tools:
-  - name: QuickNode SDK
-    url: https://www.quicknode.com/docs/base
-    type: free-tier
-    description: Developer toolkit with APIs, analytics, and dashboards for building apps on Base.
-  - name: Alchemy SDK
-    url: https://www.alchemy.com/base
-    type: free-tier
-    description: SDK and developer portal for RPC access, enhanced APIs, contract tracing, and debugging tools for Base.
-  - name: NodeReal SDK
-    url: https://nodereal.io/
-    type: free-tier
-    description: Full-stack development platform with RPCs, APIs, and contract analytics for scaling on Base.
 ---
 
 Base is Coinbase’s Layer 2 network built on the OP Stack, offering full EVM compatibility and lower fees by batching transactions off-chain and settling them on Ethereum. It’s designed to be developer-friendly, allowing for easy deployment of Ethereum smart contracts without significant modifications.

@@ -99,11 +99,6 @@ forums:
   - https://forum.polygon.technology/
   - https://community.polygon.technology/
 sdks:
-  - name: Polygon zkEVM SDK
-    url: https://wiki.polygon.technology/docs/zkevm/develop/
-    source: official
-    type: Documentation
-    description: Official documentation and development resources for building on Polygon zkEVM.
 # Additional SDKs and tools are inherited from evm-common.md
 ---
 

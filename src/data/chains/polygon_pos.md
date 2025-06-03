@@ -124,11 +124,6 @@ forums:
   - https://forum.polygon.technology/
   - https://community.polygon.technology/
 sdks:
-  - name: Polygon SDK
-    url: https://docs.polygon.technology/docs/develop/network-details/network/
-    source: official
-    type: Documentation
-    description: Official documentation and SDK references for building on Polygon PoS.
 # Additional SDKs and tools are inherited from evm-common.md
 ---
 

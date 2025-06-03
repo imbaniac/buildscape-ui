@@ -109,10 +109,9 @@ forums:
   - https://forum.zksync.io/
 sdks:
   - name: zkSync SDK
-    url: https://era.zksync.io/docs/api/sdk.html
+    url: https://docs.zksync.io/zksync-era/sdk
     source: official
-    type: JS/TS
-    description: Official SDK for zkSync Era with support for native account abstraction and paymaster features.
+    description: Official SDK for zkSync Era with support for native account abstraction and paymaster features. Supports Typescript, Golang, Python, Java, Swift and Rust.
 # Additional SDKs and tools are inherited from evm-common.md
 ---
 
