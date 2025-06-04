@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { formatNumber, formatNumberWithCommas } from '$lib/utils/formatters';
-  import MetricCard from './MetricCard.svelte';
-  import Spinner from '../ui/Spinner.svelte';
-  
+  import { formatNumber, formatNumberWithCommas } from "$lib/utils/formatters";
+  import MetricCard from "./MetricCard.svelte";
+  import Spinner from "../ui/Spinner.svelte";
+
   interface Props {
     metricsSpan: "1h" | "24h" | "7d" | "30d";
     onSpanChange: (span: "1h" | "24h" | "7d" | "30d") => void;
@@ -10,8 +10,9 @@
     chainDynamic: any;
   }
 
-  let { metricsSpan, onSpanChange, loadingDynamic, chainDynamic }: Props = $props();
-  
+  let { metricsSpan, onSpanChange, loadingDynamic, chainDynamic }: Props =
+    $props();
+
   const spans: Array<"1h" | "24h" | "7d" | "30d"> = ["1h", "24h", "7d", "30d"];
 </script>
 
@@ -36,22 +37,19 @@
     </div>
   {:else if chainDynamic}
     <div class="metrics-grid">
-      <MetricCard 
-        label="TPS" 
-        value={chainDynamic.metrics.txPerSecond} 
-      />
-      <MetricCard 
-        label="Transactions" 
+      <MetricCard label="TPS" value={chainDynamic.metrics.txPerSecond} />
+      <MetricCard
+        label="Transactions"
         value={formatNumber(chainDynamic.metrics.numTransactions)}
         tooltip={formatNumberWithCommas(chainDynamic.metrics.numTransactions)}
       />
-      <MetricCard 
-        label="Users" 
-        value={formatNumber(chainDynamic.metrics.uniqueUsers)}
-        tooltip={formatNumberWithCommas(chainDynamic.metrics.uniqueUsers)}
+      <MetricCard
+        label="Users"
+        value={formatNumber(chainDynamic.metrics.activeUsers)}
+        tooltip={formatNumberWithCommas(chainDynamic.metrics.activeUsers)}
       />
-      <MetricCard 
-        label="Contracts" 
+      <MetricCard
+        label="Contracts"
         value={formatNumber(chainDynamic.metrics.contractsDeployed)}
         tooltip={formatNumberWithCommas(chainDynamic.metrics.contractsDeployed)}
       />

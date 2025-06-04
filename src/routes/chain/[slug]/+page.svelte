@@ -15,6 +15,8 @@
   let metricsSpan = $state<"1h" | "24h" | "7d" | "30d">(data.initialSpan);
   let chainDynamic = $state<any>(null);
   let loadingDynamic = $state(false);
+  let pollInterval: number | undefined;
+  let isVisible = $state(true);
 
   $effect(() => {
     const currentTab = $page.url.searchParams.get("tab") || "overview";
@@ -69,17 +71,38 @@
 
   onMount(() => {
     loadDynamic(metricsSpan);
+    
+    // Start polling every 15 seconds
+    pollInterval = setInterval(() => {
+      if (isVisible) {
+        loadDynamic(metricsSpan);
+      }
+    }, 15000);
+    
+    // Handle visibility changes
+    const handleVisibilityChange = () => {
+      isVisible = !document.hidden;
+      if (isVisible) {
+        loadDynamic(metricsSpan); // Refresh immediately when becoming visible
+      }
+    };
+    
     window.addEventListener("keydown", handleKeydown);
-    return () => window.removeEventListener("keydown", handleKeydown);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    
+    return () => {
+      window.removeEventListener("keydown", handleKeydown);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      if (pollInterval) clearInterval(pollInterval);
+    };
   });
 
-  // React to metricsSpan changes after initial mount
-  let isInitialized = false;
+  // React to metricsSpan changes
+  let previousSpan = metricsSpan;
   $effect(() => {
-    if (isInitialized) {
+    if (metricsSpan !== previousSpan) {
+      previousSpan = metricsSpan;
       loadDynamic(metricsSpan);
-    } else {
-      isInitialized = true;
     }
   });
 </script>
