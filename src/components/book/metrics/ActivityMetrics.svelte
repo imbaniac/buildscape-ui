@@ -129,6 +129,21 @@
     }
   }
 
+  @media (max-width: 900px) {
+    .metrics-tabs {
+      gap: 0.375rem;
+    }
+
+    .metric-tab {
+      padding: 0.375rem 1rem;
+      font-size: 0.8125rem;
+    }
+
+    .metrics-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
   @media (max-width: 640px) {
     .metrics-section {
       margin-bottom: 0.5rem;

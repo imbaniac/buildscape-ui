@@ -122,6 +122,27 @@
     letter-spacing: 0.01em;
   }
 
+  @media (max-width: 900px) {
+    .subtabs {
+      gap: 0.375rem;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding-bottom: 0.75rem;
+    }
+
+    .subtabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .subtab-button {
+      padding: 0.375rem 0.875rem;
+      font-size: 0.8125rem;
+      white-space: nowrap;
+      flex: 0 0 auto;
+    }
+  }
+
   @media (max-width: 640px) {
     .subtabs {
       gap: 0.375rem;

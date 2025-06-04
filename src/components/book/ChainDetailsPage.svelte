@@ -110,9 +110,51 @@
     font-size: 0.9375rem;
   }
 
+  @media (max-width: 1280px) {
+    .page-content {
+      padding: 3rem;
+    }
+  }
+
   @media (max-width: 1024px) {
     .page-content {
       padding: 2.5rem;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .page-content {
+      padding: 2rem;
+    }
+
+    .tabs-header {
+      gap: 0;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    
+    .tabs-header::-webkit-scrollbar {
+      display: none;
+    }
+
+    .tab-content {
+      padding-right: 1rem;
+    }
+  }
+
+  @media (max-width: 800px) {
+    .page-content {
+      padding: 1.5rem;
+      height: calc(100vh - 50px);
+    }
+
+    .tabs-header {
+      margin-bottom: 1.75rem;
+    }
+
+    .tab-content {
+      padding-right: 0.5rem;
     }
   }
 

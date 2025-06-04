@@ -17,10 +17,10 @@
   let isMobile = $state(false);
 
   onMount(() => {
-    isMobile = window.innerWidth <= 768;
+    isMobile = window.innerWidth <= 800;
     
     const handleResize = () => {
-      isMobile = window.innerWidth <= 768;
+      isMobile = window.innerWidth <= 800;
     };
     
     window.addEventListener('resize', handleResize);
@@ -171,7 +171,7 @@
     height: calc(min(100vh, 950px) - 100px);
     max-height: 850px;
     width: calc(50vw - 42px);
-    max-width: 700px;
+    max-width: min(700px, 45vw);
   }
 
   .book-page-wrapper-left {
@@ -319,7 +319,17 @@
     }
   }
 
-  @media (max-width: 1024px) {
+  @media (max-width: 1280px) {
+    .book-spread {
+      padding: 60px 40px 30px;
+    }
+
+    .book-page-wrapper {
+      max-width: min(600px, 48vw);
+    }
+  }
+
+  @media (max-width: 1100px) {
     .book-spread {
       flex-direction: column;
       padding: 60px 20px 20px;
@@ -334,9 +344,31 @@
 
     .book-page-wrapper {
       width: 100%;
-      max-width: 800px;
-      height: 50%;
-      max-height: 450px;
+      max-width: 700px;
+      height: calc(50vh - 50px);
+      min-height: 400px;
+      max-height: 500px;
+    }
+
+    .book-page-wrapper-left,
+    .book-page-wrapper-right {
+      margin: 0;
+    }
+
+    /* Add separator between pages */
+    .book-page-wrapper-left {
+      position: relative;
+    }
+
+    .book-page-wrapper-left::after {
+      content: "";
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(to right, transparent 10%, #e2e8f0 30%, #e2e8f0 70%, transparent 90%);
+      z-index: 10;
     }
 
     .book-page {
@@ -345,15 +377,23 @@
     }
 
     .book-page-left {
-      border-radius: 20px 20px 4px 4px;
+      border-radius: 20px 20px 0 0;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     }
 
     .book-page-right {
-      border-radius: 4px 4px 20px 20px;
+      border-radius: 0 0 20px 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Hide paper stack effects in column layout */
+    .book-page-wrapper::before,
+    .book-page-wrapper::after {
+      display: none;
     }
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 800px) {
     .book-fullscreen {
       background: white;
     }

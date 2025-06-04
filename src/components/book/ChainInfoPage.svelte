@@ -407,6 +407,23 @@
     letter-spacing: 0.025em;
   }
 
+  @media (max-width: 1280px) {
+    .page-content {
+      padding: 2rem;
+      padding-right: 2.5rem;
+      gap: 1.25rem;
+    }
+
+    .chain-logo {
+      width: 70px;
+      height: 70px;
+    }
+
+    .chain-title {
+      font-size: 2.25rem;
+    }
+  }
+
   @media (max-width: 1024px) {
     .page-content {
       gap: 2rem;
@@ -441,6 +458,52 @@
 
     .stamp-value {
       font-size: 0.8125rem;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .page-content {
+      padding: 1.5rem;
+      padding-right: 2rem;
+    }
+
+    .chain-logo {
+      width: 65px;
+      height: 65px;
+    }
+
+    .tech-stamps {
+      justify-content: center;
+    }
+  }
+
+  @media (max-width: 800px) {
+    .page-content {
+      padding: 1.5rem 1.25rem;
+      gap: 1rem;
+      overflow-x: hidden;
+      height: calc(100vh - 50px);
+    }
+
+    .chain-header {
+      margin-bottom: 0.75rem;
+    }
+
+    .chain-logo {
+      width: 65px;
+      height: 65px;
+    }
+
+    .chain-title {
+      font-size: 2rem;
+    }
+
+    .chain-subtitle {
+      font-size: 1rem;
+    }
+
+    .tech-stamps {
+      justify-content: center;
     }
   }
 
