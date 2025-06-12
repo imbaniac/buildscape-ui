@@ -1,6 +1,8 @@
 <script lang="ts">
   import NetworkStatus from "./metrics/NetworkStatus.svelte";
   import ActivityMetrics from "./metrics/ActivityMetrics.svelte";
+  import Tooltip from "./ui/Tooltip.svelte";
+  import { tooltipTexts } from "../../data/tooltips";
 
   interface Props {
     chainStatic: any;
@@ -112,7 +114,11 @@
     <h1 class="chain-title">{chainStatic.name}</h1>
     <div class="chain-subtitle">
       <span>Chain ID: {chainStatic.chainId}</span>
-      <button class="add-wallet-btn" onclick={addToWallet} style="--brand-color: {chainStatic.color}">
+      <button
+        class="add-wallet-btn"
+        onclick={addToWallet}
+        style="--brand-color: {chainStatic.color}"
+      >
         <svg
           width="14"
           height="14"
@@ -140,43 +146,73 @@
 
   <div class="tech-stamps">
     <div class="stamp-container">
-      <span class="tech-stamp {chainStatic.technology?.isL2 ? 'l2' : 'l1'}">
-        <span class="stamp-label">Layer</span>
-        <span class="stamp-value"
-          >{chainStatic.technology?.isL2 ? "2" : "1"}</span
-        >
-      </span>
+      <Tooltip
+        text={chainStatic.technology?.isL2
+          ? tooltipTexts.layer2
+          : tooltipTexts.layer1}
+      >
+        <span class="tech-stamp {chainStatic.technology?.isL2 ? 'l2' : 'l1'}">
+          <span class="stamp-label">Layer</span>
+          <span class="stamp-value"
+            >{chainStatic.technology?.isL2 ? "2" : "1"}</span
+          >
+        </span>
+      </Tooltip>
     </div>
     {#if chainStatic.technology?.settlementLayer}
       <div class="stamp-container">
-        <span class="tech-stamp settlement">
-          <span class="stamp-label">Settles on</span>
-          <span class="stamp-value"
-            >{chainStatic.technology.settlementLayer}</span
-          >
-        </span>
+        <Tooltip text={tooltipTexts.settlementLayer}>
+          <span class="tech-stamp settlement">
+            <span class="stamp-label">Settles on</span>
+            <span class="stamp-value"
+              >{chainStatic.technology.settlementLayer}</span
+            >
+          </span>
+        </Tooltip>
       </div>
     {/if}
     {#if chainStatic.technology?.type}
       <div class="stamp-container">
-        <span class="tech-stamp type">
-          <span class="stamp-value">{chainStatic.technology.type}</span>
-        </span>
+        <Tooltip
+          text={chainStatic.technology.type === "Optimistic Rollup"
+            ? tooltipTexts.optimisticRollup
+            : chainStatic.technology.type === "zk Rollup" || chainStatic.technology.type === "ZK Rollup"
+              ? tooltipTexts.zkRollup
+              : chainStatic.technology.type === "Sidechain"
+                ? tooltipTexts.sidechain
+                : `${chainStatic.technology.type} technology`}
+        >
+          <span class="tech-stamp type">
+            <span class="stamp-value">{chainStatic.technology.type}</span>
+          </span>
+        </Tooltip>
       </div>
     {/if}
     {#if chainStatic.technology?.isEVM}
       <div class="stamp-container">
-        <span class="tech-stamp evm">
-          <span class="stamp-value">EVM</span>
-        </span>
+        <Tooltip text={tooltipTexts.evm}>
+          <span class="tech-stamp evm">
+            <span class="stamp-value">EVM</span>
+          </span>
+        </Tooltip>
       </div>
     {/if}
     {#if chainStatic.technology?.stack}
       <div class="stamp-container">
-        <span class="tech-stamp stack">
-          <span class="stamp-label">Stack</span>
-          <span class="stamp-value">{chainStatic.technology.stack}</span>
-        </span>
+        <Tooltip
+          text={chainStatic.technology.stack === "OP Stack"
+            ? tooltipTexts.opStack
+            : chainStatic.technology.stack === "Arbitrum Nitro"
+              ? tooltipTexts.arbitrumNitro
+              : chainStatic.technology.stack === "ZK Stack"
+                ? tooltipTexts.zkStack
+                : `${chainStatic.technology.stack} technology stack`}
+        >
+          <span class="tech-stamp stack">
+            <span class="stamp-label">Stack</span>
+            <span class="stamp-value">{chainStatic.technology.stack}</span>
+          </span>
+        </Tooltip>
       </div>
     {/if}
   </div>
@@ -239,10 +275,15 @@
     flex-wrap: wrap;
     gap: 0.5rem;
     margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
+    /* Ensure stamps don't start at the very edge */
+    justify-content: center;
   }
 
   .stamp-container {
     position: relative;
+    z-index: 1;
   }
 
   .tech-stamp {
@@ -250,12 +291,12 @@
     flex-direction: column;
     align-items: center;
     padding: 0.375rem 0.75rem;
-    background: #fefefe;
-    border: 2px solid #8b7355;
+    background: rgba(255, 255, 255, 0.7);
+    border: 2px solid #d4d4d8;
     border-radius: 2px;
     font-family: Georgia, "Times New Roman", serif;
     position: relative;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0.5px 2px rgba(0, 0, 0, 0.05);
     transform: rotate(-1deg);
   }
 
@@ -275,22 +316,22 @@
         45deg,
         transparent,
         transparent 2px,
-        rgba(139, 115, 85, 0.03) 2px,
-        rgba(139, 115, 85, 0.03) 4px
+        rgba(139, 115, 85, 0.02) 2px,
+        rgba(139, 115, 85, 0.02) 4px
       ),
       repeating-linear-gradient(
         -45deg,
         transparent,
         transparent 2px,
-        rgba(139, 115, 85, 0.03) 2px,
-        rgba(139, 115, 85, 0.03) 4px
+        rgba(139, 115, 85, 0.02) 2px,
+        rgba(139, 115, 85, 0.02) 4px
       );
     pointer-events: none;
   }
 
   .stamp-label {
-    font-size: 0.5625rem;
-    color: #8b7355;
+    font-size: 0.5rem;
+    color: #94a3b8;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     margin-bottom: 0.0625rem;
@@ -298,9 +339,9 @@
   }
 
   .stamp-value {
-    font-size: 0.8125rem;
+    font-size: 0.75rem;
     font-weight: 600;
-    color: #3e2723;
+    color: #475569;
     text-transform: uppercase;
     letter-spacing: 0.04em;
     line-height: 1;
@@ -341,21 +382,21 @@
 
   /* Special stamp colors */
   .tech-stamp.l1 {
-    border-color: #d4a574;
+    border-color: #e2e8f0;
   }
 
   .tech-stamp.l2 {
-    border-color: #7b8fa6;
+    border-color: #cbd5e1;
   }
 
   .tech-stamp.settlement {
-    border-color: #7b8fa6;
+    border-color: #cbd5e1;
   }
 
   .tech-stamp.evm,
   .tech-stamp.type,
   .tech-stamp.stack {
-    border-color: #8b7355;
+    border-color: #d4d4d8;
   }
 
   .add-wallet-btn {

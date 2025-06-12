@@ -22,7 +22,7 @@ contractLanguages:
   - name: Huff
     url: https://huff.sh/
 docs:
-  - https://community.optimism.io/docs/
+  - https://docs.optimism.io/
 blockscanners:
   - name: Etherscan
     url: https://optimistic.etherscan.io
