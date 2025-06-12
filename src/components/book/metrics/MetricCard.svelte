@@ -1,23 +1,46 @@
 <script lang="ts">
   import Tooltip from '../ui/Tooltip.svelte';
+  import NumberAnimation from '../ui/NumberAnimation.svelte';
+  import SkeletonLoader from '../ui/SkeletonLoader.svelte';
   
   interface Props {
     label: string;
-    value: string | number;
+    value?: string | number;
     tooltip?: string;
+    loading?: boolean;
+    formatter?: (value: number) => string;
+    useAnimation?: boolean;
   }
 
-  let { label, value, tooltip }: Props = $props();
+  let { label, value, tooltip, loading = false, formatter, useAnimation = true }: Props = $props();
 </script>
 
 <div class="metric-card">
   <span class="metric-label">{label}</span>
-  {#if tooltip}
+  {#if loading}
+    <SkeletonLoader height="1.25rem" width="80%" />
+  {:else if tooltip}
     <Tooltip text={tooltip}>
-      <span class="metric-value with-tooltip">{value}</span>
+      <span class="metric-value with-tooltip">
+        {#if typeof value === 'number' && formatter}
+          <NumberAnimation value={value} format={formatter} />
+        {:else if typeof value === 'number'}
+          <NumberAnimation value={value} />
+        {:else}
+          {value || '0'}
+        {/if}
+      </span>
     </Tooltip>
   {:else}
-    <span class="metric-value">{value}</span>
+    <span class="metric-value">
+      {#if typeof value === 'number' && formatter}
+        <NumberAnimation value={value} format={formatter} />
+      {:else if typeof value === 'number'}
+        <NumberAnimation value={value} />
+      {:else}
+        {value || '0'}
+      {/if}
+    </span>
   {/if}
 </div>
 

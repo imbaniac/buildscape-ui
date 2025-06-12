@@ -1,7 +1,7 @@
 <script lang="ts">
   import { formatNumber, formatNumberWithCommas } from "$lib/utils/formatters";
   import MetricCard from "./MetricCard.svelte";
-  import Spinner from "../ui/Spinner.svelte";
+  import SkeletonLoader from "../ui/SkeletonLoader.svelte";
 
   interface Props {
     metricsSpan: "1h" | "24h" | "7d" | "30d";
@@ -14,6 +14,9 @@
     $props();
 
   const spans: Array<"1h" | "24h" | "7d" | "30d"> = ["1h", "24h", "7d", "30d"];
+  
+  // Only show skeleton on initial load
+  const showSkeleton = $derived(loadingDynamic && !chainDynamic);
 </script>
 
 <div class="metrics-section">
@@ -30,31 +33,37 @@
     {/each}
   </div>
 
-  {#if loadingDynamic}
-    <div class="metrics-loading">
-      <Spinner />
-      <span>Loading metrics...</span>
-    </div>
-  {:else if chainDynamic}
-    <div class="metrics-grid">
-      <MetricCard label="TPS" value={chainDynamic.metrics.txPerSecond} />
-      <MetricCard
-        label="Transactions"
-        value={formatNumber(chainDynamic.metrics.numTransactions)}
-        tooltip={formatNumberWithCommas(chainDynamic.metrics.numTransactions)}
-      />
-      <MetricCard
-        label="Users"
-        value={formatNumber(chainDynamic.metrics.activeUsers)}
-        tooltip={formatNumberWithCommas(chainDynamic.metrics.activeUsers)}
-      />
-      <MetricCard
-        label="Contracts"
-        value={formatNumber(chainDynamic.metrics.contractsDeployed)}
-        tooltip={formatNumberWithCommas(chainDynamic.metrics.contractsDeployed)}
-      />
-    </div>
-  {:else}
+  <div class="metrics-grid">
+    <MetricCard 
+      label="TPS" 
+      value={chainDynamic?.metrics?.txPerSecond} 
+      formatter={(v) => v.toFixed(2)}
+      loading={showSkeleton}
+    />
+    <MetricCard
+      label="Transactions"
+      value={chainDynamic?.metrics?.numTransactions}
+      formatter={(v) => formatNumber(v)}
+      tooltip={chainDynamic?.metrics?.numTransactions ? formatNumberWithCommas(chainDynamic.metrics.numTransactions) : undefined}
+      loading={showSkeleton}
+    />
+    <MetricCard
+      label="Users"
+      value={chainDynamic?.metrics?.activeUsers}
+      formatter={(v) => formatNumber(v)}
+      tooltip={chainDynamic?.metrics?.activeUsers ? formatNumberWithCommas(chainDynamic.metrics.activeUsers) : undefined}
+      loading={showSkeleton}
+    />
+    <MetricCard
+      label="Contracts"
+      value={chainDynamic?.metrics?.contractsDeployed}
+      formatter={(v) => formatNumber(v)}
+      tooltip={chainDynamic?.metrics?.contractsDeployed ? formatNumberWithCommas(chainDynamic.metrics.contractsDeployed) : undefined}
+      loading={showSkeleton}
+    />
+  </div>
+  
+  {#if !loadingDynamic && !chainDynamic}
     <div class="no-metrics">
       <p>No live metrics available</p>
     </div>
@@ -102,14 +111,6 @@
     color: white;
   }
 
-  .metrics-loading {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    padding: 3rem;
-    color: #64748b;
-  }
 
   .metrics-grid {
     display: grid;

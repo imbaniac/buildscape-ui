@@ -1,37 +1,115 @@
 <script lang="ts">
   import { formatNumberWithCommas } from '$lib/utils/formatters';
   import Tooltip from '../ui/Tooltip.svelte';
+  import NumberAnimation from '../ui/NumberAnimation.svelte';
+  import SkeletonLoader from '../ui/SkeletonLoader.svelte';
+  import GasMeter from './GasMeter.svelte';
+  import UtilizationBar from './UtilizationBar.svelte';
   
   interface Props {
     chainDynamic: any;
+    chainStatus: any;
+    loadingStatus: boolean;
   }
 
-  let { chainDynamic }: Props = $props();
+  let { chainDynamic, chainStatus, loadingStatus }: Props = $props();
+  
+  // Only show skeleton on initial load, not on updates
+  const showSkeleton = $derived(loadingStatus && !chainStatus && !chainDynamic);
+  
+  // Get status color and label
+  function getStatusInfo(status: string) {
+    switch (status) {
+      case 'starting':
+        return { color: '#3b82f6', label: 'Starting', pulse: true };
+      case 'syncing':
+        return { color: '#8b5cf6', label: 'Syncing', pulse: true };
+      case 'live':
+        return { color: '#10b981', label: 'Live', pulse: false };
+      case 'paused':
+        return { color: '#f59e0b', label: 'Paused', pulse: false };
+      case 'error':
+        return { color: '#ef4444', label: 'Error', pulse: true };
+      case 'stopped':
+        return { color: '#6b7280', label: 'Stopped', pulse: false };
+      case 'never_started':
+        return { color: '#94a3b8', label: 'Never Started', pulse: false };
+      case 'disabled':
+        return { color: '#6b7280', label: 'Disabled', pulse: false };
+      case 'not_configured':
+        return { color: '#94a3b8', label: 'Not Configured', pulse: false };
+      default:
+        return { color: '#6b7280', label: status, pulse: false };
+    }
+  }
+  
+  const statusInfo = $derived(getStatusInfo(chainStatus?.status || 'stopped'));
 </script>
 
 <div class="network-status">
-  <h3>Network Status</h3>
+  <div class="status-header">
+    <h3>Network Status</h3>
+    <div class="status-indicator-container">
+      <div 
+        class="status-dot" 
+        class:pulse={statusInfo.pulse}
+        style="background-color: {statusInfo.color}"
+      ></div>
+      <span class="status-label-text">{statusInfo.label}</span>
+    </div>
+  </div>
+  
+  {#if chainStatus?.sync_progress > 0 && chainStatus?.status === 'syncing'}
+    <div class="sync-progress-bar">
+      <div class="sync-progress-fill" style="width: {chainStatus.sync_progress * 100}%"></div>
+      <span class="sync-progress-text">{Math.round(chainStatus.sync_progress * 100)}% synced</span>
+    </div>
+  {/if}
+  
   <div class="status-grid">
     <div class="status-item">
       <span class="status-label">Last Block</span>
-      <span class="status-value">{formatNumberWithCommas(chainDynamic.lastBlock)}</span>
+      {#if showSkeleton}
+        <SkeletonLoader height="1.25rem" />
+      {:else}
+        <span class="status-value">
+          <NumberAnimation 
+            value={chainStatus?.current_block || chainDynamic?.lastBlock || 0} 
+            format={formatNumberWithCommas}
+          />
+        </span>
+      {/if}
     </div>
     <div class="status-item">
       <span class="status-label">Gas Price</span>
-      <span class="status-value">{chainDynamic.lastGas} gwei</span>
+      {#if showSkeleton}
+        <SkeletonLoader height="45px" />
+      {:else}
+        <GasMeter gasPrice={Math.round(chainStatus?.gas_price_gwei || chainDynamic?.lastGas || 0)} />
+      {/if}
     </div>
     <div class="status-item">
       <span class="status-label">Block Size</span>
-      <span class="status-value">{chainDynamic.lastBlockSize}</span>
+      {#if showSkeleton}
+        <SkeletonLoader height="1.25rem" />
+      {:else}
+        <span class="status-value">
+          {chainStatus?.block_size_mb?.toFixed(2) || chainDynamic?.lastBlockSize || '0'} MB
+        </span>
+      {/if}
     </div>
     <div class="status-item">
       <span class="status-label">
         Utilization
-        <Tooltip text="Based on last 5 blocks">
+        <Tooltip text="Network capacity usage">
           <span class="info-icon">ⓘ</span>
         </Tooltip>
       </span>
-      <span class="status-value">{chainDynamic.utilization || "85%"}</span>
+      {#if showSkeleton}
+        <SkeletonLoader height="1.25rem" />
+      {:else}
+        <UtilizationBar percentage={Math.round(chainStatus?.utilization_pct || (chainDynamic?.utilization ? parseInt(chainDynamic.utilization) : 0))} />
+      {/if}
     </div>
   </div>
 </div>
@@ -97,6 +175,88 @@
     position: relative;
     font-style: normal;
   }
+  
+  .status-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+  }
+  
+  .status-indicator-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    position: relative;
+  }
+  
+  .status-dot.pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+  
+  .status-dot.pulse::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border-radius: 50%;
+    background-color: inherit;
+    opacity: 0.4;
+    animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+  
+  @keyframes ping {
+    75%, 100% {
+      transform: scale(2);
+      opacity: 0;
+    }
+  }
+  
+  .status-label-text {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #64748b;
+  }
+  
+  .sync-progress-bar {
+    height: 4px;
+    background: #e2e8f0;
+    border-radius: 2px;
+    margin-bottom: 1rem;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .sync-progress-fill {
+    height: 100%;
+    background: #8b5cf6;
+    transition: width 0.3s ease;
+  }
+  
+  .sync-progress-text {
+    position: absolute;
+    top: -20px;
+    right: 0;
+    font-size: 0.625rem;
+    color: #64748b;
+  }
 
   .status-value {
     font-size: 1rem;
@@ -117,9 +277,22 @@
 
     .network-status h3 {
       font-size: 0.75rem;
-      margin-bottom: 0.75rem;
+      margin-bottom: 0;
       text-transform: uppercase;
       letter-spacing: 0.5px;
+    }
+    
+    .status-header {
+      margin-bottom: 0.5rem;
+    }
+    
+    .status-dot {
+      width: 8px;
+      height: 8px;
+    }
+    
+    .status-label-text {
+      font-size: 0.6875rem;
     }
 
     .status-grid {

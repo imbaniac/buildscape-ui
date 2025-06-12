@@ -5,6 +5,7 @@
   import BookLayout from "../../../components/book/BookLayout.svelte";
   import ChainInfoPage from "../../../components/book/ChainInfoPage.svelte";
   import ChainDetailsPage from "../../../components/book/ChainDetailsPage.svelte";
+  import { getChainStatus } from "$lib/utils/chainDataLoader";
   import type { PageData } from "./$types";
   import type { BookmarkTab, BookmarkField } from "$lib/types";
 
@@ -15,6 +16,8 @@
   let metricsSpan = $state<"1h" | "24h" | "7d" | "30d">(data.initialSpan);
   let chainDynamic = $state<any>(null);
   let loadingDynamic = $state(false);
+  let chainStatus = $state<any>(null);
+  let loadingStatus = $state(false);
   let pollInterval: number | undefined;
   let isVisible = $state(true);
 
@@ -58,6 +61,19 @@
       loadingDynamic = false;
     }
   }
+  
+  async function loadStatus() {
+    if (!data.chainStatic?.chainId) return;
+    
+    loadingStatus = true;
+    try {
+      chainStatus = await getChainStatus(data.chainStatic.chainId);
+    } catch (error) {
+      console.error("Failed to load chain status:", error);
+    } finally {
+      loadingStatus = false;
+    }
+  }
 
   function handleClose() {
     goto("/");
@@ -71,11 +87,13 @@
 
   onMount(() => {
     loadDynamic(metricsSpan);
+    loadStatus();
     
     // Start polling every 15 seconds
     pollInterval = setInterval(() => {
       if (isVisible) {
         loadDynamic(metricsSpan);
+        loadStatus();
       }
     }, 15000);
     
@@ -84,6 +102,7 @@
       isVisible = !document.hidden;
       if (isVisible) {
         loadDynamic(metricsSpan); // Refresh immediately when becoming visible
+        loadStatus();
       }
     };
     
@@ -112,7 +131,9 @@
     <ChainInfoPage 
       chainStatic={data.chainStatic}
       {chainDynamic}
+      {chainStatus}
       {loadingDynamic}
+      {loadingStatus}
       {metricsSpan}
       onSpanChange={(span) => metricsSpan = span}
     />

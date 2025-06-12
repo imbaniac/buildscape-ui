@@ -13,6 +13,21 @@ interface ChainMetricsResponse {
   last_block: number;
 }
 
+interface ChainStatusResponse {
+  chain_id: number;
+  name: string;
+  status: string;
+  current_block: number;
+  target_block: number;
+  sync_progress: number;
+  last_error: string | null;
+  last_error_at: string | null;
+  retry_in_seconds: number | null;
+  gas_price_gwei: number;
+  block_size_mb: number;
+  utilization_pct: number;
+}
+
 export function getDynamicDataFactory(chainId: number) {
   return async function getDynamicData(span: "1h" | "24h" | "7d" | "30d") {
     try {
@@ -47,4 +62,20 @@ export function getDynamicDataFactory(chainId: number) {
       return null;
     }
   };
+}
+
+export async function getChainStatus(chainId: number): Promise<ChainStatusResponse | null> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/chains/${chainId}/status`);
+    
+    if (!response.ok) {
+      throw new Error(`API request failed: ${response.status}`);
+    }
+    
+    const data: ChainStatusResponse = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Failed to fetch chain status:", error);
+    return null;
+  }
 }

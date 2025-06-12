@@ -5,7 +5,9 @@
   interface Props {
     chainStatic: any;
     chainDynamic: any;
+    chainStatus: any;
     loadingDynamic: boolean;
+    loadingStatus: boolean;
     metricsSpan: "1h" | "24h" | "7d" | "30d";
     onSpanChange: (span: "1h" | "24h" | "7d" | "30d") => void;
   }
@@ -13,7 +15,9 @@
   let {
     chainStatic,
     chainDynamic,
+    chainStatus,
     loadingDynamic,
+    loadingStatus,
     metricsSpan,
     onSpanChange,
   }: Props = $props();
@@ -177,9 +181,7 @@
     {/if}
   </div>
 
-  {#if chainDynamic}
-    <NetworkStatus {chainDynamic} />
-  {/if}
+  <NetworkStatus {chainDynamic} {chainStatus} {loadingStatus} />
 
   <ActivityMetrics
     {metricsSpan}
