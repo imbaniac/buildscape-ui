@@ -8,9 +8,10 @@
     onSpanChange: (span: "1h" | "24h" | "7d" | "30d") => void;
     loadingDynamic: boolean;
     chainDynamic: any;
+    brandColor?: string;
   }
 
-  let { metricsSpan, onSpanChange, loadingDynamic, chainDynamic }: Props =
+  let { metricsSpan, onSpanChange, loadingDynamic, chainDynamic, brandColor = '#3b82f6' }: Props =
     $props();
 
   const spans: Array<"1h" | "24h" | "7d" | "30d"> = ["1h", "24h", "7d", "30d"];
@@ -27,6 +28,7 @@
         class="metric-tab"
         class:active={metricsSpan === span}
         onclick={() => onSpanChange(span)}
+        style="--brand-color: {brandColor}"
       >
         {span}
       </button>
@@ -107,7 +109,7 @@
   }
 
   .metric-tab.active {
-    background: #3b82f6;
+    background: var(--brand-color);
     color: white;
   }
 

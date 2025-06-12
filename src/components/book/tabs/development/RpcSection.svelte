@@ -7,9 +7,10 @@
 
   interface Props {
     rpcs: RpcItem[] | any[];
+    brandColor?: string;
   }
 
-  let { rpcs = [] }: Props = $props();
+  let { rpcs = [], brandColor = '#3b82f6' }: Props = $props();
   
   let copiedUrl = $state<string | null>(null);
   
@@ -31,7 +32,7 @@
   }
 </script>
 
-<div class="rpc-modern">
+<div class="rpc-modern" style="--brand-color: {brandColor}">
   {#if officialRpcs.length}
     <div class="rpc-section">
       <h4 class="rpc-section-title">
@@ -252,8 +253,8 @@
   }
   
   .rpc-copy-btn:hover {
-    background: #3b82f6;
-    border-color: #3b82f6;
+    background: var(--brand-color);
+    border-color: var(--brand-color);
     color: white;
   }
   

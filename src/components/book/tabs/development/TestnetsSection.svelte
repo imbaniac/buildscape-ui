@@ -10,9 +10,10 @@
 
   interface Props {
     testnets: (TestnetInfo | string)[];
+    brandColor?: string;
   }
 
-  let { testnets = [] }: Props = $props();
+  let { testnets = [], brandColor = '#3b82f6' }: Props = $props();
   
   let copiedRpc = $state<string | null>(null);
   
@@ -128,7 +129,7 @@
   }
 </script>
 
-<div class="testnets-modern">
+<div class="testnets-modern" style="--brand-color: {brandColor}">
   {#each testnets as testnet}
     {@const testnetInfo = typeof testnet === 'string' ? { name: testnet } : testnet}
     <div class="testnet-card">
@@ -347,8 +348,8 @@
   }
   
   .wallet-btn:hover:not(:disabled) {
-    background: #3b82f6;
-    border-color: #3b82f6;
+    background: var(--brand-color);
+    border-color: var(--brand-color);
     color: white;
   }
   
@@ -548,8 +549,8 @@
   }
   
   .rpc-copy-btn:hover {
-    background: #3b82f6;
-    border-color: #3b82f6;
+    background: var(--brand-color);
+    border-color: var(--brand-color);
     color: white;
   }
   

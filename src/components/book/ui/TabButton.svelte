@@ -2,13 +2,19 @@
   interface Props {
     active?: boolean;
     onclick: () => void;
+    brandColor?: string;
     children?: import("svelte").Snippet;
   }
 
-  let { active = false, onclick, children }: Props = $props();
+  let { active = false, onclick, brandColor = '#3b82f6', children }: Props = $props();
 </script>
 
-<button class="tab-button" class:active {onclick}>
+<button 
+  class="tab-button" 
+  class:active 
+  {onclick}
+  style="--brand-color: {brandColor}"
+>
   {#if children}
     {@render children()}
   {/if}
@@ -42,7 +48,7 @@
     left: 0;
     right: 0;
     height: 2px;
-    background: #3b82f6;
+    background: var(--brand-color);
     transform: scaleX(0);
     transition: transform 0.2s ease;
     transform-origin: center;
@@ -53,7 +59,7 @@
   }
 
   .tab-button.active {
-    color: #3b82f6;
+    color: var(--brand-color);
     font-weight: 600;
   }
 

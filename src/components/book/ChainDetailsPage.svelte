@@ -41,6 +41,7 @@
           <TabButton
             active={tabGroups.find(g => g.id === group.id)?.isActive}
             onclick={() => onTabClick(group.id, group.id)}
+            brandColor={chainStatic.color}
           >
             {group.name}
           </TabButton>

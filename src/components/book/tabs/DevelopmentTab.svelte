@@ -19,10 +19,11 @@
     developmentTab?.fields.find((f: BookmarkField) => f.field === activeTab) || 
     developmentTab?.fields[0]
   );
+  const brandColor = chainStatic.color || '#3b82f6';
 </script>
 
 {#if activeField}
-  <div class="subtabs">
+  <div class="subtabs" style="--brand-color: {brandColor}">
     {#each developmentTab?.fields || [] as field}
       <button
         class="subtab-button"
@@ -35,9 +36,9 @@
   </div>
   
   {#if activeField.field === 'rpcs' && chainStatic.rpcs}
-    <RpcSection rpcs={chainStatic.rpcs} />
+    <RpcSection rpcs={chainStatic.rpcs} brandColor={brandColor} />
   {:else if activeField.field === 'testnets'}
-    <TestnetsSection testnets={chainStatic.testnets || []} />
+    <TestnetsSection testnets={chainStatic.testnets || []} brandColor={brandColor} />
   {:else if activeField.field === 'sdks' || activeField.field === 'tools'}
     {#if activeField.field === 'sdks'}
       <blockquote class="section-quote">
@@ -88,9 +89,9 @@
   }
 
   .subtab-button.active {
-    background: #3b82f6;
+    background: var(--brand-color);
     color: white;
-    border-color: #3b82f6;
+    border-color: var(--brand-color);
   }
 
   .section-quote {

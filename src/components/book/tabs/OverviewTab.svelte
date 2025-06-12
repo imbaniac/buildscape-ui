@@ -6,9 +6,10 @@
   }
 
   let { chainStatic }: Props = $props();
+  const brandColor = chainStatic.color || '#3b82f6';
 </script>
 
-<div class="prose">
+<div class="prose" style="--brand-color: {brandColor}">
   <h2>What is {chainStatic.name}?</h2>
   {@html marked.parse(chainStatic.description)}
 
@@ -78,14 +79,14 @@
   }
 
   .prose :global(a) {
-    color: #3b82f6;
+    color: var(--brand-color);
     text-decoration: underline;
     text-underline-offset: 2px;
     transition: color 0.2s;
   }
 
   .prose :global(a:hover) {
-    color: #2563eb;
+    color: color-mix(in srgb, var(--brand-color) 80%, black);
   }
 
   .prose :global(code) {
@@ -168,13 +169,13 @@
   }
 
   .language-card.primary {
-    background: #f5f3ff;
-    border: 1px solid #4338ca;
+    background: color-mix(in srgb, var(--brand-color) 5%, white);
+    border: 1px solid var(--brand-color);
   }
 
   .language-card.primary:hover {
-    background: #ede9fe;
-    border: 1px solid #4338ca;
+    background: color-mix(in srgb, var(--brand-color) 10%, white);
+    border: 1px solid var(--brand-color);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   }
@@ -193,7 +194,7 @@
   }
   
   .language-card.primary .language-details {
-    color: #4338ca;
+    color: var(--brand-color);
   }
 
   @media (max-width: 640px) {

@@ -112,7 +112,7 @@
     <h1 class="chain-title">{chainStatic.name}</h1>
     <div class="chain-subtitle">
       <span>Chain ID: {chainStatic.chainId}</span>
-      <button class="add-wallet-btn" onclick={addToWallet}>
+      <button class="add-wallet-btn" onclick={addToWallet} style="--brand-color: {chainStatic.color}">
         <svg
           width="14"
           height="14"
@@ -188,6 +188,7 @@
     {onSpanChange}
     {loadingDynamic}
     {chainDynamic}
+    brandColor={chainStatic.color}
   />
 </div>
 
@@ -375,9 +376,9 @@
   }
 
   .add-wallet-btn:hover {
-    color: #3b82f6;
-    border-color: #3b82f6;
-    background: #f0f9ff;
+    color: var(--brand-color);
+    border-color: var(--brand-color);
+    background: color-mix(in srgb, var(--brand-color) 10%, white);
   }
 
   .add-wallet-btn svg {
