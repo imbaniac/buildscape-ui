@@ -5,12 +5,12 @@
 
   let { gasPrice }: Props = $props();
   
-  const getGasLevel = $derived(() => {
-    if (gasPrice <= 10) return { level: 'low', color: '#10b981', label: 'Low' };
-    if (gasPrice <= 30) return { level: 'medium', color: '#f59e0b', label: 'Medium' };
-    if (gasPrice <= 50) return { level: 'high', color: '#f97316', label: 'High' };
-    return { level: 'very-high', color: '#ef4444', label: 'Very High' };
-  });
+  const gasLevel = $derived(
+    gasPrice <= 10 ? { level: 'low', color: '#10b981', label: 'Low' } :
+    gasPrice <= 30 ? { level: 'medium', color: '#f59e0b', label: 'Medium' } :
+    gasPrice <= 50 ? { level: 'high', color: '#f97316', label: 'High' } :
+    { level: 'very-high', color: '#ef4444', label: 'Very High' }
+  );
   
   // Convert gas price to angle (0-180 degrees)
   const meterAngle = $derived(Math.min((gasPrice / 100) * 180, 180));
@@ -31,7 +31,7 @@
       <path
         d="M 10 60 A 50 50 0 0 1 110 60"
         fill="none"
-        stroke={getGasLevel.color}
+        stroke={gasLevel.color}
         stroke-width="6"
         stroke-linecap="round"
         stroke-dasharray={`${(meterAngle / 180) * 157} 157`}
