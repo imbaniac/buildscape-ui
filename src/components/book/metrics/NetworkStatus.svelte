@@ -39,12 +39,16 @@
         return { color: '#6b7280', label: 'Disabled', pulse: false };
       case 'not_configured':
         return { color: '#94a3b8', label: 'Not Configured', pulse: false };
+      case 'connecting':
+        return { color: '#3b82f6', label: 'Connecting...', pulse: true };
+      case 'no_data':
+        return { color: '#94a3b8', label: 'No Data', pulse: false };
       default:
         return { color: '#6b7280', label: status, pulse: false };
     }
   }
   
-  const statusInfo = $derived(getStatusInfo(chainStatus?.status || 'stopped'));
+  const statusInfo = $derived(getStatusInfo(chainStatus?.status || (loadingStatus ? 'connecting' : 'no_data')));
 </script>
 
 <div class="network-status">
