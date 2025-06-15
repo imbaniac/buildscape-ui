@@ -8,6 +8,7 @@ logo: arbitrum_one.svg
 parentOrganization: Offchain Labs
 website: https://arbitrum.io
 launchDate: 2021-08-31
+maxBlockSize: 32
 technology:
   type: Optimistic Rollup
   settlementLayer: Ethereum

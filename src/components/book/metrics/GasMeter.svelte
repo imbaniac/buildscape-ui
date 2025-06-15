@@ -1,9 +1,12 @@
 <script lang="ts">
+  import Tooltip from '../ui/Tooltip.svelte';
+  
   interface Props {
     gasPrice: number;
+    fullGasPrice?: number;
   }
 
-  let { gasPrice }: Props = $props();
+  let { gasPrice, fullGasPrice }: Props = $props();
   
   const gasLevel = $derived(
     gasPrice <= 10 ? { level: 'low', color: '#10b981', label: 'Low' } :
@@ -39,8 +42,15 @@
       />
     </svg>
     <div class="gas-value-container">
-      <span class="gas-value">{gasPrice}</span>
-      <span class="gas-unit">gwei</span>
+      {#if fullGasPrice !== undefined && fullGasPrice !== gasPrice}
+        <Tooltip text={`${fullGasPrice.toFixed(9)} gwei`}>
+          <span class="gas-value">{gasPrice}</span>
+          <span class="gas-unit">gwei</span>
+        </Tooltip>
+      {:else}
+        <span class="gas-value">{gasPrice}</span>
+        <span class="gas-unit">gwei</span>
+      {/if}
     </div>
   </div>
 </div>

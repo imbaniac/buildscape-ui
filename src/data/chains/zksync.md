@@ -7,6 +7,7 @@ logo: zksync.png
 parentOrganization: Matter Labs
 website: https://zksync.io
 launchDate: 2024-03-24
+maxBlockSize: 128
 technology:
   type: ZK Rollup
   settlementLayer: Ethereum

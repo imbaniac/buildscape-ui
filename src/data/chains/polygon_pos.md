@@ -7,6 +7,7 @@ logo: polygon.svg
 parentOrganization: Polygon Labs
 website: https://polygon.technology
 launchDate: 2020-05-30
+maxBlockSize: 30
 technology:
   type: Sidechain
   settlementLayer: Ethereum

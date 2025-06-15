@@ -9,9 +9,11 @@
     chainDynamic: any;
     chainStatus: any;
     loadingStatus: boolean;
+    brandColor?: string;
+    maxBlockSize?: number;
   }
 
-  let { chainDynamic, chainStatus, loadingStatus }: Props = $props();
+  let { chainDynamic, chainStatus, loadingStatus, brandColor = '#8b5cf6', maxBlockSize }: Props = $props();
   
   // Only show skeleton on initial load, not on updates
   const showSkeleton = $derived(loadingStatus && !chainStatus && !chainDynamic);
@@ -22,7 +24,7 @@
       case 'starting':
         return { color: '#3b82f6', label: 'Starting', pulse: true };
       case 'syncing':
-        return { color: '#8b5cf6', label: 'Syncing', pulse: true };
+        return { color: brandColor, label: 'Syncing', pulse: true };
       case 'live':
         return { color: '#10b981', label: 'Live', pulse: false };
       case 'paused':
@@ -74,7 +76,10 @@
       {#if showSkeleton}
         <SkeletonLoader height="45px" />
       {:else}
-        <GasMeter gasPrice={Math.round(chainStatus?.gas_price_gwei || chainDynamic?.lastGas || 0)} />
+        <GasMeter 
+          gasPrice={Math.round(chainStatus?.gas_price_gwei || chainDynamic?.lastGas || 0)} 
+          fullGasPrice={chainStatus?.gas_price_gwei || chainDynamic?.lastGas || 0}
+        />
       {/if}
     </div>
     <div class="status-item">
@@ -83,7 +88,7 @@
         <SkeletonLoader height="1.25rem" />
       {:else}
         <span class="status-value">
-          {chainStatus?.block_size_mb?.toFixed(2) || chainDynamic?.lastBlockSize || '0'} MB
+          {chainStatus?.block_size_mb?.toFixed(2) || chainDynamic?.lastBlockSize || '0'}{maxBlockSize ? ` / ${maxBlockSize}` : ''} MB
         </span>
       {/if}
     </div>

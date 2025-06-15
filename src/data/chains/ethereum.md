@@ -7,6 +7,7 @@ logo: ethereum.svg
 parentOrganization: Ethereum Foundation
 website: https://ethereum.org
 launchDate: 2015-07-30
+maxBlockSize: 30
 technology:
   isL2: false
   isEVM: true

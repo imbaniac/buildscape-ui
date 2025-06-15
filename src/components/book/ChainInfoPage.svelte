@@ -111,7 +111,10 @@
         class="chain-logo"
       />
     {/if}
-    <h1 class="chain-title">{chainStatic.name}</h1>
+    <h1 class="chain-title">
+      {chainStatic.name}
+      <sup class="footnote-ref">1</sup>
+    </h1>
     <div class="chain-subtitle">
       <span>Chain ID: {chainStatic.chainId}</span>
       {#if chainStatic.website}
@@ -152,18 +155,12 @@
   {#if chainStatic.parentOrganization}
     <div class="author-attribution">
       <div class="author-line"></div>
-      <span class="author-text">by {chainStatic.parentOrganization}</span>
+      <span class="author-text">
+        by {chainStatic.parentOrganization}{#if chainStatic.launchDate}<sup class="footnote-ref">2</sup>{/if}
+      </span>
       <div class="author-line"></div>
     </div>
   {/if}
-
-  <div class="stats-line">
-    <span>Total Value Locked: {#if chainStatus?.tvl}${(chainStatus.tvl / 1e9).toFixed(1)}B{:else}—{/if}</span>
-    {#if chainStatic.launchDate}
-      <span class="stats-separator">·</span>
-      <span>Live Since: {new Date(chainStatic.launchDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}</span>
-    {/if}
-  </div>
 
   <div class="tech-stamps">
     <div class="stamp-container">
@@ -239,7 +236,13 @@
     {/if}
   </div>
 
-  <NetworkStatus {chainDynamic} {chainStatus} {loadingStatus} />
+  <NetworkStatus
+    {chainDynamic}
+    {chainStatus}
+    {loadingStatus}
+    brandColor={chainStatic.color}
+    maxBlockSize={chainStatic.maxBlockSize}
+  />
 
   <ActivityMetrics
     {metricsSpan}
@@ -248,6 +251,17 @@
     {chainDynamic}
     brandColor={chainStatic.color}
   />
+
+  <div class="footnotes">
+    <div class="footnote">
+      <sup>1</sup> Total Value Locked: {#if chainStatus?.tvl}${(chainStatus.tvl / 1e9).toFixed(1)}B{:else}—{/if}
+    </div>
+    {#if chainStatic.launchDate}
+      <div class="footnote">
+        <sup>2</sup> Live Since {new Date(chainStatic.launchDate).toLocaleDateString("en-US", { year: "numeric", month: "long" })}
+      </div>
+    {/if}
+  </div>
 </div>
 
 <style>
@@ -259,13 +273,13 @@
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.25rem;
     position: relative;
   }
 
   .chain-header {
     text-align: center;
-    margin-bottom: 0;
+    margin-bottom: 0.5rem;
   }
 
   .chain-logo {
@@ -277,19 +291,21 @@
 
   .chain-title {
     font-size: 2.5rem;
-    font-weight: 700;
+    font-weight: 600;
     margin: 0 0 0.5rem;
-    color: #1a202c;
+    color: #1e293b;
+    line-height: 1.2;
   }
 
   .chain-subtitle {
     display: flex;
     align-items: center;
     gap: 1rem;
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: #64748b;
-    font-weight: 500;
+    font-weight: 400;
     justify-content: center;
+    line-height: 1.5;
   }
 
   .tech-stamps {
@@ -316,14 +332,14 @@
     background: rgba(255, 255, 255, 0.7);
     border: 2px solid #d4d4d8;
     border-radius: 2px;
-    font-family: Georgia, "Times New Roman", serif;
     position: relative;
     box-shadow: 0 0.5px 2px rgba(0, 0, 0, 0.05);
-    transform: rotate(-1deg);
+    transform: rotate(-0.5deg);
+    transition: transform 0.2s ease;
   }
 
   .tech-stamp:hover {
-    transform: rotate(-1deg) scale(1.05);
+    transform: rotate(-0.5deg) scale(1.03);
   }
 
   /* Stamp texture effect */
@@ -361,7 +377,7 @@
   }
 
   .stamp-value {
-    font-size: 0.75rem;
+    font-size: 0.875rem;
     font-weight: 600;
     color: #475569;
     text-transform: uppercase;
@@ -371,35 +387,35 @@
 
   /* Individual stamp rotations for organic look */
   .stamp-container:nth-child(1) .tech-stamp {
-    transform: rotate(-2deg);
+    transform: rotate(-1deg);
   }
   .stamp-container:nth-child(2) .tech-stamp {
-    transform: rotate(1deg);
+    transform: rotate(0.5deg);
   }
   .stamp-container:nth-child(3) .tech-stamp {
-    transform: rotate(-1.5deg);
+    transform: rotate(-0.75deg);
   }
   .stamp-container:nth-child(4) .tech-stamp {
-    transform: rotate(2deg);
+    transform: rotate(1deg);
   }
   .stamp-container:nth-child(5) .tech-stamp {
-    transform: rotate(-1deg);
+    transform: rotate(-0.5deg);
   }
 
   .stamp-container:nth-child(1) .tech-stamp:hover {
-    transform: rotate(-2deg) scale(1.05);
+    transform: rotate(-1deg) scale(1.03);
   }
   .stamp-container:nth-child(2) .tech-stamp:hover {
-    transform: rotate(1deg) scale(1.05);
+    transform: rotate(0.5deg) scale(1.03);
   }
   .stamp-container:nth-child(3) .tech-stamp:hover {
-    transform: rotate(-1.5deg) scale(1.05);
+    transform: rotate(-0.75deg) scale(1.03);
   }
   .stamp-container:nth-child(4) .tech-stamp:hover {
-    transform: rotate(2deg) scale(1.05);
+    transform: rotate(1deg) scale(1.03);
   }
   .stamp-container:nth-child(5) .tech-stamp:hover {
-    transform: rotate(-1deg) scale(1.05);
+    transform: rotate(-0.5deg) scale(1.03);
   }
 
   /* Special stamp colors */
@@ -445,18 +461,36 @@
     flex-shrink: 0;
   }
 
-  /* Stats line */
-  .stats-line {
-    text-align: center;
-    font-size: 0.875rem;
-    color: #64748b;
-    margin-top: 0.75rem;
-    margin-bottom: 1.5rem;
+  /* Footnotes */
+  .footnotes {
+    margin-top: auto;
+    padding-top: 2rem;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
   }
 
-  .stats-separator {
-    margin: 0 0.75rem;
-    color: #cbd5e1;
+  .footnote {
+    font-size: 0.75rem;
+    color: #64748b;
+    line-height: 1.5;
+  }
+
+  .footnote sup {
+    font-size: 0.625rem;
+    margin-right: 0.25rem;
+    color: #94a3b8;
+  }
+
+  /* Footnote references in main content */
+  .footnote-ref {
+    font-size: 0.6em;
+    font-weight: 400;
+    color: #94a3b8;
+    vertical-align: super;
+    margin-left: 0.125rem;
+    font-style: normal;
   }
 
   /* Book-style author attribution */
@@ -464,7 +498,7 @@
     display: flex;
     align-items: center;
     gap: 1rem;
-    margin: 0.5rem 0;
+    margin: 0.75rem 0;
     padding: 0 2rem;
   }
 
@@ -480,7 +514,6 @@
     color: #64748b;
     font-weight: 400;
     white-space: nowrap;
-    font-family: Georgia, "Times New Roman", serif;
     letter-spacing: 0.025em;
   }
 
@@ -652,6 +685,14 @@
     .stamp-value {
       font-size: 0.75rem;
     }
+
+    .footnotes {
+      padding-top: 1.5rem;
+    }
+
+    .footnote {
+      font-size: 0.6875rem;
+    }
   }
 
   /* Chain subtitle elements */
@@ -669,6 +710,4 @@
     opacity: 0.8;
     text-decoration: underline;
   }
-
-
 </style>

@@ -7,6 +7,7 @@ logo: polygon.svg
 parentOrganization: Polygon Labs
 website: https://polygon.technology/polygon-zkevm
 launchDate: 2023-03-27
+maxBlockSize: 30
 technology:
   type: ZK Rollup
   settlementLayer: Ethereum

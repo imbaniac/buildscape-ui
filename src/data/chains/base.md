@@ -7,6 +7,7 @@ logo: base.svg
 parentOrganization: Coinbase
 website: https://base.org
 launchDate: 2023-07-13
+maxBlockSize: 30
 technology:
   type: Optimistic Rollup
   settlementLayer: Ethereum

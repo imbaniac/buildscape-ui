@@ -8,6 +8,7 @@ logo: arbitrum_nova.svg
 parentOrganization: Offchain Labs
 website: https://arbitrum.io
 launchDate: 2022-08-09
+maxBlockSize: 32
 techStack: Arbitrum
 technology:
   type: AnyTrust
