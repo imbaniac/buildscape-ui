@@ -1,7 +1,6 @@
 <script lang="ts">
   import { formatNumberWithCommas } from '$lib/utils/formatters';
   import Tooltip from '../ui/Tooltip.svelte';
-  import NumberAnimation from '../ui/NumberAnimation.svelte';
   import SkeletonLoader from '../ui/SkeletonLoader.svelte';
   import GasMeter from './GasMeter.svelte';
   import UtilizationBar from './UtilizationBar.svelte';
@@ -59,15 +58,6 @@
     </div>
   </div>
   
-  <div class="sync-progress-container">
-    {#if chainStatus?.sync_progress > 0 && chainStatus?.status === 'syncing'}
-      <div class="sync-progress-bar">
-        <div class="sync-progress-fill" style="width: {chainStatus.sync_progress * 100}%"></div>
-        <span class="sync-progress-text">{Math.round(chainStatus.sync_progress * 100)}% synced</span>
-      </div>
-    {/if}
-  </div>
-  
   <div class="status-grid">
     <div class="status-item">
       <span class="status-label">Last Block</span>
@@ -75,10 +65,7 @@
         <SkeletonLoader height="1.25rem" />
       {:else}
         <span class="status-value">
-          <NumberAnimation 
-            value={chainStatus?.current_block || chainDynamic?.lastBlock || 0} 
-            format={formatNumberWithCommas}
-          />
+          {formatNumberWithCommas(chainStatus?.current_block || chainDynamic?.lastBlock || 0)}
         </span>
       {/if}
     </div>
@@ -182,7 +169,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
   }
   
   .status-indicator-container {
@@ -237,32 +224,6 @@
     color: #64748b;
   }
   
-  .sync-progress-container {
-    height: 1.5rem;
-    margin-bottom: 0.5rem;
-  }
-  
-  .sync-progress-bar {
-    height: 4px;
-    background: #e2e8f0;
-    border-radius: 2px;
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .sync-progress-fill {
-    height: 100%;
-    background: #8b5cf6;
-    transition: width 0.3s ease;
-  }
-  
-  .sync-progress-text {
-    position: absolute;
-    top: -20px;
-    right: 0;
-    font-size: 0.625rem;
-    color: #64748b;
-  }
 
   .status-value {
     font-size: 1rem;

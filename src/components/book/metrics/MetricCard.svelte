@@ -1,6 +1,5 @@
 <script lang="ts">
   import Tooltip from '../ui/Tooltip.svelte';
-  import NumberAnimation from '../ui/NumberAnimation.svelte';
   import SkeletonLoader from '../ui/SkeletonLoader.svelte';
   
   interface Props {
@@ -23,9 +22,7 @@
     <Tooltip text={tooltip}>
       <span class="metric-value with-tooltip">
         {#if typeof value === 'number' && formatter}
-          <NumberAnimation value={value} format={formatter} />
-        {:else if typeof value === 'number'}
-          <NumberAnimation value={value} />
+          {formatter(value)}
         {:else}
           {value || '0'}
         {/if}
@@ -34,9 +31,7 @@
   {:else}
     <span class="metric-value">
       {#if typeof value === 'number' && formatter}
-        <NumberAnimation value={value} format={formatter} />
-      {:else if typeof value === 'number'}
-        <NumberAnimation value={value} />
+        {formatter(value)}
       {:else}
         {value || '0'}
       {/if}

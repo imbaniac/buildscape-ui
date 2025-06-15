@@ -9,7 +9,7 @@ export function formatNumber(num: number | string): string {
   } else if (n >= 1e3) {
     return (n / 1e3).toFixed(1).replace(/\.0$/, "") + "k";
   }
-  return n.toString();
+  return Math.round(n).toString();
 }
 
 export function formatNumberWithCommas(num: number | string): string {

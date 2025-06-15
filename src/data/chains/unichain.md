@@ -6,6 +6,7 @@ darkColor: "#C3008A"
 logo: unichain.svg
 parentOrganization: Uniswap Labs
 website: https://unichain.org
+launchDate: 2024-10-31
 technology:
   type: Optimistic Rollup
   settlementLayer: Ethereum

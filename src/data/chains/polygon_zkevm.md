@@ -6,6 +6,7 @@ darkColor: "#5D2FB8"
 logo: polygon.svg
 parentOrganization: Polygon Labs
 website: https://polygon.technology/polygon-zkevm
+launchDate: 2023-03-27
 technology:
   type: ZK Rollup
   settlementLayer: Ethereum

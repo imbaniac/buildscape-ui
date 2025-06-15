@@ -6,6 +6,7 @@ darkColor: "#0E16A5"
 logo: zksync.png
 parentOrganization: Matter Labs
 website: https://zksync.io
+launchDate: 2024-03-24
 technology:
   type: ZK Rollup
   settlementLayer: Ethereum

@@ -5,9 +5,10 @@
     value: number;
     duration?: number;
     format?: (value: number) => string;
+    mode?: 'smooth' | 'instant';
   }
 
-  let { value, duration = 800, format = (v) => String(v) }: Props = $props();
+  let { value, duration = 800, format = (v) => String(v), mode = 'instant' }: Props = $props();
   
   let displayValue = $state(value);
   let animationId: number | null = null;
@@ -25,7 +26,7 @@
     }
     
     // Skip animation on first render or if values are the same
-    if (isFirstRender || from === to) {
+    if (isFirstRender || from === to || mode === 'instant') {
       displayValue = to;
       isFirstRender = false;
       return;

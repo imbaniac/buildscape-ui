@@ -7,6 +7,7 @@ nativeCurrency: ETH
 logo: arbitrum_one.svg
 parentOrganization: Offchain Labs
 website: https://arbitrum.io
+launchDate: 2021-08-31
 technology:
   type: Optimistic Rollup
   settlementLayer: Ethereum

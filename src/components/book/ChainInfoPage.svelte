@@ -121,36 +121,32 @@
           target="_blank"
           rel="noopener noreferrer"
           class="chain-website"
+          style="color: {chainStatic.color}"
         >
-          {chainStatic.website.replace(/^https?:\/\//, "")}
+          Website
         </a>
       {/if}
-      {#if chainStatus?.tvl}
-        <span class="separator">•</span>
-        <span class="chain-tvl"
-          >TVL: ${(chainStatus.tvl / 1e9).toFixed(1)}B</span
-        >
-      {/if}
-    </div>
-    <button
-      class="add-wallet-btn"
-      onclick={addToWallet}
-      style="--brand-color: {chainStatic.color}"
-    >
-      <svg
-        width="14"
-        height="14"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
+      <span class="separator">•</span>
+      <button
+        class="add-wallet-btn-inline"
+        onclick={addToWallet}
+        style="--brand-color: {chainStatic.color}"
       >
-        <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" />
-        <path d="M3 5v14a2 2 0 0 0 2 2h16v-7" />
-        <path d="M18 12a2 2 0 0 0 0 4h4v-4h-4z" />
-      </svg>
-      Add to Wallet
-    </button>
+        <svg
+          width="12"
+          height="12"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" />
+          <path d="M3 5v14a2 2 0 0 0 2 2h16v-7" />
+          <path d="M18 12a2 2 0 0 0 0 4h4v-4h-4z" />
+        </svg>
+        Add to Wallet
+      </button>
+    </div>
   </div>
 
   {#if chainStatic.parentOrganization}
@@ -160,6 +156,14 @@
       <div class="author-line"></div>
     </div>
   {/if}
+
+  <div class="stats-line">
+    <span>Total Value Locked: {#if chainStatus?.tvl}${(chainStatus.tvl / 1e9).toFixed(1)}B{:else}—{/if}</span>
+    {#if chainStatic.launchDate}
+      <span class="stats-separator">·</span>
+      <span>Live Since: {new Date(chainStatic.launchDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}</span>
+    {/if}
+  </div>
 
   <div class="tech-stamps">
     <div class="stamp-container">
@@ -417,32 +421,42 @@
     border-color: #d4d4d8;
   }
 
-  .add-wallet-btn {
+  .add-wallet-btn-inline {
     display: inline-flex;
     align-items: center;
-    gap: 0.375rem;
-    padding: 0.375rem 0.75rem;
+    gap: 0.25rem;
+    padding: 0;
     background: transparent;
     color: #64748b;
-    border: 1px solid #e2e8f0;
-    border-radius: 5px;
-    font-size: 0.8125rem;
+    border: none;
+    font-size: 0.875rem;
     font-weight: 500;
     font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto,
       sans-serif;
     cursor: pointer;
-    transition: none;
-    margin-top: 0.75rem;
+    transition: color 0.2s;
   }
 
-  .add-wallet-btn:hover {
+  .add-wallet-btn-inline:hover {
     color: var(--brand-color);
-    border-color: var(--brand-color);
-    background: color-mix(in srgb, var(--brand-color) 10%, white);
   }
 
-  .add-wallet-btn svg {
+  .add-wallet-btn-inline svg {
     flex-shrink: 0;
+  }
+
+  /* Stats line */
+  .stats-line {
+    text-align: center;
+    font-size: 0.875rem;
+    color: #64748b;
+    margin-top: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .stats-separator {
+    margin: 0 0.75rem;
+    color: #cbd5e1;
   }
 
   /* Book-style author attribution */
@@ -647,18 +661,14 @@
   }
 
   .chain-website {
-    color: #3b82f6;
     text-decoration: none;
-    transition: color 0.2s;
+    transition: opacity 0.2s;
   }
 
   .chain-website:hover {
-    color: #2563eb;
+    opacity: 0.8;
     text-decoration: underline;
   }
 
-  .chain-tvl {
-    color: #64748b;
-    font-weight: 500;
-  }
+
 </style>
