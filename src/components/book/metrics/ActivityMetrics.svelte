@@ -64,12 +64,6 @@
       loading={showSkeleton}
     />
   </div>
-  
-  {#if !loadingDynamic && !chainDynamic}
-    <div class="no-metrics">
-      <p>No live metrics available</p>
-    </div>
-  {/if}
 </div>
 
 <style>
@@ -118,12 +112,6 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     gap: 0.75rem;
-  }
-
-  .no-metrics {
-    text-align: center;
-    padding: 3rem;
-    color: #64748b;
   }
 
   @media (max-width: 1024px) {
@@ -180,11 +168,6 @@
     }
 
     .metrics-loading {
-      padding: 2rem;
-      font-size: 0.875rem;
-    }
-
-    .no-metrics {
       padding: 2rem;
       font-size: 0.875rem;
     }

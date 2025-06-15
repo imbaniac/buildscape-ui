@@ -58,7 +58,7 @@ export function getDynamicDataFactory(chainId: number) {
     } catch (error) {
       console.error("Failed to fetch chain metrics:", error);
 
-      // Return null to show "No live metrics available" in UI
+      // Return null if metrics fetch fails
       return null;
     }
   };
