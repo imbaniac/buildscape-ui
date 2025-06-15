@@ -1,5 +1,5 @@
 // Configuration for API endpoint
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3003";
+const API_BASE_URL = import.meta.env.VITE_API_URL || "https://api.buildscape.org";
 
 interface ChainMetricsResponse {
   period: string;
@@ -26,6 +26,7 @@ interface ChainStatusResponse {
   gas_price_gwei: number;
   block_size_mb: number;
   utilization_pct: number;
+  tvl: number;
 }
 
 export function getDynamicDataFactory(chainId: number) {
@@ -33,7 +34,7 @@ export function getDynamicDataFactory(chainId: number) {
     try {
       // Fetch metrics from the API
       const response = await fetch(
-        `${API_BASE_URL}/api/chains/${chainId}/metrics?period=${span}`
+        `${API_BASE_URL}/chains/${chainId}/metrics?period=${span}`
       );
 
       if (!response.ok) {
@@ -66,7 +67,7 @@ export function getDynamicDataFactory(chainId: number) {
 
 export async function getChainStatus(chainId: number): Promise<ChainStatusResponse | null> {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/chains/${chainId}/status`);
+    const response = await fetch(`${API_BASE_URL}/chains/${chainId}/status`);
     
     if (!response.ok) {
       throw new Error(`API request failed: ${response.status}`);

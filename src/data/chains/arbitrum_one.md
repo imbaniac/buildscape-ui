@@ -6,6 +6,7 @@ chainId: 42161
 nativeCurrency: ETH
 logo: arbitrum_one.svg
 parentOrganization: Offchain Labs
+website: https://arbitrum.io
 technology:
   type: Optimistic Rollup
   settlementLayer: Ethereum

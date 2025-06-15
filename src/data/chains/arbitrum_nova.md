@@ -6,6 +6,7 @@ chainId: 42161
 nativeCurrency: ETH
 logo: arbitrum_nova.svg
 parentOrganization: Offchain Labs
+website: https://arbitrum.io
 techStack: Arbitrum
 technology:
   type: AnyTrust

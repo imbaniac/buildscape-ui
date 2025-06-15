@@ -5,6 +5,7 @@ color: "#0052FF"
 darkColor: "#0041CC"
 logo: base.svg
 parentOrganization: Coinbase
+website: https://base.org
 technology:
   type: Optimistic Rollup
   settlementLayer: Ethereum

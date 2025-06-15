@@ -5,6 +5,7 @@ color: "#FF0420"
 darkColor: "#CC0319"
 logo: optimism.svg
 parentOrganization: Optimism Foundation
+website: https://optimism.io
 technology:
   type: Optimistic Rollup
   settlementLayer: Ethereum

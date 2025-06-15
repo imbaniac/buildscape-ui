@@ -5,6 +5,7 @@ color: "#8A93B2"
 darkColor: "#6B7390"
 logo: ethereum.svg
 parentOrganization: Ethereum Foundation
+website: https://ethereum.org
 technology:
   isL2: false
   isEVM: true

@@ -59,12 +59,14 @@
     </div>
   </div>
   
-  {#if chainStatus?.sync_progress > 0 && chainStatus?.status === 'syncing'}
-    <div class="sync-progress-bar">
-      <div class="sync-progress-fill" style="width: {chainStatus.sync_progress * 100}%"></div>
-      <span class="sync-progress-text">{Math.round(chainStatus.sync_progress * 100)}% synced</span>
-    </div>
-  {/if}
+  <div class="sync-progress-container">
+    {#if chainStatus?.sync_progress > 0 && chainStatus?.status === 'syncing'}
+      <div class="sync-progress-bar">
+        <div class="sync-progress-fill" style="width: {chainStatus.sync_progress * 100}%"></div>
+        <span class="sync-progress-text">{Math.round(chainStatus.sync_progress * 100)}% synced</span>
+      </div>
+    {/if}
+  </div>
   
   <div class="status-grid">
     <div class="status-item">
@@ -235,11 +237,15 @@
     color: #64748b;
   }
   
+  .sync-progress-container {
+    height: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
   .sync-progress-bar {
     height: 4px;
     background: #e2e8f0;
     border-radius: 2px;
-    margin-bottom: 1rem;
     position: relative;
     overflow: hidden;
   }

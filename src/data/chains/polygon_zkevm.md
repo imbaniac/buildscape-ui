@@ -5,6 +5,7 @@ color: "#8247E5"
 darkColor: "#5D2FB8"
 logo: polygon.svg
 parentOrganization: Polygon Labs
+website: https://polygon.technology/polygon-zkevm
 technology:
   type: ZK Rollup
   settlementLayer: Ethereum

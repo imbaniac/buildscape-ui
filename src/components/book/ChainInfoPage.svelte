@@ -114,26 +114,43 @@
     <h1 class="chain-title">{chainStatic.name}</h1>
     <div class="chain-subtitle">
       <span>Chain ID: {chainStatic.chainId}</span>
-      <button
-        class="add-wallet-btn"
-        onclick={addToWallet}
-        style="--brand-color: {chainStatic.color}"
-      >
-        <svg
-          width="14"
-          height="14"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
+      {#if chainStatic.website}
+        <span class="separator">•</span>
+        <a
+          href={chainStatic.website}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="chain-website"
         >
-          <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" />
-          <path d="M3 5v14a2 2 0 0 0 2 2h16v-7" />
-          <path d="M18 12a2 2 0 0 0 0 4h4v-4h-4z" />
-        </svg>
-        Add to Wallet
-      </button>
+          {chainStatic.website.replace(/^https?:\/\//, "")}
+        </a>
+      {/if}
+      {#if chainStatus?.tvl}
+        <span class="separator">•</span>
+        <span class="chain-tvl"
+          >TVL: ${(chainStatus.tvl / 1e9).toFixed(1)}B</span
+        >
+      {/if}
     </div>
+    <button
+      class="add-wallet-btn"
+      onclick={addToWallet}
+      style="--brand-color: {chainStatic.color}"
+    >
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" />
+        <path d="M3 5v14a2 2 0 0 0 2 2h16v-7" />
+        <path d="M18 12a2 2 0 0 0 0 4h4v-4h-4z" />
+      </svg>
+      Add to Wallet
+    </button>
   </div>
 
   {#if chainStatic.parentOrganization}
@@ -176,7 +193,8 @@
         <Tooltip
           text={chainStatic.technology.type === "Optimistic Rollup"
             ? tooltipTexts.optimisticRollup
-            : chainStatic.technology.type === "zk Rollup" || chainStatic.technology.type === "ZK Rollup"
+            : chainStatic.technology.type === "zk Rollup" ||
+                chainStatic.technology.type === "ZK Rollup"
               ? tooltipTexts.zkRollup
               : chainStatic.technology.type === "Sidechain"
                 ? tooltipTexts.sidechain
@@ -414,6 +432,7 @@
       sans-serif;
     cursor: pointer;
     transition: none;
+    margin-top: 0.75rem;
   }
 
   .add-wallet-btn:hover {
@@ -431,7 +450,7 @@
     display: flex;
     align-items: center;
     gap: 1rem;
-    margin: 1.5rem 0;
+    margin: 0.5rem 0;
     padding: 0 2rem;
   }
 
@@ -619,5 +638,27 @@
     .stamp-value {
       font-size: 0.75rem;
     }
+  }
+
+  /* Chain subtitle elements */
+  .separator {
+    color: #cbd5e1;
+    margin: 0 0.5rem;
+  }
+
+  .chain-website {
+    color: #3b82f6;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .chain-website:hover {
+    color: #2563eb;
+    text-decoration: underline;
+  }
+
+  .chain-tvl {
+    color: #64748b;
+    font-weight: 500;
   }
 </style>
