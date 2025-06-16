@@ -95,7 +95,7 @@ chainsData.subscribe((chains) => {
             
             // Financial metrics
             tvl: chainData.tvl,
-            tvl_usd: chainData.tvl || undefined, // For compatibility
+            tvl_usd: chainData.tvl ?? undefined, // For compatibility
             
             // Legacy/compatibility fields
             avg_block_time: 0, // Not provided by SSE

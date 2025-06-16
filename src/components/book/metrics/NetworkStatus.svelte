@@ -2,8 +2,7 @@
   import { formatNumberWithCommas } from '$lib/utils/formatters';
   import Tooltip from '../ui/Tooltip.svelte';
   import SkeletonLoader from '../ui/SkeletonLoader.svelte';
-  import GasMeter from './GasMeter.svelte';
-  import UtilizationBar from './UtilizationBar.svelte';
+  import PressureThermometer from './PressureThermometer.svelte';
   
   interface Props {
     chainDynamic: any;
@@ -76,17 +75,6 @@
       {/if}
     </div>
     <div class="status-item">
-      <span class="status-label">Gas Price</span>
-      {#if showSkeleton}
-        <SkeletonLoader height="45px" />
-      {:else}
-        <GasMeter 
-          gasPrice={Math.round(chainStatus?.gas_price_gwei || chainDynamic?.lastGas || 0)} 
-          fullGasPrice={chainStatus?.gas_price_gwei || chainDynamic?.lastGas || 0}
-        />
-      {/if}
-    </div>
-    <div class="status-item">
       <span class="status-label">Block Size</span>
       {#if showSkeleton}
         <SkeletonLoader height="1.25rem" />
@@ -96,17 +84,21 @@
         </span>
       {/if}
     </div>
-    <div class="status-item">
+    <div class="status-item pressure-item">
       <span class="status-label">
-        Utilization
-        <Tooltip text="Network capacity usage">
+        Gas & Utilization
+        <Tooltip text="Current gas price and network utilization level">
           <span class="info-icon">ⓘ</span>
         </Tooltip>
       </span>
       {#if showSkeleton}
-        <SkeletonLoader height="1.25rem" />
+        <SkeletonLoader height="32px" />
       {:else}
-        <UtilizationBar percentage={Math.round(chainStatus?.utilization_pct || (chainDynamic?.utilization ? parseInt(chainDynamic.utilization) : 0))} />
+        <PressureThermometer 
+          gasPrice={chainStatus?.gas_price_gwei || chainDynamic?.lastGas || 0}
+          utilization={Math.round(chainStatus?.utilization_pct || (chainDynamic?.utilization ? parseInt(chainDynamic.utilization) : 0))}
+          previousGasPrice={chainDynamic?.previousGas}
+        />
       {/if}
     </div>
   </div>
@@ -130,6 +122,11 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 0.75rem;
+  }
+  
+  .pressure-item {
+    grid-column: span 2;
+    overflow: visible;
   }
 
   .status-item {
