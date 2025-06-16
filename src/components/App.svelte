@@ -12,7 +12,6 @@
 
   // Start with a scale that works for both, adjust on mount
   let scale = $state(1.5);
-  let isMobileViewport = false;
   let translateX = $state(0);
   let translateY = $state(0);
   let panStartTranslate = { x: 0, y: 0 };
@@ -351,9 +350,21 @@
     }
   }
 
+  // Touch tracking for tap detection
+  let touchStartTime = 0;
+  let touchStartPos = { x: 0, y: 0 };
+  const TAP_THRESHOLD = 300; // ms
+  const MOVE_THRESHOLD = 10; // pixels
+  
   // Touch event handlers for mobile pinch zoom
   function handleTouchStart(event: TouchEvent) {
-    event.preventDefault(); // Prevent page scroll
+    // Don't prevent default for taps on islands
+    const target = event.target as Element;
+    const isIsland = target.closest('.island-group');
+    
+    if (!isIsland) {
+      event.preventDefault(); // Only prevent scroll for non-island touches
+    }
     
     if (event.touches.length === 2) {
       isPinching = true;
@@ -372,16 +383,25 @@
         y: centerY - rect.height / 2,
       };
     } else if (event.touches.length === 1 && !isPinching) {
-      // Single touch - start pan
-      isPanning = true;
-      startPoint = {
+      // Track for tap detection
+      touchStartTime = Date.now();
+      touchStartPos = {
         x: event.touches[0].clientX,
         y: event.touches[0].clientY,
       };
-      panStartTranslate = {
-        x: translateX,
-        y: translateY,
-      };
+      
+      // Single touch - start pan if not on island
+      if (!isIsland) {
+        isPanning = true;
+        startPoint = {
+          x: event.touches[0].clientX,
+          y: event.touches[0].clientY,
+        };
+        panStartTranslate = {
+          x: translateX,
+          y: translateY,
+        };
+      }
     }
   }
   
@@ -412,9 +432,9 @@
         isInteracting = true;
         lastInteractionTime = now;
         
-        // Accumulate zoom delta with reduced sensitivity
-        zoomDelta += scaleDelta * 0.8; // Reduced amplification
-        zoomMomentum = scaleDelta * 0.1; // Less momentum
+        // Accumulate zoom delta with increased sensitivity for mobile
+        zoomDelta += scaleDelta * 1.5; // Increased for more responsive feel
+        zoomMomentum = scaleDelta * 0.2; // Slightly more momentum
         
         // Start smooth zoom loop if not running
         if (!zoomAnimationFrame) {
@@ -446,7 +466,12 @@
   }
   
   function handleTouchEnd(event: TouchEvent) {
-    event.preventDefault();
+    const target = event.target as Element;
+    const isIsland = target.closest('.island-group');
+    
+    if (!isIsland) {
+      event.preventDefault();
+    }
     
     if (event.touches.length < 2) {
       isPinching = false;
@@ -455,10 +480,33 @@
     }
     
     if (event.touches.length === 0) {
+      // Check if this was a tap
+      const timeDiff = Date.now() - touchStartTime;
+      const touchEndPos = {
+        x: event.changedTouches[0].clientX,
+        y: event.changedTouches[0].clientY,
+      };
+      const moveDist = Math.sqrt(
+        Math.pow(touchEndPos.x - touchStartPos.x, 2) +
+        Math.pow(touchEndPos.y - touchStartPos.y, 2)
+      );
+      
+      // If it's a tap on an island, trigger click
+      if (timeDiff < TAP_THRESHOLD && moveDist < MOVE_THRESHOLD && isIsland) {
+        const clickEvent = new MouseEvent('click', {
+          bubbles: true,
+          cancelable: true,
+          view: window,
+          clientX: touchEndPos.x,
+          clientY: touchEndPos.y,
+        });
+        isIsland.dispatchEvent(clickEvent);
+      }
+      
       isPanning = false;
       
-      // Start momentum animation
-      if (!animationFrame) {
+      // Start momentum animation only if we were panning
+      if (!isIsland && !animationFrame) {
         momentumAnimation();
       }
     }
@@ -468,8 +516,9 @@
     const step = () => {
       // Apply accumulated zoom gradually
       if (Math.abs(zoomDelta) > 0.001 || Math.abs(zoomMomentum) > 0.001) {
-        // Calculate zoom factor from accumulated delta
-        const zoomStep = zoomDelta * 0.3; // Apply 30% of accumulated zoom per frame
+        // Calculate zoom factor from accumulated delta - more responsive on mobile
+        const isMobile = window.innerWidth <= 600;
+        const zoomStep = zoomDelta * (isMobile ? 0.5 : 0.3); // Apply more zoom per frame on mobile
         const momentumStep = zoomMomentum * 0.8; // Apply momentum
 
         const totalStep = zoomStep + momentumStep;
@@ -578,6 +627,7 @@
   }
 
   onMount(() => {
+    
     if (svgContainer) {
       svgContainer.addEventListener("wheel", handleWheel, { passive: false });
 
