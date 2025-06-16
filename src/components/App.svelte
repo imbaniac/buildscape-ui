@@ -159,8 +159,8 @@
   // const ethLoader = await getDynamicLoader('ethereum');
 
   function handlePointerDown(event: PointerEvent) {
-    // Skip if this is a touch event and we're pinching
-    if (event.pointerType === 'touch' && isPinching) return;
+    // Skip all touch events - handled by touch handlers
+    if (event.pointerType === 'touch') return;
     
     if (event.button === 0) {
       // Check if we're clicking on an island in edit mode
@@ -353,8 +353,11 @@
 
   // Touch event handlers for mobile pinch zoom
   function handleTouchStart(event: TouchEvent) {
+    event.preventDefault(); // Prevent page scroll
+    
     if (event.touches.length === 2) {
       isPinching = true;
+      isPanning = false; // Stop any panning
       touches = Array.from(event.touches);
       const dx = touches[0].clientX - touches[1].clientX;
       const dy = touches[0].clientY - touches[1].clientY;
@@ -368,10 +371,23 @@
         x: centerX - rect.width / 2,
         y: centerY - rect.height / 2,
       };
+    } else if (event.touches.length === 1 && !isPinching) {
+      // Single touch - start pan
+      isPanning = true;
+      startPoint = {
+        x: event.touches[0].clientX,
+        y: event.touches[0].clientY,
+      };
+      panStartTranslate = {
+        x: translateX,
+        y: translateY,
+      };
     }
   }
   
   function handleTouchMove(event: TouchEvent) {
+    event.preventDefault(); // Prevent page scroll
+    
     if (isPinching && event.touches.length === 2) {
       touches = Array.from(event.touches);
       const dx = touches[0].clientX - touches[1].clientX;
@@ -381,15 +397,24 @@
       if (lastTouchDistance > 0) {
         const scaleDelta = (currentDistance - lastTouchDistance) / lastTouchDistance;
         
-        // Apply zoom similar to wheel
+        // Update pinch center dynamically
+        const rect = svgContainer!.getBoundingClientRect();
+        const centerX = (touches[0].clientX + touches[1].clientX) / 2 - rect.left;
+        const centerY = (touches[0].clientY + touches[1].clientY) / 2 - rect.top;
+        zoomTarget = {
+          x: centerX - rect.width / 2,
+          y: centerY - rect.height / 2,
+        };
+        
+        // Apply zoom similar to wheel but gentler
         const now = Date.now();
         lastZoomTime = now;
         isInteracting = true;
         lastInteractionTime = now;
         
-        // Accumulate zoom delta
-        zoomDelta += scaleDelta * 2; // Amplify for touch
-        zoomMomentum = scaleDelta * 0.3;
+        // Accumulate zoom delta with reduced sensitivity
+        zoomDelta += scaleDelta * 0.8; // Reduced amplification
+        zoomMomentum = scaleDelta * 0.1; // Less momentum
         
         // Start smooth zoom loop if not running
         if (!zoomAnimationFrame) {
@@ -398,14 +423,44 @@
       }
       
       lastTouchDistance = currentDistance;
+    } else if (isPanning && event.touches.length === 1) {
+      // Handle single touch pan
+      const currentX = event.touches[0].clientX;
+      const currentY = event.touches[0].clientY;
+      
+      const deltaX = currentX - startPoint.x;
+      const deltaY = currentY - startPoint.y;
+      
+      translateX = panStartTranslate.x + deltaX;
+      translateY = panStartTranslate.y + deltaY;
+      
+      // Apply momentum
+      if (animationFrame) {
+        cancelAnimationFrame(animationFrame);
+      }
+      
+      const now = Date.now();
+      lastInteractionTime = now;
+      isInteracting = true;
     }
   }
   
   function handleTouchEnd(event: TouchEvent) {
+    event.preventDefault();
+    
     if (event.touches.length < 2) {
       isPinching = false;
       touches = [];
       lastTouchDistance = 0;
+    }
+    
+    if (event.touches.length === 0) {
+      isPanning = false;
+      
+      // Start momentum animation
+      if (!animationFrame) {
+        momentumAnimation();
+      }
     }
   }
 
@@ -658,6 +713,9 @@
     height: 100%;
     margin: 0;
     padding: 0;
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
   }
   .map-container {
     position: relative;
@@ -666,7 +724,12 @@
     overflow: hidden;
     background-color: #87c1d3;
     cursor: grab;
-    touch-action: manipulation; /* Allow pan and zoom but not double-tap */
+    touch-action: none; /* Prevent all default touch behaviors */
+    -webkit-user-select: none;
+    user-select: none;
+    position: fixed; /* Prevent page scrolling */
+    top: 0;
+    left: 0;
   }
   .map-container.panning {
     cursor: grabbing;
