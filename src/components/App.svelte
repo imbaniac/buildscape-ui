@@ -28,6 +28,11 @@
   let zoomTarget: { x: number; y: number } | null = null;
   let zoomAnimationFrame: number | null = null;
   let lastZoomTime = 0;
+  
+  // Touch handling for pinch zoom
+  let touches: Touch[] = [];
+  let lastTouchDistance = 0;
+  let isPinching = $state(false);
 
   // Import positions statically
   import savedPositions from "../data/positions.json";
@@ -154,6 +159,9 @@
   // const ethLoader = await getDynamicLoader('ethereum');
 
   function handlePointerDown(event: PointerEvent) {
+    // Skip if this is a touch event and we're pinching
+    if (event.pointerType === 'touch' && isPinching) return;
+    
     if (event.button === 0) {
       // Check if we're clicking on an island in edit mode
       if (editMode && event.target) {
@@ -305,6 +313,9 @@
   }
 
   function handleWheel(event: WheelEvent) {
+    // Skip wheel events if we're pinching on mobile
+    if (isPinching) return;
+    
     event.preventDefault();
 
     const now = Date.now();
@@ -337,6 +348,64 @@
     // Start smooth zoom loop if not running
     if (!zoomAnimationFrame) {
       smoothZoomLoop();
+    }
+  }
+
+  // Touch event handlers for mobile pinch zoom
+  function handleTouchStart(event: TouchEvent) {
+    if (event.touches.length === 2) {
+      isPinching = true;
+      touches = Array.from(event.touches);
+      const dx = touches[0].clientX - touches[1].clientX;
+      const dy = touches[0].clientY - touches[1].clientY;
+      lastTouchDistance = Math.sqrt(dx * dx + dy * dy);
+      
+      // Calculate pinch center for zoom target
+      const rect = svgContainer!.getBoundingClientRect();
+      const centerX = (touches[0].clientX + touches[1].clientX) / 2 - rect.left;
+      const centerY = (touches[0].clientY + touches[1].clientY) / 2 - rect.top;
+      zoomTarget = {
+        x: centerX - rect.width / 2,
+        y: centerY - rect.height / 2,
+      };
+    }
+  }
+  
+  function handleTouchMove(event: TouchEvent) {
+    if (isPinching && event.touches.length === 2) {
+      touches = Array.from(event.touches);
+      const dx = touches[0].clientX - touches[1].clientX;
+      const dy = touches[0].clientY - touches[1].clientY;
+      const currentDistance = Math.sqrt(dx * dx + dy * dy);
+      
+      if (lastTouchDistance > 0) {
+        const scaleDelta = (currentDistance - lastTouchDistance) / lastTouchDistance;
+        
+        // Apply zoom similar to wheel
+        const now = Date.now();
+        lastZoomTime = now;
+        isInteracting = true;
+        lastInteractionTime = now;
+        
+        // Accumulate zoom delta
+        zoomDelta += scaleDelta * 2; // Amplify for touch
+        zoomMomentum = scaleDelta * 0.3;
+        
+        // Start smooth zoom loop if not running
+        if (!zoomAnimationFrame) {
+          smoothZoomLoop();
+        }
+      }
+      
+      lastTouchDistance = currentDistance;
+    }
+  }
+  
+  function handleTouchEnd(event: TouchEvent) {
+    if (event.touches.length < 2) {
+      isPinching = false;
+      touches = [];
+      lastTouchDistance = 0;
     }
   }
 
@@ -480,6 +549,10 @@
   onpointermove={handlePointerMove}
   onpointerup={handlePointerUp}
   onpointercancel={handlePointerUp}
+  ontouchstart={handleTouchStart}
+  ontouchmove={handleTouchMove}
+  ontouchend={handleTouchEnd}
+  ontouchcancel={handleTouchEnd}
 >
   <svg
     bind:this={svg}
@@ -593,7 +666,7 @@
     overflow: hidden;
     background-color: #87c1d3;
     cursor: grab;
-    touch-action: none; /* Prevent default touch behaviors */
+    touch-action: manipulation; /* Allow pan and zoom but not double-tap */
   }
   .map-container.panning {
     cursor: grabbing;
