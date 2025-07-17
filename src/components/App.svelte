@@ -20,6 +20,10 @@
   // Interaction state tracking
   let isInteracting = $state(false);
   let lastInteractionTime = 0;
+  
+  // Click detection
+  let potentialClick = false;
+  let clickThreshold = 5; // pixels of movement before we consider it a drag
 
   // Smooth zoom system
   let zoomDelta = 0;
@@ -32,6 +36,14 @@
   let touches: Touch[] = [];
   let lastTouchDistance = 0;
   let isPinching = $state(false);
+  
+  // Mobile viewport detection
+  let isMobileViewport = $state(false);
+  
+  // Momentum variables
+  let panVelocity = { x: 0, y: 0 };
+  let lastPanTime = 0;
+  let lastPanPoint = { x: 0, y: 0 };
 
   // Import positions statically
   import savedPositions from "../data/positions.json";
@@ -211,8 +223,8 @@
         }
       }
 
-      // Normal panning
-      isPanning = true;
+      // Don't start panning immediately - wait for movement
+      potentialClick = true;
       startPoint = {
         x: event.clientX,
         y: event.clientY,
@@ -221,8 +233,11 @@
         x: translateX,
         y: translateY,
       };
-      svgContainer?.setPointerCapture(event.pointerId);
-      event.preventDefault();
+      
+      // Initialize momentum tracking
+      lastPanTime = Date.now();
+      lastPanPoint = { x: event.clientX, y: event.clientY };
+      panVelocity = { x: 0, y: 0 };
     }
   }
 
@@ -254,18 +269,27 @@
       return;
     }
 
-    if (!isPanning) return;
-
-    // Only mark as interacting if actually moving significant distance
-    const moveDistance = Math.sqrt(
-      Math.pow(event.clientX - startPoint.x, 2) +
+    // Check if we should start panning
+    if (potentialClick && !isPanning) {
+      const moveDistance = Math.sqrt(
+        Math.pow(event.clientX - startPoint.x, 2) +
         Math.pow(event.clientY - startPoint.y, 2)
-    );
-
-    if (moveDistance > 5) {
-      isInteracting = true;
-      lastInteractionTime = Date.now();
+      );
+      
+      if (moveDistance > clickThreshold) {
+        // Start panning
+        potentialClick = false;
+        isPanning = true;
+        isInteracting = true;
+        lastInteractionTime = Date.now();
+        svgContainer?.setPointerCapture(event.pointerId);
+        event.preventDefault();
+      } else {
+        return; // Don't pan yet
+      }
     }
+    
+    if (!isPanning) return;
 
     if (animationFrame) {
       cancelAnimationFrame(animationFrame);
@@ -277,6 +301,17 @@
 
       translateX = panStartTranslate.x + dx;
       translateY = panStartTranslate.y + dy;
+      
+      // Track velocity for momentum
+      const now = Date.now();
+      const dt = Math.max(1, now - lastPanTime);
+      panVelocity = {
+        x: (event.clientX - lastPanPoint.x) / dt * 16, // normalize to ~60fps
+        y: (event.clientY - lastPanPoint.y) / dt * 16
+      };
+      
+      lastPanTime = now;
+      lastPanPoint = { x: event.clientX, y: event.clientY };
     });
   }
 
@@ -293,6 +328,35 @@
       return;
     }
 
+    if (potentialClick && !isPanning) {
+      // This was a click, not a drag
+      const target = event.target as Element;
+      const islandElement = target.closest('.island-group');
+      
+      if (islandElement && !editMode) {
+        // Find which island was clicked
+        const transform = islandElement.getAttribute('transform');
+        if (transform) {
+          const match = transform.match(/translate\(([^,]+),\s*([^)]+)\)/);
+          if (match) {
+            const x = parseFloat(match[1]);
+            const y = parseFloat(match[2]);
+            
+            // Find the chain with matching position
+            for (const [chainName, pos] of Object.entries(islandPositions)) {
+              if (Math.abs(pos.x - x) < 1 && Math.abs(pos.y - y) < 1) {
+                openBookByName(chainName);
+                break;
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    // Reset potential click
+    potentialClick = false;
+    
     if (isPanning) {
       isPanning = false;
       svgContainer?.releasePointerCapture(event.pointerId);
@@ -307,6 +371,11 @@
       if (animationFrame) {
         cancelAnimationFrame(animationFrame);
         animationFrame = null;
+      }
+      
+      // Start momentum animation if velocity is significant
+      if (Math.abs(panVelocity.x) > 2 || Math.abs(panVelocity.y) > 2) {
+        momentumAnimation();
       }
     }
   }
@@ -563,6 +632,28 @@
     zoomAnimationFrame = requestAnimationFrame(step);
   }
 
+  function momentumAnimation() {
+    const friction = 0.95;
+    const minVelocity = 0.5;
+    
+    const animate = () => {
+      if (Math.abs(panVelocity.x) > minVelocity || Math.abs(panVelocity.y) > minVelocity) {
+        translateX += panVelocity.x;
+        translateY += panVelocity.y;
+        
+        panVelocity.x *= friction;
+        panVelocity.y *= friction;
+        
+        animationFrame = requestAnimationFrame(animate);
+      } else {
+        panVelocity = { x: 0, y: 0 };
+        animationFrame = null;
+      }
+    };
+    
+    animationFrame = requestAnimationFrame(animate);
+  }
+
   function resetView() {
     scale = 1.5;
     translateX = 0;
@@ -610,29 +701,32 @@
   }
 
   function openBookByName(chainName: string) {
-    // Prevent opening modal during active interactions or edit mode
-    if (isInteracting || isPanning || editMode) {
+    // Prevent opening modal during edit mode
+    if (editMode) {
       return;
     }
 
-    // Check if recent interaction happened (only for zoom, not clicks)
-    if (lastInteractionTime > 0) {
-      const timeSinceInteraction = Date.now() - lastInteractionTime;
-      if (timeSinceInteraction < 100) {
-        return;
-      }
-    }
-
+    // Don't block clicks even if we're panning/interacting
+    // The click handler will only fire if we didn't actually pan
+    
     goto("/chain/" + chainName);
   }
 
   onMount(() => {
+    // Check if mobile viewport
+    const checkMobileViewport = () => {
+      isMobileViewport = window.innerWidth <= 768;
+    };
+    
+    checkMobileViewport();
+    window.addEventListener('resize', checkMobileViewport);
     
     if (svgContainer) {
       svgContainer.addEventListener("wheel", handleWheel, { passive: false });
 
       return () => {
         svgContainer?.removeEventListener("wheel", handleWheel);
+        window.removeEventListener('resize', checkMobileViewport);
         if (animationFrame) {
           cancelAnimationFrame(animationFrame);
         }
@@ -696,7 +790,6 @@
       scale={1.5}
       x={islandPositions["ethereum"]?.x || 0}
       y={islandPositions["ethereum"]?.y || 0}
-      onclick={() => openBookByName("ethereum")}
       {editMode}
     />
 
@@ -724,7 +817,6 @@
                   ([_, chain]) => chain.chainId !== 1
                 ).length
             )}
-        onclick={() => openBookByName(chainKey)}
         {editMode}
       />
     {/each}

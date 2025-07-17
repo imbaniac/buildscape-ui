@@ -8,7 +8,6 @@
     y?: number;
     scale?: number;
     logo: any;
-    onclick?: () => void;
     editMode?: boolean;
     onDragStart?: () => void;
     onDragEnd?: () => void;

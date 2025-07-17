@@ -27,8 +27,8 @@
     return '#ef4444'; // Red
   });
   
-  // Calculate mercury width (0-100% scale, max at 200 gwei)
-  const mercuryWidth = $derived(Math.max(2, Math.min(100, (safeGasPrice / 200) * 100)));
+  // Calculate mercury width based on utilization
+  const mercuryWidth = $derived(Math.max(2, Math.min(100, safeUtilization)));
   
   // Utilization status text
   const utilizationStatus = $derived(() => {
