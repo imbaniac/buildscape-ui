@@ -683,7 +683,7 @@
     xmlns="http://www.w3.org/2000/svg"
     aria-label="Map of the EVM ecosystem"
     role="region"
-    style="transform: translate({translateX}px, {translateY}px) scale({scale}); transform-origin: 0 0;"
+    style="transform: translate3d({translateX}px, {translateY}px, 0) scale({scale}); transform-origin: 0 0;"
   >
     <defs>
       <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
@@ -813,6 +813,10 @@
     will-change: transform; /* Hint for hardware acceleration */
     transition: none !important; /* Disable any default transitions for smooth panning */
     transform-origin: center center;
+    -webkit-transform: translateZ(0); /* Force GPU layer */
+    -webkit-backface-visibility: hidden; /* Prevent flickering */
+    image-rendering: -webkit-optimize-contrast; /* Better rendering on WebKit */
+    shape-rendering: geometricPrecision; /* Precise shape rendering */
   }
 
   .controls {
