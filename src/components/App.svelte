@@ -158,9 +158,6 @@
   // const ethLoader = await getDynamicLoader('ethereum');
 
   function handlePointerDown(event: PointerEvent) {
-    // Skip all touch events - handled by touch handlers
-    if (event.pointerType === 'touch') return;
-    
     if (event.button === 0) {
       // Check if we're clicking on an island in edit mode
       if (editMode && event.target) {
@@ -379,142 +376,25 @@
   const TAP_THRESHOLD = 300; // ms
   const MOVE_THRESHOLD = 10; // pixels
   
-  // Touch event handlers for mobile
+  // Touch event handlers for mobile - only for preventing default scroll
   function handleTouchStart(event: TouchEvent) {
-    // Don't prevent default for taps on islands
-    const target = event.target as Element;
-    const isIsland = target.closest('.island-group');
-    
-    if (!isIsland) {
-      event.preventDefault(); // Only prevent scroll for non-island touches
-    }
-    
-    if (event.touches.length === 1) {
-      // Track for tap detection
-      touchStartTime = Date.now();
-      touchStartPos = {
-        x: event.touches[0].clientX,
-        y: event.touches[0].clientY,
-      };
-      
-      // Single touch - start potential pan if not on island
-      if (!isIsland) {
-        potentialClick = true;
-        startPoint = {
-          x: event.touches[0].clientX,
-          y: event.touches[0].clientY,
-        };
-        panStartTranslate = {
-          x: translateX,
-          y: translateY,
-        };
-        
-        // Initialize momentum tracking
-        lastPanTime = Date.now();
-        lastPanPoint = { x: event.touches[0].clientX, y: event.touches[0].clientY };
-        panVelocity = { x: 0, y: 0 };
-      }
-    }
+    // Track for tap detection
+    touchStartTime = Date.now();
+    touchStartPos = {
+      x: event.touches[0].clientX,
+      y: event.touches[0].clientY,
+    };
   }
   
   function handleTouchMove(event: TouchEvent) {
-    event.preventDefault(); // Prevent page scroll
-    
-    if (event.touches.length === 1) {
-      const currentX = event.touches[0].clientX;
-      const currentY = event.touches[0].clientY;
-      
-      // Check if we should start panning
-      if (potentialClick && !isPanning) {
-        const moveDistance = Math.sqrt(
-          Math.pow(currentX - startPoint.x, 2) +
-          Math.pow(currentY - startPoint.y, 2)
-        );
-        
-        if (moveDistance > clickThreshold) {
-          // Start panning
-          potentialClick = false;
-          isPanning = true;
-          isInteracting = true;
-          lastInteractionTime = Date.now();
-        } else {
-          return; // Don't pan yet
-        }
-      }
-      
-      if (isPanning) {
-        const deltaX = currentX - startPoint.x;
-        const deltaY = currentY - startPoint.y;
-        
-        translateX = panStartTranslate.x + deltaX;
-        translateY = panStartTranslate.y + deltaY;
-        
-        // Track velocity for momentum
-        const now = Date.now();
-        const dt = Math.max(1, now - lastPanTime);
-        panVelocity = {
-          x: (currentX - lastPanPoint.x) / dt * 16,
-          y: (currentY - lastPanPoint.y) / dt * 16
-        };
-        
-        lastPanTime = now;
-        lastPanPoint = { x: currentX, y: currentY };
-        lastInteractionTime = now;
-        isInteracting = true;
-      }
+    // Only prevent scroll if we're actively panning
+    if (isPanning) {
+      event.preventDefault();
     }
   }
   
   function handleTouchEnd(event: TouchEvent) {
-    const target = event.target as Element;
-    const isIsland = target.closest('.island-group');
-    
-    if (!isIsland) {
-      event.preventDefault();
-    }
-    
-    if (event.touches.length === 0) {
-      // Check if this was a tap
-      const timeDiff = Date.now() - touchStartTime;
-      const touchEndPos = {
-        x: event.changedTouches[0].clientX,
-        y: event.changedTouches[0].clientY,
-      };
-      const moveDist = Math.sqrt(
-        Math.pow(touchEndPos.x - touchStartPos.x, 2) +
-        Math.pow(touchEndPos.y - touchStartPos.y, 2)
-      );
-      
-      // If it's a tap on an island, navigate directly
-      if (timeDiff < TAP_THRESHOLD && moveDist < MOVE_THRESHOLD && isIsland) {
-        // Find which island was tapped
-        const transform = isIsland.getAttribute('transform');
-        if (transform) {
-          const match = transform.match(/translate\(([^,]+),\s*([^)]+)\)/);
-          if (match) {
-            const x = parseFloat(match[1]);
-            const y = parseFloat(match[2]);
-            
-            // Find the chain with matching position
-            for (const [chainName, pos] of Object.entries(islandPositions)) {
-              if (Math.abs(pos.x - x) < 1 && Math.abs(pos.y - y) < 1) {
-                openBookByName(chainName);
-                break;
-              }
-            }
-          }
-        }
-      }
-      
-      // Reset states
-      potentialClick = false;
-      isPanning = false;
-      
-      // Start momentum animation if we were panning
-      if (isPanning && (Math.abs(panVelocity.x) > 2 || Math.abs(panVelocity.y) > 2)) {
-        momentumAnimation();
-      }
-    }
+    // Let pointer events handle the actual interaction
   }
 
 
