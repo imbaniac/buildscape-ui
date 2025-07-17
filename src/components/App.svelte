@@ -16,18 +16,24 @@
   let panStartTranslate = { x: 0, y: 0 };
   let animationFrame: number | null = null;
 
+  // Zoom state
+  let scale = $state(1);
+  const MIN_SCALE = 0.1;
+  const MAX_SCALE = 5;
+  const ZOOM_SPEED = 0.001; // For wheel events
+  const PINCH_ZOOM_SPEED = 0.01;
+
   // Interaction state tracking
   let isInteracting = $state(false);
   let lastInteractionTime = 0;
-  
+
   // Click detection
   let potentialClick = false;
   let clickThreshold = 5; // pixels of movement before we consider it a drag
 
-  
   // Mobile viewport detection
   let isMobileViewport = $state(false);
-  
+
   // Momentum variables
   let panVelocity = { x: 0, y: 0 };
   let lastPanTime = 0;
@@ -123,9 +129,6 @@
     return null;
   }
 
-  // Example: how to get all chain names
-  const allChainNames = Object.keys(staticChains);
-
   // Initialize island positions with saved positions or calculated positions
   $effect(() => {
     // Only set default positions if we don't have any loaded positions
@@ -189,15 +192,15 @@
             draggedIsland = chainName;
             const pos = islandPositions[chainName];
             if (pos && svg) {
-              const pt = svg.createSVGPoint();
-              pt.x = event.clientX;
-              pt.y = event.clientY;
-              const ctm = svg.getScreenCTM();
-              if (ctm) {
-                const svgP = pt.matrixTransform(ctm.inverse());
+              const rect = svgContainer?.getBoundingClientRect();
+              if (rect) {
+                const mouseX = event.clientX - rect.left;
+                const mouseY = event.clientY - rect.top;
+                const svgX = (mouseX - translateX) / scale;
+                const svgY = (mouseY - translateY) / scale;
                 dragOffset = {
-                  x: svgP.x - pos.x,
-                  y: svgP.y - pos.y,
+                  x: svgX - pos.x,
+                  y: svgY - pos.y,
                 };
               }
             }
@@ -218,7 +221,7 @@
         x: translateX,
         y: translateY,
       };
-      
+
       // Initialize momentum tracking
       lastPanTime = Date.now();
       lastPanPoint = { x: event.clientX, y: event.clientY };
@@ -234,18 +237,18 @@
       }
 
       animationFrame = requestAnimationFrame(() => {
-        if (!svg || !draggedIsland) return;
+        if (!svgContainer || !draggedIsland) return;
 
-        const pt = svg.createSVGPoint();
-        pt.x = event.clientX;
-        pt.y = event.clientY;
-        const ctm = svg.getScreenCTM();
-        if (ctm) {
-          const svgP = pt.matrixTransform(ctm.inverse());
+        const rect = svgContainer.getBoundingClientRect();
+        if (rect) {
+          const mouseX = event.clientX - rect.left;
+          const mouseY = event.clientY - rect.top;
+          const svgX = (mouseX - translateX) / scale;
+          const svgY = (mouseY - translateY) / scale;
 
           // Calculate new position
-          const newX = svgP.x - dragOffset.x;
-          const newY = svgP.y - dragOffset.y;
+          const newX = svgX - dragOffset.x;
+          const newY = svgY - dragOffset.y;
 
           // Update position without any boundaries
           islandPositions[draggedIsland] = { x: newX, y: newY };
@@ -258,9 +261,9 @@
     if (potentialClick && !isPanning) {
       const moveDistance = Math.sqrt(
         Math.pow(event.clientX - startPoint.x, 2) +
-        Math.pow(event.clientY - startPoint.y, 2)
+          Math.pow(event.clientY - startPoint.y, 2)
       );
-      
+
       if (moveDistance > clickThreshold) {
         // Start panning
         potentialClick = false;
@@ -273,7 +276,7 @@
         return; // Don't pan yet
       }
     }
-    
+
     if (!isPanning) return;
 
     if (animationFrame) {
@@ -286,15 +289,15 @@
 
       translateX = panStartTranslate.x + dx;
       translateY = panStartTranslate.y + dy;
-      
+
       // Track velocity for momentum
       const now = Date.now();
       const dt = Math.max(1, now - lastPanTime);
       panVelocity = {
-        x: (event.clientX - lastPanPoint.x) / dt * 16, // normalize to ~60fps
-        y: (event.clientY - lastPanPoint.y) / dt * 16
+        x: ((event.clientX - lastPanPoint.x) / dt) * 16, // normalize to ~60fps
+        y: ((event.clientY - lastPanPoint.y) / dt) * 16,
       };
-      
+
       lastPanTime = now;
       lastPanPoint = { x: event.clientX, y: event.clientY };
     });
@@ -316,17 +319,17 @@
     if (potentialClick && !isPanning) {
       // This was a click, not a drag
       const target = event.target as Element;
-      const islandElement = target.closest('.island-group');
-      
+      const islandElement = target.closest(".island-group");
+
       if (islandElement && !editMode) {
         // Find which island was clicked
-        const transform = islandElement.getAttribute('transform');
+        const transform = islandElement.getAttribute("transform");
         if (transform) {
           const match = transform.match(/translate\(([^,]+),\s*([^)]+)\)/);
           if (match) {
             const x = parseFloat(match[1]);
             const y = parseFloat(match[2]);
-            
+
             // Find the chain with matching position
             for (const [chainName, pos] of Object.entries(islandPositions)) {
               if (Math.abs(pos.x - x) < 1 && Math.abs(pos.y - y) < 1) {
@@ -338,10 +341,10 @@
         }
       }
     }
-    
+
     // Reset potential click
     potentialClick = false;
-    
+
     if (isPanning) {
       isPanning = false;
       svgContainer?.releasePointerCapture(event.pointerId);
@@ -357,7 +360,7 @@
         cancelAnimationFrame(animationFrame);
         animationFrame = null;
       }
-      
+
       // Start momentum animation if velocity is significant
       if (Math.abs(panVelocity.x) > 2 || Math.abs(panVelocity.y) > 2) {
         momentumAnimation();
@@ -368,14 +371,73 @@
   function handleWheel(event: WheelEvent) {
     // Prevent default scroll behavior
     event.preventDefault();
+
+    // Detect pinch on trackpad (ctrlKey is true for pinch gestures)
+    const isPinchGesture = event.ctrlKey;
+
+    // Calculate zoom factor
+    let delta;
+    if (isPinchGesture) {
+      // Pinch gesture on trackpad
+      delta = -event.deltaY * ZOOM_SPEED * 2;
+    } else {
+      // Regular mouse wheel
+      delta = -event.deltaY * ZOOM_SPEED;
+    }
+
+    const newScale = Math.min(
+      MAX_SCALE,
+      Math.max(MIN_SCALE, scale * (1 + delta))
+    );
+
+    if (newScale !== scale) {
+      // Get mouse position relative to the container
+      const rect = svgContainer?.getBoundingClientRect();
+      if (rect) {
+        const mouseX = event.clientX - rect.left;
+        const mouseY = event.clientY - rect.top;
+
+        // Calculate the point in SVG space before zoom
+        const svgX = (mouseX - translateX) / scale;
+        const svgY = (mouseY - translateY) / scale;
+
+        // Update scale
+        const scaleRatio = newScale / scale;
+        scale = newScale;
+
+        // Adjust translation to keep the mouse point fixed
+        translateX = mouseX - svgX * newScale;
+        translateY = mouseY - svgY * newScale;
+      }
+    }
   }
 
   // Touch tracking for tap detection
   let touchStartTime = 0;
   let touchStartPos = { x: 0, y: 0 };
-  const TAP_THRESHOLD = 300; // ms
-  const MOVE_THRESHOLD = 10; // pixels
-  
+
+  // Pinch zoom tracking
+  let isPinching = $state(false);
+  let pinchStartDistance = 0;
+  let pinchStartScale = 1;
+  let lastPinchCenter = { x: 0, y: 0 };
+
+  // Helper functions for pinch zoom
+  function getTouchDistance(touches: TouchList): number {
+    if (touches.length < 2) return 0;
+    const dx = touches[1].clientX - touches[0].clientX;
+    const dy = touches[1].clientY - touches[0].clientY;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+
+  function getTouchCenter(touches: TouchList): { x: number; y: number } {
+    if (touches.length < 2) return { x: 0, y: 0 };
+    return {
+      x: (touches[0].clientX + touches[1].clientX) / 2,
+      y: (touches[0].clientY + touches[1].clientY) / 2,
+    };
+  }
+
   // Touch event handlers for mobile - only for preventing default scroll
   function handleTouchStart(event: TouchEvent) {
     // Track for tap detection
@@ -384,45 +446,145 @@
       x: event.touches[0].clientX,
       y: event.touches[0].clientY,
     };
+
+    // Check for pinch gesture (two fingers) - but not in edit mode
+    if (event.touches.length === 2 && !editMode) {
+      isPinching = true;
+      pinchStartDistance = getTouchDistance(event.touches);
+      pinchStartScale = scale;
+      lastPinchCenter = getTouchCenter(event.touches);
+
+      // Prevent panning while pinching
+      isPanning = false;
+      potentialClick = false;
+
+      event.preventDefault();
+    }
   }
-  
+
   function handleTouchMove(event: TouchEvent) {
+    // Handle pinch zoom
+    if (isPinching && event.touches.length === 2) {
+      event.preventDefault();
+
+      const currentDistance = getTouchDistance(event.touches);
+      const currentCenter = getTouchCenter(event.touches);
+
+      // Calculate new scale based on pinch distance
+      const distanceRatio = currentDistance / pinchStartDistance;
+      const newScale = Math.min(
+        MAX_SCALE,
+        Math.max(MIN_SCALE, pinchStartScale * distanceRatio)
+      );
+
+      if (newScale !== scale) {
+        // Get center position relative to the container
+        const rect = svgContainer?.getBoundingClientRect();
+        if (rect) {
+          const centerX = currentCenter.x - rect.left;
+          const centerY = currentCenter.y - rect.top;
+
+          // Calculate the point in SVG space before zoom
+          const svgX = (centerX - translateX) / scale;
+          const svgY = (centerY - translateY) / scale;
+
+          // Update scale
+          scale = newScale;
+
+          // Adjust translation to keep the pinch center fixed
+          translateX = centerX - svgX * scale;
+          translateY = centerY - svgY * scale;
+
+          lastPinchCenter = currentCenter;
+        }
+      }
+      return;
+    }
+
     // Only prevent scroll if we're actively panning
     if (isPanning) {
       event.preventDefault();
     }
   }
-  
+
   function handleTouchEnd(event: TouchEvent) {
+    // Stop pinching if less than 2 touches
+    if (event.touches.length < 2) {
+      isPinching = false;
+    }
+
     // Let pointer events handle the actual interaction
   }
-
 
   function momentumAnimation() {
     const friction = 0.95;
     const minVelocity = 0.5;
-    
+
     const animate = () => {
-      if (Math.abs(panVelocity.x) > minVelocity || Math.abs(panVelocity.y) > minVelocity) {
+      if (
+        Math.abs(panVelocity.x) > minVelocity ||
+        Math.abs(panVelocity.y) > minVelocity
+      ) {
         translateX += panVelocity.x;
         translateY += panVelocity.y;
-        
+
         panVelocity.x *= friction;
         panVelocity.y *= friction;
-        
+
         animationFrame = requestAnimationFrame(animate);
       } else {
         panVelocity = { x: 0, y: 0 };
         animationFrame = null;
       }
     };
-    
+
     animationFrame = requestAnimationFrame(animate);
   }
 
   function resetView() {
     translateX = 0;
     translateY = 0;
+    scale = 1;
+  }
+
+  function zoomIn() {
+    const newScale = Math.min(MAX_SCALE, scale * 1.2);
+    if (newScale !== scale) {
+      // Zoom to center of viewport
+      const rect = svgContainer?.getBoundingClientRect();
+      if (rect) {
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        const svgX = (centerX - translateX) / scale;
+        const svgY = (centerY - translateY) / scale;
+
+        scale = newScale;
+
+        translateX = centerX - svgX * scale;
+        translateY = centerY - svgY * scale;
+      }
+    }
+  }
+
+  function zoomOut() {
+    const newScale = Math.max(MIN_SCALE, scale / 1.2);
+    if (newScale !== scale) {
+      // Zoom to center of viewport
+      const rect = svgContainer?.getBoundingClientRect();
+      if (rect) {
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        const svgX = (centerX - translateX) / scale;
+        const svgY = (centerY - translateY) / scale;
+
+        scale = newScale;
+
+        translateX = centerX - svgX * scale;
+        translateY = centerY - svgY * scale;
+      }
+    }
   }
 
   let showPositionsModal = $state(false);
@@ -473,7 +635,7 @@
 
     // Don't block clicks even if we're panning/interacting
     // The click handler will only fire if we didn't actually pan
-    
+
     goto("/chain/" + chainName);
   }
 
@@ -482,16 +644,16 @@
     const checkMobileViewport = () => {
       isMobileViewport = window.innerWidth <= 768;
     };
-    
+
     checkMobileViewport();
-    window.addEventListener('resize', checkMobileViewport);
-    
+    window.addEventListener("resize", checkMobileViewport);
+
     if (svgContainer) {
       svgContainer.addEventListener("wheel", handleWheel, { passive: false });
 
       return () => {
         svgContainer?.removeEventListener("wheel", handleWheel);
-        window.removeEventListener('resize', checkMobileViewport);
+        window.removeEventListener("resize", checkMobileViewport);
         if (animationFrame) {
           cancelAnimationFrame(animationFrame);
         }
@@ -521,7 +683,7 @@
     xmlns="http://www.w3.org/2000/svg"
     aria-label="Map of the EVM ecosystem"
     role="region"
-    style="transform: translate({translateX}px, {translateY}px); transform-origin: center center;"
+    style="transform: translate({translateX}px, {translateY}px) scale({scale}); transform-origin: 0 0;"
   >
     <defs>
       <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
@@ -585,6 +747,8 @@
   </svg>
 
   <div class="controls">
+    <button onclick={zoomIn}>Zoom In</button>
+    <button onclick={zoomOut}>Zoom Out</button>
     <button onclick={resetView}>Reset View</button>
     <button onclick={() => (editMode = !editMode)} class:active={editMode}>
       {editMode ? "Exit Edit Mode" : "Edit Mode"}
