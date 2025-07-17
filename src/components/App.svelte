@@ -10,8 +10,7 @@
   let isPanning = $state(false);
   let startPoint = $state({ x: 0, y: 0 });
 
-  // Start with a scale that works for both, adjust on mount
-  let scale = $state(1.5);
+  // Pan state
   let translateX = $state(0);
   let translateY = $state(0);
   let panStartTranslate = { x: 0, y: 0 };
@@ -25,17 +24,6 @@
   let potentialClick = false;
   let clickThreshold = 5; // pixels of movement before we consider it a drag
 
-  // Smooth zoom system
-  let zoomDelta = 0;
-  let zoomMomentum = 0;
-  let zoomTarget: { x: number; y: number } | null = null;
-  let zoomAnimationFrame: number | null = null;
-  let lastZoomTime = 0;
-  
-  // Touch handling for pinch zoom
-  let touches: Touch[] = [];
-  let lastTouchDistance = 0;
-  let isPinching = $state(false);
   
   // Mobile viewport detection
   let isMobileViewport = $state(false);
@@ -381,42 +369,8 @@
   }
 
   function handleWheel(event: WheelEvent) {
-    // Skip wheel events if we're pinching on mobile
-    if (isPinching) return;
-    
+    // Prevent default scroll behavior
     event.preventDefault();
-
-    const now = Date.now();
-    const rect = svgContainer!.getBoundingClientRect();
-    const mouseX = event.clientX - rect.left;
-    const mouseY = event.clientY - rect.top;
-
-    // Set zoom target only once per gesture
-    if (!zoomTarget || now - lastZoomTime > 150) {
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-      zoomTarget = {
-        x: mouseX - centerX,
-        y: mouseY - centerY,
-      };
-    }
-
-    lastZoomTime = now;
-    isInteracting = true;
-    lastInteractionTime = now;
-
-    // Accumulate zoom delta with momentum
-    const sensitivity = Math.abs(event.deltaY) < 10 ? 0.003 : 0.01; // Trackpad vs mouse wheel
-    const deltaContribution = -event.deltaY * sensitivity;
-
-    // Add to accumulated zoom with momentum
-    zoomDelta += deltaContribution;
-    zoomMomentum = deltaContribution * 0.3; // Momentum for smooth continuation
-
-    // Start smooth zoom loop if not running
-    if (!zoomAnimationFrame) {
-      smoothZoomLoop();
-    }
   }
 
   // Touch tracking for tap detection
@@ -425,7 +379,7 @@
   const TAP_THRESHOLD = 300; // ms
   const MOVE_THRESHOLD = 10; // pixels
   
-  // Touch event handlers for mobile pinch zoom
+  // Touch event handlers for mobile
   function handleTouchStart(event: TouchEvent) {
     // Don't prevent default for taps on islands
     const target = event.target as Element;
@@ -435,23 +389,7 @@
       event.preventDefault(); // Only prevent scroll for non-island touches
     }
     
-    if (event.touches.length === 2) {
-      isPinching = true;
-      isPanning = false; // Stop any panning
-      touches = Array.from(event.touches);
-      const dx = touches[0].clientX - touches[1].clientX;
-      const dy = touches[0].clientY - touches[1].clientY;
-      lastTouchDistance = Math.sqrt(dx * dx + dy * dy);
-      
-      // Calculate pinch center for zoom target
-      const rect = svgContainer!.getBoundingClientRect();
-      const centerX = (touches[0].clientX + touches[1].clientX) / 2 - rect.left;
-      const centerY = (touches[0].clientY + touches[1].clientY) / 2 - rect.top;
-      zoomTarget = {
-        x: centerX - rect.width / 2,
-        y: centerY - rect.height / 2,
-      };
-    } else if (event.touches.length === 1 && !isPinching) {
+    if (event.touches.length === 1) {
       // Track for tap detection
       touchStartTime = Date.now();
       touchStartPos = {
@@ -459,9 +397,9 @@
         y: event.touches[0].clientY,
       };
       
-      // Single touch - start pan if not on island
+      // Single touch - start potential pan if not on island
       if (!isIsland) {
-        isPanning = true;
+        potentialClick = true;
         startPoint = {
           x: event.touches[0].clientX,
           y: event.touches[0].clientY,
@@ -470,6 +408,11 @@
           x: translateX,
           y: translateY,
         };
+        
+        // Initialize momentum tracking
+        lastPanTime = Date.now();
+        lastPanPoint = { x: event.touches[0].clientX, y: event.touches[0].clientY };
+        panVelocity = { x: 0, y: 0 };
       }
     }
   }
@@ -477,60 +420,48 @@
   function handleTouchMove(event: TouchEvent) {
     event.preventDefault(); // Prevent page scroll
     
-    if (isPinching && event.touches.length === 2) {
-      touches = Array.from(event.touches);
-      const dx = touches[0].clientX - touches[1].clientX;
-      const dy = touches[0].clientY - touches[1].clientY;
-      const currentDistance = Math.sqrt(dx * dx + dy * dy);
-      
-      if (lastTouchDistance > 0) {
-        const scaleDelta = (currentDistance - lastTouchDistance) / lastTouchDistance;
-        
-        // Update pinch center dynamically
-        const rect = svgContainer!.getBoundingClientRect();
-        const centerX = (touches[0].clientX + touches[1].clientX) / 2 - rect.left;
-        const centerY = (touches[0].clientY + touches[1].clientY) / 2 - rect.top;
-        zoomTarget = {
-          x: centerX - rect.width / 2,
-          y: centerY - rect.height / 2,
-        };
-        
-        // Apply zoom similar to wheel but gentler
-        const now = Date.now();
-        lastZoomTime = now;
-        isInteracting = true;
-        lastInteractionTime = now;
-        
-        // Accumulate zoom delta with increased sensitivity for mobile
-        zoomDelta += scaleDelta * 1.5; // Increased for more responsive feel
-        zoomMomentum = scaleDelta * 0.2; // Slightly more momentum
-        
-        // Start smooth zoom loop if not running
-        if (!zoomAnimationFrame) {
-          smoothZoomLoop();
-        }
-      }
-      
-      lastTouchDistance = currentDistance;
-    } else if (isPanning && event.touches.length === 1) {
-      // Handle single touch pan
+    if (event.touches.length === 1) {
       const currentX = event.touches[0].clientX;
       const currentY = event.touches[0].clientY;
       
-      const deltaX = currentX - startPoint.x;
-      const deltaY = currentY - startPoint.y;
-      
-      translateX = panStartTranslate.x + deltaX;
-      translateY = panStartTranslate.y + deltaY;
-      
-      // Apply momentum
-      if (animationFrame) {
-        cancelAnimationFrame(animationFrame);
+      // Check if we should start panning
+      if (potentialClick && !isPanning) {
+        const moveDistance = Math.sqrt(
+          Math.pow(currentX - startPoint.x, 2) +
+          Math.pow(currentY - startPoint.y, 2)
+        );
+        
+        if (moveDistance > clickThreshold) {
+          // Start panning
+          potentialClick = false;
+          isPanning = true;
+          isInteracting = true;
+          lastInteractionTime = Date.now();
+        } else {
+          return; // Don't pan yet
+        }
       }
       
-      const now = Date.now();
-      lastInteractionTime = now;
-      isInteracting = true;
+      if (isPanning) {
+        const deltaX = currentX - startPoint.x;
+        const deltaY = currentY - startPoint.y;
+        
+        translateX = panStartTranslate.x + deltaX;
+        translateY = panStartTranslate.y + deltaY;
+        
+        // Track velocity for momentum
+        const now = Date.now();
+        const dt = Math.max(1, now - lastPanTime);
+        panVelocity = {
+          x: (currentX - lastPanPoint.x) / dt * 16,
+          y: (currentY - lastPanPoint.y) / dt * 16
+        };
+        
+        lastPanTime = now;
+        lastPanPoint = { x: currentX, y: currentY };
+        lastInteractionTime = now;
+        isInteracting = true;
+      }
     }
   }
   
@@ -540,12 +471,6 @@
     
     if (!isIsland) {
       event.preventDefault();
-    }
-    
-    if (event.touches.length < 2) {
-      isPinching = false;
-      touches = [];
-      lastTouchDistance = 0;
     }
     
     if (event.touches.length === 0) {
@@ -560,77 +485,38 @@
         Math.pow(touchEndPos.y - touchStartPos.y, 2)
       );
       
-      // If it's a tap on an island, trigger click
+      // If it's a tap on an island, navigate directly
       if (timeDiff < TAP_THRESHOLD && moveDist < MOVE_THRESHOLD && isIsland) {
-        const clickEvent = new MouseEvent('click', {
-          bubbles: true,
-          cancelable: true,
-          view: window,
-          clientX: touchEndPos.x,
-          clientY: touchEndPos.y,
-        });
-        isIsland.dispatchEvent(clickEvent);
+        // Find which island was tapped
+        const transform = isIsland.getAttribute('transform');
+        if (transform) {
+          const match = transform.match(/translate\(([^,]+),\s*([^)]+)\)/);
+          if (match) {
+            const x = parseFloat(match[1]);
+            const y = parseFloat(match[2]);
+            
+            // Find the chain with matching position
+            for (const [chainName, pos] of Object.entries(islandPositions)) {
+              if (Math.abs(pos.x - x) < 1 && Math.abs(pos.y - y) < 1) {
+                openBookByName(chainName);
+                break;
+              }
+            }
+          }
+        }
       }
       
+      // Reset states
+      potentialClick = false;
       isPanning = false;
       
-      // Start momentum animation only if we were panning
-      if (!isIsland && !animationFrame) {
+      // Start momentum animation if we were panning
+      if (isPanning && (Math.abs(panVelocity.x) > 2 || Math.abs(panVelocity.y) > 2)) {
         momentumAnimation();
       }
     }
   }
 
-  function smoothZoomLoop() {
-    const step = () => {
-      // Apply accumulated zoom gradually
-      if (Math.abs(zoomDelta) > 0.001 || Math.abs(zoomMomentum) > 0.001) {
-        // Calculate zoom factor from accumulated delta - more responsive on mobile
-        const isMobile = window.innerWidth <= 600;
-        const zoomStep = zoomDelta * (isMobile ? 0.5 : 0.3); // Apply more zoom per frame on mobile
-        const momentumStep = zoomMomentum * 0.8; // Apply momentum
-
-        const totalStep = zoomStep + momentumStep;
-        const zoomFactor =
-          totalStep > 0
-            ? 1 + Math.min(totalStep, 0.05)
-            : 1 + Math.max(totalStep, -0.05);
-
-        const minScale = isMobileViewport ? 1.0 : 0.3;
-        const newScale = Math.max(minScale, Math.min(5, scale * zoomFactor));
-
-        if (zoomTarget && newScale !== scale) {
-          // Calculate the content point under the zoom target
-          const contentX = (zoomTarget.x - translateX) / scale;
-          const contentY = (zoomTarget.y - translateY) / scale;
-
-          // Update scale and adjust translation
-          scale = newScale;
-          translateX = zoomTarget.x - contentX * scale;
-          translateY = zoomTarget.y - contentY * scale;
-        }
-
-        // Reduce accumulated values
-        zoomDelta *= 0.7; // Decay accumulated zoom
-        zoomMomentum *= 0.9; // Decay momentum
-
-        zoomAnimationFrame = requestAnimationFrame(step);
-      } else {
-        // Animation complete
-        zoomDelta = 0;
-        zoomMomentum = 0;
-        zoomAnimationFrame = null;
-
-        // Clear interaction state after a delay
-        setTimeout(() => {
-          isInteracting = false;
-          zoomTarget = null;
-        }, 100);
-      }
-    };
-
-    zoomAnimationFrame = requestAnimationFrame(step);
-  }
 
   function momentumAnimation() {
     const friction = 0.95;
@@ -655,7 +541,6 @@
   }
 
   function resetView() {
-    scale = 1.5;
     translateX = 0;
     translateY = 0;
   }
@@ -730,9 +615,6 @@
         if (animationFrame) {
           cancelAnimationFrame(animationFrame);
         }
-        if (zoomAnimationFrame) {
-          cancelAnimationFrame(zoomAnimationFrame);
-        }
       };
     }
   });
@@ -759,7 +641,7 @@
     xmlns="http://www.w3.org/2000/svg"
     aria-label="Map of the EVM ecosystem"
     role="region"
-    style="transform: translate({translateX}px, {translateY}px) scale({scale}); transform-origin: center center;"
+    style="transform: translate({translateX}px, {translateY}px); transform-origin: center center;"
   >
     <defs>
       <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
