@@ -3,6 +3,7 @@
   import Island from "./Island.svelte";
   import YAML from "yaml";
   import { goto } from "$app/navigation";
+  import { overviewStore, tvlLookupByChainId } from "$lib/stores/overviewStore";
 
   const initialViewBox = { x: -5000, y: -5000, width: 10000, height: 10000 };
   let svg = $state<SVGSVGElement>();
@@ -15,6 +16,9 @@
   let translateY = $state(0);
   let panStartTranslate = { x: 0, y: 0 };
   let animationFrame: number | null = null;
+
+  // Store subscription - need to use derived state for reactivity
+  let overviewStoreState = $derived($overviewStore);
 
   // Zoom state
   let scale = $state(1);
@@ -639,7 +643,31 @@
     goto("/chain/" + chainName);
   }
 
+  // Calculate island scale based on TVL using power scaling for visual hierarchy
+  function calculateIslandScale(tvl: number): number {
+    // Use a reference TVL for Base (~$3.4B) as our "normal" size
+    const REFERENCE_TVL = 3_400_000_000;  // Base TVL
+    const REFERENCE_SCALE = 1.0;          // Base gets scale 1.0
+    
+    // Use power of 0.35 to compress differences
+    // This makes 20x TVL difference appear as ~3.5x visual difference
+    const scale = REFERENCE_SCALE * Math.pow(tvl / REFERENCE_TVL, 0.35);
+    
+    // Apply reasonable bounds
+    const MIN_SCALE = 0.3;
+    const MAX_SCALE = 2.0;
+    
+    return Math.max(MIN_SCALE, Math.min(MAX_SCALE, scale));
+  }
+
+
+  // Get TVL lookup from store
+  let tvlLookupMap = $derived($tvlLookupByChainId);
+
   onMount(() => {
+    // Load overview data from store
+    overviewStore.load();
+
     // Check if mobile viewport
     const checkMobileViewport = () => {
       isMobileViewport = window.innerWidth <= 768;
@@ -691,60 +719,77 @@
       </filter>
     </defs>
 
-    <text
-      x="0"
-      y="2500"
-      font-size="400"
-      fill="#5A8BA8"
-      text-anchor="middle"
-      font-weight="bold"
-      opacity="0.25"
-      transform="skewY(0) scale(1,0.866)"
-      style="font-family: inherit; letter-spacing: 8px;"
-    >
-      EVM SEA
-    </text>
+    {#if !overviewStoreState.isLoading}
+      <text
+        x="0"
+        y="2500"
+        font-size="400"
+        fill="#5A8BA8"
+        text-anchor="middle"
+        font-weight="bold"
+        opacity="0.25"
+        transform="skewY(0) scale(1,0.866)"
+        style="font-family: inherit; letter-spacing: 8px;"
+      >
+        EVM SEA
+      </text>
 
-    <!-- Main Ethereum Island (center) -->
-    <Island
-      name={staticChains["ethereum"]?.name}
-      color={staticChains["ethereum"]?.color}
-      darkColor={staticChains["ethereum"]?.darkColor}
-      logo={staticChains["ethereum"]?.logoUrl}
-      scale={1.5}
-      x={islandPositions["ethereum"]?.x || 0}
-      y={islandPositions["ethereum"]?.y || 0}
-      {editMode}
-    />
-
-    <!-- L2s in a circle, spaced further out, exclude chainId 1 -->
-    {#each Object.entries(staticChains).filter(([_, chain]) => chain.chainId !== 1) as [chainKey, blockchain], i}
+      <!-- Main Ethereum Island (center) -->
       <Island
-        name={blockchain.name}
-        color={blockchain.color}
-        darkColor={blockchain.darkColor}
-        logo={blockchain.logoUrl}
-        scale={0.8}
-        x={islandPositions[chainKey]?.x ||
-          3000 *
-            Math.cos(
-              (2 * Math.PI * i) /
-                Object.entries(staticChains).filter(
-                  ([_, chain]) => chain.chainId !== 1
-                ).length
-            )}
-        y={islandPositions[chainKey]?.y ||
-          3000 *
-            Math.sin(
-              (2 * Math.PI * i) /
-                Object.entries(staticChains).filter(
-                  ([_, chain]) => chain.chainId !== 1
-                ).length
-            )}
+        name={staticChains["ethereum"]?.name}
+        color={staticChains["ethereum"]?.color}
+        darkColor={staticChains["ethereum"]?.darkColor}
+        logo={staticChains["ethereum"]?.logoUrl}
+        scale={(() => {
+          const chainId = staticChains["ethereum"]?.chainId;
+          const tvl = chainId ? (tvlLookupMap.get(chainId) || 0) : 0;
+          return tvl > 0 ? calculateIslandScale(tvl) : 1.8; // Default large scale for Ethereum
+        })()}
+        x={islandPositions["ethereum"]?.x || 0}
+        y={islandPositions["ethereum"]?.y || 0}
         {editMode}
       />
-    {/each}
+
+      <!-- L2s in a circle, spaced further out, exclude chainId 1 -->
+      {#each Object.entries(staticChains).filter(([_, chain]) => chain.chainId !== 1) as [chainKey, blockchain], i}
+        <Island
+          name={blockchain.name}
+          color={blockchain.color}
+          darkColor={blockchain.darkColor}
+          logo={blockchain.logoUrl}
+          scale={(() => {
+            const chainId = blockchain.chainId;
+            const tvl = chainId ? (tvlLookupMap.get(chainId) || 0) : 0;
+            return tvl > 0 ? calculateIslandScale(tvl) : 0.6; // Default scale for unknown TVL
+          })()}
+          x={islandPositions[chainKey]?.x ||
+            3000 *
+              Math.cos(
+                (2 * Math.PI * i) /
+                  Object.entries(staticChains).filter(
+                    ([_, chain]) => chain.chainId !== 1
+                  ).length
+              )}
+          y={islandPositions[chainKey]?.y ||
+            3000 *
+              Math.sin(
+                (2 * Math.PI * i) /
+                  Object.entries(staticChains).filter(
+                    ([_, chain]) => chain.chainId !== 1
+                  ).length
+              )}
+          {editMode}
+        />
+      {/each}
+    {/if}
   </svg>
+
+  {#if overviewStoreState.isLoading}
+    <div class="loading-indicator">
+      <div class="loading-spinner"></div>
+      <p>Loading blockchain data...</p>
+    </div>
+  {/if}
 
   <div class="controls">
     <button onclick={zoomIn}>Zoom In</button>
@@ -902,5 +947,38 @@
     .controls {
       display: none;
     }
+  }
+
+  /* Loading indicator */
+  .loading-indicator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+    z-index: 100;
+  }
+
+  .loading-spinner {
+    width: 60px;
+    height: 60px;
+    border: 5px solid rgba(255, 255, 255, 0.3);
+    border-top: 5px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .loading-indicator p {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   }
 </style>
