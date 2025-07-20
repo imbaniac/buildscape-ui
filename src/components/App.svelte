@@ -6,30 +6,42 @@
   import { goto } from "$app/navigation";
   import { overviewStore, tvlLookupByChainId } from "$lib/stores/overviewStore";
 
-  const initialViewBox = { x: -2000, y: -5000, width: 20000, height: 20000 };
+  // Center the viewBox on (0,0) where Ethereum is located
+  const initialViewBox = { x: -5000, y: -5000, width: 20000, height: 20000 };
+  let baseViewBox = $state(initialViewBox);
+
   let svg = $state<SVGSVGElement>();
   let svgContainer = $state<HTMLDivElement>();
   let isPanning = $state(false);
   let startPoint = $state({ x: 0, y: 0 });
 
-  // Pan state
-  let translateX = $state(0);
-  let translateY = $state(0);
-  let panStartTranslate = { x: 0, y: 0 };
+  // Pan state (now tracks viewBox offset)
+  let panX = $state(0);
+  let panY = $state(0);
+  let panStart = { x: 0, y: 0 };
   let animationFrame: number | null = null;
-
-  // Store subscription - need to use derived state for reactivity
-  let overviewStoreState = $derived($overviewStore);
-  
-  // Show loader until we have TVL data
-  let showLoader = $derived(overviewStoreState.isLoading || !overviewStoreState.data);
-  
 
   // Zoom state
   let scale = $state(1); // Will be calculated dynamically in onMount
   const MIN_SCALE = 0.1;
   const MAX_SCALE = 5;
   const ZOOM_SPEED = 0.001; // For wheel events
+
+  // Computed viewBox that includes pan offset and zoom
+  let viewBox = $derived({
+    x: baseViewBox.x + panX,
+    y: baseViewBox.y + panY,
+    width: baseViewBox.width / scale,
+    height: baseViewBox.height / scale,
+  });
+
+  // Store subscription - need to use derived state for reactivity
+  let overviewStoreState = $derived($overviewStore);
+
+  // Show loader until we have TVL data
+  let showLoader = $derived(
+    overviewStoreState.isLoading || !overviewStoreState.data
+  );
 
   // Interaction state tracking
   let isInteracting = $state(false);
@@ -185,14 +197,10 @@
                 const mouseX = event.clientX - rect.left;
                 const mouseY = event.clientY - rect.top;
 
-                // Calculate the SVG-to-screen ratio
-                const svgWidth = initialViewBox.width;
-                const screenWidth = rect.width;
-                const ratio = svgWidth / screenWidth / scale;
-
                 // Convert screen coordinates to SVG coordinates
-                const svgX = (mouseX - translateX) * ratio;
-                const svgY = (mouseY - translateY) * ratio;
+                const svgX = viewBox.x + (mouseX / rect.width) * viewBox.width;
+                const svgY =
+                  viewBox.y + (mouseY / rect.height) * viewBox.height;
 
                 dragOffset = {
                   x: svgX - pos.x,
@@ -213,9 +221,9 @@
         x: event.clientX,
         y: event.clientY,
       };
-      panStartTranslate = {
-        x: translateX,
-        y: translateY,
+      panStart = {
+        x: panX,
+        y: panY,
       };
 
       // Initialize momentum tracking
@@ -246,8 +254,8 @@
           const ratio = svgWidth / screenWidth / scale;
 
           // Convert screen coordinates to SVG coordinates
-          const svgX = (mouseX - translateX) * ratio;
-          const svgY = (mouseY - translateY) * ratio;
+          const svgX = viewBox.x + (mouseX / rect.width) * viewBox.width;
+          const svgY = viewBox.y + (mouseY / rect.height) * viewBox.height;
 
           // Calculate new position
           const newX = svgX - dragOffset.x;
@@ -290,15 +298,24 @@
       const dx = event.clientX - startPoint.x;
       const dy = event.clientY - startPoint.y;
 
-      translateX = panStartTranslate.x + dx;
-      translateY = panStartTranslate.y + dy;
+      // Convert pixel movement to SVG units
+      const containerWidth = svgContainer?.clientWidth || 1;
+      const containerHeight = svgContainer?.clientHeight || 1;
+      const svgDx = -dx * (viewBox.width / containerWidth);
+      const svgDy = -dy * (viewBox.height / containerHeight);
 
-      // Track velocity for momentum
+      panX = panStart.x + svgDx;
+      panY = panStart.y + svgDy;
+
+      // Track velocity for momentum (in SVG units)
       const now = Date.now();
       const dt = Math.max(1, now - lastPanTime);
+      const pixelVelocityX = ((event.clientX - lastPanPoint.x) / dt) * 16;
+      const pixelVelocityY = ((event.clientY - lastPanPoint.y) / dt) * 16;
+
       panVelocity = {
-        x: ((event.clientX - lastPanPoint.x) / dt) * 16, // normalize to ~60fps
-        y: ((event.clientY - lastPanPoint.y) / dt) * 16,
+        x: -pixelVelocityX * (viewBox.width / containerWidth),
+        y: -pixelVelocityY * (viewBox.height / containerHeight),
       };
 
       lastPanTime = now;
@@ -393,24 +410,28 @@
       Math.max(MIN_SCALE, scale * (1 + delta))
     );
 
-    if (newScale !== scale) {
+    if (newScale !== scale && svgContainer) {
       // Get mouse position relative to the container
-      const rect = svgContainer?.getBoundingClientRect();
+      const rect = svgContainer.getBoundingClientRect();
       if (rect) {
         const mouseX = event.clientX - rect.left;
         const mouseY = event.clientY - rect.top;
 
-        // Calculate the point in SVG space before zoom
-        const svgX = (mouseX - translateX) / scale;
-        const svgY = (mouseY - translateY) / scale;
+        // Convert mouse position to SVG coordinates before zoom
+        const svgX = viewBox.x + (mouseX / rect.width) * viewBox.width;
+        const svgY = viewBox.y + (mouseY / rect.height) * viewBox.height;
 
         // Update scale
-        const scaleRatio = newScale / scale;
         scale = newScale;
 
-        // Adjust translation to keep the mouse point fixed
-        translateX = mouseX - svgX * newScale;
-        translateY = mouseY - svgY * newScale;
+        // Adjust pan to keep the mouse position fixed
+        // After zoom, the new viewBox width/height will be baseViewBox.width/newScale
+        const newViewBoxWidth = baseViewBox.width / newScale;
+        const newViewBoxHeight = baseViewBox.height / newScale;
+
+        // Calculate new pan to keep mouse point fixed
+        panX = svgX - (mouseX / rect.width) * newViewBoxWidth - baseViewBox.x;
+        panY = svgY - (mouseY / rect.height) * newViewBoxHeight - baseViewBox.y;
       }
     }
   }
@@ -480,23 +501,29 @@
         Math.max(MIN_SCALE, pinchStartScale * distanceRatio)
       );
 
-      if (newScale !== scale) {
+      if (newScale !== scale && svgContainer) {
         // Get center position relative to the container
-        const rect = svgContainer?.getBoundingClientRect();
+        const rect = svgContainer.getBoundingClientRect();
         if (rect) {
           const centerX = currentCenter.x - rect.left;
           const centerY = currentCenter.y - rect.top;
 
-          // Calculate the point in SVG space before zoom
-          const svgX = (centerX - translateX) / scale;
-          const svgY = (centerY - translateY) / scale;
+          // Convert pinch center to SVG coordinates before zoom
+          const svgX = viewBox.x + (centerX / rect.width) * viewBox.width;
+          const svgY = viewBox.y + (centerY / rect.height) * viewBox.height;
 
           // Update scale
           scale = newScale;
 
-          // Adjust translation to keep the pinch center fixed
-          translateX = centerX - svgX * scale;
-          translateY = centerY - svgY * scale;
+          // Adjust pan to keep the pinch center fixed
+          const newViewBoxWidth = baseViewBox.width / newScale;
+          const newViewBoxHeight = baseViewBox.height / newScale;
+
+          // Calculate new pan to keep pinch center fixed
+          panX =
+            svgX - (centerX / rect.width) * newViewBoxWidth - baseViewBox.x;
+          panY =
+            svgY - (centerY / rect.height) * newViewBoxHeight - baseViewBox.y;
 
           lastPinchCenter = currentCenter;
         }
@@ -521,15 +548,15 @@
 
   function momentumAnimation() {
     const friction = 0.95;
-    const minVelocity = 0.5;
+    const minVelocity = 0.1; // Adjusted for SVG units
 
     const animate = () => {
       if (
         Math.abs(panVelocity.x) > minVelocity ||
         Math.abs(panVelocity.y) > minVelocity
       ) {
-        translateX += panVelocity.x;
-        translateY += panVelocity.y;
+        panX += panVelocity.x;
+        panY += panVelocity.y;
 
         panVelocity.x *= friction;
         panVelocity.y *= friction;
@@ -543,7 +570,6 @@
 
     animationFrame = requestAnimationFrame(animate);
   }
-
 
   let showPositionsModal = $state(false);
   let positionsJson = $state("");
@@ -563,7 +589,6 @@
         alert("Failed to copy to clipboard. Please copy manually.");
       });
   }
-
 
   function openBookByName(chainName: string) {
     // Prevent opening modal during edit mode
@@ -601,11 +626,26 @@
     // Calculate initial scale based on viewport
     const calculateInitialScale = () => {
       const viewportWidth = window.innerWidth;
-      const desiredVisibleWidth = 1000; // Show 8000 SVG units by default
-      const calculatedScale = viewportWidth / desiredVisibleWidth;
+      const viewportHeight = window.innerHeight;
+      const isMobile = viewportWidth <= 768;
 
-      // Clamp the scale to reasonable bounds
-      scale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, calculatedScale));
+      if (isMobile) {
+        // For mobile, use full viewBox but zoom in with scale
+        baseViewBox = initialViewBox;
+        scale = 2.5; // Zoom in to show ~8000 units (20000/2.5)
+
+        // Reset pan
+        panX = 0;
+        panY = 0;
+      } else {
+        // Desktop: use full viewBox and appropriate scale
+        baseViewBox = initialViewBox;
+        scale = 2.0; // Show ~10000 units (20000/2)
+
+        // Reset pan
+        panX = 0;
+        panY = 0;
+      }
     };
 
     calculateInitialScale();
@@ -616,14 +656,21 @@
     };
 
     checkMobileViewport();
-    window.addEventListener("resize", checkMobileViewport);
+
+    // Recalculate scale on resize
+    const handleResize = () => {
+      checkMobileViewport();
+      calculateInitialScale();
+    };
+
+    window.addEventListener("resize", handleResize);
 
     if (svgContainer) {
       svgContainer.addEventListener("wheel", handleWheel, { passive: false });
 
       return () => {
         svgContainer?.removeEventListener("wheel", handleWheel);
-        window.removeEventListener("resize", checkMobileViewport);
+        window.removeEventListener("resize", handleResize);
         if (animationFrame) {
           cancelAnimationFrame(animationFrame);
         }
@@ -655,11 +702,11 @@
   {/if}
   <svg
     bind:this={svg}
-    viewBox={`${initialViewBox.x} ${initialViewBox.y} ${initialViewBox.width} ${initialViewBox.height}`}
+    viewBox={`${viewBox.x} ${viewBox.y} ${viewBox.width} ${viewBox.height}`}
     xmlns="http://www.w3.org/2000/svg"
     aria-label="Map of the EVM ecosystem"
     role="region"
-    style="transform: translate3d({translateX}px, {translateY}px, 0) scale({scale}); transform-origin: 0 0;"
+    style="width: 100%; height: 100%;"
   >
     <defs>
       <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
@@ -736,7 +783,6 @@
     <BoatLoader />
   {/if}
 
-
   <div class="controls">
     <button onclick={() => (editMode = !editMode)} class:active={editMode}>
       {editMode ? "Exit Edit Mode" : "Edit Mode"}
@@ -799,9 +845,6 @@
     height: 100%;
     will-change: transform; /* Hint for hardware acceleration */
     transition: none !important; /* Disable any default transitions for smooth panning */
-    transform-origin: center center;
-    -webkit-transform: translateZ(0); /* Force GPU layer */
-    -webkit-backface-visibility: hidden; /* Prevent flickering */
     image-rendering: -webkit-optimize-contrast; /* Better rendering on WebKit */
     shape-rendering: geometricPrecision; /* Precise shape rendering */
   }
@@ -901,7 +944,6 @@
     }
   }
 
-
   /* Subtle wave animation for map background */
   .subtle-waves {
     position: absolute;
@@ -921,7 +963,8 @@
     left: 0;
     width: 200%;
     height: 100px;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" fill="%235A8BA8"></path></svg>') repeat-x;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" fill="%235A8BA8"></path></svg>')
+      repeat-x;
     animation: subtleWave 30s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite;
   }
 
@@ -939,5 +982,4 @@
       transform: translateX(-50%);
     }
   }
-
 </style>
