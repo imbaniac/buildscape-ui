@@ -11,9 +11,10 @@
     formatter?: (value: number) => string;
     useAnimation?: boolean;
     icon?: string;
+    brandColor?: string;
   }
 
-  let { label, value, tooltip, loading = false, formatter, useAnimation = true, icon }: Props = $props();
+  let { label, value, tooltip, loading = false, formatter, useAnimation = true, icon, brandColor = '#3b82f6' }: Props = $props();
   
   // Map labels to icons - subtle strategy game icons
   const defaultIcons: Record<string, string> = {
@@ -26,7 +27,7 @@
   const displayIcon = $derived(icon || defaultIcons[label] || '');
 </script>
 
-<div class="metric-card">
+<div class="metric-card" style="--brand-color: {brandColor}">
   <div class="metric-header">
     {#if displayIcon}
       <span class="metric-icon">{displayIcon}</span>
@@ -62,9 +63,10 @@
 
 <style>
   .metric-card {
-    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-    border: 1px solid #e9ecef;
-    border-radius: 8px;
+    background: linear-gradient(180deg, #fafbfc 0%, #ffffff 100%);
+    border: 1px solid #d1d5db;
+    border-top: 3px solid #e5e7eb;
+    border-radius: 6px 6px 4px 4px;
     padding: 1rem;
     display: flex;
     flex-direction: column;
@@ -73,35 +75,51 @@
     position: relative;
     overflow: visible;
     box-shadow: 
-      0 2px 8px rgba(44, 62, 80, 0.08),
-      0 1px 2px rgba(44, 62, 80, 0.04);
+      0 1px 3px rgba(0, 0, 0, 0.05),
+      inset 0 2px 4px rgba(255, 255, 255, 0.9);
   }
   
-  /* Subtle corner accents */
+  /* Tab indicator line */
   .metric-card::before {
     content: '';
     position: absolute;
     top: 0;
-    left: 0;
-    right: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
     height: 3px;
-    background: linear-gradient(90deg, #34495e 0%, transparent 50%, #34495e 100%);
-    opacity: 0.1;
-    border-radius: 8px 8px 0 0;
+    background: var(--brand-color);
+    border-radius: 0 0 3px 3px;
+  }
+  
+  /* Folder edge shadow */
+  .metric-card::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: -1px;
+    right: -1px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(52, 73, 94, 0.1) 20%, rgba(52, 73, 94, 0.1) 80%, transparent);
   }
 
   .metric-card:hover {
     transform: translateY(-2px);
     box-shadow: 
-      0 4px 12px rgba(44, 62, 80, 0.12),
-      0 2px 4px rgba(44, 62, 80, 0.06);
-    border-color: rgba(52, 73, 94, 0.25);
+      0 -2px 6px rgba(44, 62, 80, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    border-color: #d1d5db;
+    background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
   }
   
   .metric-header {
     display: flex;
     align-items: center;
     gap: 0.375rem;
+    position: relative;
+    padding-bottom: 0.25rem;
+    margin-bottom: 0.25rem;
+    border-bottom: 1px solid rgba(52, 73, 94, 0.08);
   }
   
   .metric-icon {
@@ -112,7 +130,7 @@
   .metric-label {
     font-size: 0.5625rem;
     font-weight: 600;
-    color: #7f8c8d;
+    color: #6b7280;
     text-transform: uppercase;
     letter-spacing: 0.8px;
     font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
@@ -125,7 +143,7 @@
   .metric-value {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #2c3e50;
+    color: #1e293b;
     font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
     letter-spacing: -0.02em;
   }

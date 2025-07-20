@@ -46,6 +46,7 @@
         chainStatus?.current_block || chainDynamic?.lastBlock || 0
       )}
       networkStatus={chainStatus?.status || (loadingStatus ? "connecting" : "no_data")}
+      {brandColor}
     />
   {/if}
 </div>

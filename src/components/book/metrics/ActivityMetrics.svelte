@@ -20,8 +20,6 @@
   // Only show skeleton on initial load
   const showSkeleton = $derived(loadingDynamic && !chainDynamic);
   
-  // Get accessible color for button backgrounds
-  const adjustedColor = $derived(getAccessibleBrandColor(brandColor));
 </script>
 
 <div class="metrics-section">
@@ -32,7 +30,7 @@
         class="metric-tab"
         class:active={metricsSpan === span}
         onclick={() => onSpanChange(span)}
-        style="--brand-color: {brandColor}; --adjusted-color: {adjustedColor}"
+        style="--brand-color: {brandColor}"
       >
         {span}
       </button>
@@ -45,6 +43,7 @@
       value={chainDynamic?.metrics?.txPerSecond} 
       formatter={(v) => v.toFixed(2)}
       loading={showSkeleton}
+      brandColor={brandColor}
     />
     <MetricCard
       label="Transactions"
@@ -52,6 +51,7 @@
       formatter={(v) => formatNumber(v)}
       tooltip={chainDynamic?.metrics?.numTransactions ? formatNumberWithCommas(chainDynamic.metrics.numTransactions) : undefined}
       loading={showSkeleton}
+      brandColor={brandColor}
     />
     <MetricCard
       label="Population"
@@ -59,6 +59,7 @@
       formatter={(v) => formatNumber(v)}
       tooltip={chainDynamic?.metrics?.activeUsers ? formatNumberWithCommas(chainDynamic.metrics.activeUsers) : undefined}
       loading={showSkeleton}
+      brandColor={brandColor}
     />
     <MetricCard
       label="Contracts"
@@ -66,6 +67,7 @@
       formatter={(v) => formatNumber(v)}
       tooltip={chainDynamic?.metrics?.contractsDeployed ? formatNumberWithCommas(chainDynamic.metrics.contractsDeployed) : undefined}
       loading={showSkeleton}
+      brandColor={brandColor}
     />
   </div>
 </div>
@@ -78,7 +80,7 @@
   .metrics-section h3 {
     font-size: 0.75rem;
     font-weight: 600;
-    color: #7f8c8d;
+    color: #6b7280;
     margin-bottom: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.8px;
@@ -93,14 +95,14 @@
 
   .metric-tab {
     padding: 0.5rem 1rem;
-    background: rgba(52, 73, 94, 0.05);
-    border: 1px solid rgba(52, 73, 94, 0.15);
+    background: #fafbfc;
+    border: 1px solid #e5e7eb;
     border-radius: 6px;
     font-weight: 600;
     font-size: 0.6875rem;
     cursor: pointer;
     transition: all 0.2s ease;
-    color: #7f8c8d;
+    color: #6b7280;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     position: relative;
@@ -109,21 +111,21 @@
   }
 
   .metric-tab:hover {
-    background: rgba(52, 73, 94, 0.08);
-    border-color: rgba(52, 73, 94, 0.25);
+    background: #f8f9fa;
+    border-color: #d1d5db;
     transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(44, 62, 80, 0.1);
-    color: #34495e;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    color: #4b5563;
   }
 
   .metric-tab.active {
-    background: linear-gradient(180deg, #34495e 0%, #2c3e50 100%);
+    background: var(--brand-color);
     color: #ffffff;
-    border-color: #2c3e50;
+    border-color: var(--brand-color);
     font-weight: 700;
     box-shadow: 
-      0 2px 6px rgba(44, 62, 80, 0.15),
-      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      0 2px 6px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
   }
   
   .metric-tab:active {

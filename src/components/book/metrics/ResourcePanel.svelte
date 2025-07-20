@@ -10,9 +10,10 @@
     maxBlockSize?: number;
     lastBlock?: string;
     networkStatus?: string;
+    brandColor?: string;
   }
 
-  let { gasPrice, utilization, previousGasPrice, nativeCurrency = 'ETH', blockSize, maxBlockSize, lastBlock, networkStatus = 'live' }: Props = $props();
+  let { gasPrice, utilization, previousGasPrice, nativeCurrency = 'ETH', blockSize, maxBlockSize, lastBlock, networkStatus = 'live', brandColor = '#3b82f6' }: Props = $props();
   
   // Ensure values are valid
   const safeGasPrice = $derived(Math.max(0, gasPrice || 0));
@@ -71,7 +72,7 @@
   const statusInfo = $derived(getStatusInfo(networkStatus));
 </script>
 
-<div class="resource-panel">
+<div class="resource-panel" style="--brand-color: {brandColor}">
   <div class="panel-header">
     <span class="header-icon">🏰</span>
     <span class="header-title">NETWORK RESOURCES</span>
@@ -152,12 +153,24 @@
 <style>
   .resource-panel {
     background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-    border: 1px solid #2c3e50;
+    border: 1px solid #d1d5db;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 
-      0 2px 8px rgba(44, 62, 80, 0.1),
-      0 1px 2px rgba(44, 62, 80, 0.06);
+      0 2px 8px rgba(52, 73, 94, 0.08),
+      0 1px 2px rgba(0, 0, 0, 0.06);
+    position: relative;
+  }
+  
+  /* Brand color accent bar */
+  .resource-panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--brand-color);
   }
   
   .panel-header {
@@ -166,7 +179,7 @@
     display: flex;
     align-items: center;
     gap: 0.375rem;
-    border-bottom: 1px solid #2c3e50;
+    border-bottom: 1px solid #253443;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     position: relative;
   }
@@ -251,15 +264,16 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.625rem;
-    background: rgba(52, 73, 94, 0.03);
-    border: 1px solid rgba(52, 73, 94, 0.15);
+    background: #fafbfc;
+    border: 1px solid #e5e7eb;
     border-radius: 6px;
     transition: all 0.2s ease;
   }
   
   .resource-item:hover {
-    background: rgba(52, 73, 94, 0.06);
-    border-color: rgba(52, 73, 94, 0.25);
+    background: #f8f9fa;
+    border-color: #d1d5db;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   }
   
   .resource-icon {
@@ -283,7 +297,7 @@
   .resource-label {
     font-size: 0.5625rem;
     font-weight: 600;
-    color: #7f8c8d;
+    color: #6b7280;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
@@ -298,7 +312,7 @@
   .value-number {
     font-size: 1rem;
     font-weight: 700;
-    color: #2c3e50;
+    color: #1e293b;
     font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
   }
   
