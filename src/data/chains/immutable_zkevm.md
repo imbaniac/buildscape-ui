@@ -1,8 +1,8 @@
 ---
 name: Immutable zkEVM
 chainId: 13371
-color: "#131313"
-darkColor: "#3C3C3C"
+color: "#df9ef8"
+darkColor: "#BA7CD1"
 logo: immutable_zkevm.svg
 parentOrganization: Immutable
 website: https://www.immutable.com

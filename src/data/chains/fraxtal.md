@@ -1,8 +1,8 @@
 ---
 name: Fraxtal
 chainId: 252
-color: "#080B10"
-darkColor: "#1E293B"
+color: "#3B82F6"
+darkColor: "#2960B9"
 logo: fraxtal.svg
 parentOrganization: Frax Finance
 website: https://frax.com

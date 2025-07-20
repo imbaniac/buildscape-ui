@@ -1,8 +1,8 @@
 ---
 name: Sonic
 chainId: 146
-color: "#141416"
-darkColor: "#6A6A6A"
+color: "#fe9a4d"
+darkColor: "#C07338"
 logo: sonic.svg
 parentOrganization: Sonic Labs
 website: https://soniclabs.com
