@@ -57,7 +57,7 @@
       <div 
         class="status-dot" 
         class:pulse={statusInfo.pulse}
-        style="background-color: {statusInfo.color}"
+        style="background-color: {statusInfo.color}; --glow-color: {statusInfo.color}"
       ></div>
       <span class="status-label-text">{statusInfo.label}</span>
     </div>
@@ -185,49 +185,71 @@
   }
   
   .status-dot {
-    width: 10px;
-    height: 10px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
     position: relative;
+    box-shadow: 
+      0 0 8px rgba(0, 0, 0, 0.2),
+      inset 0 1px 2px rgba(255, 255, 255, 0.3);
   }
   
   .status-dot.pulse {
-    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    animation: glow 2s ease-in-out infinite;
   }
   
-  @keyframes pulse {
+  @keyframes glow {
     0%, 100% {
-      opacity: 1;
+      box-shadow: 
+        0 0 8px rgba(0, 0, 0, 0.2),
+        inset 0 1px 2px rgba(255, 255, 255, 0.3),
+        0 0 16px var(--glow-color, currentColor);
     }
     50% {
-      opacity: 0.5;
+      box-shadow: 
+        0 0 8px rgba(0, 0, 0, 0.2),
+        inset 0 1px 2px rgba(255, 255, 255, 0.3),
+        0 0 24px var(--glow-color, currentColor);
     }
   }
   
   .status-dot.pulse::before {
     content: '';
     position: absolute;
-    top: -4px;
-    left: -4px;
-    right: -4px;
-    bottom: -4px;
+    top: -6px;
+    left: -6px;
+    right: -6px;
+    bottom: -6px;
     border-radius: 50%;
     background-color: inherit;
-    opacity: 0.4;
+    opacity: 0.3;
     animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+  
+  .status-dot.pulse::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.8);
   }
   
   @keyframes ping {
     75%, 100% {
-      transform: scale(2);
+      transform: scale(2.5);
       opacity: 0;
     }
   }
   
   .status-label-text {
     font-size: 0.75rem;
-    font-weight: 500;
-    color: #64748b;
+    font-weight: 600;
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
   }
   
 

@@ -4,11 +4,11 @@
   interface Props {
     value: number;
     duration?: number;
-    format?: (value: number) => string;
+    formatter?: (value: number) => string;
     mode?: 'smooth' | 'instant';
   }
 
-  let { value, duration = 800, format = (v) => String(v), mode = 'instant' }: Props = $props();
+  let { value, duration = 800, formatter = (v) => String(v), mode = 'instant' }: Props = $props();
   
   let displayValue = $state(value);
   let animationId: number | null = null;
@@ -68,11 +68,11 @@
   });
 </script>
 
-<span class="animated-number">{format(displayValue)}</span>
+<span class="animated-number">{formatter(displayValue)}</span>
 
 <style>
   .animated-number {
     display: inline-block;
-    tabular-nums: lining-nums;
+    font-variant-numeric: tabular-nums lining-nums;
   }
 </style>

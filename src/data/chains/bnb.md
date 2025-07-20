@@ -25,9 +25,6 @@ blockscanners:
   - name: BscScan
     url: https://bscscan.com
     type: official
-  - name: DEX Guru
-    url: https://bnb.dex.guru
-    type: analytics
   - name: DexScreener
     url: https://dexscreener.com/bsc
     type: analytics

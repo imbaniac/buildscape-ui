@@ -107,7 +107,10 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: #87c1d3;
+    background: 
+      radial-gradient(ellipse at center top, #87ceeb 0%, #6bb6d8 30%, #5ca9ce 60%, #4d9bc3 100%),
+      linear-gradient(to bottom, #7fc3e6 0%, #5ca9ce 100%);
+    background-blend-mode: normal;
     overflow: hidden;
     z-index: 1000;
   }
@@ -249,20 +252,68 @@
     position: relative;
     z-index: 1;
   }
+  
+  .book-page::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+      radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.03) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.03) 0%, transparent 50%),
+      radial-gradient(circle at 40% 40%, rgba(16, 185, 129, 0.02) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: -1;
+  }
+  
+  .book-page::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 40px,
+        rgba(226, 232, 240, 0.1) 40px,
+        rgba(226, 232, 240, 0.1) 41px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 40px,
+        rgba(226, 232, 240, 0.1) 40px,
+        rgba(226, 232, 240, 0.1) 41px
+      );
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0.5;
+  }
 
   .book-page-left {
     border-radius: 20px 2px 2px 20px;
-    background: linear-gradient(
-      to right,
-      #ffffff 0%,
-      #fcfcfc 95%,
-      #f8f8f8 100%
-    );
+    background: 
+      linear-gradient(
+        to right,
+        #ffffff 0%,
+        #fcfcfc 95%,
+        #f8f8f8 100%
+      ),
+      radial-gradient(ellipse at top left, rgba(226, 232, 240, 0.15) 0%, transparent 60%);
+    background-blend-mode: normal, multiply;
   }
 
   .book-page-right {
     border-radius: 2px 20px 20px 2px;
-    background: linear-gradient(to left, #ffffff 0%, #fcfcfc 95%, #f8f8f8 100%);
+    background: 
+      linear-gradient(to left, #ffffff 0%, #fcfcfc 95%, #f8f8f8 100%),
+      radial-gradient(ellipse at top right, rgba(226, 232, 240, 0.15) 0%, transparent 60%);
+    background-blend-mode: normal, multiply;
   }
 
   .book-spine-effect {
@@ -395,7 +446,10 @@
 
   @media (max-width: 800px) {
     .book-fullscreen {
-      background: white;
+      background: 
+        radial-gradient(ellipse at center top, #87ceeb 0%, #6bb6d8 30%, #5ca9ce 60%, #4d9bc3 100%),
+        linear-gradient(to bottom, #7fc3e6 0%, #5ca9ce 100%);
+      background-blend-mode: normal;
     }
 
     .book-header {

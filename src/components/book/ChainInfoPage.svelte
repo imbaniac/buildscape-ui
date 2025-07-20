@@ -3,6 +3,7 @@
   import ActivityMetrics from "./metrics/ActivityMetrics.svelte";
   import Tooltip from "./ui/Tooltip.svelte";
   import { tooltipTexts } from "../../data/tooltips";
+  import { getAccessibleBrandColor } from "$lib/utils/colorUtils";
 
   interface Props {
     chainStatic: any;
@@ -23,6 +24,9 @@
     metricsSpan,
     onSpanChange,
   }: Props = $props();
+  
+  // Get accessible color for UI elements
+  const accessibleColor = $derived(getAccessibleBrandColor(chainStatic?.color || '#3b82f6'));
 
   async function addToWallet() {
     if (!window.ethereum) {
@@ -124,7 +128,7 @@
           target="_blank"
           rel="noopener noreferrer"
           class="chain-website"
-          style="color: {chainStatic.color}"
+          style="color: {accessibleColor}"
         >
           Website
         </a>
@@ -133,7 +137,7 @@
       <button
         class="add-wallet-btn-inline"
         onclick={addToWallet}
-        style="--brand-color: {chainStatic.color}"
+        style="--brand-color: {accessibleColor}"
       >
         <svg
           width="12"
@@ -249,7 +253,7 @@
     {onSpanChange}
     {loadingDynamic}
     {chainDynamic}
-    brandColor={chainStatic.color}
+    brandColor={accessibleColor}
   />
 
   <div class="footnotes">

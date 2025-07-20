@@ -36,9 +36,6 @@ blockscanners:
   - name: OKLink
     url: https://www.oklink.com/optimism
     type: alternative
-  - name: DEX Guru
-    url: https://optimism.dex.guru
-    type: analytics
 testnets:
   - name: OP Sepolia
     chainId: 11155420

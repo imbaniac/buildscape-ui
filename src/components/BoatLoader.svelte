@@ -30,7 +30,10 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(to bottom, #87ceeb 0%, #87c1d3 100%);
+    background: 
+      radial-gradient(ellipse at center top, #87ceeb 0%, #6bb6d8 30%, #5ca9ce 60%, #4d9bc3 100%),
+      linear-gradient(to bottom, #7fc3e6 0%, #5ca9ce 100%);
+    background-blend-mode: normal;
     z-index: 100;
   }
 

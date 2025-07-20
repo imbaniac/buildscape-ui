@@ -21,7 +21,7 @@ tabs:
       - field: blockscanners
         label: Block Explorers
         icon: 🔍
-  - name: Development
+  - name: Dev
     id: development
     fields:
       - field: rpcs
