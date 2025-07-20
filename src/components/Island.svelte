@@ -54,7 +54,7 @@
 >
   <g>
     <!-- Island base -->
-    <g transform="scale({scale})" opacity="0.85" filter="url(#islandFilter)">
+    <g transform="scale({scale})" opacity="0.85">
       <g transform="translate(-931, -560)">
         <!-- Using the provided SVG path for the island -->
         <path
@@ -249,9 +249,6 @@
           flood-color="#5ca9ce"
           flood-opacity="0.3"
         />
-      </filter>
-      <filter id="islandFilter">
-        <feColorMatrix type="saturate" values="0.7" />
       </filter>
     </defs>
 

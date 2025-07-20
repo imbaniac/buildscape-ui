@@ -210,11 +210,14 @@
     background: transparent;
     border: none;
     outline: none;
-    font-size: 14px;
+    font-size: 16px; /* Prevents Safari zoom on focus */
     color: #ffffff;
     min-width: 0;
     font-family: 'Lato', 'Inter', sans-serif;
     font-weight: 400;
+    -webkit-appearance: none; /* Remove iOS default styling */
+    appearance: none;
+    border-radius: 0; /* Prevent iOS rounded corners */
   }
 
   input:focus {
@@ -294,10 +297,23 @@
   /* Mobile adjustments */
   @media (max-width: 768px) {
     .search-bar {
-      bottom: env(safe-area-inset-bottom, 20px);
-      bottom: max(env(safe-area-inset-bottom), 20px);
+      bottom: calc(20px + env(safe-area-inset-bottom, 0px));
       width: calc(100% - 40px);
       max-width: 380px;
+      z-index: 1000; /* Ensure it's above other elements */
+      /* Better visibility on mobile */
+      opacity: 0.75;
+      background: rgba(44, 95, 124, 0.6);
+    }
+    
+    .search-bar.active {
+      opacity: 1;
+      background: rgba(44, 95, 124, 0.9);
+    }
+    
+    /* Slightly smaller on mobile to fit better */
+    input {
+      font-size: 16px; /* Still 16px to prevent zoom */
     }
   }
 
