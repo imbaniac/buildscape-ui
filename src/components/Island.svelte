@@ -10,6 +10,9 @@
     editMode?: boolean;
     onDragStart?: () => void;
     onDragEnd?: () => void;
+    class?: string;
+    isSearchMatch?: boolean;
+    isCurrentSearchResult?: boolean;
   }
 
   let {
@@ -23,6 +26,9 @@
     editMode = false,
     onDragStart,
     onDragEnd,
+    class: className = '',
+    isSearchMatch = false,
+    isCurrentSearchResult = false,
     ...restProps
   }: Props = $props();
 
@@ -39,7 +45,7 @@
 
 <g
   transform={`translate(${x}, ${y})`}
-  class="island-group {editMode ? 'edit-mode' : ''}"
+  class="island-group {editMode ? 'edit-mode' : ''} {isSearchMatch ? 'search-match' : ''} {isCurrentSearchResult ? 'current-search-result' : ''} {className}"
   pointer-events="all"
   style="cursor: {editMode ? 'move' : 'pointer'}"
   onpointerdown={editMode ? onDragStart : undefined}
@@ -345,7 +351,7 @@
     transition: transform 0.2s ease;
   }
 
-  .island-group:hover {
+  .island-group:hover:not(.search-match):not(.current-search-result) {
     filter: brightness(1.15) saturate(1.2);
   }
 
@@ -353,5 +359,45 @@
     stroke: #333;
     stroke-width: 3;
     stroke-dasharray: 10 5;
+  }
+
+  /* Search match styling - use !important to override hover */
+  .island-group.search-match {
+    filter: drop-shadow(0 0 40px rgba(127, 195, 230, 0.9)) brightness(1.15) !important;
+    animation: searchPulse 2s ease-in-out infinite;
+  }
+
+  /* Add a subtle ring around search matches */
+  .island-group.search-match > g {
+    filter: drop-shadow(0 0 0 3px rgba(127, 195, 230, 0.4));
+  }
+
+  /* Current search result gets stronger glow */
+  .island-group.current-search-result {
+    filter: drop-shadow(0 0 60px rgba(168, 213, 232, 1)) brightness(1.25) !important;
+    animation: currentSearchPulse 1s ease-in-out infinite;
+  }
+
+  /* Stronger ring for current result */
+  .island-group.current-search-result > g {
+    filter: drop-shadow(0 0 0 5px rgba(168, 213, 232, 0.6));
+  }
+
+  @keyframes searchPulse {
+    0%, 100% { 
+      filter: drop-shadow(0 0 40px rgba(127, 195, 230, 0.9)) brightness(1.15);
+    }
+    50% { 
+      filter: drop-shadow(0 0 50px rgba(127, 195, 230, 1)) brightness(1.2);
+    }
+  }
+
+  @keyframes currentSearchPulse {
+    0%, 100% { 
+      filter: drop-shadow(0 0 60px rgba(168, 213, 232, 1)) brightness(1.25);
+    }
+    50% { 
+      filter: drop-shadow(0 0 80px rgba(168, 213, 232, 1)) brightness(1.3);
+    }
   }
 </style>

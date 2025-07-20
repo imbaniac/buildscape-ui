@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import Island from "./Island.svelte";
   import BoatLoader from "./BoatLoader.svelte";
+  import SearchBar from "./SearchBar.svelte";
   import YAML from "yaml";
   import { goto } from "$app/navigation";
   import { overviewStore, tvlLookupByChainId } from "$lib/stores/overviewStore";
@@ -622,6 +623,140 @@
   // Get TVL lookup from store
   let tvlLookupMap = $derived($tvlLookupByChainId);
 
+  // Search state
+  let searchQuery = $state("");
+  let searchResults = $state<string[]>([]);
+  let currentResultIndex = $state(0);
+  let isSearchActive = $state(false);
+  let searchDebounceTimer: number | null = null;
+
+  // Search implementation
+  function performSearch(query: string) {
+    if (searchDebounceTimer) {
+      clearTimeout(searchDebounceTimer);
+    }
+
+    if (query.length < 3) {
+      searchResults = [];
+      currentResultIndex = 0;
+      return;
+    }
+
+    searchDebounceTimer = setTimeout(() => {
+      const lowerQuery = query.toLowerCase().trim();
+      const matches: string[] = [];
+
+      // Search through all chains
+      for (const [chainKey, chain] of Object.entries(staticChains)) {
+        // Only search chains that have positions
+        if (!islandPositions[chainKey]) continue;
+
+        // Search in chain name (case insensitive)
+        const chainName = chain.name?.toLowerCase() || chainKey.toLowerCase();
+        if (chainName.includes(lowerQuery)) {
+          matches.push(chainKey);
+        }
+      }
+
+      searchResults = matches;
+      currentResultIndex = 0;
+
+      // Navigate to first result if any
+      if (matches.length > 0) {
+        navigateToChain(matches[0]);
+      }
+    }, 300);
+  }
+
+  function navigateToChain(chainKey: string) {
+    const position = islandPositions[chainKey];
+    if (!position) return;
+
+    // Cancel any ongoing momentum animation
+    if (animationFrame) {
+      cancelAnimationFrame(animationFrame);
+      animationFrame = null;
+    }
+    panVelocity = { x: 0, y: 0 };
+
+    // If we're zoomed out too much, zoom in a bit to see the island better
+    const targetScale = scale < 1.5 ? 1.5 : scale;
+    
+    // Calculate the viewBox dimensions at target scale
+    const targetViewBoxWidth = baseViewBox.width / targetScale;
+    const targetViewBoxHeight = baseViewBox.height / targetScale;
+    
+    // Calculate pan to center the island
+    // We want the island position to be at the center of the viewBox
+    const targetPanX = position.x - targetViewBoxWidth / 2 - baseViewBox.x;
+    const targetPanY = position.y - targetViewBoxHeight / 2 - baseViewBox.y;
+
+    // Animation parameters
+    const duration = 600; // ms
+    const startTime = Date.now();
+    const startPanX = panX;
+    const startPanY = panY;
+    const startScale = scale;
+
+    function animate() {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      // Easing function (ease-in-out)
+      const eased = progress < 0.5 
+        ? 2 * progress * progress 
+        : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+
+      panX = startPanX + (targetPanX - startPanX) * eased;
+      panY = startPanY + (targetPanY - startPanY) * eased;
+      scale = startScale + (targetScale - startScale) * eased;
+
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(animate);
+      } else {
+        animationFrame = null;
+      }
+    }
+
+    animationFrame = requestAnimationFrame(animate);
+  }
+
+  function handleSearchNavigation(direction: 'prev' | 'next') {
+    if (searchResults.length === 0) return;
+
+    if (direction === 'next') {
+      currentResultIndex = (currentResultIndex + 1) % searchResults.length;
+    } else {
+      currentResultIndex = (currentResultIndex - 1 + searchResults.length) % searchResults.length;
+    }
+
+    navigateToChain(searchResults[currentResultIndex]);
+  }
+
+  function clearSearch() {
+    searchQuery = "";
+    searchResults = [];
+    currentResultIndex = 0;
+    isSearchActive = false;
+    if (searchDebounceTimer) {
+      clearTimeout(searchDebounceTimer);
+    }
+  }
+
+  // Keyboard shortcuts
+  function handleGlobalKeyDown(event: KeyboardEvent) {
+    // Cmd/Ctrl + F to activate search
+    if ((event.metaKey || event.ctrlKey) && event.key === 'f') {
+      event.preventDefault();
+      isSearchActive = true;
+      // Force focus to search input
+      setTimeout(() => {
+        const searchInput = document.querySelector('.search-bar input') as HTMLInputElement;
+        searchInput?.focus();
+      }, 50);
+    }
+  }
+
   onMount(() => {
     // Calculate initial scale based on viewport
     const calculateInitialScale = () => {
@@ -664,6 +799,7 @@
     };
 
     window.addEventListener("resize", handleResize);
+    window.addEventListener("keydown", handleGlobalKeyDown);
 
     if (svgContainer) {
       svgContainer.addEventListener("wheel", handleWheel, { passive: false });
@@ -671,8 +807,12 @@
       return () => {
         svgContainer?.removeEventListener("wheel", handleWheel);
         window.removeEventListener("resize", handleResize);
+        window.removeEventListener("keydown", handleGlobalKeyDown);
         if (animationFrame) {
           cancelAnimationFrame(animationFrame);
+        }
+        if (searchDebounceTimer) {
+          clearTimeout(searchDebounceTimer);
         }
       };
     }
@@ -791,6 +931,8 @@
           x={islandPositions["ethereum"].x}
           y={islandPositions["ethereum"].y}
           {editMode}
+          isSearchMatch={searchResults.includes("ethereum")}
+          isCurrentSearchResult={searchResults[currentResultIndex] === "ethereum"}
         />
       {/if}
 
@@ -809,6 +951,8 @@
           x={islandPositions[chainKey].x}
           y={islandPositions[chainKey].y}
           {editMode}
+          isSearchMatch={searchResults.includes(chainKey)}
+          isCurrentSearchResult={searchResults[currentResultIndex] === chainKey}
         />
       {/each}
     {/if}
@@ -816,6 +960,19 @@
 
   {#if showLoader}
     <BoatLoader />
+  {/if}
+
+  {#if !showLoader}
+    <SearchBar
+      bind:searchQuery
+      {searchResults}
+      {currentResultIndex}
+      isActive={isSearchActive}
+      onSearch={performSearch}
+      onNavigate={handleSearchNavigation}
+      onActivate={() => isSearchActive = true}
+      onClear={clearSearch}
+    />
   {/if}
 
   <div class="controls">
