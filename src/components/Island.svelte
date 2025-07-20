@@ -47,9 +47,10 @@
   onpointerup={editMode ? onDragEnd : undefined}
   {...restProps}
 >
-  <!-- Island base -->
-  <g transform="scale({scale})">
-    <g transform="translate(-931, -560)">
+  <g>
+    <!-- Island base -->
+    <g transform="scale({scale})">
+      <g transform="translate(-931, -560)">
       <!-- Using the provided SVG path for the island -->
       <path
         fill-rule="evenodd"
@@ -285,6 +286,7 @@
       </text>
     </g>
   </g>
+  </g>
 </g>
 
 <style>
@@ -301,4 +303,6 @@
     stroke-width: 3;
     stroke-dasharray: 10 5;
   }
+
+
 </style>

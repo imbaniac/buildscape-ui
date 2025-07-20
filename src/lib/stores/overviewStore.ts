@@ -13,9 +13,20 @@ interface OverviewStoreState {
 
 function createOverviewStore() {
   const { subscribe, set, update } = writable<OverviewStoreState>({
-    isLoading: true,
+    isLoading: false,
     data: null,
     error: null,
+  });
+
+  let currentState: OverviewStoreState = {
+    isLoading: false,
+    data: null,
+    error: null,
+  };
+
+  // Subscribe to our own store to keep currentState in sync
+  subscribe((state) => {
+    currentState = state;
   });
 
   async function load() {
@@ -34,9 +45,19 @@ function createOverviewStore() {
     }
   }
 
+  function getState(): OverviewStoreState {
+    return currentState;
+  }
+
+  function isLoaded(): boolean {
+    return currentState.data !== null;
+  }
+
   return {
     subscribe,
     load,
+    getState,
+    isLoaded,
   };
 }
 

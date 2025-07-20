@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import Island from "./Island.svelte";
+  import BoatLoader from "./BoatLoader.svelte";
   import YAML from "yaml";
   import { goto } from "$app/navigation";
   import { overviewStore, tvlLookupByChainId } from "$lib/stores/overviewStore";
@@ -19,6 +20,10 @@
 
   // Store subscription - need to use derived state for reactivity
   let overviewStoreState = $derived($overviewStore);
+  
+  // Show loader until we have TVL data
+  let showLoader = $derived(overviewStoreState.isLoading || !overviewStoreState.data);
+  
 
   // Zoom state
   let scale = $state(1); // Will be calculated dynamically in onMount
@@ -593,9 +598,6 @@
   let tvlLookupMap = $derived($tvlLookupByChainId);
 
   onMount(() => {
-    // Load overview data from store
-    overviewStore.load();
-
     // Calculate initial scale based on viewport
     const calculateInitialScale = () => {
       const viewportWidth = window.innerWidth;
@@ -645,6 +647,12 @@
   ontouchend={handleTouchEnd}
   ontouchcancel={handleTouchEnd}
 >
+  {#if !showLoader}
+    <div class="subtle-waves">
+      <div class="subtle-wave subtle-wave1"></div>
+      <div class="subtle-wave subtle-wave2"></div>
+    </div>
+  {/if}
   <svg
     bind:this={svg}
     viewBox={`${initialViewBox.x} ${initialViewBox.y} ${initialViewBox.width} ${initialViewBox.height}`}
@@ -659,7 +667,7 @@
       </filter>
     </defs>
 
-    {#if !overviewStoreState.isLoading}
+    {#if !showLoader}
       <text
         x="0"
         y="2500"
@@ -669,7 +677,7 @@
         font-weight="bold"
         opacity="0.25"
         transform="skewY(0) scale(1,0.866)"
-        style="font-family: inherit; letter-spacing: 8px;"
+        style="font-family: inherit; letter-spacing: 8px; animation: fadeIn 1s ease-out;"
       >
         EVM SEA
       </text>
@@ -724,12 +732,10 @@
     {/if}
   </svg>
 
-  {#if overviewStoreState.isLoading}
-    <div class="loading-indicator">
-      <div class="loading-spinner"></div>
-      <p>Loading blockchain data...</p>
-    </div>
+  {#if showLoader}
+    <BoatLoader />
   {/if}
+
 
   <div class="controls">
     <button onclick={() => (editMode = !editMode)} class:active={editMode}>
@@ -771,7 +777,7 @@
     width: 100%;
     height: 100vh;
     overflow: hidden;
-    background-color: #87c1d3;
+    background: linear-gradient(to bottom, #87ceeb 0%, #87c1d3 100%);
     cursor: grab;
     touch-action: none; /* Prevent all default touch behaviors */
     -webkit-user-select: none;
@@ -885,40 +891,53 @@
     }
   }
 
-  /* Loading indicator */
-  .loading-indicator {
+  /* Fade in animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 0.25;
+    }
+  }
+
+
+  /* Subtle wave animation for map background */
+  .subtle-waves {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    color: white;
-    z-index: 100;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 20%;
+    overflow: hidden;
+    opacity: 0.1;
+    pointer-events: none;
+    animation: fadeIn 2s ease-out;
   }
 
-  .loading-spinner {
-    width: 60px;
-    height: 60px;
-    border: 5px solid rgba(255, 255, 255, 0.3);
-    border-top: 5px solid white;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin: 0 auto 20px;
+  .subtle-wave {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 200%;
+    height: 100px;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" fill="%235A8BA8"></path></svg>') repeat-x;
+    animation: subtleWave 30s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite;
   }
 
-  @keyframes spin {
+  .subtle-wave2 {
+    bottom: 10px;
+    animation: subtleWave 35s cubic-bezier(0.36, 0.45, 0.63, 0.53) -5s infinite;
+    opacity: 0.5;
+  }
+
+  @keyframes subtleWave {
     0% {
-      transform: rotate(0deg);
+      transform: translateX(0);
     }
     100% {
-      transform: rotate(360deg);
+      transform: translateX(-50%);
     }
   }
 
-  .loading-indicator p {
-    font-size: 1.2em;
-    font-weight: bold;
-    margin: 0;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  }
 </style>
