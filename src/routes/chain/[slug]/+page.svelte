@@ -18,6 +18,11 @@
   let chainDynamic = $state<any>(null);
   let loadingDynamic = $state(false);
   
+  // Non-critical data states
+  let dynamicLoader = $state<any>(null);
+  let walletsByCategory = $state<any>({});
+  let loadingNonCritical = $state(true);
+  
   // Get real-time chain data from SSE store
   const chainDataStore = data.chainStatic?.chainId ? getChainData(data.chainStatic.chainId.toString()) : null;
   
@@ -54,17 +59,33 @@
   });
 
   async function loadDynamic(span: "1h" | "24h" | "7d" | "30d") {
-    if (!data.dynamicLoader) return;
+    if (!dynamicLoader) return;
 
     loadingDynamic = true;
     try {
-      chainDynamic = await data.dynamicLoader(span);
+      chainDynamic = await dynamicLoader(span);
     } catch (error) {
       console.error("Failed to load dynamic data:", error);
     } finally {
       loadingDynamic = false;
     }
   }
+  
+  // Handle streamed non-critical data
+  $effect(() => {
+    if (data.streamed?.nonCritical) {
+      data.streamed.nonCritical.then((nonCritical) => {
+        dynamicLoader = nonCritical.dynamicLoader;
+        walletsByCategory = nonCritical.walletsByCategory;
+        loadingNonCritical = false;
+        
+        // Once dynamic loader is available, load the dynamic data
+        if (dynamicLoader) {
+          loadDynamic(metricsSpan);
+        }
+      });
+    }
+  });
 
   function handleClose() {
     goto("/");
@@ -82,8 +103,7 @@
       initializeChainDataFeed(data.chainStatic.chainId.toString());
     }
     
-    // Load dynamic metrics history
-    loadDynamic(metricsSpan);
+    // Dynamic data will be loaded once the loader is available via the effect
     
     window.addEventListener("keydown", handleKeydown);
     
@@ -140,7 +160,7 @@
     <ChainDetailsPage
       chainStatic={data.chainStatic}
       bookmarks={data.bookmarks}
-      walletsByCategory={data.walletsByCategory}
+      {walletsByCategory}
       {activeTab}
       {activeGroup}
       onTabClick={handleTabClick}

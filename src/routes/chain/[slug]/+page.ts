@@ -3,38 +3,43 @@ import type { PageLoad } from "./$types";
 import YAML from "yaml";
 import type { BookmarkTab, WalletsByCategory } from "$lib/types";
 
+// Keep chain modules eager for now (they're small text files)
 const chainMdModules = import.meta.glob("/src/data/chains/*.md", {
   eager: true,
   query: "?raw",
   import: "default",
 });
 
+// Lazy load TypeScript modules (only loaded when needed)
 const chainTsModules = import.meta.glob("/src/data/chains/*.ts");
 
+// Keep logos eager (needed immediately for display)
 const logoAssets = import.meta.glob("/src/lib/assets/chains/*", {
   eager: true,
   query: "?url",
   import: "default",
 });
 
+// Lazy load wallet logos (not critical for initial render)
 const walletLogos = import.meta.glob("/src/lib/assets/wallets/*", {
-  eager: true,
   query: "?url",
   import: "default",
 });
 
+// Keep bookmarks eager (small file)
 const bookmarksModule = import.meta.glob("/src/data/bookmarks.md", {
   eager: true,
   query: "?raw",
   import: "default",
 });
 
+// Lazy load wallets (not critical for initial render)
 const walletsModule = import.meta.glob("/src/data/wallets.md", {
-  eager: true,
   query: "?raw",
   import: "default",
 });
 
+// Keep EVM common eager (small file)
 const evmCommonModule = import.meta.glob("/src/data/evm-common.md", {
   eager: true,
   query: "?raw",
@@ -50,7 +55,7 @@ function resolveLogoUrl(logoFilename: string): string | undefined {
   return undefined;
 }
 
-function resolveWalletLogo(walletName: string): string | undefined {
+async function resolveWalletLogo(walletName: string): Promise<string | undefined> {
   // Normalize wallet name for matching
   let normalizedName = walletName.toLowerCase();
 
@@ -66,7 +71,8 @@ function resolveWalletLogo(walletName: string): string | undefined {
   for (const path in walletLogos) {
     const filename = path.split("/").pop()?.toLowerCase();
     if (filename?.startsWith(normalizedName + ".")) {
-      return walletLogos[path] as string;
+      const module = await walletLogos[path]();
+      return module as string;
     }
   }
   return undefined;
@@ -85,7 +91,7 @@ function parseFrontmatterAndContent(raw: string): {
   return { frontmatter: {}, content: raw.trim() };
 }
 
-function parseWallets(walletsContent: string): WalletsByCategory {
+async function parseWallets(walletsContent: string): Promise<WalletsByCategory> {
   const lines = walletsContent.split("\n");
   const walletsByCategory: WalletsByCategory = {};
   let currentCategory = "";
@@ -108,7 +114,7 @@ function parseWallets(walletsContent: string): WalletsByCategory {
         walletsByCategory[currentCategory].push({
           name: walletName,
           url: parts[1],
-          logo: resolveWalletLogo(walletName),
+          logo: await resolveWalletLogo(walletName),
         });
       }
     }
@@ -213,6 +219,7 @@ export const load: PageLoad = async ({ params, url }) => {
     throw error(404, `Chain ${slug} not found`);
   }
 
+  // CRITICAL DATA - Load immediately
   const raw = chainMdModules[mdPath] as string;
   const { frontmatter, content } = parseFrontmatterAndContent(raw);
 
@@ -228,44 +235,59 @@ export const load: PageLoad = async ({ params, url }) => {
     name: frontmatter.name || slug,
   };
 
-  // Merge with common EVM tools if applicable
+  // Merge with common EVM tools if applicable (still critical)
   const evmCommonRaw = evmCommonModule["/src/data/evm-common.md"] as string;
   if (evmCommonRaw) {
     const { frontmatter: evmCommonData } = parseFrontmatterAndContent(evmCommonRaw);
     chainStatic = mergeEvmTools(chainStatic, evmCommonData, slug);
   }
 
-  // Get dynamic loader if available
-  const tsPath = `/src/data/chains/${slug}.ts`;
-  let dynamicLoader = null;
-  if (chainTsModules[tsPath]) {
-    const mod = await chainTsModules[tsPath]();
-    dynamicLoader = (mod as any).default;
-  }
-
-  // Parse bookmarks structure
+  // Parse bookmarks structure (critical for tab navigation)
   const bookmarksRaw = bookmarksModule["/src/data/bookmarks.md"] as string;
   const { frontmatter: bookmarksData } =
     parseFrontmatterAndContent(bookmarksRaw);
-
-  // Parse wallets for EVM chains
-  let walletsByCategory: WalletsByCategory = {};
-  if (chainStatic.technology?.isEVM) {
-    const walletsRaw = walletsModule["/src/data/wallets.md"] as string;
-    walletsByCategory = parseWallets(walletsRaw);
-  }
 
   // Get URL parameters
   const tab = url.searchParams.get("tab") || "overview";
   const span = url.searchParams.get("span") || "24h";
 
+  // NON-CRITICAL DATA - Load asynchronously
+  const loadNonCriticalData = async () => {
+    // Get dynamic loader if available
+    const tsPath = `/src/data/chains/${slug}.ts`;
+    let dynamicLoader = null;
+    if (chainTsModules[tsPath]) {
+      const mod = await chainTsModules[tsPath]();
+      dynamicLoader = (mod as any).default;
+    }
+
+    // Parse wallets for EVM chains
+    let walletsByCategory: WalletsByCategory = {};
+    if (chainStatic.technology?.isEVM) {
+      const walletsModulePath = "/src/data/wallets.md";
+      if (walletsModule[walletsModulePath]) {
+        const walletsRawModule = await walletsModule[walletsModulePath]();
+        const walletsRaw = walletsRawModule as string;
+        walletsByCategory = await parseWallets(walletsRaw);
+      }
+    }
+
+    return {
+      dynamicLoader,
+      walletsByCategory,
+    };
+  };
+
+  // Return critical data immediately, stream non-critical data
   return {
     slug,
     chainStatic,
-    dynamicLoader,
     bookmarks: bookmarksData.tabs as BookmarkTab[],
-    walletsByCategory,
     initialTab: tab,
     initialSpan: span as "1h" | "24h" | "7d" | "30d",
+    // Stream non-critical data
+    streamed: {
+      nonCritical: loadNonCriticalData(),
+    },
   };
 };

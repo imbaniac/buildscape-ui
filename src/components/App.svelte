@@ -902,6 +902,7 @@
           color={staticChains["ethereum"]?.color}
           darkColor={staticChains["ethereum"]?.darkColor}
           logo={staticChains["ethereum"]?.logoUrl}
+          slug="ethereum"
           scale={(() => {
             const chainId = staticChains["ethereum"]?.chainId;
             const tvl = chainId ? tvlLookupMap.get(chainId) || 0 : 0;
@@ -922,6 +923,7 @@
           color={blockchain.color}
           darkColor={blockchain.darkColor}
           logo={blockchain.logoUrl}
+          slug={chainKey}
           scale={(() => {
             const chainId = blockchain.chainId;
             const tvl = chainId ? tvlLookupMap.get(chainId) || 0 : 0;

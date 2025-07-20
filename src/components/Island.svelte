@@ -1,4 +1,7 @@
 <script lang="ts">
+  import { browser } from '$app/environment';
+  import { preloadData } from '$app/navigation';
+  
   interface Props {
     name: any;
     color: any;
@@ -13,6 +16,7 @@
     class?: string;
     isSearchMatch?: boolean;
     isCurrentSearchResult?: boolean;
+    slug?: string;
   }
 
   let {
@@ -29,8 +33,20 @@
     class: className = '',
     isSearchMatch = false,
     isCurrentSearchResult = false,
+    slug,
     ...restProps
   }: Props = $props();
+  
+  // Detect if we're on a touch device
+  const isTouchDevice = browser && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
+  
+  // Handle touch start for mobile prefetching
+  function handleTouchStart() {
+    if (slug && !editMode && isTouchDevice) {
+      // Prefetch on touch start for faster navigation
+      preloadData(`/chain/${slug}`);
+    }
+  }
 
   // Dynamic label sizing based on content - use desktop sizes for all devices
   const logoSize = 120;
@@ -50,6 +66,7 @@
   style="cursor: {editMode ? 'move' : 'pointer'}"
   onpointerdown={editMode ? onDragStart : undefined}
   onpointerup={editMode ? onDragEnd : undefined}
+  ontouchstart={slug && !editMode ? handleTouchStart : undefined}
   {...restProps}
 >
   <g>
@@ -302,6 +319,14 @@
       </g>
     </g>
   </g>
+  {#if slug && !editMode}
+    <a 
+      href="/chain/{slug}" 
+      style="position: absolute; inset: 0; opacity: 0;"
+      data-sveltekit-preload-data={isTouchDevice ? "tap" : "hover"}
+      aria-label="View {name} details"
+    ></a>
+  {/if}
 </g>
 
 <style>

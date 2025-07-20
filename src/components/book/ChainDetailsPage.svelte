@@ -5,6 +5,7 @@
   import ExplorersTab from "./tabs/ExplorersTab.svelte";
   import DevelopmentTab from "./tabs/DevelopmentTab.svelte";
   import WalletsTab from "./tabs/WalletsTab.svelte";
+  import SkeletonLoader from "./SkeletonLoader.svelte";
   import { getAccessibleBrandColor } from "$lib/utils/colorUtils";
   import type {
     BookmarkTab,
@@ -86,7 +87,11 @@
           onTabChange={(tab) => onTabClick(tab, "development")}
         />
       {:else if activeTab === "wallets" && chainStatic.technology?.isEVM}
-        <WalletsTab {walletsByCategory} />
+        {#if Object.keys(walletsByCategory).length === 0}
+          <SkeletonLoader type="wallets" />
+        {:else}
+          <WalletsTab {walletsByCategory} />
+        {/if}
       {:else}
         <div class="no-content">
           <p>No data available for this section</p>
