@@ -2,7 +2,7 @@
 name: Berachain
 chainId: 80094
 color: "#814625"
-darkColor: "#512B15"
+darkColor: "#6E3B1E"
 logo: berachain.svg
 parentOrganization: Berachain Foundation
 website: https://www.berachain.com

@@ -7,6 +7,7 @@
   import ChainDetailsPage from "../../../components/book/ChainDetailsPage.svelte";
   import { sseConnection } from "$lib/stores/sse";
   import { getChainData, initializeChainDataFeed, cleanupChainDataFeed } from "$lib/stores/chainDataStore";
+  import { getAccessibleBrandColor } from "$lib/utils/colorUtils";
   import type { PageData } from "./$types";
   import type { BookmarkTab, BookmarkField } from "$lib/types";
 
@@ -143,7 +144,7 @@
   </div>
 {/if}
 
-<BookLayout onClose={handleClose}>
+<BookLayout onClose={handleClose} brandColor={getAccessibleBrandColor(data.chainStatic?.color || '#3b82f6')}>
   {#snippet leftPage()}
     <ChainInfoPage 
       chainStatic={data.chainStatic}

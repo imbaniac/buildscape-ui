@@ -625,9 +625,12 @@
   @media (max-width: 640px) {
     .page-content {
       padding: 1.25rem 1rem;
+      padding-bottom: 2rem; /* Extra padding to ensure metrics are visible */
       gap: 0.75rem;
+      overflow-y: auto;
       overflow-x: hidden;
       height: calc(100vh - 50px);
+      -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
     }
 
     .chain-header {

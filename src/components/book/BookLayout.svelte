@@ -6,9 +6,10 @@
     onClose: () => void;
     leftPage?: import("svelte").Snippet;
     rightPage?: import("svelte").Snippet;
+    brandColor?: string;
   }
 
-  let { onClose, leftPage, rightPage }: Props = $props();
+  let { onClose, leftPage, rightPage, brandColor = '#3b82f6' }: Props = $props();
   
   // Mobile page state
   let showRightPage = $state(false);
@@ -59,7 +60,7 @@
   <div class="book-header">
     <CloseButton onclick={onClose} />
     {#if isMobile}
-      <div class="mobile-page-indicator">
+      <div class="mobile-page-indicator" style="--brand-color: {brandColor}">
         <button 
           class="page-dot" 
           class:active={!showRightPage}
@@ -528,7 +529,7 @@
   }
 
   .page-dot.active {
-    background: #3b82f6;
+    background: var(--brand-color, #3b82f6);
     width: 24px;
     border-radius: 5px;
   }
