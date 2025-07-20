@@ -5,7 +5,7 @@
   import { goto } from "$app/navigation";
   import { overviewStore, tvlLookupByChainId } from "$lib/stores/overviewStore";
 
-  const initialViewBox = { x: -10000, y: -10000, width: 20000, height: 20000 };
+  const initialViewBox = { x: -2000, y: -5000, width: 20000, height: 20000 };
   let svg = $state<SVGSVGElement>();
   let svgContainer = $state<HTMLDivElement>();
   let isPanning = $state(false);
@@ -21,7 +21,7 @@
   let overviewStoreState = $derived($overviewStore);
 
   // Zoom state
-  let scale = $state(1);
+  let scale = $state(1); // Will be calculated dynamically in onMount
   const MIN_SCALE = 0.1;
   const MAX_SCALE = 5;
   const ZOOM_SPEED = 0.001; // For wheel events
@@ -539,51 +539,6 @@
     animationFrame = requestAnimationFrame(animate);
   }
 
-  function resetView() {
-    translateX = 0;
-    translateY = 0;
-    scale = 1;
-  }
-
-  function zoomIn() {
-    const newScale = Math.min(MAX_SCALE, scale * 1.2);
-    if (newScale !== scale) {
-      // Zoom to center of viewport
-      const rect = svgContainer?.getBoundingClientRect();
-      if (rect) {
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-
-        const svgX = (centerX - translateX) / scale;
-        const svgY = (centerY - translateY) / scale;
-
-        scale = newScale;
-
-        translateX = centerX - svgX * scale;
-        translateY = centerY - svgY * scale;
-      }
-    }
-  }
-
-  function zoomOut() {
-    const newScale = Math.max(MIN_SCALE, scale / 1.2);
-    if (newScale !== scale) {
-      // Zoom to center of viewport
-      const rect = svgContainer?.getBoundingClientRect();
-      if (rect) {
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-
-        const svgX = (centerX - translateX) / scale;
-        const svgY = (centerY - translateY) / scale;
-
-        scale = newScale;
-
-        translateX = centerX - svgX * scale;
-        translateY = centerY - svgY * scale;
-      }
-    }
-  }
 
   let showPositionsModal = $state(false);
   let positionsJson = $state("");
@@ -604,26 +559,6 @@
       });
   }
 
-  function resetPositions() {
-    const positions: Record<string, { x: number; y: number }> = {};
-
-    // Ethereum at center
-    positions["ethereum"] = { x: 0, y: 0 };
-
-    // L2s in a circle with larger radius
-    const l2Chains = Object.entries(staticChains).filter(
-      ([_, chain]) => chain.chainId !== 1
-    );
-    l2Chains.forEach(([chainKey], i) => {
-      const angle = (2 * Math.PI * i) / l2Chains.length;
-      positions[chainKey] = {
-        x: 5000 * Math.cos(angle),
-        y: 5000 * Math.sin(angle),
-      };
-    });
-
-    islandPositions = positions;
-  }
 
   function openBookByName(chainName: string) {
     // Prevent opening modal during edit mode
@@ -660,6 +595,18 @@
   onMount(() => {
     // Load overview data from store
     overviewStore.load();
+
+    // Calculate initial scale based on viewport
+    const calculateInitialScale = () => {
+      const viewportWidth = window.innerWidth;
+      const desiredVisibleWidth = 1000; // Show 8000 SVG units by default
+      const calculatedScale = viewportWidth / desiredVisibleWidth;
+
+      // Clamp the scale to reasonable bounds
+      scale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, calculatedScale));
+    };
+
+    calculateInitialScale();
 
     // Check if mobile viewport
     const checkMobileViewport = () => {
@@ -785,16 +732,12 @@
   {/if}
 
   <div class="controls">
-    <button onclick={zoomIn}>Zoom In</button>
-    <button onclick={zoomOut}>Zoom Out</button>
-    <button onclick={resetView}>Reset View</button>
     <button onclick={() => (editMode = !editMode)} class:active={editMode}>
       {editMode ? "Exit Edit Mode" : "Edit Mode"}
     </button>
     {#if editMode}
       <button onclick={savePositions}>Save Positions</button>
     {/if}
-    <button onclick={resetPositions}>Reset Positions</button>
   </div>
 </div>
 
