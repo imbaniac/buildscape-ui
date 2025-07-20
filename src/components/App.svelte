@@ -694,12 +694,6 @@
   ontouchend={handleTouchEnd}
   ontouchcancel={handleTouchEnd}
 >
-  {#if !showLoader}
-    <div class="subtle-waves">
-      <div class="subtle-wave subtle-wave1"></div>
-      <div class="subtle-wave subtle-wave2"></div>
-    </div>
-  {/if}
   <svg
     bind:this={svg}
     viewBox={`${viewBox.x} ${viewBox.y} ${viewBox.width} ${viewBox.height}`}
@@ -712,41 +706,96 @@
       <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
         <feDropShadow dx="0" dy="10" stdDeviation="15" flood-opacity="0.3" />
       </filter>
+      
+      <!-- Ocean texture pattern -->
+      <pattern id="oceanTexture" x="0" y="0" width="200" height="200" patternUnits="userSpaceOnUse">
+        <circle cx="50" cy="50" r="2" fill="#a8d5e8" opacity="0.3" />
+        <circle cx="150" cy="50" r="3" fill="#a8d5e8" opacity="0.25" />
+        <circle cx="100" cy="100" r="2.5" fill="#a8d5e8" opacity="0.28" />
+        <circle cx="50" cy="150" r="2" fill="#a8d5e8" opacity="0.3" />
+        <circle cx="150" cy="150" r="2.8" fill="#a8d5e8" opacity="0.26" />
+      </pattern>
     </defs>
+    
+    <!-- Ocean texture overlay -->
+    <rect 
+      x={viewBox.x} 
+      y={viewBox.y} 
+      width={viewBox.width} 
+      height={viewBox.height} 
+      fill="url(#oceanTexture)" 
+      opacity="0.3"
+    />
 
     {#if !showLoader}
-      <text
-        x="0"
-        y="2500"
-        font-size="400"
-        fill="#5A8BA8"
-        text-anchor="middle"
-        font-weight="bold"
-        opacity="0.25"
-        transform="skewY(0) scale(1,0.866)"
-        style="font-family: inherit; letter-spacing: 8px; animation: fadeIn 1s ease-out;"
-      >
-        EVM SEA
-      </text>
+      <!-- Isometric grid -->
+      <defs>
+        <pattern id="grid" width="500" height="289" patternUnits="userSpaceOnUse">
+          <path d="M 250 0 L 500 144.5 L 250 289 L 0 144.5 Z" fill="none" stroke="#7fc3e6" stroke-width="1" opacity="0.15" />
+        </pattern>
+      </defs>
+      <rect 
+        x={viewBox.x} 
+        y={viewBox.y} 
+        width={viewBox.width} 
+        height={viewBox.height} 
+        fill="url(#grid)" 
+      />
+      
+      <!-- EVM SEA ocean label -->
+      <g transform="translate(0, 2500)">
+        <!-- White outline for contrast -->
+        <text
+          x="0"
+          y="0"
+          font-size="450"
+          fill="none"
+          stroke="#ffffff"
+          stroke-width="4"
+          text-anchor="middle"
+          font-weight="700"
+          opacity="0.6"
+          transform="skewY(0) scale(1,0.866)"
+          style="font-family: 'Lato', 'Inter', 'Helvetica Neue', sans-serif; letter-spacing: 60px; text-transform: uppercase; animation: fadeIn 3s ease-out;"
+        >
+          EVM SEA
+        </text>
+        <!-- Main text -->
+        <text
+          x="0"
+          y="0"
+          font-size="450"
+          fill="#3a7fa3"
+          text-anchor="middle"
+          font-weight="700"
+          opacity="0.7"
+          transform="skewY(0) scale(1,0.866)"
+          style="font-family: 'Lato', 'Inter', 'Helvetica Neue', sans-serif; letter-spacing: 60px; text-transform: uppercase; animation: fadeIn 3s ease-out;"
+        >
+          EVM SEA
+        </text>
+      </g>
 
       <!-- Main Ethereum Island (center) -->
-      <Island
-        name={staticChains["ethereum"]?.name}
-        color={staticChains["ethereum"]?.color}
-        darkColor={staticChains["ethereum"]?.darkColor}
-        logo={staticChains["ethereum"]?.logoUrl}
-        scale={(() => {
-          const chainId = staticChains["ethereum"]?.chainId;
-          const tvl = chainId ? tvlLookupMap.get(chainId) || 0 : 0;
-          return tvl > 0 ? calculateIslandScale(tvl) : 1.8; // Default large scale for Ethereum
-        })()}
-        x={islandPositions["ethereum"]?.x || 0}
-        y={islandPositions["ethereum"]?.y || 0}
-        {editMode}
-      />
+      {#if islandPositions["ethereum"]}
+        <Island
+          name={staticChains["ethereum"]?.name}
+          color={staticChains["ethereum"]?.color}
+          darkColor={staticChains["ethereum"]?.darkColor}
+          logo={staticChains["ethereum"]?.logoUrl}
+          scale={(() => {
+            const chainId = staticChains["ethereum"]?.chainId;
+            const tvl = chainId ? tvlLookupMap.get(chainId) || 0 : 0;
+            return tvl > 0 ? calculateIslandScale(tvl) : 1.8; // Default large scale for Ethereum
+          })()}
+          x={islandPositions["ethereum"].x}
+          y={islandPositions["ethereum"].y}
+          {editMode}
+        />
+      {/if}
 
-      <!-- L2s in a circle, spaced further out, exclude chainId 1 -->
-      {#each Object.entries(staticChains).filter(([_, chain]) => chain.chainId !== 1) as [chainKey, blockchain], i}
+      <!-- L2s that have positions defined, exclude chainId 1 -->
+      {#each Object.entries(staticChains).filter(([chainKey, chain]) => chain.chainId !== 1 && islandPositions[chainKey]) as [chainKey, blockchain], i}
         <Island
           name={blockchain.name}
           color={blockchain.color}
@@ -757,22 +806,8 @@
             const tvl = chainId ? tvlLookupMap.get(chainId) || 0 : 0;
             return tvl > 0 ? calculateIslandScale(tvl) : 0.6; // Default scale for unknown TVL
           })()}
-          x={islandPositions[chainKey]?.x ||
-            3000 *
-              Math.cos(
-                (2 * Math.PI * i) /
-                  Object.entries(staticChains).filter(
-                    ([_, chain]) => chain.chainId !== 1
-                  ).length
-              )}
-          y={islandPositions[chainKey]?.y ||
-            3000 *
-              Math.sin(
-                (2 * Math.PI * i) /
-                  Object.entries(staticChains).filter(
-                    ([_, chain]) => chain.chainId !== 1
-                  ).length
-              )}
+          x={islandPositions[chainKey].x}
+          y={islandPositions[chainKey].y}
           {editMode}
         />
       {/each}
@@ -823,7 +858,10 @@
     width: 100%;
     height: 100vh;
     overflow: hidden;
-    background: linear-gradient(to bottom, #87ceeb 0%, #87c1d3 100%);
+    background: 
+      radial-gradient(ellipse at center top, #87ceeb 0%, #6bb6d8 30%, #5ca9ce 60%, #4d9bc3 100%),
+      linear-gradient(to bottom, #7fc3e6 0%, #5ca9ce 100%);
+    background-blend-mode: normal;
     cursor: grab;
     touch-action: none; /* Prevent all default touch behaviors */
     -webkit-user-select: none;
@@ -938,48 +976,12 @@
   @keyframes fadeIn {
     from {
       opacity: 0;
+      transform: translateY(20px);
     }
     to {
-      opacity: 0.25;
+      opacity: 1;
+      transform: translateY(0);
     }
   }
 
-  /* Subtle wave animation for map background */
-  .subtle-waves {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 20%;
-    overflow: hidden;
-    opacity: 0.1;
-    pointer-events: none;
-    animation: fadeIn 2s ease-out;
-  }
-
-  .subtle-wave {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 200%;
-    height: 100px;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" fill="%235A8BA8"></path></svg>')
-      repeat-x;
-    animation: subtleWave 30s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite;
-  }
-
-  .subtle-wave2 {
-    bottom: 10px;
-    animation: subtleWave 35s cubic-bezier(0.36, 0.45, 0.63, 0.53) -5s infinite;
-    opacity: 0.5;
-  }
-
-  @keyframes subtleWave {
-    0% {
-      transform: translateX(0);
-    }
-    100% {
-      transform: translateX(-50%);
-    }
-  }
 </style>
