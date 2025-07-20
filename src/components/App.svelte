@@ -226,11 +226,6 @@
         x: panX,
         y: panY,
       };
-
-      // Initialize momentum tracking
-      lastPanTime = Date.now();
-      lastPanPoint = { x: event.clientX, y: event.clientY };
-      panVelocity = { x: 0, y: 0 };
     }
   }
 
@@ -307,20 +302,6 @@
 
       panX = panStart.x + svgDx;
       panY = panStart.y + svgDy;
-
-      // Track velocity for momentum (in SVG units)
-      const now = Date.now();
-      const dt = Math.max(1, now - lastPanTime);
-      const pixelVelocityX = ((event.clientX - lastPanPoint.x) / dt) * 16;
-      const pixelVelocityY = ((event.clientY - lastPanPoint.y) / dt) * 16;
-
-      panVelocity = {
-        x: -pixelVelocityX * (viewBox.width / containerWidth),
-        y: -pixelVelocityY * (viewBox.height / containerHeight),
-      };
-
-      lastPanTime = now;
-      lastPanPoint = { x: event.clientX, y: event.clientY };
     });
   }
 
@@ -382,10 +363,8 @@
         animationFrame = null;
       }
 
-      // Start momentum animation if velocity is significant
-      if (Math.abs(panVelocity.x) > 2 || Math.abs(panVelocity.y) > 2) {
-        momentumAnimation();
-      }
+      // Reset velocity without momentum animation
+      panVelocity = { x: 0, y: 0 };
     }
   }
 
