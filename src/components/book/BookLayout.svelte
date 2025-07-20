@@ -190,8 +190,8 @@
   .book-page-wrapper-left::after {
     content: "";
     position: absolute;
-    background: white;
-    border: 1px solid #e2e8f0;
+    background: #f8f8f6;
+    border: 1px solid #e5e2dd;
     top: 15px;
     bottom: 15px;
     z-index: -1;
@@ -202,7 +202,6 @@
     right: 8px;
     border-radius: 15px 0 0 15px;
     box-shadow: -4px 0 15px rgba(0, 0, 0, 0.1);
-    background: linear-gradient(to right, #f7f7f7 0%, #fcfcfc 100%);
   }
 
   .book-page-wrapper-left::after {
@@ -210,7 +209,7 @@
     right: 16px;
     border-radius: 12px 0 0 12px;
     box-shadow: -3px 0 12px rgba(0, 0, 0, 0.08);
-    background: linear-gradient(to right, #f2f2f2 0%, #f9f9f9 100%);
+    background: #f5f5f3;
   }
 
   /* Paper stack effect for right wrapper */
@@ -218,8 +217,8 @@
   .book-page-wrapper-right::after {
     content: "";
     position: absolute;
-    background: white;
-    border: 1px solid #e2e8f0;
+    background: #f8f8f6;
+    border: 1px solid #e5e2dd;
     top: 15px;
     bottom: 15px;
     z-index: -1;
@@ -230,7 +229,6 @@
     right: -8px;
     border-radius: 0 15px 15px 0;
     box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
-    background: linear-gradient(to left, #f7f7f7 0%, #fcfcfc 100%);
   }
 
   .book-page-wrapper-right::after {
@@ -238,11 +236,11 @@
     right: -16px;
     border-radius: 0 12px 12px 0;
     box-shadow: 3px 0 12px rgba(0, 0, 0, 0.08);
-    background: linear-gradient(to left, #f2f2f2 0%, #f9f9f9 100%);
+    background: #f5f5f3;
   }
 
   .book-page {
-    background: white;
+    background: #fafaf8;
     height: 100%;
     width: 100%;
     box-shadow:
@@ -251,6 +249,7 @@
     overflow: hidden;
     position: relative;
     z-index: 1;
+    border: 1px solid #e5e2dd;
   }
   
   .book-page::before {
@@ -260,61 +259,39 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: 
-      radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.03) 0%, transparent 50%),
-      radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.03) 0%, transparent 50%),
-      radial-gradient(circle at 40% 40%, rgba(16, 185, 129, 0.02) 0%, transparent 50%);
+    background: 
+      linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, transparent 50%),
+      linear-gradient(225deg, rgba(255, 255, 255, 0.3) 0%, transparent 50%);
     pointer-events: none;
-    z-index: -1;
+    z-index: 1;
+    opacity: 0.5;
   }
   
+  /* Subtle page texture */
   .book-page::after {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: 
-      repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 40px,
-        rgba(226, 232, 240, 0.1) 40px,
-        rgba(226, 232, 240, 0.1) 41px
-      ),
-      repeating-linear-gradient(
-        90deg,
-        transparent,
-        transparent 40px,
-        rgba(226, 232, 240, 0.1) 40px,
-        rgba(226, 232, 240, 0.1) 41px
-      );
+    top: -50%;
+    left: -50%;
+    right: -50%;
+    bottom: -50%;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><circle cx="50" cy="50" r="0.5" fill="%23000" opacity="0.02"/></svg>');
     pointer-events: none;
-    z-index: -1;
-    opacity: 0.5;
+    z-index: 2;
+    transform: rotate(15deg);
   }
 
   .book-page-left {
     border-radius: 20px 2px 2px 20px;
-    background: 
-      linear-gradient(
-        to right,
-        #ffffff 0%,
-        #fcfcfc 95%,
-        #f8f8f8 100%
-      ),
-      radial-gradient(ellipse at top left, rgba(226, 232, 240, 0.15) 0%, transparent 60%);
-    background-blend-mode: normal, multiply;
+    position: relative;
   }
+  
 
   .book-page-right {
     border-radius: 2px 20px 20px 2px;
-    background: 
-      linear-gradient(to left, #ffffff 0%, #fcfcfc 95%, #f8f8f8 100%),
-      radial-gradient(ellipse at top right, rgba(226, 232, 240, 0.15) 0%, transparent 60%);
-    background-blend-mode: normal, multiply;
+    position: relative;
   }
+  
 
   .book-spine-effect {
     position: absolute;
@@ -506,17 +483,17 @@
     .book-page {
       border-radius: 0;
       box-shadow: none;
-      background: white;
       height: 100%;
       overflow-y: auto;
       overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
+      /* Keep the parchment background on mobile too */
+      border: none;
     }
 
     .book-page-left,
     .book-page-right {
       border-radius: 0;
-      background: white;
     }
   }
 

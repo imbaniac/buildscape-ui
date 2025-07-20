@@ -246,6 +246,7 @@
     {loadingStatus}
     brandColor={chainStatic.color}
     maxBlockSize={chainStatic.maxBlockSize}
+    nativeCurrency={chainStatic.nativeCurrency}
   />
 
   <ActivityMetrics
@@ -273,12 +274,12 @@
     padding: 3rem;
     padding-right: 3.5rem;
     height: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
     position: relative;
+    background-color: #fafaf9;
   }
 
   .chain-header {

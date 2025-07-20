@@ -15,12 +15,12 @@
 
   let { label, value, tooltip, loading = false, formatter, useAnimation = true, icon }: Props = $props();
   
-  // Map labels to icons
+  // Map labels to icons - subtle strategy game icons
   const defaultIcons: Record<string, string> = {
     'TPS': '⚡',
-    'Transactions': '📊',
+    'Transactions': '💱',
     'Population': '👥',
-    'Contracts': '📜'
+    'Contracts': '📋'
   };
   
   const displayIcon = $derived(icon || defaultIcons[label] || '');
@@ -62,40 +62,40 @@
 
 <style>
   .metric-card {
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    padding: 0.875rem;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 1rem;
     display: flex;
     flex-direction: column;
-    gap: 0.375rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    gap: 0.5rem;
+    transition: all 0.2s ease;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
+    box-shadow: 
+      0 2px 8px rgba(44, 62, 80, 0.08),
+      0 1px 2px rgba(44, 62, 80, 0.04);
   }
   
+  /* Subtle corner accents */
   .metric-card::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
-    opacity: 0;
-    transition: opacity 0.3s;
+    height: 3px;
+    background: linear-gradient(90deg, #34495e 0%, transparent 50%, #34495e 100%);
+    opacity: 0.1;
+    border-radius: 8px 8px 0 0;
   }
 
   .metric-card:hover {
-    transform: translateY(-3px);
+    transform: translateY(-2px);
     box-shadow: 
-      0 6px 20px rgba(0, 0, 0, 0.08),
-      0 2px 8px rgba(0, 0, 0, 0.04);
-    border-color: #cbd5e1;
-  }
-  
-  .metric-card:hover::before {
-    opacity: 1;
+      0 4px 12px rgba(44, 62, 80, 0.12),
+      0 2px 4px rgba(44, 62, 80, 0.06);
+    border-color: rgba(52, 73, 94, 0.25);
   }
   
   .metric-header {
@@ -105,17 +105,17 @@
   }
   
   .metric-icon {
-    font-size: 0.875rem;
-    filter: grayscale(0.2);
+    font-size: 1rem;
+    opacity: 0.7;
   }
 
   .metric-label {
-    font-size: 0.6875rem;
+    font-size: 0.5625rem;
     font-weight: 600;
-    color: #64748b;
+    color: #7f8c8d;
     text-transform: uppercase;
-    letter-spacing: 0.4px;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    letter-spacing: 0.8px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
   }
   
   .metric-value-wrapper {
@@ -123,10 +123,10 @@
   }
 
   .metric-value {
-    font-size: 1.375rem;
+    font-size: 1.5rem;
     font-weight: 700;
-    color: #1e293b;
-    font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+    color: #2c3e50;
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
     letter-spacing: -0.02em;
   }
 

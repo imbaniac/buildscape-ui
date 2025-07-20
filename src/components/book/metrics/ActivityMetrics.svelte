@@ -76,12 +76,13 @@
   }
 
   .metrics-section h3 {
-    font-size: 0.875rem;
+    font-size: 0.75rem;
     font-weight: 600;
-    color: #64748b;
+    color: #7f8c8d;
     margin-bottom: 0.75rem;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.8px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
   }
 
   .metrics-tabs {
@@ -91,58 +92,38 @@
   }
 
   .metric-tab {
-    padding: 0.5rem 1.25rem;
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    background: rgba(52, 73, 94, 0.05);
+    border: 1px solid rgba(52, 73, 94, 0.15);
+    border-radius: 6px;
     font-weight: 600;
-    font-size: 0.8125rem;
+    font-size: 0.6875rem;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    color: #64748b;
+    transition: all 0.2s ease;
+    color: #7f8c8d;
     text-transform: uppercase;
-    letter-spacing: 0.4px;
+    letter-spacing: 0.5px;
     position: relative;
     overflow: hidden;
-    box-shadow: 
-      0 1px 3px rgba(0, 0, 0, 0.05),
-      inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  }
-  
-  .metric-tab::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
-    opacity: 0;
-    transition: opacity 0.3s;
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
   }
 
   .metric-tab:hover {
-    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-    border-color: #cbd5e1;
+    background: rgba(52, 73, 94, 0.08);
+    border-color: rgba(52, 73, 94, 0.25);
     transform: translateY(-1px);
-    box-shadow: 
-      0 4px 8px rgba(0, 0, 0, 0.08),
-      inset 0 1px 0 rgba(255, 255, 255, 0.5);
-  }
-  
-  .metric-tab:hover::before {
-    opacity: 1;
+    box-shadow: 0 2px 4px rgba(44, 62, 80, 0.1);
+    color: #34495e;
   }
 
   .metric-tab.active {
-    background: var(--adjusted-color, var(--brand-color));
-    color: white;
-    border-color: var(--adjusted-color, var(--brand-color));
+    background: linear-gradient(180deg, #34495e 0%, #2c3e50 100%);
+    color: #ffffff;
+    border-color: #2c3e50;
     font-weight: 700;
     box-shadow: 
-      0 4px 12px color-mix(in srgb, var(--brand-color) 30%, transparent),
-      inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+      0 2px 6px rgba(44, 62, 80, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
   
   .metric-tab:active {
