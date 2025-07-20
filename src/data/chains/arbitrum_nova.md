@@ -184,10 +184,14 @@ tools:
 # Additional SDKs and tools are inherited from evm-common.md
 ---
 
-Arbitrum Nova is a Layer 2 blockchain built on the AnyTrust protocol, designed for applications requiring high throughput and low transaction costs, such as gaming and social platforms.
+An L2 using Arbitrum’s AnyTrust protocol—optimized for cheap, high-frequency transactions (gaming, social, micro-payments).
 
-Unlike Arbitrum One, which is a fully trustless Optimistic Rollup, Nova introduces a mild trust assumption through a Data Availability Committee (DAC). This committee, comprising entities like Google Cloud, QuickNode, and Reddit, ensures off-chain data availability, allowing Nova to post only data availability certificates (DACerts) to Ethereum, thereby reducing costs and increasing efficiency. In cases where the DAC fails, Nova can fall back to posting full data on-chain, maintaining operational integrity.
-
-Both Nova and Arbitrum One utilize the Nitro technology stack, offering EVM compatibility and advanced features like calldata compression. Nova also supports Stylus, a WASM-based smart contract environment that runs alongside the EVM. This allows developers to write contracts in Rust, C, or C++ with near-native performance, while still maintaining full interoperability with Solidity-based contracts.
-
-However, developers should note that while Nova provides cost and speed advantages, it does so with a trade-off in decentralization compared to Arbitrum One.
+- **Security**: Depends on a Data Availability Committee (DAC). Requires at least one honest DAC member to avoid fallback to on-chain. Sequencer is centralized.  
+- **Infra**: Built on Arbitrum Nitro stack using AnyTrust. Fast block times (~250ms), but real throughput depends on sequencer and DAC performance.  
+- **Cost**: Ultra-low fees (<$0.01), significantly cheaper than Arbitrum One.  
+- **Ecosystem**: Small, focused on low-value, high-activity use cases—gaming, social apps. Low TVL, limited DeFi and liquidity.  
+- **Governance**: Controlled by Arbitrum DAO. Upgrades can be fast-tracked by a Security Council. DAC membership is off-chain and permissioned.  
+- **Trade-offs**:  
+  - Relies on DAC trust assumptions (not fully decentralized)  
+  - Centralized sequencer with censorship risk  
+  - Ecosystem smaller and less composable than Arbitrum One  

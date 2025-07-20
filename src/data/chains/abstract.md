@@ -57,8 +57,12 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-Abstract is a Layer 2 blockchain designed specifically for consumer crypto applications. Built as an Ethereum L2, it focuses on enabling developers to create trading platforms, games, AI tools, and social networks without traditional infrastructure limitations.
+A consumer-focused Ethereum L2 built as a zk-rollup using the ZK Stack.
 
-The platform emphasizes accessibility and performance for consumer-facing applications, providing a foundation for building applications that can scale to mainstream adoption. Abstract is positioned as "the builder's platform for consumer crypto," targeting developers who want to build the next generation of decentralized consumer applications.
-
-While technical specifications like block size and launch date are still emerging as the network develops, Abstract has secured backing from notable investors including EVG and Fenbushi Capital, signaling strong industry support for their consumer-focused approach to blockchain infrastructure.
+- **Security**: Inherits Ethereum security via zk-proofs; uses EigenDA for data availability.  
+- **UX**: Native account abstraction with passkey/email login, gas paid in any token or sponsored.  
+- **Focus**: Built for consumer apps—games, social, NFTs—with unified wallet and seamless UX.  
+- **Trade-offs**:  
+  - Young ecosystem, limited adoption and app depth  
+  - New UX patterns (e.g. passkeys) may face education/compatibility challenges  
+  - Relies on zkSync infra and EigenDA — not fully sovereign  

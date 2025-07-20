@@ -66,8 +66,27 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-PulseChain is an Ethereum fork that launched in 2023 with the goal of providing a more efficient alternative to Ethereum. It uses a delegated proof-of-stake consensus mechanism and features faster block times with lower transaction costs.
+An Ethereum fork with modified consensus and low-fee design, launched in 2023 by Richard Heart. Positioned as a high-throughput, low-cost alternative to Ethereum.
 
-The network is fully EVM-compatible, supporting all Ethereum tooling and smart contracts. PulseChain includes a complete state copy of Ethereum at the time of fork, meaning all ERC-20 tokens and NFTs were duplicated on the new chain.
+- **Consensus & Finality**  
+  - Uses Proof-of-Staked-Authority with a limited validator set (~33 validators).  
+  - Validators require large stakes and are not permissionlessly elected.  
+  - Block time ~10s; finality is quick but relies entirely on validator honesty.
 
-While PulseChain offers lower fees and faster transactions compared to Ethereum, it trades off some decentralization for these performance gains. The ecosystem is still developing, with fewer established protocols and tools compared to more mature chains.
+- **Infra & Execution**  
+  - Full-state Ethereum fork — copied all balances, contracts, and NFTs at genesis.  
+  - No rollup or proof system; no connection to Ethereum security.
+
+- **Performance & Fees**  
+  - Very low fees due to low network usage and no gas auction dynamics.  
+  - Throughput is higher than Ethereum, but depends on validator performance and network activity.  
+  - Lacks scalability techniques like rollups or blob-based DA.
+
+- **Use Cases**  
+  - Can be used for quick experimentation, forks of Ethereum dApps, or apps targeting low-fee environments without strict security needs.
+
+- **Trade-offs**  
+  - Validator set is small and permissioned — centralization and censorship risk.  
+  - No fraud or validity proofs — chain security is weak.  
+  - Governance is opaque and closely tied to founder.  
+  - Ecosystem is small, with low adoption beyond speculative or founder-related projects.

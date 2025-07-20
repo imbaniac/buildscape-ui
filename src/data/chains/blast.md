@@ -126,10 +126,20 @@ sdks:
 tools:
 ---
 
-Blast is an optimistic rollup that aims to differentiate itself by offering native yield on ETH and stablecoins. ETH on Blast automatically earns ~4% yield from Ethereum staking rewards, while its native stablecoin USDB earns ~5% from T-Bill yields via MakerDAO's protocol. 
+An OP Stack-based optimistic rollup with built-in native yield for ETH and stablecoins.
 
-The key innovation is that yield is built into the protocol itself — ETH, not wrapped versions, automatically rebases on the L2. Smart contracts can choose to opt into this auto-rebasing functionality. Additionally, Blast returns gas revenue back to dApps programmatically, allowing developers to either keep the revenue or subsidize their users' gas fees.
+- **Security**:  
+  - Centralized sequencer with full control over block production  
+  - No live fraud proofs; withdrawal security depends on a challenge window that isn’t enforced  
+  - Contracts are upgradeable without delay, controlled by a multisig—no permissionless governance  
 
-However, there are important considerations. Blast's launch was controversial due to its early points program that required users to lock funds before the mainnet was live. The protocol's yield mechanism adds complexity and potential risks compared to standard L2s. The automatic rebasing could complicate integrations and accounting for some applications.
+- **Native Yield**:  
+  - Bridged ETH is auto-staked in LST protocols  
+  - Stablecoins are deployed into external yield strategies (e.g. T-Bill wrappers)  
+  - Rebasing balances accrue passively to user wallets on L2  
 
-While Blast offers unique economic incentives for developers and users, it's important to understand these mechanisms thoroughly before building on the platform, as they represent a significant departure from standard L2 behavior.
+- **Trade-offs**:  
+  - No active fraud-proof system—state security depends on sequencer honesty  
+  - Yield mechanism introduces dependency on external DeFi protocols  
+  - Upgradeability without delay adds high governance and censorship risk  
+  - Centralized control across all layers (sequencer, upgrades, bridge)  

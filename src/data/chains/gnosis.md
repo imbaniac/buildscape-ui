@@ -96,8 +96,31 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-Gnosis Chain is a community-owned EVM-compatible blockchain that prioritizes credible neutrality and low costs. Originally launched as xDai Chain, it uses xDAI (a stablecoin pegged to USD) as its native currency for gas fees, making transaction costs predictable and extremely low.
 
-The chain achieves consensus through a unique beacon chain that uses GNO tokens for staking, with over 350,000 validators securing the network. With 5-second block times and transaction fees typically under $0.01, it's particularly suited for high-frequency applications like payments, gaming, and DAOs.
+An Ethereum sidechain with full EVM compatibility, Proof-of-Stake consensus, and low gas costs. Prioritizes accessibility and stability over throughput or trust-minimization.
 
-While Gnosis offers excellent stability and low costs, it has a smaller ecosystem compared to major L1s and L2s. The network is governed by GnosisDAO and has maintained 100% uptime since launch, making it a reliable choice for applications that need consistent, affordable execution.
+- **Consensus & Finality**  
+  - Uses its own Beacon-style PoS validator set (~100k validators).  
+  - ~5s block times, finality after ~6.5 minutes.  
+  - No fraud or validity proofs — not a rollup. Finality relies entirely on honest validator majority.
+
+- **Performance**  
+  - ~5 TPS typical, peaks around 80 TPS.  
+  - Finality slower than L2s.  
+  - Gas fees consistently low (~$0.001–0.01 per tx).
+
+- **Use Cases in Practice**  
+  - Gnosis Safe infra, DAO tools, multisigs, stablecoin treasuries.  
+  - Long-lived production contracts that benefit from cheap gas and stable execution.  
+  - Bridges, token registries, dashboards with moderate activity.  
+
+- **When to Use It**  
+  - You want low-cost EVM execution and don’t need Ethereum-level security or fast finality.  
+  - You’re deploying DAO infra, governance systems, or tools that interact with Gnosis Safe.  
+  - You need a stable, cheap environment for contracts that don’t require high throughput or deep composability.
+
+- **Trade-offs**  
+  - Finality is slow (~6 min) and not anchored to Ethereum.  
+  - Not suitable for high-frequency apps (games, DeFi protocols, real-time UX).  
+  - Validator set is large but governance is still GnosisDAO-coordinated.  
+  - No fraud/fault proofs or trustless bridge guarantees.

@@ -183,8 +183,15 @@ tools:
     description: Full-stack development platform with RPCs, APIs, and contract analytics for scaling on Arbitrum One.
 ---
 
-Arbitrum One is a Layer 2 Optimistic Rollup that batches transactions off-chain and posts all transaction data directly to Ethereum, offering a trustless extension of the L1 with lower fees and higher throughput.
+A general-purpose optimistic rollup and the main chain of the Arbitrum ecosystem.
 
-It doesn’t rely on committees or off-chain data availability like Arbitrum Nova — instead, all data is published on-chain, which makes it more expensive but also more secure and decentralized.
-
-Built on the Nitro stack, Arbitrum One is fully EVM-compatible and uses standard Ethereum tooling, with some improvements under the hood like calldata compression and improved cross-chain messaging. The trade-off is higher gas costs compared to AnyTrust-based chains, but for developers building DeFi apps or anything where state integrity matters, Arbitrum One sticks closer to Ethereum’s trust model.
+- **Security**: Inherits Ethereum security via fraud proofs. Verifier whitelist is still in place — not fully permissionless.  
+- **Infra**: Nitro stack with custom WASM EVM (Arbitrum Virtual Machine), calldata compression, and support for chain-local precompiles.  
+- **Sequencer**: Centralized and run by Offchain Labs. Censorship resistance depends on fallback L1 posting (24h+ delay).  
+- **Cost**: ~10–50x cheaper than Ethereum L1, varies with calldata usage and compression. More expensive than Nova.  
+- **Ecosystem**: Large and composable, but fragmented with the rise of Orbit chains. Main home for DeFi protocols like GMX, Radiant, and native infra.  
+- **Governance**: Arbitrum DAO controls upgrades. Security Council (9/12 multisig) can fast-track upgrades or pause the system.  
+- **Trade-offs**:  
+  - Fraud proofs still rely on trusted parties; challenge game not yet widely used  
+  - Sequencer is centralized, upgrade delay can be bypassed  
+  - Complexity of Nitro adds non-trivial surface area for bugs and audit requirements  

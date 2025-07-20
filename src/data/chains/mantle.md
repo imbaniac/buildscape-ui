@@ -80,8 +80,27 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-Mantle is an Ethereum Layer-2 network built with a modular architecture that combines optimistic rollup technology with innovative data availability solutions. It's the first L2 to integrate EigenDA, significantly reducing transaction costs while maintaining Ethereum's security guarantees.
+An Ethereum Layer 2 built with Optimistic Rollup architecture, integrating modular data availability (EigenDA) and transitioning toward ZK finality via OP Succinct.
 
-The network features a unique modular design allowing independent upgrades to execution, data availability, and finality modules. This flexibility enables rapid innovation without compromising stability. Mantle also supports native liquid staking with mETH and governance through the MNT token.
+- **Security & Data Availability**  
+  - Runs as an optimistic rollup with fraud proofs; proof window still ~7 days.  
+  - Posts calldata to Ethereum and now uses EigenDA for off-chain data availability with slashed validator nodes.  
+  - Plans to enable zk-proof finality (~1 hour) via SP1 (ZKVM) integration.  
 
-While Mantle offers competitive fees and fast transaction finality, it's still relatively new compared to other L2s. The ecosystem is growing but may have fewer tools and integrations than more established networks.
+- **Infra & Execution**  
+  - Modular architecture separates execution, data availability, and settlement layers.  
+  - Sequencer is centralized, but roadmap includes gradual decentralization.  
+
+- **Performance**  
+  - High throughput (~2M txs per quarter reported).  
+  - Low gas fees under normal L1 conditions; DA costs can rise with Ethereum congestion.  
+  - Fast block inclusion; zk-based finality (when live) will reduce settlement delay drastically.  
+
+- **Use Cases**  
+  - Suitable for DeFi protocols and financial apps that need deep liquidity, fast confirmation, and modular infra without leaving the Ethereum trust boundary.  
+
+- **Trade-offs**  
+  - Still depends on centralized sequencer and token-governed upgrade path.  
+  - DA decentralization (EigenDA) improves censorship resistance but introduces new validator assumptions.  
+  - zk finality not yet live — current withdrawals require fraud proof challenge period.  
+  - Not ideal for real-time apps or builders requiring full trust minimization today.

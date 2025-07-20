@@ -65,8 +65,22 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-Lisk is an Ethereum Layer 2 built on the OP Stack, designed specifically for high-growth emerging markets in Africa, Southeast Asia, and other developing regions. It leverages Optimistic rollup technology to provide fast and affordable transactions while maintaining Ethereum's security.
+An EVM-compatible Layer 2 built on the OP Stack, part of the Optimism Superchain. The legacy JavaScript-based SDK and sidechain model has been deprecated.
 
-As part of the Superchain ecosystem, Lisk focuses on real-world applications in emerging markets, offering builders the infrastructure to create solutions for local challenges. The network prioritizes accessibility and low costs to enable financial inclusion and digital innovation in underserved regions.
+- **Consensus & Finality**  
+  - Finality is probabilistic and subject to a challenge period (~7 days) on Ethereum L1.  
+  - Sequencer currently centralized; decentralization planned via Superchain roadmap.
 
-Built on proven technology from Optimism, Lisk combines the reliability of established L2 infrastructure with a focused mission to empower founders and developers in emerging economies, making it an ideal platform for building the next generation of decentralized applications in high-growth markets.
+- **Security Model**  
+  - Secured by Ethereum L1 with fraud-proof-based dispute resolution.  
+  - Sequencer trust assumptions apply — censorship resistance depends on future upgrades.  
+  - Shared infrastructure with the Superchain improves auditability and upgrade velocity.
+
+- **Use Cases**  
+  - Suitable for developers building general-purpose dApps on Ethereum L2: DeFi, gaming, identity, etc.  
+  - Integrated into a broader Superchain vision with composability across OP Stack chains.
+
+- **Trade-offs**  
+  - Subject to standard optimistic rollup trade-offs (latency, challenge delays).  
+  - Sequencer currently centralized; liveness and censorship resistance not yet trustless.  
+  - Competes with other OP Stack chains — differentiation depends on ecosystem support and UX.

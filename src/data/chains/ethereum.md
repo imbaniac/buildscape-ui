@@ -197,8 +197,12 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-Ethereum is the original smart contract blockchain and the de facto standard for decentralized application development. It’s fully decentralized, with thousands of validators securing the network via proof-of-stake, and it prioritizes protocol stability and neutrality over rapid iteration.
+The original smart contract chain and backbone of web3.
 
-While Ethereum offers unmatched security and a massive ecosystem, it also comes with trade-offs: transaction fees can spike unpredictably during network congestion, and throughput is still limited despite recent upgrades like the Merge and Dencun. 
-
-The protocol is relatively slow-moving due to its strong emphasis on backward compatibility and community consensus, which is great if you care about long-term reliability but frustrating if you’re hoping for fast L1 innovation.
+- **Security**: Most battle-tested, decentralized L1 (proof-of-stake, thousands of validators).  
+- **Ecosystem**: Largest dev and app ecosystem by far.  
+- **Stability**: Conservative upgrade path; prioritizes neutrality and backward compatibility.  
+- **Trade-offs**:  
+  - High and volatile gas fees during congestion  
+  - Limited throughput (even after Merge & Dencun)  
+  - Slow protocol changes — favors reliability over rapid innovation  

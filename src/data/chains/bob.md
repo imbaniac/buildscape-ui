@@ -72,12 +72,24 @@ sdks:
 tools:
 ---
 
-BOB is a hybrid Layer 2 blockchain built on the OP Stack that uniquely focuses on bringing Bitcoin DeFi capabilities to Ethereum. It positions itself as the "Gateway for Bitcoin DeFi," enabling trustless BTC deposits using BitVM and ZK-proofs while maintaining full EVM compatibility.
+A hybrid L2 using the OP Stack, designed to eventually settle on Bitcoin. Currently operates as an optimistic rollup on Ethereum.
 
-The network's key innovation lies in its ability to bridge Bitcoin liquidity to DeFi applications without traditional wrapped tokens. BOB enables native Bitcoin interactions through its hybrid architecture, allowing users to access yield opportunities across multiple chains with what they call "1-click Bitcoin DeFi."
+- **Security**  
+  - Runs as an OP rollup on Ethereum — no connection to Bitcoin for finality today.  
+  - Fraud proofs and settlement rely on Ethereum challenge window (7 days).  
+  - Plans to move to Bitcoin-based settlement with merged mining and BitVM-style challenge proofs, but not implemented yet.
 
-Currently, BOB follows a phased rollout approach. Phase 1 launched as an optimistic Ethereum rollup, while Phase 2 is rolling out Bitcoin security features with staked Bitcoin backing. Future phases promise research into Bitcoin rollups and ZK implementations, potentially making it the first true Bitcoin L2.
+- **Infra**  
+  - Implements a Bitcoin light client to read BTC state inside contracts.  
+  - Native BTC support and bridging under development — not fully live or trustless yet.
 
-Like other OP Stack chains, BOB benefits from shared infrastructure and interoperability within the Optimism ecosystem. However, its focus on Bitcoin integration sets it apart, though this specialization means the network's success heavily depends on Bitcoin DeFi adoption and the maturity of cross-chain infrastructure.
+- **Design Goals**  
+  - Long-term vision is Bitcoin-aligned smart contract infra.  
+  - Current architecture inherits OP Stack’s centralization risks (sequencer, upgrade keys).  
+  - Future plans introduce more complexity: PoW-based validator layer, Bitcoin settlement, and BTC-denominated gas.
 
-For developers, BOB offers unique opportunities to build applications that leverage both Bitcoin's security and Ethereum's programmability, but the nascent nature of Bitcoin DeFi infrastructure may present challenges.
+- **Trade-offs**  
+  - Present-day security is fully Ethereum-based — no actual Bitcoin finality.  
+  - BTC interoperability is partial; bridge and validator coordination not trust-minimized yet.  
+  - Hybrid architecture adds operational and conceptual overhead for devs.  
+  - Builders relying on Bitcoin-native guarantees will need to wait for later phases. 

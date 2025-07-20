@@ -143,8 +143,17 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-Avalanche is a high-performance blockchain platform designed for decentralized applications and custom blockchain deployments. The C-Chain is Avalanche's primary smart contract chain, offering full EVM compatibility with sub-second finality and low fees.
+The EVM execution layer within Avalanche’s multi-chain architecture.
 
-Built on a novel consensus mechanism combining Classical and Nakamoto consensus properties, Avalanche achieves over 4,500 TPS while maintaining decentralization through thousands of validators. The platform's unique subnet architecture allows developers to create custom blockchain networks with their own rules and validators.
-
-While Avalanche excels at speed and throughput, it requires AVAX staking for validation and has higher hardware requirements than some other chains. The ecosystem prioritizes DeFi and institutional use cases, with strong support for regulated applications through subnet customization.
+- **Consensus**: Snowman protocol (a linearized version of Avalanche consensus). Offers fast finality (1–2 seconds) and high throughput (4,500 TPS under ideal conditions).  
+- **Architecture**: One of three default chains:  
+  - **X-Chain**: asset transfers  
+  - **P-Chain**: staking, validators, subnets  
+  - **C-Chain**: smart contracts (EVM-compatible)  
+- **Security**: Validators secure the full Primary Network (P, X, C chains) by staking AVAX. Minimum validator stake is 2,000 AVAX.  
+- **Performance**: Low fees and quick confirmation times. Gas usage and congestion isolated from other chains, but C-Chain can still bottleneck under load.  
+- **Subnets**: Avalanche-native feature allowing custom blockchains with their own VM, token, and rules—C-Chain is part of the default subnet.  
+- **Trade-offs**:  
+  - Avalanche consensus is less battle-tested and relies on probabilistic sampling assumptions  
+  - Multichain setup adds developer complexity and potential for tooling gaps  
+  - Centralization risk if validator participation is limited by high AVAX stake requirement  

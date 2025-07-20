@@ -60,8 +60,20 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-Bitlayer is a Bitcoin Layer 2 blockchain built on the BitVM paradigm, designed to be the gateway for Bitcoin DeFi. It provides EVM compatibility while leveraging Bitcoin's security, enabling developers to build decentralized applications that interact with Bitcoin assets.
+A Bitcoin-aligned Layer 2 that uses a PoS-based sequencer and posts rollup state to Bitcoin via BitVM-like fraud proofs.
 
-The network uses BTC as its native currency (with 18 decimals for EVM compatibility) and focuses on providing infrastructure for Bitcoin DeFi applications. With a median gas fee of around $0.1, it offers an affordable environment for DApp development while maintaining the security guarantees of the Bitcoin network.
-
-Bitlayer supports standard Ethereum development tools and languages like Solidity, making it easy for developers familiar with EVM chains to build on the platform. The network provides comprehensive developer resources including documentation, testnet access, and multisig wallet infrastructure.
+- **Security**:  
+  - PoS sequencers bonded with BTC and selected from validators staking BTR.  
+  - Rollup periodically posts state roots to Bitcoin; challenges rely on a one-honest-participant assumption.  
+- **Finality**:  
+  - Fast soft-finality within the PoS layer (not trustless).  
+  - Bitcoin-level finality only after ~7-day challenge window.  
+- **BTC Support**:  
+  - Native BTC is bridged and used as gas. Claims 1:1 backing, but bridging depends on external trust assumptions.  
+- **Infra**:  
+  - Modular architecture combining PoS execution, a rollup bridge, and BitVM-style challenge mechanics.  
+- **Trade-offs**:  
+  - Security depends on off-chain watchers and PoS validator honesty  
+  - PoS sequencer introduces centralization risk (collateral, rotation, governance)  
+  - Fraud proof mechanism (BitVM-based) is experimental and not yet proven at scale  
+  - Bridged BTC custody model introduces additional trust assumptions  

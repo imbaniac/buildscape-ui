@@ -70,8 +70,28 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-Sonic is a high-performance EVM Layer-1 blockchain that claims to deliver up to 400,000 transactions per second with sub-second confirmation times. Built by Sonic Labs, it aims to solve the scalability trilemma by offering unprecedented speed without compromising on EVM compatibility.
+A performance-focused EVM Layer 1 chain built on a DAG-based consensus model, forked from Fantom. Prioritizes fast block times and cheap transactions over decentralization or formal security guarantees.
 
-The network features specialized components like SonicVM for 100% EVM compatibility, SonicDB for low-latency data access, and Sonic Gateway as a native bridge. With average transaction costs around $0.001, it's designed for applications requiring high throughput and low latency.
+- **Consensus & Finality**  
+  - DAG-based Proof-of-Stake consensus achieves ~700ms block times.  
+  - Validator set is permissioned and centralized — participation requires significant stake.  
+  - No cryptographic proofs (ZK or fraud); finality is based on validator honesty.
 
-A unique aspect of Sonic is its developer incentive model, where developers can earn 90% of their application's fees. While the performance claims are impressive, as with any new blockchain, developers should verify these metrics under real-world conditions and assess the network's actual decentralization and security guarantees.
+- **Execution & Infra**  
+  - EVM-compatible with standard Solidity support.  
+  - Uses custom SonicVM and SonicDB for faster execution and state access.  
+  - Native bridging exists but lacks formal guarantees — no canonical message passing or trustless bridges.
+
+- **Performance**  
+  - Targets high TPS, but current usage is modest (~5–10 TPS).  
+  - Sub-cent fees and low latency under normal load.  
+  - Block production can vary; edge cases under high load or network instability may impact consistency.
+
+- **Use Cases**  
+  - Viable for low-stakes, latency-sensitive apps (e.g. gaming, trading UIs) that need EVM support without high security requirements.
+
+- **Trade-offs**  
+  - Centralized validator set — limited censorship resistance and protocol neutrality.  
+  - No Ethereum anchoring or proof system — security assumptions are weak.  
+  - DAG consensus introduces added complexity and limited ecosystem familiarity.  
+  - Tooling and ecosystem still maturing — limited support outside core team.

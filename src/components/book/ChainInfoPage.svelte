@@ -24,9 +24,11 @@
     metricsSpan,
     onSpanChange,
   }: Props = $props();
-  
+
   // Get accessible color for UI elements
-  const accessibleColor = $derived(getAccessibleBrandColor(chainStatic?.color || '#3b82f6'));
+  const accessibleColor = $derived(
+    getAccessibleBrandColor(chainStatic?.color || "#3b82f6")
+  );
 
   async function addToWallet() {
     if (!window.ethereum) {
@@ -160,7 +162,9 @@
     <div class="author-attribution">
       <div class="author-line"></div>
       <span class="author-text">
-        by {chainStatic.parentOrganization}{#if chainStatic.launchDate}<sup class="footnote-ref">2</sup>{/if}
+        by {chainStatic.parentOrganization}{#if chainStatic.launchDate}<sup
+            class="footnote-ref">2</sup
+          >{/if}
       </span>
       <div class="author-line"></div>
     </div>
@@ -169,14 +173,26 @@
   <div class="tech-stamps">
     <div class="stamp-container">
       <Tooltip
-        text={chainStatic.technology?.isL2
-          ? tooltipTexts.layer2
-          : tooltipTexts.layer1}
+        text={chainStatic.technology?.isL3
+          ? tooltipTexts.layer3
+          : chainStatic.technology?.isL2
+            ? tooltipTexts.layer2
+            : tooltipTexts.layer1}
       >
-        <span class="tech-stamp {chainStatic.technology?.isL2 ? 'l2' : 'l1'}">
+        <span
+          class="tech-stamp {chainStatic.technology?.isL3
+            ? 'l3'
+            : chainStatic.technology?.isL2
+              ? 'l2'
+              : 'l1'}"
+        >
           <span class="stamp-label">Layer</span>
           <span class="stamp-value"
-            >{chainStatic.technology?.isL2 ? "2" : "1"}</span
+            >{chainStatic.technology?.isL3
+              ? "3"
+              : chainStatic.technology?.isL2
+                ? "2"
+                : "1"}</span
           >
         </span>
       </Tooltip>
@@ -259,11 +275,15 @@
 
   <div class="footnotes">
     <div class="footnote">
-      <sup>1</sup> Total Value Locked: {#if chainStatus?.tvl}${(chainStatus.tvl / 1e9).toFixed(1)}B{:else}—{/if}
+      <sup>1</sup> Total Value Locked: {#if chainStatus?.tvl}${(
+          chainStatus.tvl / 1e9
+        ).toFixed(1)}B{:else}—{/if}
     </div>
     {#if chainStatic.launchDate}
       <div class="footnote">
-        <sup>2</sup> Live Since {new Date(chainStatic.launchDate).toLocaleDateString("en-US", { year: "numeric", month: "long" })}
+        <sup>2</sup> Live Since {new Date(
+          chainStatic.launchDate
+        ).toLocaleDateString("en-US", { year: "numeric", month: "long" })}
       </div>
     {/if}
   </div>

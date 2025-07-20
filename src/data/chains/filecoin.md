@@ -103,8 +103,29 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-Filecoin is a decentralized storage network that combines blockchain technology with distributed file storage. Originally focused on storage, Filecoin launched the Filecoin Virtual Machine (FVM) in 2023, bringing full EVM compatibility and smart contract capabilities to the network.
+A Layer 1 blockchain designed for decentralized, verifiable storage. Targeted for long-term data integrity, archival apps, and trustless file hosting.
 
-The network operates on a unique proof-of-spacetime consensus mechanism, where storage providers earn FIL tokens by proving they're storing data over time. This creates a massive decentralized storage marketplace while also supporting traditional smart contract use cases.
+- **Consensus & Finality**  
+  - Uses Expected Consensus: block producers are selected based on storage power, producing multiple blocks per epoch.  
+  - Finality reduced from ~7.5 hours to a few minutes with Fast Finality (F3) via GossiPBFT overlay.  
 
-While Filecoin offers unparalleled decentralized storage capabilities and EVM compatibility, developers should be aware that transaction costs can vary based on network storage demand, and the hybrid nature of storage and compute operations requires understanding both paradigms for optimal application design.
+- **Storage Proofs & Security**  
+  - Enforces data storage via Proof-of-Replication and Proof-of-Spacetime.  
+  - Storage providers must continuously prove they hold user data, or face penalties.  
+  - Secure against up to ~20% adversarial storage power.  
+
+- **Performance & Infra**  
+  - FIL token transfers confirm in ~30 seconds.  
+  - New storage deals require sealing (~1.5 hours), making the chain unsuitable for real-time use cases.  
+  - Filecoin Virtual Machine supports smart contracts in WASM and early Solidity (FEVM).  
+  - InterPlanetary Consensus (IPC) enables modular subnets with independent consensus.  
+
+- **Use Case Fit**  
+  - Designed for apps that need verifiable, censorship-resistant storage — e.g. decentralized backups, media hosting, proof-of-data for RWAs.  
+  - Not built for high-frequency DeFi, fast trading, or low-latency apps.  
+
+- **Trade-offs**  
+  - Finality in minutes, not seconds  
+  - Storage onboarding is slow and hardware-intensive  
+  - Smart contract ecosystem is early and lacks mature infra  
+  - Consensus is probabilistic, introducing timing variability  

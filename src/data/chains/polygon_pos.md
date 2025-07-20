@@ -159,8 +159,22 @@ sdks:
 # Additional SDKs and tools are inherited from evm-common.md
 ---
 
-Polygon PoS is a sidechain to Ethereum that offers fast and low-cost transactions, but with a distinct trust model: it relies on its own validator set and uses periodic checkpoints to Ethereum for finality, rather than inheriting Ethereum’s security directly like rollups do. This is why it’s technically not a Layer 2—because a true L2 relies on Ethereum for data availability and dispute resolution, while Polygon PoS operates independently and only posts snapshots to Ethereum.
+An EVM-compatible proof-of-stake sidechain optimized for low fees, high throughput, and broad dApp deployment.
 
-It’s fully EVM-compatible, so deploying Ethereum contracts requires no changes, but developers should note that Polygon’s consensus is based on a relatively small set of validators coordinated through a PoS mechanism, and governance remains heavily influenced by the Polygon Foundation via a multi-sig. State sync to Ethereum happens via a bridge, but it’s not trust-minimized—security relies on the bridge and validator honesty rather than fraud or validity proofs.
+- **Consensus & Finality**  
+  - Validators stake tokens to secure the network, with ~100+ active validators.  
+  - Fast block times (~2–5 seconds) with deterministic finality via Heimdall checkpoints to Ethereum.  
+  - Not a rollup — security depends on validator honesty, not Ethereum proofs.
 
-While this makes it performant and cheap, it’s a different trust trade-off compared to rollups, and developers building high-value or security-critical apps should factor that in.
+- **Infra & Execution**  
+  - No fraud or validity proofs; state is secured by periodic checkpoints submitted to Ethereum.
+  - Runs on a hybrid system using Tendermint-based consensus and Ethereum-like execution.
+
+- **Use Cases**  
+  - Well-suited for cost-sensitive, high-traffic dApps such as consumer wallets, NFT platforms, and games that prioritize UX over strict Ethereum-level trust assumptions.
+
+- **Trade-offs**  
+  - No rollup-grade security — lacks fraud or zk-proof guarantees.  
+  - Validator collusion is possible; exit security relies on checkpointing regularity and honesty.  
+  - Governance and upgrades are team-led — not fully decentralized.  
+  - DA and sequencing are not trust-minimized — no fallback if validators fail.

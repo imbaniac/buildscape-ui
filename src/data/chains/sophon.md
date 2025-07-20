@@ -54,8 +54,28 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-Sophon is a ZK Stack Validium designed for entertainment and social consumer applications. Built with native account abstraction and paymasters for gasless transactions, it aims to simplify blockchain interactions for mainstream users.
+A consumer-focused ZK-validium built on zkSync’s Elastic Chain—optimized for high-throughput, low-cost apps like games and social platforms.
 
-The chain focuses on high throughput and instant finality, making it suitable for consumer applications that require responsive user experiences. Key features include built-in support for gasless transactions through paymasters and enhanced wallet user experience through account abstraction.
+- **Security & Data Availability**  
+  - ZK validity proofs verify all state transitions.  
+  - Uses off-chain data availability via Avail (Validium model).  
+  - No data is posted to Ethereum — withdrawals depend on off-chain providers being online and honest.
 
-While specific launch dates and TVL metrics are still emerging, Sophon positions itself as an "operating system for crypto-powered consumer experiences" with an emphasis on usability over raw technical specifications.
+- **Sequencing & Proofs**  
+  - Centralized sequencer handles transaction inclusion and proof generation.  
+  - Proofs and state roots are submitted to Ethereum roughly once per hour.  
+  - Guardian and staking model exists but decentralization is not yet production-grade.
+
+- **Performance & Fees**  
+  - Capable of handling hundreds of thousands of transactions per day.  
+  - Fees remain very low (typically ~0.001 USD or less).  
+  - Batch timing introduces hourly delay for finality.
+
+- **Use Cases**  
+  - Works for high-frequency consumer apps where cost and UX matter more than trust minimization — e.g., games, social, or AI-integrated apps.
+
+- **Trade-offs**  
+  - Off-chain DA creates dependency on third-party availability — if Avail or sequencer fails, withdrawals may be blocked.  
+  - No fallback to Ethereum for data recovery.  
+  - Centralized sequencer introduces censorship and liveness risk.  
+  - Still early in ecosystem maturity — infra, tooling, and validator decentralization remain under development.

@@ -129,10 +129,28 @@ sdks:
 # Additional SDKs and tools are inherited from evm-common.md
 ---
 
-Polygon zkEVM is a zero-knowledge rollup that combines the security of Ethereum with the scalability and low costs of Layer 2s, while maintaining full EVM equivalence. Unlike Polygon PoS, zkEVM is a true Layer 2 that inherits Ethereum's security through cryptographic proofs rather than relying on its own validator set.
+A ZK-rollup using Polygon’s ZK Stack with full EVM equivalence and calldata-based data availability.
 
-The key innovation is its use of zero-knowledge proofs to validate state transitions: every transaction batch is accompanied by a cryptographic proof that can be quickly verified on Ethereum, ensuring that all state changes are correct without needing to re-execute transactions. This provides the same security guarantees as Ethereum itself, but with much higher throughput and lower costs.
+- **Security & Data Availability**  
+  - Validity proofs verify state correctness before finalization.  
+  - Uses Ethereum calldata for data availability; no alternative DA layer.  
+  - Withdrawals are fast and final once proofs are accepted — no fraud window.
 
-For developers, Polygon zkEVM offers a seamless experience—existing Ethereum tools, contracts, and wallets work out of the box without modification. The network uses the same opcodes and produces the same bytecode as Ethereum, making it truly EVM-equivalent rather than just EVM-compatible. This means you can deploy your existing Solidity contracts without any changes and they'll behave exactly as they would on Ethereum mainnet.
+- **Infra & Execution**  
+  - Bytecode-level EVM equivalence — most Ethereum contracts run without changes.  
+  - Centralized sequencer; proposer decentralization planned but not yet implemented.  
+  - Governance is multisig-controlled and not permissionless.
 
-The trade-off is slightly higher costs compared to Polygon PoS (though still much lower than Ethereum), as generating and verifying zero-knowledge proofs requires computational resources. However, for applications that need strong security guarantees and trust-minimized bridging to Ethereum, zkEVM provides an excellent solution.
+- **Performance & Fees**  
+  - Block inclusion in ~2s; finalization shortly after proof generation.  
+  - Throughput limited by prover performance and L1 calldata cost.  
+  - Fees are low but increase with Ethereum gas spikes.
+
+- **Use Cases**  
+  - Suitable for teams needing EVM-equivalent ZK security: DeFi, protocol tooling, and Ethereum-aligned infra.
+
+- **Trade-offs**  
+  - Centralized sequencer can censor or reorder transactions.  
+  - No fallback DA layer — full reliance on Ethereum calldata.  
+  - Governance and infra still maturing — not production-decentralized.  
+  - Despite EVM claims, edge-case incompatibilities may still require adjustments.

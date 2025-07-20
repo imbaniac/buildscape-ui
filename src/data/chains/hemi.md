@@ -47,8 +47,29 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-Hemi is a Layer 2 blockchain that creates a programmable bridge between Bitcoin and Ethereum. It features the Hemi Virtual Machine (hVM), which is essentially a full Bitcoin node wrapped inside an EVM, enabling developers to build applications that leverage both Bitcoin's security and Ethereum's programmability.
+A Bitcoin-anchored modular L2 with an EVM execution layer and direct access to Bitcoin block and UTXO state.
 
-The network uses a unique Proof-of-Proof (PoP) consensus mechanism and enables non-custodial Bitcoin services, cross-chain exchanges, and Bitcoin-backed DeFi primitives. While it's EVM-compatible for smart contract development, its core innovation lies in providing deep Bitcoin network access within smart contracts.
+- **Architecture & Security**  
+  - Uses Proof-of-Proof (PoP): periodically posts state commitments ("keystones") to Bitcoin for long-term finality.  
+  - Sequencer is PoS-based and operates independently of Bitcoin, but keystone anchoring adds Bitcoin-aligned settlement guarantees.  
+  - Not a rollup — no fraud or validity proofs; relies on Bitcoin for settlement anchoring and economic honesty.
 
-As a newer L2, Hemi focuses on Bitcoin-Ethereum interoperability rather than pure scalability, making it particularly interesting for developers building cross-chain applications or wanting to create Bitcoin-native DeFi without wrapped tokens.
+- **Finality**  
+  - Soft finality via sequencer (seconds).  
+  - Superfinality depends on Bitcoin block confirmation (~10–60 min depending on keystone interval).  
+  - Security only as strong as keystone anchoring frequency and sequencer assumptions.
+
+- **Bitcoin Integration**  
+  - Contracts can access Bitcoin UTXO set and block headers directly from within EVM logic.  
+  - Supports asset movement through “Hemi Tunnels” — native BTC and ETH bridged into the environment.  
+  - Allows for BTC-aware dApps and hybrid assets.
+
+- **When to Use It**  
+  - You need contracts that verify or react to Bitcoin state.  
+  - You’re building BTC-denominated apps, UTXO-aware agents, or experimenting with Bitcoin-based DAOs.  
+  - You want Bitcoin-linked settlement while retaining EVM programmability.
+
+- **Trade-offs**  
+  - Sequencer is centralized; PoP anchoring introduces latency and added complexity.  
+  - No fraud proofs or trustless escape — relies on Bitcoin anchoring and honest majority.  
+  - Early infra: limited tooling, documentation, and ecosystem maturity.  

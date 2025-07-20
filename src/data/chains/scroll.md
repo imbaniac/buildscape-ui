@@ -84,8 +84,28 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-Scroll is a native zkEVM Layer 2 scaling solution for Ethereum, offering full EVM compatibility with the security guarantees of zero-knowledge proofs. Built to deliver extremely low transaction costs (typically under $0.005) while maintaining complete compatibility with existing Ethereum tooling and smart contracts.
+A zkEVM rollup with bytecode-level EVM equivalence and ZK-based finality, built for compatibility with existing Ethereum contracts.
 
-As a zkEVM, Scroll processes transactions off-chain and generates cryptographic proofs of their validity, which are then verified on Ethereum mainnet. This approach enables high throughput without sacrificing security or decentralization. The protocol achieves fast finality through its proof generation system while keeping the developer experience identical to Ethereum L1.
+- **Security & Data Availability**  
+  - Uses ZK validity proofs to confirm all state transitions before finalization.  
+  - Publishes calldata to Ethereum using EIP‑4844 blobs; no custom DA layer.  
+  - Withdrawals are finalized once proofs are verified — no fraud windows.
 
-The platform's focus on removing trade-offs between scalability and security makes it particularly attractive for applications requiring high transaction volumes at minimal cost, while its open-source infrastructure ensures transparency and community involvement in the protocol's development.
+- **Infra & Execution**  
+  - Fully bytecode-equivalent — same opcodes and gas costs as Ethereum.  
+  - Centralized sequencer; decentralized proving and proposer layers are planned but not yet live.  
+  - Node stack includes dedicated proving infrastructure.
+
+- **Performance**  
+  - Handles high daily tx volumes (~500k/day).  
+  - Proof submission adds latency — typically a few minutes after batch inclusion.  
+  - Throughput depends on prover capacity and L1 calldata constraints.
+
+- **Use Cases**  
+  - Useful for builders who want Ethereum-level execution and finality with lower gas costs and no fraud delays — e.g., DeFi apps, infra, or onchain tools.
+
+- **Trade-offs**  
+  - Sequencer is not decentralized — risk of transaction censorship or delays.  
+  - Prover infra is heavy and may bottleneck under load.  
+  - Finality is fast, but depends on timely proof generation and posting.  
+  - Ecosystem still early — infra and decentralization not yet fully mature.

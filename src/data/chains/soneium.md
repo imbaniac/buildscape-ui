@@ -59,8 +59,28 @@ sdks:
 # Additional SDKs and tools are inherited from evm-common.md
 ---
 
-Soneium is Sony's Layer 2 network built on the OP Stack, marking the entertainment giant's entry into blockchain infrastructure. It aims to create an open internet environment where creators and communities can thrive, leveraging Sony's expertise in entertainment and technology.
+An OP Stack-based optimistic rollup built by Sony Network Communications, launched in early 2025 and part of the Superchain ecosystem.
 
-As an Optimistic Rollup on the Superchain, Soneium offers full EVM compatibility with reduced fees and faster transactions. Being developed by Sony Block Solutions Labs, it has the backing of a major corporation, potentially bringing mainstream adoption and professional-grade infrastructure to Web3.
+- **Security & Sequencing**  
+  - Optimistic rollup using OP Stack architecture.  
+  - Centralized sequencer handles block production and calldata posting to Ethereum.  
+  - Fraud-proof window exists, but only limited actors can submit challenges — not fully permissionless yet.
 
-However, as a newer L2, the ecosystem is still developing. The network inherits the OP Stack's current limitations, including reliance on a centralized sequencer and pending fraud proof implementation. Developers should consider these factors alongside the potential benefits of building on a chain backed by one of the world's largest entertainment companies.
+- **Data Availability**  
+  - Uses Ethereum calldata (blobs) for data availability.  
+  - Withdrawals depend on batch publication and challenge window processing.
+
+- **Infra & Usage**  
+  - Fully EVM-equivalent — standard Ethereum tooling and contracts work out of the box.  
+  - Processes around 8 micro-operations per second on average.  
+  - State updates and calldata batches are posted at regular intervals (~9 minutes for tx batches, ~2 hours for state updates).  
+  - On-chain costs are low, typically <$0.001 per op.
+
+- **Use Cases**  
+  - Suitable for applications wanting Ethereum alignment with low fees and OP Stack compatibility — e.g., consumer-facing apps, gaming, or compliant DeFi.
+
+- **Trade-offs**  
+  - Centralized sequencer introduces censorship and liveness risk.  
+  - Fraud proofs are limited to select actors — weaker trust assumptions than fully open rollups.  
+  - RPC-level censorship has been observed — risk for permission-sensitive apps.  
+  - Exit finality is delayed by batch posting intervals and challenge periods.

@@ -12,7 +12,7 @@ technology:
   isL2: true
   parentChain: Tezos
   isEVM: true
-  rollupType: Smart Rollup
+  rollupType: Tezos Smart Rollup
 contractLanguages:
   - name: Solidity
     url: https://soliditylang.org
@@ -55,8 +55,34 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-Etherlink is a Layer 2 blockchain built on Tezos using Smart Rollup technology. It's EVM-compatible, allowing developers to deploy Solidity smart contracts while benefiting from Tezos' advanced rollup architecture. The network offers ultrafast soft confirmations in under 500ms and near-zero transaction costs.
+An EVM-compatible rollup built on Tezos Smart Rollups, designed for fast, low-cost execution secured by Tezos L1.
 
-As Tezos' premier EVM-compatible rollup, Etherlink bridges the gap between Ethereum's ecosystem and Tezos' innovative consensus mechanism. It provides a fast and affordable environment for DeFi applications, NFTs, and other decentralized services while maintaining strong security guarantees through its non-custodial design.
+- **Security**  
+  - Settles on Tezos Layer 1 using fraud proofs and commitment publishing.  
+  - Finality achieved in ~2 Tezos blocks (~8 seconds).  
+  - Permissionless: anyone can run a node, post commitments, and challenge invalid state.  
 
-The chain features decentralized governance inherited from Tezos and focuses on being "fast, fair, and (nearly) free" - making it an attractive option for developers looking to escape high gas fees without compromising on security or decentralization.
+- **Infra**  
+  - Built with Tezos Smart Rollup framework.  
+  - EVM execution environment supports most Solidity contracts and Ethereum tooling.  
+  - Some differences in state hashing and RPC behavior compared to Ethereum.  
+
+- **Performance**  
+  - Sub-second soft confirmation (<500ms).  
+  - Transaction fees are extremely low (~$0.001 per ERC-20 transfer).  
+  - Good for high-frequency and cost-sensitive workloads.  
+
+- **RPC & Nodes**  
+  - Public RPC endpoints available but rate-limited (~1000 req/min).  
+  - WebSocket support is limited; most subscriptions require polling.  
+  - Full nodes can be self-hosted for better performance and no rate limits.  
+
+- **Ecosystem**  
+  - Integrated with Tezos-native DeFi, gaming, NFTs, identity, and RWA protocols.  
+  - Bridges to Ethereum and other chains via external providers.  
+  - Ecosystem still growing but active developer engagement and incentives.  
+
+- **Trade-offs**  
+  - Differences in RPC methods and state structure may cause compatibility issues with some Ethereum tooling.  
+  - Sequencer is permissionless but could become a performance bottleneck.  
+  - Requires custom handling for gas metering and state interactions due to Tezos-based infra.  

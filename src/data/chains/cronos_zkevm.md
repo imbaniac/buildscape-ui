@@ -60,8 +60,30 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-Cronos zkEVM is a Layer 2 scaling solution built on Ethereum using zero-knowledge proof technology. Developed by Crypto.com, it extends the Cronos ecosystem with a secure, scalable zkEVM rollup that inherits Ethereum's security while offering faster and cheaper transactions.
+A Validium-style ZK rollup built using ZKsync’s ZK Stack, designed to scale the Cronos ecosystem with low-cost ZK execution and native yield features.
 
-The chain maintains full EVM equivalence, allowing developers to deploy existing Ethereum smart contracts without modification. It leverages zero-knowledge proofs to batch and compress transactions, providing cryptographic guarantees of correctness while significantly reducing gas costs compared to Ethereum mainnet.
+- **Architecture**  
+  - Validium model: ZK proofs posted to Ethereum, but data availability is off-chain and controlled by the sequencer.  
+  - Based on ZK Stack with native account abstraction and EVM compatibility.  
+  - Gas token is **zkCRO**, backed by liquid-staked CRO.  
 
-Cronos zkEVM benefits from the established Cronos ecosystem and Crypto.com's resources, providing strong infrastructure support and potential integration with Crypto.com's extensive user base. The zkEVM technology ensures that all state transitions are mathematically proven to be valid, offering the same security level as Ethereum itself while achieving higher throughput.
+- **Security Model**  
+  - State transitions verified via STARK proofs.  
+  - No on-chain data availability — exit safety depends on sequencer honesty.  
+  - Upgrades go through a delay window (typically 4–8 days), but can be bypassed via emergency governance paths.  
+
+- **Performance**  
+  - Benchmarked throughput >100 TPS with “hyperchain” parallelism.  
+  - Real performance depends on sequencer and DA system.  
+  - Fees are low (≈$0.001 per op), but sensitive to DA and proof generation delays.  
+
+- **Features**  
+  - Native account abstraction: supports sponsor-paid gas and smart wallets by default.  
+  - Yield-bearing gas: zkCRO accrues staking yield while being used for transactions.  
+  - Interoperability: part of ZK Stack ecosystem, enabling shared sequencers and bridges with other ZK chains.  
+
+- **Trade-offs**  
+  - Centralized DA is a major risk — sequencer failure or censorship can block withdrawals.  
+  - Upgrade process is not trustless; emergency upgrades can override timelocks.  
+  - Yield-bearing gas introduces financial exposure and complexity at the protocol level.  
+  - Many features (hyperchain execution, zkCRO mechanics) are still early-stage and lightly tested.  

@@ -102,8 +102,31 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-BNB Smart Chain (BSC) is an EVM-compatible blockchain that prioritizes high throughput and low transaction costs. It uses a Proof of Staked Authority (PoSA) consensus mechanism with 21 active validators, enabling 3-second block times and significantly lower fees compared to Ethereum.
+An EVM-compatible chain using Proof-of-Staked-Authority (PoSA), built for high-throughput applications with fast finality.
 
-BSC operates in parallel with BNB Beacon Chain (formerly Binance Chain), with cross-chain communication enabling asset transfers between the two networks. While it offers fast and cheap transactions, the trade-off is higher centralization compared to Ethereum, with validators selected based on their BNB stake and controlled by a smaller set of entities.
+- **Consensus & Security**  
+  - PoSA combines delegated staking with authority-based validator rotation  
+  - 21 active validators, elected by BNB stake, produce blocks with ~3s time  
+  - Finality typically achieved in ~6 seconds (2 blocks)  
+  - Slashing applies for double-signing and liveness failures  
+  - Validator set is permissioned—centralization risk is significant  
 
-The chain has become a popular choice for DeFi applications, GameFi projects, and NFT marketplaces due to its low fees and established ecosystem, though builders should consider the centralization trade-offs when choosing BSC for their applications.
+- **Performance & Fees**  
+  - Typical throughput ~100–200 TPS, theoretical max ~2,000+ TPS under ideal conditions  
+  - Fees generally low ($0.01–0.03), but can spike under load  
+  - Ongoing upgrades aim for 0.75s block times and faster finality  
+
+- **Infra & Architecture**  
+  - C-Chain handles EVM smart contracts  
+  - Tightly integrated with Binance ecosystem (wallets, bridges, exchange)  
+  - Supports opBNB (an L2 on OP Stack) and subnets as part of multi-chain strategy  
+  - Rust client and zk-rollup integrations are on the roadmap  
+
+- **Governance**  
+  - On-chain proposal system tied to validator and delegator voting  
+  - Upgrades controlled by validator set, without enforced timelocks  
+
+- **Trade-offs**  
+  - Limited validator set → lower decentralization and higher censorship risk  
+  - Close ties to Binance create centralized control concerns  
+  - Infrastructure complexity increases with subnets, opBNB, and modular roadmap  

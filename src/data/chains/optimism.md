@@ -155,6 +155,28 @@ sdks:
 # Additional SDKs and tools are inherited from evm-common.md
 ---
 
-Optimism is a Layer 2 rollup built on top of Ethereum using the OP Stack, aiming to scale Ethereum by offering cheaper and faster transactions while inheriting its security. It’s EVM-equivalent, so contracts written for Ethereum work out of the box, but the network is still largely centralized—transaction ordering is handled by a single sequencer, and fraud proofs aren’t fully live yet.
+Ethereum Layer 2 built on the OP Stack, using optimistic execution and focused on modular infrastructure and decentralization.
 
-What makes Optimism unique is its vision of a “Superchain”: multiple chains (like Base and Mode) built on the same stack and potentially governed collectively. That’s interesting for shared infrastructure, but also means changes to the protocol are influenced by a broader coalition, which may slow down or complicate decisions for individual developers.
+- **Security & Execution**  
+  - Optimistic rollup: transactions are executed off-chain and posted to Ethereum with a ~7-day fraud proof window.  
+  - Fault proof system is active — state transitions can be challenged by any participant.  
+  - Permissionless proof submissions enabled, backed by a Security Council that can intervene in edge cases.
+
+- **Data Availability**  
+  - Posts full calldata to Ethereum using blob transactions (EIP-4844).  
+  - No external DA layer — inherits Ethereum’s data availability and censorship resistance.  
+  - Cost and throughput are tied to Ethereum blob pricing and L1 congestion.
+
+- **Infra & Throughput**  
+  - Uses op-geth and op-node stack with ~2s block times.  
+  - Modular architecture separates sequencing, proposing, and proof generation.  
+  - Sequencer is still centralized; plans exist for proposer and validator decentralization.
+
+- **Use Cases**  
+  - Well-suited for general-purpose dApps needing Ethereum alignment: DeFi, DAOs, NFT platforms, and infra-heavy deployments that benefit from modular stack design.
+
+- **Trade-offs**  
+  - Sequencer centralization persists — censorship risk at the inclusion level.  
+  - Challenge period introduces a 7-day delay for withdrawal finality.  
+  - Fault proofs rely on honest challengers — subject to liveness and economic assumptions.  
+  - Governance is evolving — emergency powers still rest with a Security Council.

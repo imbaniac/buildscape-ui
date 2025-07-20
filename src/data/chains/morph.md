@@ -60,8 +60,28 @@ sdks:
 tools:
 ---
 
-Morph is an EVM-equivalent rollup that uses optimistic zk-rollup technology to provide a secure, decentralized, cost-efficient, and high-performing Layer 2 scaling solution. Built to enhance the Ethereum ecosystem, it focuses on improving user experience while maintaining full compatibility with existing Ethereum tooling.
+An EVM-compatible hybrid rollup combining optimistic execution with optional ZK fallback and a decentralized sequencer set.
 
-As a relatively new entrant in the L2 space, Morph aims to combine the benefits of both optimistic and zero-knowledge rollup technologies. This hybrid approach promises faster finality than traditional optimistic rollups while potentially offering better performance than pure zk-rollups.
+- **Security & Sequencing**  
+  - Uses a decentralized sequencer network based on BLS and Tendermint consensus.  
+  - Execution is optimistic by default; zero-knowledge proofs are used only when disputes are raised.  
+  - Aims to reduce censorship risk and improve reliability vs. centralized rollups.
 
-However, being a newer protocol means it has less battle-testing compared to established L2s. The ecosystem is still developing, so developers may find fewer integrations and tooling compared to more mature networks. As with any L2, it's important to understand the trust assumptions and bridge security when moving assets between Morph and Ethereum.
+- **Data Availability & Settlement**  
+  - Uses Ethereum calldata for DA and finality.  
+  - Batches are posted on Ethereum; withdrawals are gated by fraud challenge windows.  
+  - ZK fallback kicks in during disputes, offering stronger correctness guarantees.
+
+- **Performance**  
+  - Medium throughput, optimized with calldata batching.  
+  - Fees are kept low through efficient compression and batching strategies.  
+  - UX close to optimistic rollups; fallback to ZK introduces conditional latency.
+
+- **Use Cases**  
+  - Suitable for consumer-facing apps like marketplaces, social wallets, or payments where fast UX is critical but trust minimization is still desirable.
+
+- **Trade-offs**  
+  - Decentralized sequencer set is still maturing — not yet fully trustless.  
+  - ZK fallback is reactive, not default — correctness still hinges on honest challengers.  
+  - Complex infra with dual-layer architecture may increase dev and ops overhead.  
+  - Ecosystem and dev tooling are early-stage compared to more established rollups.

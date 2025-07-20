@@ -149,12 +149,32 @@ sdks:
 # Additional SDKs and tools are inherited from evm-common.md
 ---
 
-zkSync Era is a Layer 2 zk-rollup that offers EVM compatibility with a few caveats. It uses validity proofs to batch transactions off-chain and post succinct proofs to Ethereum, providing strong security guarantees.
+A Type-1 zkEVM rollup with bytecode-level compatibility, built by Matter Labs on Ethereum. Prioritizes scalability through ZK proofs and native L1 settlement.
 
-However, developers should be aware that zkSync Era introduces some non-standard behaviors: contract deployment requires bytecode to be passed in a separate field, and transactions use EIP-712 signatures with custom fields for fees and paymasters.
+- **Security & Data Availability**  
+  - Validity proofs guarantee state correctness — no fraud windows.  
+  - Posts calldata to Ethereum via blobs (EIP‑4844).  
+  - Inherits Ethereum’s settlement and DA model; no off-chain fallback.
 
-While most Solidity code works with minimal changes, tooling like Hardhat may need additional configuration. zkSync Era also supports native account abstraction, enabling features like gasless transactions and custom signature schemes.
+- **Execution & Sequencing**  
+  - Full EVM bytecode equivalence — all Solidity contracts work with no opcode gaps.  
+  - Sequencer is centralized today; roadmap includes ChonkyBFT for decentralized consensus.
 
-The network is currently operated by a centralized sequencer, but plans exist to decentralize this component over time.
+- **Finality & Proof System**  
+  - ZK proofs are generated per batch and verified on Ethereum.  
+  - Proof generation takes minutes to an hour depending on congestion.  
+  - No reorg risk after proof finalization.
 
-For developers seeking scalability without compromising on Ethereum’s security model, zkSync Era offers a compelling, though slightly unconventional, platform.
+- **Performance**  
+  - ~1.8s block times.  
+  - Real-world throughput averages ~10–20 TPS, peaking over 100+ during high-volume periods.  
+  - Low per-op gas cost after “Boojum” upgrade — efficient for onchain interactions.
+
+- **Use Cases**  
+  - Best suited for DeFi, onchain tools, and governance-heavy dApps that demand strict correctness, Ethereum equivalence, and lower fees.
+
+- **Trade-offs**  
+  - Centralized sequencer — censorship and reordering risk until decentralization is live.  
+  - Proof latency adds delay to finality (~several minutes).  
+  - Performance depends on Ethereum blob space and proving capacity.  
+  - Ecosystem still young — infra and monitoring tools catching up to older rollups.

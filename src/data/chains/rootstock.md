@@ -70,8 +70,36 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-Rootstock is a Bitcoin sidechain that brings smart contract functionality to the Bitcoin ecosystem. It's secured by Bitcoin's mining power through merged mining, where over 50% of Bitcoin's hashrate also mines RSK blocks, making it one of the most secure smart contract platforms.
 
-The network uses RBTC (Smart Bitcoin) as its native currency, which is pegged 1:1 to BTC through a two-way peg mechanism. This allows Bitcoin holders to use their BTC in DeFi applications while maintaining exposure to Bitcoin's value.
+A Bitcoin sidechain with EVM-compatible smart contracts, secured via merged mining with Bitcoin miners.
 
-Rootstock achieves 15-30 second block times and can process around 100 transactions per second, significantly faster than Bitcoin's base layer. However, it inherits some of Bitcoin's conservative approach to changes, prioritizing security and stability over rapid innovation.</content>
+- **Consensus & Security**  
+  - Uses merged mining with Bitcoin (DECOR+ protocol).  
+  - ~80% of Bitcoin hashpower participates, aligning security with Bitcoin PoW.  
+  - Block time ~30 seconds; no rollup-level validity or fraud proofs.  
+  - Security depends on miner participation and the integrity of a federation-controlled peg.
+
+- **Peg Mechanism**  
+  - BTC is bridged via a two-way peg (rBTC) controlled by the Powpeg federation.  
+  - Peg is semi-centralized: validators use hardware-secured multisig to release assets.  
+  - Peg-in and peg-out times are long (~24–36 hours).
+
+- **Infra & Execution**  
+  - EVM-equivalent via Rootstock Virtual Machine (RVM) — supports Solidity contracts.  
+  - Gas is paid in rBTC (1:1 with BTC).  
+  - Ethereum tooling works with minimal changes, but ecosystem is smaller.  
+  - No modular architecture or DA layer — single-chain state and execution.
+
+- **Performance**  
+  - ~10 TPS under normal conditions.  
+  - Lower gas costs after recent upgrades, but still slower than most rollups or L2s.  
+  - No sequencing or batching — each block is mined individually.
+
+- **Use Cases**  
+  - Useful for deploying Bitcoin-native DeFi, lending markets, or DEXs with BTC collateral and EVM logic.
+
+- **Trade-offs**  
+  - No trustless peg — bridge relies on federation security, not proofs.  
+  - Throughput and latency are limited by Bitcoin mining constraints.  
+  - Finality is slower and less deterministic than ZK or optimistic rollups.  
+  - Ecosystem is niche — fewer devs, apps, and infra support compared to Ethereum L2s.

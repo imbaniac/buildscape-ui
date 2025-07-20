@@ -13,7 +13,6 @@ techStack: Arbitrum Orbit
 technology:
   type: Arbitrum Orbit
   settlementLayer: Ethereum
-  isL2: false
   isL3: true
   isEVM: true
 contractLanguages:
@@ -62,10 +61,14 @@ tools:
 # Additional SDKs and tools are inherited from evm-common.md
 ---
 
-ApeChain is an Arbitrum Orbit L3 blockchain that serves as the dedicated infrastructure layer for the ApeCoin ecosystem. Built on Arbitrum technology, it provides a high-performance, cost-effective platform specifically designed for gaming, NFT marketplaces, and web3 applications.
+A purpose-built L3 on Arbitrum Orbit for the ApeCoin ecosystem (Yuga Labs, Otherside, NFT/gaming projects).
 
-The chain uses $APE as its native gas token, making it seamless for users already holding ApeCoin to interact with applications on the network. This design choice eliminates the need for users to acquire ETH for gas fees, significantly improving the user experience within the Ape ecosystem.
-
-As an Arbitrum Orbit chain, ApeChain inherits the security and decentralization of Ethereum while offering enhanced scalability and customization options. The chain is optimized for ecosystem discovery, unique web3 rails, and top-of-funnel exposure, making it particularly suitable for consumer-facing applications that require fast, affordable transactions.
-
-While ApeChain provides excellent performance and ecosystem integration, developers should be aware that as an L3, it operates with additional layers of abstraction from Ethereum mainnet. This architecture enables the chain's unique features but may require special considerations for certain types of applications.
+- **Security**: Inherits Ethereum security via Arbitrum One → Orbit. Depends on DAC for data availability and centralized sequencer.  
+- **Token Utility**: $APE is the native gas token—used for tx fees and integrated into DAO governance.  
+- **Infra**: Runs as an Orbit chain with 250ms block time, but real throughput and latency depend on sequencer performance and app-level congestion.  
+- **Ecosystem**: Tailored for Yuga-related apps (Otherside, Magic Eden) and projects using $APE.  
+- **Governance**: Controlled by a multisig with ApeCoin DAO-selected Security Council (no onchain upgrade delay).  
+- **Trade-offs**:  
+  - Centralized trust assumptions (sequencer, DAC, multisig upgrades)  
+  - Ecosystem is niche and tied closely to Yuga IP  
+  - L3 setup adds another dependency layer (on Arbitrum infra)  

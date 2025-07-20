@@ -73,8 +73,26 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-Cronos is an EVM-compatible blockchain built on Cosmos SDK, designed to enable fast and low-cost DeFi and GameFi applications. Created by Crypto.com, it bridges the Ethereum ecosystem with the Cosmos network through IBC protocol.
+An EVM-compatible chain built on Cosmos SDK and Tendermint consensus, designed for low-fee smart contracts with IBC interoperability.
 
-The chain offers significantly lower transaction fees compared to Ethereum mainnet, making it attractive for DeFi applications and Web3 gaming through its dedicated Cronos Play initiative. It supports standard Ethereum tooling like MetaMask, Hardhat, and Truffle.
+- **Security**  
+  - Tendermint-based PoA/PoS hybrid with ~33 permissioned validators.  
+  - Finality in ~5–6 seconds. Validators are selected by the core team — not permissionless.  
 
-While Cronos provides good performance and lower costs, it has a smaller ecosystem compared to major L1s and operates with fewer validators than fully decentralized chains. The strong backing from Crypto.com provides ecosystem funding and exchange integration advantages.
+- **Infra**  
+  - Cosmos SDK chain with an Ethermint-based EVM module.  
+  - Compatible with most Solidity tooling, but some differences exist vs Ethereum clients (e.g. event indexing, gas metering).  
+  - No native WebSocket support — real-time event subscriptions require workarounds.  
+
+- **Performance**  
+  - Realistic throughput: a few hundred TPS.  
+  - Low and predictable fees (~$0.01–$0.10).  
+  - Block times around 5 seconds.  
+
+- **Interoperability**  
+  - Supports IBC for cross-chain transfers with Cosmos chains.  
+  - Bridges available to Ethereum, but not natively trustless.  
+
+- **Trade-offs**  
+  - Validator set is centralized and permissioned — limited decentralization and censorship resistance.  
+  - Cosmos-based infra differs from Ethereum norms; edge cases may affect compatibility.

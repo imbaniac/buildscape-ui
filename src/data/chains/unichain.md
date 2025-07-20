@@ -148,10 +148,30 @@ sdks:
 # Additional SDKs and tools are inherited from evm-common.md
 ---
 
-Unichain is Uniswap Labs’ Layer 2 rollup built on the OP Stack, tailored specifically for DeFi applications. It offers 1-second block times at launch, with plans to reduce this to 250 milliseconds, aiming to improve UX for high-frequency trading and real-time market data.
+A Stage-1 OP Stack rollup by Uniswap Labs, designed for fast, low-cost DeFi and onchain trading applications.
 
-A unique feature is its use of a Trusted Execution Environment (TEE) for block production, built with Flashbots, which enforces fair sequencing and limits MEV exploitation—something most other rollups haven’t implemented natively. While it starts with a single sequencer, it supports permissionless fault proofs from day one, and plans to introduce a dedicated validator network (UVN) where participants earn a share of protocol revenue.
+- **Consensus & Finality**  
+  - Optimistic rollup with active fraud-proof system and permissionless proof submission.  
+  - Targets 1-second block times, with roadmap toward 250ms sub-blocks for lower-latency UX.
 
-Since it’s part of the OP Stack ecosystem, it benefits from shared infrastructure but also inherits its limitations—like centralized sequencing in early stages and upgrade dependencies from the broader Optimism governance process.
+- **Data Availability & Sequencing**  
+  - Posts calldata to Ethereum via EIP‑4844 blobs.  
+  - Sequencer is currently centralized. Decentralized validation via the Uniswap Validation Network (UVN) is in development.
 
-For developers building latency-sensitive or MEV-aware DeFi apps, these design choices offer more predictability and control than most general-purpose L2s.
+- **Infra & Tooling**  
+  - Fully EVM-compatible — supports existing Solidity contracts and Ethereum development tooling.  
+  - RPC infrastructure and node support are available but still maturing.
+
+- **Performance**  
+  - Fast block times (~1s) and low fees (~95% cheaper than Ethereum).  
+  - Supports high daily throughput — hundreds of thousands of txs live.  
+  - TVL places it among top L2s for DeFi usage.
+
+- **Use Cases**  
+  - Best suited for high-performance DeFi apps, DEXs, aggregators, or any protocol that needs fast confirmation and low execution cost.
+
+- **Trade-offs**  
+  - Centralized sequencer — censorship and reorg risk until UVN rollout.  
+  - 7-day withdrawal delay due to optimistic rollup design.  
+  - Sub-blocks and low-latency sequencing demand advanced MEV protection and builder coordination, which are still in progress.  
+  - Governance, decentralization, and cross-rollup messaging infra are still in early stages.

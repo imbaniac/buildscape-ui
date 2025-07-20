@@ -77,8 +77,32 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-Taiko is a type-1 zkEVM-equivalent rollup that achieves decentralization through its based sequencing design, where Ethereum validators handle transaction ordering. This approach eliminates the need for a centralized sequencer while maintaining full Ethereum compatibility and synchronous composability with the base layer.
+A Type-1 zkEVM rollup on Ethereum built around the “based rollup” model—designed to be permissionless and fully EVM-equivalent.
 
-As a based rollup, Taiko inherits Ethereum's security and decentralization properties directly. The protocol uses zero-knowledge proofs to ensure transaction validity while keeping costs low, making it suitable for applications that require high security guarantees without compromising on decentralization.
+- **Security & Sequencing**  
+  - Every block is validated via ZK proofs; no fraud windows or optimistic fallback.  
+  - Based rollup design: any participant can propose and prove blocks, aiming for open participation.  
+  - Finality occurs once proofs are verified on Ethereum.
 
-Taiko's vision of being "based, fearless, ownerless, and unstoppable" reflects its commitment to true decentralization, though the mainnet is still in development with testnets currently available for developers to experiment with the platform.
+- **Data Availability**  
+  - Posts calldata directly to Ethereum using blob transactions (EIP‑4844).  
+  - Fully inherits Ethereum’s DA guarantees — no reliance on off-chain data.
+
+- **Infra & Execution**  
+  - Bytecode-equivalent with Ethereum — supports full opcode set, gas model, and state hashing.  
+  - Node roles include proposers and provers.  
+  - Prover/sequencer roles are permissionless by design, but current rollout is partially centralized.
+
+- **Performance**  
+  - Throughput and latency depend on prover efficiency and blob availability.  
+  - No artificial TPS cap, but constrained by Ethereum L1 bandwidth and proof speed.  
+  - Block time is tied to Ethereum L1 (~12–20s), limiting UX flexibility.
+
+- **Use Cases**  
+  - Best for Ethereum-native dApps requiring exact EVM behavior, fast finality with ZK guarantees, and censorship resistance without trusting centralized sequencers.
+
+- **Trade-offs**  
+  - Decentralization of proposers and provers is not yet fully live.  
+  - Finality lags behind UX due to ZK proof generation and L1 verification delay.  
+  - Based rollup model limits block frequency to L1 cadence, which may reduce flexibility and MEV options.  
+  - Still early in ecosystem maturity — infra, tooling, and ecosystem support are evolving.

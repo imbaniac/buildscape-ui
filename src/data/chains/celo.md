@@ -73,8 +73,26 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-Celo is a mobile-first blockchain platform designed to make financial tools accessible to anyone with a smartphone. Initially launched as an independent Layer 1 blockchain, Celo is transitioning to become an Ethereum Layer 2, bringing its focus on real-world use cases and mobile accessibility to the broader Ethereum ecosystem.
+Ethereum Layer 2 using the OP Stack and EigenDA. Fully migrated from a standalone L1 in March 2025.
 
-The platform emphasizes financial inclusion with features like stable value tokens (cUSD, cEUR, cREAL), phone number-based addressing, and gas fees payable in multiple currencies. Celo's carbon-negative blockchain and commitment to regenerative finance (ReFi) make it a popular choice for sustainable and impact-focused applications.
+- **Consensus & Security**  
+  - Operates as an optimistic rollup with a centralized sequencer and a 7-day fraud-proof window.  
+  - Settlement and finality occur on Ethereum; no longer uses IBFT or native consensus.  
+  - Data availability provided by EigenDA.  
 
-While Celo offers low fees and fast finality (5 seconds), developers should note that it uses a modified version of Ethereum's EVM with some unique features like the ability to pay gas fees in ERC-20 tokens, which may require adjustments to standard Ethereum tooling.
+- **Infra & Execution**  
+  - Supports gas payments in CELO, cUSD, and cEUR.  
+  - Block times reduced to ~1s post-migration.  
+
+- **Mobile Optimizations**  
+  - Retains lightweight mobile client architecture.  
+  - Users interact via light clients with optional fees to full nodes.  
+
+- **Governance**  
+  - Protocol upgrades governed off-chain, likely coordinated through the Celo community and core contributors.  
+  - Sequencer remains centralized; fraud-proof fallback ensures Ethereum-backed finality.  
+
+- **Trade-offs**  
+  - Centralized sequencer with standard OP Stack trust assumptions  
+  - Migration removed deterministic finality of IBFT in favor of fraud-proof-based model  
+  - Dependence on EigenDA adds an additional trust layer for data availability  

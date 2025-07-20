@@ -61,8 +61,33 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-Immutable zkEVM is a gaming-dedicated blockchain built on Polygon's zkEVM technology. It's specifically designed to handle massive player bases and complex gameplay mechanics without compromising performance or speed, all while maintaining low gas costs.
+A ZK-rollup built on Polygon's CDK, focused on gaming and NFT-specific infrastructure with EVM compatibility.
 
-As a purpose-built chain for gaming, Immutable zkEVM offers developers the security of Ethereum combined with the scalability needed for modern games. Gas fees are paid in IMX tokens, and the platform provides gaming-specific features like built-in royalty enforcement and seamless asset trading.
+- **Security & Data Availability**  
+  - Uses ZK proofs for state correctness — transactions are verified before being finalized.  
+  - Data availability is off-chain and centralized; no Ethereum calldata fallback or DA guarantees.  
+  - Exit safety depends on sequencer honesty and uptime; no enforced fallback mechanisms.  
 
-The ecosystem focuses heavily on developer experience, offering comprehensive SDKs, APIs, and tools specifically tailored for game development. While it excels at gaming use cases, it may not be the optimal choice for general-purpose DeFi applications.
+- **Sequencer & Governance**  
+  - Sequencer is centralized and contract upgrades are not timelocked.  
+  - Governance and upgrade control sit with the Immutable team.  
+  - IMX is used for gas and staking, but validator decentralization does not yet exist.  
+
+- **Performance**  
+  - High transaction throughput (~500k daily txs as of mid-2025).  
+  - Low, predictable fees — paid in IMX.  
+  - Fast block times and batch proofs improve UX for gaming applications.  
+
+- **Tooling & Dev Experience**  
+  - Integrated with gaming SDKs, onchain orderbook infra, and Immutable Passport (non-custodial auth).  
+  - Contract deployment and indexing flows are streamlined for game devs.  
+
+- **Use Cases**  
+  - Designed for game economies, onchain marketplaces, and NFT minting/trading at scale.  
+  - Well-suited for projects needing fast finality, low fees, and built-in user onboarding tools.
+
+- **Trade-offs**  
+  - Centralized sequencer and DA — not trust-minimized.  
+  - Exit mechanisms depend on uptime and behavior of the Immutable-run infra.  
+  - Contract upgrades can be immediate, introducing governance and stability risk.  
+  - Ecosystem is specialized; limited general-purpose DeFi or non-gaming infrastructure. 

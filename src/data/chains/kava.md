@@ -85,8 +85,34 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-Kava is a decentralized blockchain that combines the speed and interoperability of Cosmos with the developer power of Ethereum. Built on the Cosmos SDK with Tendermint consensus, it provides an EVM-compatible execution environment while maintaining connectivity to the broader Cosmos ecosystem through IBC.
 
-Kava offers single block finality and extremely low transaction fees (averaging $0.0001), making it an attractive platform for DeFi applications. The network supports full Solidity compatibility, allowing Ethereum developers to easily deploy their smart contracts.
+A Cosmos-based L1 with built-in EVM support. Aims to bridge Ethereum and Cosmos ecosystems with low fees and high IBC interoperability.
 
-As a hybrid Cosmos-EVM chain, Kava provides unique advantages: access to Cosmos liquidity and interoperability while maintaining full compatibility with Ethereum tools and standards. However, developers should be aware that while the EVM layer is fully compatible, accessing Cosmos-specific features requires understanding both ecosystems.
+- **Consensus & Finality**  
+  - Runs Tendermint BFT consensus with ~100 validators.  
+  - Finality in ~6 seconds assuming >⅔ validator honesty.  
+  - No fraud/validity proofs — finality is subjective under network partitions or validator failure.  
+
+- **Infra & Execution**  
+  - Dual runtime: Cosmos SDK for native modules and a parallel EVM layer.  
+  - Solidity contracts run via the Kava EVM module (EVM 2.0+).  
+  - Cosmos-native tooling (REST/gRPC) + EVM-compatible RPC/WebSocket.  
+
+- **Performance**  
+  - Block time ~6s.  
+  - Throughput in the hundreds of TPS under normal conditions.  
+  - Gas fees typically <$0.001 per tx.  
+
+- **Interoperability**  
+  - Full IBC support — assets and messages can move between Kava and other Cosmos chains.  
+  - Internal bridging between Kava EVM and Cosmos modules.  
+  - No native Ethereum L1 bridging — relies on third-party bridges.
+
+- **Use Cases**  
+  - Good fit for cross-chain DeFi products that need IBC access and familiar Solidity dev experience — e.g. lending markets, stablecoin strategies, Cosmos<>EVM DEXs.  
+
+- **Trade-offs**  
+  - No Ethereum-level decentralization — validator set is smaller and governance is team-aligned.  
+  - EVM is isolated — lacks native composability with external Ethereum dApps.  
+  - Tendermint finality is weaker than ZK/fraud-proof rollups.  
+  - Ecosystem is relatively isolated despite IBC — limited external DeFi integration.

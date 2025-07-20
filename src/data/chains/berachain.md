@@ -65,8 +65,16 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-Berachain is an EVM-compatible Layer 1 blockchain built with the innovative Proof-of-Liquidity (PoL) consensus mechanism. Unlike traditional proof-of-stake chains, PoL incentivizes liquidity provision directly at the protocol level, creating a flywheel where validators secure the network while also deepening liquidity across the ecosystem.
+A Layer 1 chain with a novel Proof-of-Liquidity (PoL) consensus model, built on a modular BeaconKit + CometBFT stack.
 
-The chain leverages BeaconKit, a modular framework built on the Cosmos SDK, enabling high throughput and native cross-chain communication. This dual approach gives developers the familiar EVM environment while benefiting from Cosmos ecosystem interoperability. Native features include BGT (governance token) emissions, validator-directed liquidity incentives, and built-in DeFi primitives.
-
-While Berachain offers novel consensus mechanics and strong liquidity incentives, it's still establishing itself as a new L1 in a competitive landscape. The PoL model is innovative but unproven at scale, and the ecosystem is nascent compared to established chains. However, its focus on aligning security with liquidity could prove attractive for DeFi protocols seeking deeper, more stable liquidity pools.
+- **Consensus (PoL)**: Validators must stake and provide protocol liquidity to earn governance power. Uses a tri-token system:  
+  - **BERA**: gas and fee token  
+  - **BGT**: non-transferable governance token, earned via liquidity provision  
+  - **Honey**: reward token used in ecosystem apps  
+- **Infra**: Runs on CometBFT with BeaconKit coordination, enabling fast block times and single-slot finality.  
+- **Ecosystem**: Native DeFi suite includes BEX (DEX), Honey stablecoin, lending/perps. Designed to incentivize liquidity as a security primitive.  
+- **Trade-offs**:  
+  - PoL is untested at scale and depends on sustained DeFi activity  
+  - Validator incentives are tightly coupled to protocol usage  
+  - Governance (via BGT) is non-transferable and controlled by liquidity dynamics  
+  - Modular design introduces coordination and implementation complexity  

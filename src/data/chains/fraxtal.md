@@ -61,10 +61,32 @@ sdks:
 tools:
 ---
 
-Fraxtal is an EVM-compatible Layer 2 blockchain built using the OP Stack framework. As part of the Frax Finance ecosystem, it's designed to support decentralized finance applications with low fees and fast transaction finality.
+An OP Stack-based L2 from Frax Finance with centralized infra, custom data availability, and incentive mechanisms for user and dev activity.
 
-Built on the same battle-tested OP Stack as Base and Optimism, Fraxtal inherits the security model of optimistic rollups while settling transactions on Ethereum. The chain uses frxETH (Frax Ether) as its native currency, which is a liquid staking derivative of ETH developed by Frax Finance.
+- **Security**  
+  - Centralized sequencer and multisig-controlled upgrades (no delay).  
+  - No fraud proofs or permissionless verifiers — state validity depends on sequencer honesty.  
+  - Uses custom off-chain data availability — no Ethereum calldata fallback.
 
-The network aims to provide a scalable platform for DeFi protocols, with particular focus on stablecoin operations and liquidity provision. However, as with other OP Stack chains, the sequencer is currently centralized, though there are plans for progressive decentralization following the broader OP Stack roadmap.
+- **Infra**  
+  - Built on OP Stack (EVM-equivalent).  
+  - Hourly state commitments to Ethereum; data submitted ~30 min later.  
+  - Native gas token is FRAX.  
 
-Developers familiar with Ethereum will find Fraxtal easy to work with, as it maintains full EVM compatibility and supports all standard Ethereum tooling.
+- **Incentives**  
+  - “Flox” system rewards users/devs with FXTL points based on activity.  
+  - FXTL has no formal token mechanics yet; subject to Frax governance.
+
+- **Performance**  
+  - Sub-cent fees; throughput comparable to other OP Stack chains.  
+  - No ZK or fraud-proof enhancements.  
+
+- **Trade-offs**  
+  - No trustless settlement — sequencer has full control over execution and ordering.  
+  - Off-chain DA layer means data withholding is possible.  
+  - Multisig-controlled upgrades without delay → high governance risk.  
+  - Incentive model introduces complexity without formal guarantees.
+
+- **Why use it**  
+  - Suitable for apps that want EVM compatibility and low fees, and are comfortable with Frax-controlled infra and incentive mechanisms.  
+  - Not appropriate for trust-minimized or censorship-sensitive applications.  

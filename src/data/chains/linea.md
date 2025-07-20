@@ -88,8 +88,28 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-Linea is a zkEVM Layer 2 built by ConsenSys that uses zero-knowledge proofs to scale Ethereum. It's EVM-equivalent, meaning developers can deploy existing Ethereum applications without modification, while benefiting from lower costs and faster transactions through zk-rollup technology.
+A fully EVM-equivalent ZK-rollup developed by ConsenSys, focused on Ethereum compatibility and zk-proven execution.
 
-As a product from ConsenSys (the company behind MetaMask and Infura), Linea benefits from deep integration with the ConsenSys ecosystem. This includes native MetaMask support, giving it immediate access to millions of users, and seamless integration with Infura's infrastructure.
+- **Security & Data Availability**  
+  - Validity proofs verify all EVM operations before finalization.  
+  - Uses Ethereum calldata for DA — no custom DA layer or fallback.  
+  - Settlement and availability fully rely on Ethereum L1.
 
-The network uses lattice-based cryptography for its zero-knowledge proofs, which provides quantum resistance and efficient proof generation. While still relatively new, Linea focuses on developer experience and maintains full EVM compatibility to minimize migration friction.
+- **Infra & Execution**  
+  - Supports advanced RPCs like `eth_sendBundle` for MEV mitigation.  
+  - Open-state tooling enables permissionless access to sequencer state.
+
+- **Performance**  
+  - Block times ~2s; proof generation is near real-time.  
+  - Scales with prover capacity; fees remain low unless L1 gas spikes.  
+  - No known artificial throughput caps — performance depends on Ethereum calldata limits.
+
+- **Use Cases**  
+  - Suitable for DeFi protocols, Ethereum-aligned dApps, and apps needing full zk security guarantees.  
+  - Good fit for teams migrating existing contracts or tooling from Ethereum mainnet without changes.
+
+- **Trade-offs**  
+  - Sequencer is still centralized.  
+  - No native data availability fallback — if Ethereum calldata is congested or expensive, UX suffers.  
+  - L2 upgrades and system parameters are not fully decentralized yet.  
+  - Proof systems are still maturing — developers should monitor reliability and upgrade timelines.
