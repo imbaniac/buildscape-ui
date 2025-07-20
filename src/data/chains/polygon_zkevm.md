@@ -13,6 +13,7 @@ technology:
   settlementLayer: Ethereum
   isL2: true
   isEVM: true
+  stack: Polygon zkEVM
 contractLanguages:
   - name: Solidity
     url: https://soliditylang.org

@@ -5,7 +5,7 @@
   import { goto } from "$app/navigation";
   import { overviewStore, tvlLookupByChainId } from "$lib/stores/overviewStore";
 
-  const initialViewBox = { x: -5000, y: -5000, width: 10000, height: 10000 };
+  const initialViewBox = { x: -10000, y: -10000, width: 20000, height: 20000 };
   let svg = $state<SVGSVGElement>();
   let svgContainer = $state<HTMLDivElement>();
   let isPanning = $state(false);
@@ -25,7 +25,6 @@
   const MIN_SCALE = 0.1;
   const MAX_SCALE = 5;
   const ZOOM_SPEED = 0.001; // For wheel events
-  const PINCH_ZOOM_SPEED = 0.01;
 
   // Interaction state tracking
   let isInteracting = $state(false);
@@ -63,7 +62,7 @@
     query: "?raw",
     import: "default",
   });
-  const chainTsModules = import.meta.glob("../data/chains/*.ts");
+
   const logoAssets = import.meta.glob("../lib/assets/chains/*", {
     eager: true,
     query: "?url",
@@ -118,21 +117,6 @@
 
   const staticChains: Record<string, any> = loadStaticChains();
 
-  // Helper to get dynamic loader for a chain
-  async function getDynamicLoader(
-    chainName: string
-  ): Promise<null | ((span: string) => Promise<any>)> {
-    const tsPath = `../data/chains/${chainName}.ts`;
-    if (chainTsModules[tsPath]) {
-      const mod = await chainTsModules[tsPath]();
-      const loader = (mod as any).default;
-      if (typeof loader === "function") {
-        return loader as (span: string) => Promise<any>;
-      }
-    }
-    return null;
-  }
-
   // Initialize island positions with saved positions or calculated positions
   $effect(() => {
     // Only set default positions if we don't have any loaded positions
@@ -150,19 +134,14 @@
       l2Chains.forEach(([chainKey], i) => {
         const angle = (2 * Math.PI * i) / l2Chains.length;
         positions[chainKey] = {
-          x: 3000 * Math.cos(angle),
-          y: 3000 * Math.sin(angle),
+          x: 5000 * Math.cos(angle),
+          y: 5000 * Math.sin(angle),
         };
       });
 
       islandPositions = positions;
     }
   });
-
-  // Example: how to get static data for a chain
-  // const ethStatic = staticChains['ethereum'];
-  // Example: how to get dynamic loader for a chain
-  // const ethLoader = await getDynamicLoader('ethereum');
 
   function handlePointerDown(event: PointerEvent) {
     if (event.button === 0) {
@@ -200,8 +179,16 @@
               if (rect) {
                 const mouseX = event.clientX - rect.left;
                 const mouseY = event.clientY - rect.top;
-                const svgX = (mouseX - translateX) / scale;
-                const svgY = (mouseY - translateY) / scale;
+
+                // Calculate the SVG-to-screen ratio
+                const svgWidth = initialViewBox.width;
+                const screenWidth = rect.width;
+                const ratio = svgWidth / screenWidth / scale;
+
+                // Convert screen coordinates to SVG coordinates
+                const svgX = (mouseX - translateX) * ratio;
+                const svgY = (mouseY - translateY) * ratio;
+
                 dragOffset = {
                   x: svgX - pos.x,
                   y: svgY - pos.y,
@@ -241,14 +228,21 @@
       }
 
       animationFrame = requestAnimationFrame(() => {
-        if (!svgContainer || !draggedIsland) return;
+        if (!svgContainer || !draggedIsland || !svg) return;
 
         const rect = svgContainer.getBoundingClientRect();
         if (rect) {
           const mouseX = event.clientX - rect.left;
           const mouseY = event.clientY - rect.top;
-          const svgX = (mouseX - translateX) / scale;
-          const svgY = (mouseY - translateY) / scale;
+
+          // Calculate the SVG-to-screen ratio
+          const svgWidth = initialViewBox.width;
+          const screenWidth = rect.width;
+          const ratio = svgWidth / screenWidth / scale;
+
+          // Convert screen coordinates to SVG coordinates
+          const svgX = (mouseX - translateX) * ratio;
+          const svgY = (mouseY - translateY) * ratio;
 
           // Calculate new position
           const newX = svgX - dragOffset.x;
@@ -623,8 +617,8 @@
     l2Chains.forEach(([chainKey], i) => {
       const angle = (2 * Math.PI * i) / l2Chains.length;
       positions[chainKey] = {
-        x: 3000 * Math.cos(angle),
-        y: 3000 * Math.sin(angle),
+        x: 5000 * Math.cos(angle),
+        y: 5000 * Math.sin(angle),
       };
     });
 
@@ -646,20 +640,19 @@
   // Calculate island scale based on TVL using power scaling for visual hierarchy
   function calculateIslandScale(tvl: number): number {
     // Use a reference TVL for Base (~$3.4B) as our "normal" size
-    const REFERENCE_TVL = 3_400_000_000;  // Base TVL
-    const REFERENCE_SCALE = 1.0;          // Base gets scale 1.0
-    
+    const REFERENCE_TVL = 3_400_000_000; // Base TVL
+    const REFERENCE_SCALE = 1.0; // Base gets scale 1.0
+
     // Use power of 0.35 to compress differences
     // This makes 20x TVL difference appear as ~3.5x visual difference
     const scale = REFERENCE_SCALE * Math.pow(tvl / REFERENCE_TVL, 0.35);
-    
+
     // Apply reasonable bounds
     const MIN_SCALE = 0.3;
     const MAX_SCALE = 2.0;
-    
+
     return Math.max(MIN_SCALE, Math.min(MAX_SCALE, scale));
   }
-
 
   // Get TVL lookup from store
   let tvlLookupMap = $derived($tvlLookupByChainId);
@@ -742,7 +735,7 @@
         logo={staticChains["ethereum"]?.logoUrl}
         scale={(() => {
           const chainId = staticChains["ethereum"]?.chainId;
-          const tvl = chainId ? (tvlLookupMap.get(chainId) || 0) : 0;
+          const tvl = chainId ? tvlLookupMap.get(chainId) || 0 : 0;
           return tvl > 0 ? calculateIslandScale(tvl) : 1.8; // Default large scale for Ethereum
         })()}
         x={islandPositions["ethereum"]?.x || 0}
@@ -759,7 +752,7 @@
           logo={blockchain.logoUrl}
           scale={(() => {
             const chainId = blockchain.chainId;
-            const tvl = chainId ? (tvlLookupMap.get(chainId) || 0) : 0;
+            const tvl = chainId ? tvlLookupMap.get(chainId) || 0 : 0;
             return tvl > 0 ? calculateIslandScale(tvl) : 0.6; // Default scale for unknown TVL
           })()}
           x={islandPositions[chainKey]?.x ||
@@ -971,8 +964,12 @@
   }
 
   @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
 
   .loading-indicator p {

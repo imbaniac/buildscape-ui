@@ -11,7 +11,7 @@ maxBlockSize:
 technology:
   isL2: true
   isEVM: true
-  stack: ZK Stack Validium
+  stack: ZKsync
 contractLanguages:
   - name: Solidity
     url: https://soliditylang.org
