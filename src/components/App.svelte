@@ -628,7 +628,7 @@
   let searchResults = $state<string[]>([]);
   let currentResultIndex = $state(0);
   let isSearchActive = $state(false);
-  let searchDebounceTimer: number | null = null;
+  let searchDebounceTimer: ReturnType<typeof setTimeout> | null = null;
 
   // Search implementation
   function performSearch(query: string) {

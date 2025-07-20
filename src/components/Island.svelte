@@ -235,44 +235,9 @@
     <!-- Label shadow diamond -->
     <polygon points="0,-40 60,0 0,40 -60,0" fill={darkColor} opacity="0.4" />
 
-    <!-- Defs for gradients and filters -->
-    <defs>
-      <linearGradient id="flagpoleGradient" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#8B6914" stop-opacity="0.9" />
-        <stop offset="100%" stop-color="#654321" stop-opacity="0.9" />
-      </linearGradient>
-      <filter id="labelShadow">
-        <feDropShadow
-          dx="0"
-          dy="6"
-          stdDeviation="4"
-          flood-color="#5ca9ce"
-          flood-opacity="0.3"
-        />
-      </filter>
-    </defs>
-
     <!-- Label with game-like styling -->
     <g transform="translate({-labelWidth / 2}, -380)">
       <!-- Fancy label frame -->
-      <defs>
-        <linearGradient id="labelFrame" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#d4af37" />
-          <stop offset="50%" stop-color="#8B6914" />
-          <stop offset="100%" stop-color="#654321" />
-        </linearGradient>
-        <pattern
-          id="labelTexture"
-          x="0"
-          y="0"
-          width="4"
-          height="4"
-          patternUnits="userSpaceOnUse"
-        >
-          <rect width="4" height="4" fill="#f4e4c1" />
-          <circle cx="2" cy="2" r="0.5" fill="#e8d7b3" opacity="0.5" />
-        </pattern>
-      </defs>
 
       <!-- Outer frame -->
       <rect
@@ -281,8 +246,8 @@
         width={labelWidth + 16}
         height="236"
         rx="12"
-        fill="url(#labelFrame)"
-        filter="url(#labelShadow)"
+        fill="#8B6914"
+        opacity="0.9"
       />
 
       <!-- Inner border -->
@@ -303,26 +268,22 @@
         width={labelWidth}
         height="220"
         rx="8"
-        fill="url(#labelTexture)"
+        fill="#f4e4c1"
         stroke="#8B6914"
         stroke-width="2"
       />
       <!-- Logo and name horizontally centered inside label -->
       <g transform={`translate(${left}, 55)`}>
-        <defs>
-          <clipPath id="logoClip">
-            <circle cx={logoSize / 2} cy={logoSize / 2} r={logoSize / 2} />
-          </clipPath>
-        </defs>
         {#if typeof logo === "string"}
-          <image
-            href={logo}
-            x="0"
-            y="0"
-            width={logoSize}
-            height={logoSize}
-            clip-path="url(#logoClip)"
-          />
+          <g clip-path="circle({logoSize / 2}px at {logoSize / 2}px {logoSize / 2}px)">
+            <image
+              href={logo}
+              x="0"
+              y="0"
+              width={logoSize}
+              height={logoSize}
+            />
+          </g>
         {:else}
           <g transform="scale(3)">{@html logo}</g>
         {/if}
