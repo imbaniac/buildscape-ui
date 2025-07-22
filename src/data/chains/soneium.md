@@ -43,7 +43,7 @@ testnets:
     url: https://soneium-minato.blockscout.com
     description: Soneium's Minato testnet for deploying and testing applications on the Soneium Layer 2 network.
     faucets:
-      - https://bridge.soneium.org/testnet
+      - https://docs.soneium.org/docs/builders/tools/faucets
     rpcs:
       - https://rpc.minato.soneium.org
       - https://soneium-minato.drpc.org
@@ -55,7 +55,11 @@ rpcs:
     url: https://soneium.drpc.org
     type: public
 sourceCode:
+  - name: Github Organization
+    url: https://github.com/Soneium
 forums:
+  - name: Discord
+    url: https://discord.com/invite/soneium
 sdks:
 # Additional SDKs and tools are inherited from evm-common.md
 ---

@@ -53,6 +53,8 @@ forums:
   - name: Tezos Stack Exchange
     url: https://tezos.stackexchange.com/
     description: Q&A site for Tezos and Etherlink developers
+  - name: Etherlink Discord
+    url: https://discord.com/invite/etherlink
 # SDKs and tools are inherited from evm-common.md
 ---
 

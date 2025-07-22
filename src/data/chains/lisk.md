@@ -53,15 +53,12 @@ rpcs:
     url: https://node.histori.xyz/lisk-mainnet/8ry9f6t9dct1se2hlagxnd9n2a
     type: public
 sourceCode:
-  - name: Lisk GitHub
+  - name: GitHub Organization
     url: https://github.com/LiskHQ
     description: Lisk official GitHub organization
 forums:
-  - name: Lisk Forum
-    url: https://lisk.chat/
-    description: Official Lisk community forum
   - name: Lisk Discord
-    url: https://lisk.chat/
+    url: https://discord.com/invite/lisk
     description: Lisk community Discord server
 # SDKs and tools are inherited from evm-common.md
 ---

@@ -57,7 +57,11 @@ rpcs:
     url: https://node.histori.xyz/fraxtal-mainnet/8ry9f6t9dct1se2hlagxnd9n2a
     type: public
 sourceCode:
+  - name: Github Organization
+    url: https://github.com/FraxFinance
 forums:
+  - name: Discord
+    url: https://discord.com/invite/fraxfinance
 sdks:
 tools:
 ---

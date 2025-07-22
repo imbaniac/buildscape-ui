@@ -54,8 +54,17 @@ docs:
     url: https://docs.apechain.com
   - name: Developer Hub
     url: https://apechain.hub.caldera.xyz
-sourceCode:
 forums:
+  - name: ApeChain Forum
+    url: https://forum.apecoin.com/
+    description: Official community forum for ApeChain discussions and governance
+  - name: ApeChain Discord
+    url: https://discord.com/invite/apecoindao
+    description: Community Discord server for real-time discussions
+sourceCode:
+  - name: YugaLabs Organization
+    url: https://github.com/yuga-labs
+    description: Main ApeChain GitHub organization
 sdks:
 tools:
 # Additional SDKs and tools are inherited from evm-common.md

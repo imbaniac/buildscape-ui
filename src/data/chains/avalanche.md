@@ -21,7 +21,7 @@ contractLanguages:
   - name: Yul / Yul+
     url: https://docs.soliditylang.org/en/latest/yul.html
 docs:
-  - https://docs.avax.network/build/
+  - https://build.avax.network/docs
 blockscanners:
   - name: Snowscan
     url: https://snowscan.xyz
@@ -32,9 +32,6 @@ blockscanners:
   - name: Snowtrace (Routescan)
     url: https://snowtrace.io
     type: alternative
-  - name: DEX Guru
-    url: https://avalanche.dex.guru
-    type: analytics
   - name: DexScreener
     url: https://dexscreener.com/avalanche
     type: analytics
@@ -44,8 +41,7 @@ testnets:
     url: https://testnet.snowscan.xyz
     description: Avalanche's primary testnet for C-Chain smart contract testing with fast finality.
     faucets:
-      - https://faucet.avax-test.network/
-      - https://test.faucet.avax.network/
+      - https://core.app/tools/testnet-faucet
     rpcs:
       - https://api.avax-test.network/ext/bc/C/rpc
       - https://avalanche-fuji-c-chain-rpc.publicnode.com
@@ -136,8 +132,8 @@ forums:
     url: https://forum.avax.network/
     description: Official community forum for developers and users
   - name: Avalanche Developers Discord
-    url: https://discord.gg/avalanche
-    description: Active Discord community for developers and ecosystem participants
+    url: https://discord.com/invite/avax
+    description: Discord community for developers and ecosystem participants
   - name: Avalanche Reddit
     url: https://www.reddit.com/r/Avax/
     description: Community discussions and ecosystem updates

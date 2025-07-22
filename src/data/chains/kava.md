@@ -21,8 +21,7 @@ contractLanguages:
   - name: Yul / Yul+
     url: https://docs.soliditylang.org/en/latest/yul.html
 docs:
-  - https://docs.kava.io/docs/ethereum/
-  - https://www.kava.io/developers#resources
+  - https://docs.kava.io/docs/intro/
 blockscanners:
   - name: Kavascan
     url: https://kavascan.com
@@ -70,19 +69,17 @@ rpcs:
     url: https://kava-evm.rpc.thirdweb.com
     type: public
 sourceCode:
-  - name: Kava
-    url: https://github.com/Kava-Labs/kava
-    description: Official Kava blockchain repository
   - name: Kava Labs
     url: https://github.com/Kava-Labs
     description: Kava Labs GitHub organization
+  - name: Kava Node
+    url: https://github.com/Kava-Labs/kava
+    description: Official Kava blockchain repository
 forums:
-  - name: Kava Community
-    url: https://community.kava.io/
-    description: Official Kava community forum for governance and discussion
-  - name: Kava Discord
-    url: https://discord.com/invite/kava
-    description: Community Discord server for real-time discussion
+  - name: Kava Reddit
+    url: https://www.reddit.com/r/kava_platform/
+  - name: Kava Twitter
+    url: https://x.com/KAVA_CHAIN
 # SDKs and tools are inherited from evm-common.md
 ---
 

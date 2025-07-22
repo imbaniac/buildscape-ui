@@ -34,12 +34,6 @@ blockscanners:
   - name: Blast Explorer
     url: https://blastexplorer.io
     type: alternative
-  - name: OKLink
-    url: https://www.oklink.com/blast
-    type: alternative
-  - name: DEX Guru
-    url: https://blast.dex.guru
-    type: analytics
   - name: DexScreener
     url: https://dexscreener.com/blast
     type: analytics
@@ -113,9 +107,8 @@ rpcs:
     url: https://blast.rpc.thirdweb.com/
     type: public
 sourceCode:
-  - name: Blast Documentation
-    url: https://docs.blast.io
-    description: Official documentation for developers building on Blast
+  - name: Blast Organization
+    url: https://github.com/blast-io
 forums:
   - name: Blast Discord
     url: https://discord.com/invite/blastdevelopers

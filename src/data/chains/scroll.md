@@ -75,12 +75,12 @@ rpcs:
     url: https://rpc-scroll.icecreamswap.com
     type: public
 sourceCode:
-  - name: Scroll zkEVM
+  - name: Github Organzation
     url: https://github.com/scroll-tech
     description: Main Scroll GitHub organization with zkEVM repositories
 forums:
   - name: Scroll Discord
-    url: https://discord.gg/scroll
+    url: https://discord.com/invite/scroll
     description: Community Discord for discussions and support
 # SDKs and tools are inherited from evm-common.md
 ---

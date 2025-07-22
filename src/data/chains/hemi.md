@@ -20,8 +20,6 @@ contractLanguages:
     url: https://vyper.readthedocs.io
 docs:
   - https://docs.hemi.xyz/
-  - https://docs.hemi.xyz/building-bitcoin-apps/hemi-virtual-machine-hvm
-  - https://docs.hemi.xyz/building-bitcoin-apps/hemi-bitcoin-kit-hbk
 blockscanners:
   - name: Hemi Explorer
     url: https://explorer.hemi.xyz
@@ -31,8 +29,7 @@ testnets:
     chainId: 743111
     url: https://testnet.explorer.hemi.xyz
     description: Hemi testnet running on Sepolia for testing Bitcoin-Ethereum cross-chain applications.
-    faucets:
-      - 
+    faucets: []
     rpcs:
       - https://testnet.rpc.hemi.network/rpc
 rpcs:
@@ -43,8 +40,7 @@ sourceCode:
   - name: Hemi GitHub
     url: https://github.com/hemilabs
     description: Hemi Labs GitHub organization with core repositories
-forums:
-  - 
+forums: []
 # SDKs and tools are inherited from evm-common.md
 ---
 

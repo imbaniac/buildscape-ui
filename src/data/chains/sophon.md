@@ -45,11 +45,11 @@ rpcs:
     url: wss://rpc.sophon.xyz/ws
     type: public
 sourceCode:
-  - name: Sophon GitHub
+  - name: GitHub Organization
     url: https://github.com/sophon-labs
     description: Official Sophon GitHub organization
 forums:
-  - name: Sophon Discord
+  - name: Discord
     url: https://discord.gg/sophon
     description: Official Sophon community Discord server
 # SDKs and tools are inherited from evm-common.md

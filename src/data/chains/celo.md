@@ -58,17 +58,17 @@ rpcs:
     url: https://celo.api.onfinality.io/public
     type: public
 sourceCode:
-  - name: Celo Blockchain
+  - name: Celo Node
     url: https://github.com/celo-org/celo-blockchain
     description: Main Celo blockchain repository
-  - name: Celo Organization
+  - name: Github Organization
     url: https://github.com/celo-org
     description: Main Celo GitHub organization with core repositories
 forums:
-  - name: Celo Forum
+  - name: Forum
     url: https://forum.celo.org
     description: Official Celo community forum for governance and technical discussions
-  - name: Celo Discord
+  - name: Discord
     url: https://discord.gg/celo
     description: Real-time community chat for developers and users
 # SDKs and tools are inherited from evm-common.md

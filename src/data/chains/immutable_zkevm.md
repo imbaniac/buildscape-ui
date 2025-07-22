@@ -20,7 +20,7 @@ contractLanguages:
     url: https://soliditylang.org
     details: Primary
 docs:
-  - https://docs.immutable.com/docs/zkEVM/
+  - https://docs.immutable.com/
 blockscanners:
   - name: Immutable Explorer
     url: https://explorer.immutable.com
@@ -49,16 +49,13 @@ rpcs:
     url: https://node.histori.xyz/immutable-mainnet
     type: public
 sourceCode:
-  - name: Immutable zkEVM
+  - name: Github Organization
     url: https://github.com/immutable
     description: Immutable GitHub organization
 forums:
   - name: Immutable Discord
-    url: https://discord.gg/immutable
+    url: https://discord.com/invite/immutable-play
     description: Official Discord community for developers and players
-  - name: Immutable Developer Hub
-    url: https://www.immutable.com/developers
-    description: Resources and documentation for building on Immutable
 # SDKs and tools are inherited from evm-common.md
 ---
 

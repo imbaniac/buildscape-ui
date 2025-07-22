@@ -58,14 +58,14 @@ rpcs:
     url: https://sonic-json-rpc.stakely.io
     type: public
 sourceCode:
-  - name: Sonic Labs Organization
+  - name: Github Organization
     url: https://github.com/sonic-chain
     description: Main GitHub organization for Sonic development
 forums:
-  - name: Sonic Labs Discord
+  - name: Discord
     url: https://discord.com/invite/soniclabs
     description: Main community support and discussion channel
-  - name: Sonic Labs on X (Twitter)  
+  - name: X (Twitter)  
     url: https://x.com/soniclabs
     description: Official Sonic Labs announcements and updates
 # SDKs and tools are inherited from evm-common.md

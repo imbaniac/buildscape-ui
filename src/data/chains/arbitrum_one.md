@@ -39,9 +39,6 @@ blockscanners:
   - name: OKLink
     url: https://www.oklink.com/arbitrum
     type: alternative
-  - name: DEX Guru
-    url: https://arbitrum.dex.guru
-    type: analytics
   - name: DexScreener
     url: https://dexscreener.com/arbitrum
     type: analytics

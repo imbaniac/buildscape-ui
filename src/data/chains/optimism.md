@@ -136,10 +136,10 @@ rpcs:
     url: https://optimism.croswap.com/rpc
     type: public
 sourceCode:
-  - name: Optimism Monorepo
+  - name: Optimism Node 
     url: https://github.com/ethereum-optimism/optimism
     description: Main repository for Optimism protocol implementation
-  - name: Ethereum Optimism Organization
+  - name: Github Organization
     url: https://github.com/ethereum-optimism
     description: GitHub organization for Optimism development and OP Stack
 forums:

@@ -21,7 +21,7 @@ contractLanguages:
   - name: Yul / Yul+
     url: https://docs.soliditylang.org/en/latest/yul.html
 docs:
-  - https://docs.pulsechain.com/
+  - https://hexpulse.info/docs/
 blockscanners:
   - name: PulseScan
     url: https://ipfs.scan.pulsechain.com
@@ -64,6 +64,9 @@ forums:
   - name: PulseChain Telegram
     url: https://t.me/PulseChainCom
     description: Official PulseChain community channel
+  - name: PulseChain Telegram Dev
+    url: https://t.me/PulseDEV
+    description: PulseChain dev community channel
 # SDKs and tools are inherited from evm-common.md
 ---
 

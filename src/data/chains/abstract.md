@@ -51,10 +51,12 @@ rpcs:
     url: wss://abstract.drpc.org
     type: public
 sourceCode:
-  - name: Abstract Foundation
+  - name: Github Organization
     url: https://github.com/abstract-foundation
     description: Main Abstract GitHub organization
 forums:
+  - name: Discord
+    url: https://discord.com/invite/abstractchain/
 # SDKs and tools are inherited from evm-common.md
 ---
 

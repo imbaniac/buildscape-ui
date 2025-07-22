@@ -36,9 +36,6 @@ blockscanners:
   - name: Blockscout
     url: https://polygon.blockscout.com
     type: alternative
-  - name: DEX Guru
-    url: https://polygon.dex.guru
-    type: analytics
   - name: DexScreener
     url: https://dexscreener.com/polygon
     type: analytics

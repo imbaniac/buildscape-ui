@@ -29,16 +29,13 @@ blockscanners:
   - name: Blockscout
     url: https://gnosis.blockscout.com
     type: alternative
-  - name: DEX Guru
-    url: https://gnosis.dex.guru
-    type: analytics
 testnets:
   - name: Chiado
     chainId: 10200
     url: https://gnosis-chiado.blockscout.com
     description: Gnosis Chain testnet for dApp and smart contract testing with fast confirmations.
     faucets:
-      - https://gnosisfaucet.com
+      - https://faucet.chiadochain.net/
     rpcs:
       - https://rpc.chiadochain.net
       - https://gnosis-chiado-rpc.publicnode.com
@@ -92,7 +89,7 @@ forums:
     url: https://forum.gnosis.io/
     description: Community forum for governance discussions and technical topics
   - name: Gnosis Discord
-    url: https://discord.gg/gnosischain
+    url: https://discord.com/invite/gnosis
     description: Official Discord server for developers and community
 # SDKs and tools are inherited from evm-common.md
 ---

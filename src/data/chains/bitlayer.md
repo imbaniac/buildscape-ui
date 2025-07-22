@@ -55,9 +55,8 @@ sourceCode:
     url: https://github.com/bitlayer-org
     description: Bitlayer organization GitHub repositories
 forums:
-  - name: Bitlayer Documentation
-    url: https://docs.bitlayer.org/
-    description: Official documentation and developer resources
+  - name: Bitlayer Telegram
+    url: https://t.me/bitlayerofficial
 # SDKs and tools are inherited from evm-common.md
 ---
 

@@ -36,8 +36,7 @@ testnets:
     chainId: 167009
     url: https://hekla.taikoexplorer.com
     description: Taiko testnet for developers to test dApps and smart contracts before mainnet deployment.
-    faucets:
-      - 
+    faucets: []
     rpcs:
       - https://rpc.hekla.taiko.xyz
       - https://taiko-hekla.drpc.org
@@ -71,6 +70,8 @@ sourceCode:
   - name: Taiko Monorepo
     url: https://github.com/taikoxyz/taiko-mono
     description: Main Taiko protocol repository containing core contracts and infrastructure
+  - name: Github Organization
+    url: https://github.com/taikoxyz
 forums:
   - name: Taiko Forum
     url: https://community.taiko.xyz/

@@ -61,16 +61,16 @@ rpcs:
     url: https://rpc.owlracle.info/cro/70d38ce1826c4a60bb2a8e05a6c8b20f
     type: public
 sourceCode:
-  - name: Cronos Chain
+  - name: Cronos Node
     url: https://github.com/crypto-org-chain/cronos
     description: Official Cronos blockchain implementation
+  - name: Github Organization
+    url: https://github.com/crypto-org-chain
+    description: Official Cronos GitHub organization
 forums:
-  - name: Cronos Discord
-    url: https://discord.gg/cronos
+  - name: Discord
+    url: https://discord.com/invite/cronos
     description: Official Discord community for developers and users
-  - name: Cronos Forum
-    url: https://forum.cronos.org
-    description: Community discussion forum
 # SDKs and tools are inherited from evm-common.md
 ---
 

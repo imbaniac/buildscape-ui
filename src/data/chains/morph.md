@@ -14,7 +14,6 @@ technology:
   settlementLayer: Ethereum
   isL2: true
   isEVM: true
-  stack: Morph Stack
 contractLanguages:
   - name: Solidity
     url: https://soliditylang.org
@@ -26,7 +25,7 @@ contractLanguages:
   - name: Huff
     url: https://huff.sh/
 docs:
-  - https://docs.morphl2.io/
+  - https://docs.morphl2.io/docs/about-morph/user-navigation-page/
 blockscanners:
   - name: Morph Explorer
     url: https://explorer.morphl2.io
@@ -56,7 +55,13 @@ rpcs:
     url: wss://rpc-quicknode.morphl2.io
     type: public
 sourceCode:
+  - name: Morph Node
+    url: https://github.com/morph-l2/morph/
+  - name: Github Organization
+    url: https://github.com/morph-l2
 forums:
+  - name: Discord
+    url: https://discord.com/invite/MorphLayer
 sdks:
 tools:
 ---

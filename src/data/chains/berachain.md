@@ -58,7 +58,7 @@ sourceCode:
     description: Official Berachain GitHub organization
 forums:
   - name: Berachain Discord
-    url: https://discord.gg/berachain
+    url: https://discord.com/invite/berachain
     description: Official Discord community for developers and users
   - name: Berachain X (Twitter)
     url: https://x.com/berachain

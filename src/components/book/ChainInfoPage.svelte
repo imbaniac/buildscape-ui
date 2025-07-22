@@ -4,6 +4,7 @@
   import Tooltip from "./ui/Tooltip.svelte";
   import { tooltipTexts } from "../../data/tooltips";
   import { getAccessibleBrandColor } from "$lib/utils/colorUtils";
+  import { formatTVL } from "$lib/utils/formatters";
 
   interface Props {
     chainStatic: any;
@@ -275,9 +276,7 @@
 
   <div class="footnotes">
     <div class="footnote">
-      <sup>1</sup> Total Value Locked: {#if chainStatus?.tvl}${(
-          chainStatus.tvl / 1e9
-        ).toFixed(1)}B{:else}—{/if}
+      <sup>1</sup> Total Value Locked: {formatTVL(chainStatus?.tvl)}
     </div>
     {#if chainStatic.launchDate}
       <div class="footnote">

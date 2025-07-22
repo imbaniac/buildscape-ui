@@ -88,7 +88,6 @@ A Bitcoin sidechain with EVM-compatible smart contracts, secured via merged mini
 - **Infra & Execution**  
   - EVM-equivalent via Rootstock Virtual Machine (RVM) — supports Solidity contracts.  
   - Gas is paid in rBTC (1:1 with BTC).  
-  - Ethereum tooling works with minimal changes, but ecosystem is smaller.  
   - No modular architecture or DA layer — single-chain state and execution.
 
 - **Performance**  

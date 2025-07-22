@@ -34,9 +34,6 @@ blockscanners:
   - name: OKLink
     url: https://www.oklink.com/eth
     type: alternative
-  - name: DEX Guru
-    url: https://ethereum.dex.guru
-    type: analytics
   - name: DexScreener
     url: https://dexscreener.com/ethereum
     type: analytics

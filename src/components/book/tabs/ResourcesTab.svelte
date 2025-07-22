@@ -12,6 +12,7 @@
   
   // Get display name from URL or use provided name
   function getDisplayName(link: any): string {
+    if (!link) return '';
     if (typeof link === 'string') {
       try {
         const url = new URL(link);
@@ -26,6 +27,7 @@
   
   // Get URL from link
   function getUrl(link: any): string {
+    if (!link) return '';
     return typeof link === 'string' ? link : link.url;
   }
 </script>
@@ -40,19 +42,21 @@
         </h4>
         <div class="resource-list">
           {#each chainStatic[field.field] || [] as link}
-            {@const url = getUrl(link)}
-            {@const name = getDisplayName(link)}
-            <a 
-              href={url} 
-              target="_blank" 
-              class="resource-item"
-            >
-              <span class="resource-name">{name}</span>
-              <svg class="resource-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M7 17L17 7"/>
-                <path d="M7 7h10v10"/>
-              </svg>
-            </a>
+            {#if link}
+              {@const url = getUrl(link)}
+              {@const name = getDisplayName(link)}
+              <a 
+                href={url} 
+                target="_blank" 
+                class="resource-item"
+              >
+                <span class="resource-name">{name}</span>
+                <svg class="resource-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M7 17L17 7"/>
+                  <path d="M7 7h10v10"/>
+                </svg>
+              </a>
+            {/if}
           {/each}
         </div>
       </div>

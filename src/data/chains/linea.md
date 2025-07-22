@@ -34,9 +34,6 @@ blockscanners:
   - name: Blockscout
     url: https://explorer.linea.build
     type: alternative
-  - name: L2scan
-    url: https://linea.l2scan.co
-    type: alternative
 testnets:
   - name: Linea Sepolia
     chainId: 59141
@@ -76,12 +73,11 @@ sourceCode:
   - name: Linea Monorepo
     url: https://github.com/Consensys/linea-monorepo
     description: Main repository for Linea zkEVM implementation
-  - name: Linea Specification
-    url: https://github.com/Consensys/linea-specification
-    description: Specification of the constraint system underlying Linea's zk-EVM
+  - name: Github Organization
+    url: https://github.com/Consensys
 forums:
   - name: Linea Discord
-    url: https://discord.gg/linea
+    url: https://discord.com/invite/linea
     description: Official Discord community for developers and users
   - name: Linea Community Forum
     url: https://community.linea.build/

@@ -37,9 +37,6 @@ blockscanners:
   - name: OKLink
     url: https://www.oklink.com/base
     type: alternative
-  - name: DEX Guru
-    url: https://base.dex.guru
-    type: analytics
   - name: DexScreener
     url: https://dexscreener.com/base
     type: analytics

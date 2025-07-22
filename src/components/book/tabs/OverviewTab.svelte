@@ -1,5 +1,6 @@
 <script lang="ts">
   import { marked } from "marked";
+  import { getAccessibleBrandColor } from "$lib/utils/colorUtils";
 
   interface Props {
     chainStatic: any;
@@ -7,9 +8,10 @@
 
   let { chainStatic }: Props = $props();
   const brandColor = chainStatic.color || '#3b82f6';
+  const accessibleBrandColor = $derived(getAccessibleBrandColor(brandColor));
 </script>
 
-<div class="prose" style="--brand-color: {brandColor}">
+<div class="prose" style="--brand-color: {brandColor}; --accessible-brand-color: {accessibleBrandColor}">
   <h2>What is {chainStatic.name}?</h2>
   {@html marked.parse(chainStatic.description)}
 
@@ -194,7 +196,7 @@
   }
   
   .language-card.primary .language-details {
-    color: var(--brand-color);
+    color: var(--accessible-brand-color);
   }
 
   @media (max-width: 640px) {

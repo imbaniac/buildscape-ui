@@ -22,7 +22,6 @@ contractLanguages:
     url: https://docs.soliditylang.org/en/latest/yul.html
 docs:
   - https://docs.filecoin.io/
-  - https://docs.filecoin.io/smart-contracts/fundamentals/basics/
 blockscanners:
   - name: Filfox
     url: https://filfox.info/en
@@ -33,9 +32,6 @@ blockscanners:
   - name: Beryx
     url: https://beryx.zondax.ch
     type: alternative
-  - name: Glif Explorer
-    url: https://explorer.glif.io
-    type: alternative
   - name: Filscout
     url: https://filscout.io/en
     type: alternative
@@ -45,7 +41,7 @@ testnets:
     url: https://calibration.filfox.info/en
     description: Primary Filecoin testnet for smart contract and dApp testing with real network conditions.
     faucets:
-      - https://faucet.calibration.fildev.network/
+      - https://faucet.calibnet.chainsafe-fil.io/
     rpcs:
       - https://api.calibration.node.glif.io/rpc/v1
       - https://filecoin-calibration.chainup.net/rpc/v1
@@ -85,15 +81,12 @@ rpcs:
     url: https://infura.sftproject.io/filecoin/rpc/v1
     type: private
 sourceCode:
-  - name: Filecoin
+  - name: Filecoin Organization
     url: https://github.com/filecoin-project
     description: Main Filecoin GitHub organization with core repositories
-  - name: Lotus
+  - name: Lotus — Filecoin Node
     url: https://github.com/filecoin-project/lotus
     description: Reference implementation of the Filecoin protocol
-  - name: FVM (Filecoin Virtual Machine)
-    url: https://github.com/filecoin-project/FVM
-    description: Filecoin Virtual Machine implementation
 forums:
   - name: Filecoin Slack
     url: https://filecoin.io/slack
