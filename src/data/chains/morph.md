@@ -1,6 +1,7 @@
 ---
 name: Morph
 chainId: 2818
+nativeCurrency: ETH
 color: "#14A800"
 darkColor: "#108500"
 logo: morph.svg

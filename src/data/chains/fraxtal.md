@@ -1,6 +1,7 @@
 ---
 name: Fraxtal
 chainId: 252
+nativeCurrency: FRAX
 color: "#3B82F6"
 darkColor: "#2960B9"
 logo: fraxtal.svg

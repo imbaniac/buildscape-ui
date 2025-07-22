@@ -1,6 +1,7 @@
 ---
 name: Filecoin
 chainId: 314
+nativeCurrency: FIL
 color: "#0090FF"
 darkColor: "#0068B9"
 logo: filecoin.svg

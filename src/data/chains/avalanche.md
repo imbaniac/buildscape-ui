@@ -1,6 +1,7 @@
 ---
 name: Avalanche C-Chain
 chainId: 43114
+nativeCurrency: AVAX
 color: "#FF394A"
 darkColor: "#BE4446"
 logo: avalanche.svg

@@ -1,6 +1,7 @@
 ---
 name: Lisk
 chainId: 1135
+nativeCurrency: ETH
 color: "#D1D7E1"
 darkColor: "#8292AB"
 logo: lisk.svg

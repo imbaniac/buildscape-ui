@@ -1,6 +1,7 @@
 ---
 name: Polygon PoS
 chainId: 137
+nativeCurrency: POL
 color: "#6C00F6"
 darkColor: "#4700A8"
 logo: polygon.svg

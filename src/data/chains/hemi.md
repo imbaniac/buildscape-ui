@@ -1,6 +1,7 @@
 ---
 name: Hemi
 chainId: 43111
+nativeCurrency: ETH
 color: "#f04d06"
 darkColor: "#B93B04"
 logo: hemi.svg

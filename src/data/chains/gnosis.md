@@ -1,6 +1,7 @@
 ---
 name: Gnosis
 chainId: 100
+nativeCurrency: xDAI
 color: "#3e6957"
 darkColor: "#2F5042"
 logo: gnosis.svg

@@ -1,6 +1,7 @@
 ---
 name: Immutable zkEVM
 chainId: 13371
+nativeCurrency: IMX
 color: "#df9ef8"
 darkColor: "#BA7CD1"
 logo: immutable_zkevm.svg

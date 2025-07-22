@@ -1,6 +1,7 @@
 ---
 name: Sonic
 chainId: 146
+nativeCurrency: S
 color: "#fe9a4d"
 darkColor: "#C07338"
 logo: sonic.svg

@@ -1,6 +1,7 @@
 ---
 name: Cronos
 chainId: 25
+nativeCurrency: CRO
 color: "#002D74"
 darkColor: "#001d4a"
 logo: cronos.svg

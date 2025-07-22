@@ -1,6 +1,7 @@
 ---
 name: Rootstock
 chainId: 30
+nativeCurrency: RBTC
 color: "#FF931E"
 darkColor: "#D78123"
 logo: rootstock.svg

@@ -1,6 +1,7 @@
 ---
 name: BOB
 chainId: 60808
+nativeCurrency: ETH
 color: "#f25d00"
 darkColor: "#C14A00"
 logo: bob.svg

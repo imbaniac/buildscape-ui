@@ -1,6 +1,7 @@
 ---
 name: Abstract
 chainId: 2741
+nativeCurrency: ETH
 color: "#36f197"
 darkColor: "#2ECA7E"
 logo: abstract.svg

@@ -1,6 +1,7 @@
 ---
 name: Linea
 chainId: 59144
+nativeCurrency: ETH
 color: "#61dfff"
 darkColor: "#50BBD6"
 logo: linea.svg

@@ -1,6 +1,7 @@
 ---
 name: Blast
 chainId: 81457
+nativeCurrency: ETH
 color: "#FCFC03"
 darkColor: "#C6C600"
 logo: blast.svg

@@ -1,6 +1,7 @@
 ---
 name: Sophon
 chainId: 50104
+nativeCurrency: SOPH
 color: "#4C9ECC"
 darkColor: "#347396"
 logo: sophon.svg

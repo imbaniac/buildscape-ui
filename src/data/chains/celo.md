@@ -1,6 +1,7 @@
 ---
 name: Celo
 chainId: 42220
+nativeCurrency: CELO
 color: "#FCFF52"
 darkColor: "#BCBF40"
 logo: celo.svg

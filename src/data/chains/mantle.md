@@ -1,6 +1,7 @@
 ---
 name: Mantle
 chainId: 5000
+nativeCurrency: MNT
 color: "#64B3AE"
 darkColor: "#4B8782"
 logo: mantle.svg

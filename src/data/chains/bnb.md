@@ -1,6 +1,7 @@
 ---
 name: BNB Smart Chain
 chainId: 56
+nativeCurrency: BNB
 color: "#f0b90b"
 darkColor: "#C29507"
 logo: bnb.svg

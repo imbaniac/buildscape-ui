@@ -1,6 +1,7 @@
 ---
 name: Optimism
 chainId: 10
+nativeCurrency: ETH
 color: "#FF0420"
 darkColor: "#CC0319"
 logo: optimism.svg
