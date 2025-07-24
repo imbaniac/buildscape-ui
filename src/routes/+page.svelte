@@ -28,6 +28,8 @@
   description="Explore blockchain networks through an interactive map. Compare real-time TPS, gas fees, TVL across Ethereum, Base, Arbitrum, Optimism, and 50+ chains. Find RPCs, wallets, and developer resources."
   keywords="blockchain map, blockchain explorer, chain comparison, ethereum alternatives, layer 2 networks, l2 chains, blockchain metrics, tps comparison, gas fees, tvl ranking, rpc endpoints, evm chains, blockchain networks, crypto infrastructure"
   canonical="https://buildscape.org"
+  ogImage="https://buildscape.org/og/map.png"
+  ogType="website"
   {jsonLd}
 />
 
