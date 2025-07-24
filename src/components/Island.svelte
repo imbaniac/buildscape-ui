@@ -17,6 +17,7 @@
     isSearchMatch?: boolean;
     isCurrentSearchResult?: boolean;
     slug?: string;
+    chainId?: number;
   }
 
   let {
@@ -34,6 +35,7 @@
     isSearchMatch = false,
     isCurrentSearchResult = false,
     slug,
+    chainId,
     ...restProps
   }: Props = $props();
   

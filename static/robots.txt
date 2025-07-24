@@ -1,0 +1,41 @@
+User-agent: *
+Allow: /
+Sitemap: https://buildscape.org/sitemap.xml
+
+# Allow search engines to access all pages
+Allow: /chain/*
+Allow: /chains
+Allow: /map
+Allow: /compare
+
+# Disallow API endpoints and dynamic routes
+Disallow: /api/
+Disallow: /og/
+
+# Common crawlers
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: WhatsApp
+Allow: /
+
+User-agent: Slackbot
+Allow: /

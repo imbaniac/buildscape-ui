@@ -1,4 +1,4 @@
-import { error } from "@sveltejs/kit";
+import { error, redirect } from "@sveltejs/kit";
 import type { PageLoad } from "./$types";
 import YAML from "yaml";
 import type { BookmarkTab, WalletsByCategory } from "$lib/types";
@@ -213,8 +213,25 @@ function mergeEvmTools(chainStatic: any, evmCommonData: any, chainSlug: string):
 
 export const load: PageLoad = async ({ params, url }) => {
   const { slug } = params;
+  
+  // First check if slug is actually a chain ID (numeric)
+  if (/^\d+$/.test(slug)) {
+    const chainIdNumber = parseInt(slug);
+    // Find the chain by ID and redirect to its slug
+    for (const path in chainMdModules) {
+      const raw = chainMdModules[path] as string;
+      const { frontmatter } = parseFrontmatterAndContent(raw);
+      if (frontmatter.chainId === chainIdNumber) {
+        const chainSlug = path.split('/').pop()?.replace('.md', '') || '';
+        throw redirect(301, `/chain/${chainSlug}`);
+      }
+    }
+    throw error(404, `Chain with ID ${slug} not found`);
+  }
+  
+  // Otherwise, treat it as a slug
   const mdPath = `/src/data/chains/${slug}.md`;
-
+  
   if (!chainMdModules[mdPath]) {
     throw error(404, `Chain ${slug} not found`);
   }
@@ -281,6 +298,7 @@ export const load: PageLoad = async ({ params, url }) => {
   // Return critical data immediately, stream non-critical data
   return {
     slug,
+    chainId: chainStatic.chainId,
     chainStatic,
     bookmarks: bookmarksData.tabs as BookmarkTab[],
     initialTab: tab,
