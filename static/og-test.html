@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OG Image Tester - Buildscape</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f3f4f6;
+        }
+        h1 {
+            color: #1e3a8a;
+        }
+        .og-preview {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        .og-preview h2 {
+            margin-top: 0;
+            color: #2c5f7c;
+        }
+        .og-preview img {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+        }
+        .error {
+            color: #ef4444;
+            padding: 10px;
+            background: #fee;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .chain-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .chain-link {
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #2c5f7c;
+            border: 1px solid #e5e7eb;
+            transition: all 0.2s;
+        }
+        .chain-link:hover {
+            background: #f0f9ff;
+            border-color: #2c5f7c;
+        }
+    </style>
+</head>
+<body>
+    <h1>OG Image Tester</h1>
+    
+    <div class="og-preview">
+        <h2>Homepage OG Image</h2>
+        <p>URL: <code>/og</code></p>
+        <img src="/og" alt="Homepage OG Image" onerror="this.parentElement.innerHTML += '<div class=error>Failed to load homepage OG image</div>'">
+    </div>
+
+    <div class="og-preview">
+        <h2>Chain OG Images</h2>
+        <p>Test different chains by clicking below:</p>
+        <div class="chain-list">
+            <a href="#ethereum" class="chain-link" onclick="loadChainOG('ethereum'); return false;">Ethereum</a>
+            <a href="#base" class="chain-link" onclick="loadChainOG('base'); return false;">Base</a>
+            <a href="#arbitrum_one" class="chain-link" onclick="loadChainOG('arbitrum_one'); return false;">Arbitrum One</a>
+            <a href="#optimism" class="chain-link" onclick="loadChainOG('optimism'); return false;">Optimism</a>
+            <a href="#polygon_pos" class="chain-link" onclick="loadChainOG('polygon_pos'); return false;">Polygon PoS</a>
+            <a href="#avalanche" class="chain-link" onclick="loadChainOG('avalanche'); return false;">Avalanche</a>
+            <a href="#bnb" class="chain-link" onclick="loadChainOG('bnb'); return false;">BNB Smart Chain</a>
+            <a href="#zksync" class="chain-link" onclick="loadChainOG('zksync'); return false;">zkSync Era</a>
+        </div>
+        <div id="chain-preview" style="margin-top: 20px;"></div>
+    </div>
+
+    <script>
+        function loadChainOG(chain) {
+            const preview = document.getElementById('chain-preview');
+            preview.innerHTML = `
+                <h3>${chain}</h3>
+                <p>URL: <code>/og/chain/${chain}.png</code></p>
+                <img src="/og/chain/${chain}.png" alt="${chain} OG Image" onerror="this.parentElement.innerHTML += '<div class=error>Failed to load ${chain} OG image</div>'">
+            `;
+        }
+        
+        // Load ethereum by default
+        loadChainOG('ethereum');
+    </script>
+</body>
+</html>

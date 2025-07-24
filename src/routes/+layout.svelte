@@ -2,6 +2,7 @@
 import "../app.css";
 import { onMount, onDestroy } from 'svelte';
 import { connectSSE, disconnectSSE } from '$lib/stores/sse';
+import SEO from '$lib/components/SEO.svelte';
 
 let { children } = $props();
 
@@ -15,6 +16,8 @@ onDestroy(() => {
   disconnectSSE();
 });
 </script>
+
+<SEO />
 
 {@render children()}
 

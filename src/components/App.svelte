@@ -578,7 +578,7 @@
 
     // Don't block clicks even if we're panning/interacting
     // The click handler will only fire if we didn't actually pan
-
+    
     goto("/chain/" + chainName);
   }
 

@@ -9,9 +9,11 @@
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"generate-og": "bun scripts/generate-og-images.ts"
 	},
 	"devDependencies": {
+		"@resvg/resvg-js": "^2.6.2",
 		"@sveltejs/adapter-auto": "^6.0.1",
 		"@sveltejs/kit": "^2.21.1",
 		"@sveltejs/vite-plugin-svelte": "^5.0.3",
@@ -22,6 +24,8 @@
 		"flowbite": "^3.1.2",
 		"flowbite-svelte": "^1.5.0",
 		"flowbite-svelte-icons": "^2.2.0",
+		"satori": "^0.16.0",
+		"sharp": "^0.34.3",
 		"svelte": "^5.33.10",
 		"svelte-check": "^4.0.0",
 		"tailwindcss": "^4.1.8",
