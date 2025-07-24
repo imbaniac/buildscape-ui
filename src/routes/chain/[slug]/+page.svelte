@@ -148,11 +148,11 @@
 
     // L2s emphasize their L2 nature
     if (isL2) {
-      return `${name} L2 - Blockchain Metrics, RPCs & Resources | Buildscape`;
+      return `${name} L2 - Blockchain Metrics, RPCs & Resources`;
     }
 
     // Default format focuses on key services
-    return `${name} - Network Stats, RPCs & Developer Resources | Buildscape`;
+    return `${name} - Network Stats, RPCs & Developer Resources`;
   });
 
   // Rich, intent-driven descriptions with actual chain description when available
@@ -175,7 +175,7 @@
 
       // If description is good length, enhance it with key facts
       if (cleanDesc.length > 50 && cleanDesc.length < 140) {
-        return `${cleanDesc} Chain ID: ${chainId}. Track metrics, access RPCs, and explore ecosystem.`;
+        return `${cleanDesc} Track metrics, access RPCs, and explore ecosystem.`;
       } else if (cleanDesc.length >= 140) {
         // Truncate long descriptions
         return cleanDesc.substring(0, 157) + "...";
