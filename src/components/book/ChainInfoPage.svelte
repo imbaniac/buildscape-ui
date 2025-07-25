@@ -2,7 +2,7 @@
   import NetworkStatus from "./metrics/NetworkStatus.svelte";
   import ActivityMetrics from "./metrics/ActivityMetrics.svelte";
   import Tooltip from "./ui/Tooltip.svelte";
-  import { tooltipTexts } from "../../data/tooltips";
+  import { tooltipTexts } from "$lib/tooltips";
   import { getAccessibleBrandColor } from "$lib/utils/colorUtils";
   import { formatTVL } from "$lib/utils/formatters";
 

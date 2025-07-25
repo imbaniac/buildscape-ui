@@ -2,7 +2,7 @@ import type { RequestHandler } from './$types';
 import YAML from 'yaml';
 
 // Import all chain markdown files
-const chainMdModules = import.meta.glob('/src/data/chains/*.md', {
+const chainMdModules = import.meta.glob('/data/chains/*.md', {
   eager: true,
   query: '?raw',
   import: 'default',
