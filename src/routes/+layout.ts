@@ -1,6 +1,8 @@
-import { browser } from '$app/environment';
-import { overviewStore } from '$lib/stores/overviewStore';
-import type { LayoutLoad } from './$types';
+import { browser } from "$app/environment";
+import { env } from "$env/dynamic/public";
+import { overviewStore } from "$lib/stores/overviewStore";
+import type { LayoutLoad } from "./$types";
+import posthog from "posthog-js";
 
 // Enable SSR for all pages by default
 export const ssr = true;
@@ -11,10 +13,23 @@ export const load: LayoutLoad = async () => {
   // which is a client-side feature
   if (browser) {
     const currentState = overviewStore.getState();
-    
+
     // Only load if we don't have data
     if (!currentState.data && !currentState.isLoading) {
       overviewStore.load();
+    }
+
+    // Only initialize PostHog if API key is provided
+    const posthogApiKey = env.PUBLIC_POSTHOG_API_KEY;
+    if (posthogApiKey) {
+      posthog.init(posthogApiKey, {
+        api_host: "https://us.i.posthog.com",
+        person_profiles: "identified_only",
+        autocapture: true,
+        capture_pageview: true,
+        capture_pageleave: true,
+        persistence: "localStorage", // Allows tracking returning users
+      });
     }
   }
 

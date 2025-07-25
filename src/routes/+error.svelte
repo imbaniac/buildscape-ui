@@ -2,17 +2,15 @@
   <div class="error-content">
     <h1 class="error-code">404</h1>
     <h2 class="error-title">Uncharted Territory</h2>
-    
+
     <p class="error-message">
-      This blockchain island hasn't been<br>
+      This blockchain island hasn't been<br />
       discovered on our map yet
     </p>
-    
-    <a href="/" class="home-button">
-      Navigate Home
-    </a>
+
+    <a href="/" class="home-button"> Navigate Home </a>
   </div>
-  
+
   <div class="waves">
     <div class="wave wave1"></div>
     <div class="wave wave2"></div>
@@ -26,7 +24,7 @@
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background: 
+    background:
       radial-gradient(
         ellipse at center top,
         #87ceeb 0%,
@@ -37,11 +35,13 @@
       linear-gradient(to bottom, #7fc3e6 0%, #5ca9ce 100%);
     background-blend-mode: normal;
     color: #ffffff;
-    font-family: system-ui, -apple-system, sans-serif;
+    font-family:
+      system-ui,
+      -apple-system,
+      sans-serif;
     position: relative;
     overflow: hidden;
   }
-
 
   .error-content {
     text-align: center;
@@ -133,7 +133,6 @@
     );
   }
 
-
   @keyframes wave {
     0% {
       transform: translateX(0) translateZ(0) scaleY(1);
@@ -150,12 +149,12 @@
     .error-code {
       font-size: 6rem;
     }
-    
+
     .error-title {
       font-size: 1.5rem;
       margin: -2.5rem 0 1rem 0;
     }
-    
+
     .island {
       font-size: 4rem;
     }
