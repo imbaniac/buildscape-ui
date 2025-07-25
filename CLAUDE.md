@@ -45,9 +45,10 @@ This is a SvelteKit application that visualizes EVM-compatible blockchain networ
 
 ### Data Architecture
 
-- **Static Data**: Markdown files in `/src/data/chains/*.md` contain chain information with YAML frontmatter
-- **Dynamic Data**: TypeScript files in `/src/data/chains/*.ts` export functions that fetch real-time metrics
-- **Assets**: Chain logos in `/src/lib/assets/chains/` (SVG/PNG format)
+- **Static Data**: Markdown files in `/data/chains/*.md` contain chain information with YAML frontmatter (CC BY-SA 4.0 licensed)
+- **Dynamic Data**: Loaded automatically via `chainId` from frontmatter using the chain data loader
+- **Assets**: Chain logos in `/assets/chains/` (third-party trademarks - see LICENSE_ASSETS)
+- **Positions**: Island positions stored in `/src/lib/positions.json`
 
 ### Key Technical Details
 
@@ -59,10 +60,9 @@ This is a SvelteKit application that visualizes EVM-compatible blockchain networ
 
 ### Adding New Chains
 
-1. Create markdown file in `/src/data/chains/[chainname].md` with required frontmatter
-2. Add chain logo to `/src/lib/assets/chains/[chainname].svg`
-3. Update island positions in `islandConstants.ts`
-4. (Optional) Add dynamic data loader in `/src/data/chains/[chainname].ts`
+1. Create markdown file in `/data/chains/[chainname].md` with required frontmatter (including `chainId`)
+2. Add chain logo to `/assets/chains/[chainname].svg` (ensure you have rights to use the logo)
+3. Dynamic data will be loaded automatically based on the `chainId` in frontmatter
 
 
 # Claude Code Guidelines

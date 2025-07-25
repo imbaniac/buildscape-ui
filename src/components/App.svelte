@@ -61,7 +61,7 @@
   let lastPanPoint = { x: 0, y: 0 };
 
   // Import positions statically
-  import savedPositions from "../data/positions.json";
+  import savedPositions from "$lib/positions.json";
 
   // Edit mode state
   let editMode = $state(false);
@@ -75,13 +75,13 @@
   let dragOffset = { x: 0, y: 0 };
 
   // Update import.meta.glob to use query syntax
-  const chainMdModules = import.meta.glob("../data/chains/*.md", {
+  const chainMdModules = import.meta.glob("/data/chains/*.md", {
     eager: true,
     query: "?raw",
     import: "default",
   });
 
-  const logoAssets = import.meta.glob("../lib/assets/chains/*", {
+  const logoAssets = import.meta.glob("/assets/chains/*", {
     eager: true,
     query: "?url",
     import: "default",

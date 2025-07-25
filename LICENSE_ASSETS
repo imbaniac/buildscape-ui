@@ -1,0 +1,38 @@
+THIRD-PARTY TRADEMARK NOTICE
+
+The logos and brand assets in the /assets directory are trademarks, 
+service marks, or copyrighted works of their respective owners.
+
+These assets are NOT licensed under the Buildscape MIT License or 
+CC BY-SA 4.0 License. They are included in this repository solely 
+for identification and editorial purposes within the Buildscape 
+application.
+
+## Chain Logos (/assets/chains/)
+
+Each blockchain logo is the property of its respective project:
+- Ethereum logo © Ethereum Foundation
+- Bitcoin logo © Bitcoin Foundation
+- And all other chain logos © their respective organizations
+
+## Wallet Logos (/assets/wallets/)
+
+Each wallet logo is the property of its respective company:
+- MetaMask © ConsenSys
+- Trust Wallet © Trust Wallet
+- And all other wallet logos © their respective organizations
+
+## Fair Use Statement
+
+The use of these logos in Buildscape is believed to qualify as fair use 
+for the following reasons:
+1. Non-commercial educational purpose
+2. Logos are used solely for identification
+3. No endorsement is implied
+4. Usage is transformative (part of an interactive map)
+
+## Removal Requests
+
+If you are a rights holder and wish to have your logo updated or removed, 
+please open an issue at: https://github.com/imbaniac/buildscape-ui/issues
+

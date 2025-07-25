@@ -4,43 +4,43 @@ import YAML from "yaml";
 import type { BookmarkTab, WalletsByCategory } from "$lib/types";
 
 // Keep chain modules eager for now (they're small text files)
-const chainMdModules = import.meta.glob("/src/data/chains/*.md", {
+const chainMdModules = import.meta.glob("/data/chains/*.md", {
   eager: true,
   query: "?raw",
   import: "default",
 });
 
-// Lazy load TypeScript modules (only loaded when needed)
-const chainTsModules = import.meta.glob("/src/data/chains/*.ts");
+// Import the chain data loader factory
+import { getDynamicDataFactory } from "$lib/utils/chainDataLoader";
 
 // Keep logos eager (needed immediately for display)
-const logoAssets = import.meta.glob("/src/lib/assets/chains/*", {
+const logoAssets = import.meta.glob("/assets/chains/*", {
   eager: true,
   query: "?url",
   import: "default",
 });
 
 // Lazy load wallet logos (not critical for initial render)
-const walletLogos = import.meta.glob("/src/lib/assets/wallets/*", {
+const walletLogos = import.meta.glob("/assets/wallets/*", {
   query: "?url",
   import: "default",
 });
 
 // Keep bookmarks eager (small file)
-const bookmarksModule = import.meta.glob("/src/data/bookmarks.md", {
+const bookmarksModule = import.meta.glob("/data/bookmarks.md", {
   eager: true,
   query: "?raw",
   import: "default",
 });
 
 // Lazy load wallets (not critical for initial render)
-const walletsModule = import.meta.glob("/src/data/wallets.md", {
+const walletsModule = import.meta.glob("/data/wallets.md", {
   query: "?raw",
   import: "default",
 });
 
 // Keep EVM common eager (small file)
-const evmCommonModule = import.meta.glob("/src/data/evm-common.md", {
+const evmCommonModule = import.meta.glob("/data/evm-common.md", {
   eager: true,
   query: "?raw",
   import: "default",
@@ -236,7 +236,7 @@ export const load: PageLoad = async ({ params, url }) => {
   }
 
   // Otherwise, treat it as a slug
-  const mdPath = `/src/data/chains/${slug}.md`;
+  const mdPath = `/data/chains/${slug}.md`;
 
   if (!chainMdModules[mdPath]) {
     throw error(404, `Chain ${slug} not found`);
@@ -259,7 +259,7 @@ export const load: PageLoad = async ({ params, url }) => {
   };
 
   // Merge with common EVM tools if applicable (still critical)
-  const evmCommonRaw = evmCommonModule["/src/data/evm-common.md"] as string;
+  const evmCommonRaw = evmCommonModule["/data/evm-common.md"] as string;
   if (evmCommonRaw) {
     const { frontmatter: evmCommonData } =
       parseFrontmatterAndContent(evmCommonRaw);
@@ -267,7 +267,7 @@ export const load: PageLoad = async ({ params, url }) => {
   }
 
   // Parse bookmarks structure (critical for tab navigation)
-  const bookmarksRaw = bookmarksModule["/src/data/bookmarks.md"] as string;
+  const bookmarksRaw = bookmarksModule["/data/bookmarks.md"] as string;
   const { frontmatter: bookmarksData } =
     parseFrontmatterAndContent(bookmarksRaw);
 
@@ -277,18 +277,16 @@ export const load: PageLoad = async ({ params, url }) => {
 
   // NON-CRITICAL DATA - Load asynchronously
   const loadNonCriticalData = async () => {
-    // Get dynamic loader if available
-    const tsPath = `/src/data/chains/${slug}.ts`;
+    // Get dynamic loader using chainId
     let dynamicLoader = null;
-    if (chainTsModules[tsPath]) {
-      const mod = await chainTsModules[tsPath]();
-      dynamicLoader = (mod as any).default;
+    if (chainStatic.chainId) {
+      dynamicLoader = getDynamicDataFactory(chainStatic.chainId);
     }
 
     // Parse wallets for EVM chains
     let walletsByCategory: WalletsByCategory = {};
     if (chainStatic.technology?.isEVM) {
-      const walletsModulePath = "/src/data/wallets.md";
+      const walletsModulePath = "/data/wallets.md";
       if (walletsModule[walletsModulePath]) {
         const walletsRawModule = await walletsModule[walletsModulePath]();
         const walletsRaw = walletsRawModule as string;

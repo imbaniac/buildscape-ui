@@ -7,4 +7,10 @@ const env = loadEnv("", process.cwd(), "NGROK_TOKEN");
 
 export default defineConfig({
   plugins: [tailwindcss(), sveltekit(), ngrok(env.NGROK_TOKEN)],
+  server: {
+    fs: {
+      allow: ['..']
+    }
+  },
+  assetsInclude: ['**/*.webp']
 });

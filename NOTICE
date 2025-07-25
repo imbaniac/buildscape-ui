@@ -1,0 +1,14 @@
+Buildscape™ UI
+Copyright 2025 Tymofii Reznichenko
+
+This product includes software developed by Tymofii Reznichenko
+and contributors (https://github.com/imbaniac/buildscape-ui).
+
+Buildscape™ is a trademark of Tymofii Reznichenko.
+
+This project uses multiple licenses:
+- Source code in /src is licensed under the MIT License
+- Chain profile data in /data is licensed under CC BY-SA 4.0
+- Logos in /assets are third-party trademarks (see LICENSE_ASSETS)
+
+See LICENSE, LICENSE_DATA, and LICENSE_ASSETS files for full details.
