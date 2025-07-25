@@ -55,7 +55,9 @@ function resolveLogoUrl(logoFilename: string): string | undefined {
   return undefined;
 }
 
-async function resolveWalletLogo(walletName: string): Promise<string | undefined> {
+async function resolveWalletLogo(
+  walletName: string
+): Promise<string | undefined> {
   // Normalize wallet name for matching
   let normalizedName = walletName.toLowerCase();
 
@@ -91,7 +93,9 @@ function parseFrontmatterAndContent(raw: string): {
   return { frontmatter: {}, content: raw.trim() };
 }
 
-async function parseWallets(walletsContent: string): Promise<WalletsByCategory> {
+async function parseWallets(
+  walletsContent: string
+): Promise<WalletsByCategory> {
   const lines = walletsContent.split("\n");
   const walletsByCategory: WalletsByCategory = {};
   let currentCategory = "";
@@ -123,7 +127,11 @@ async function parseWallets(walletsContent: string): Promise<WalletsByCategory> 
   return walletsByCategory;
 }
 
-function mergeEvmTools(chainStatic: any, evmCommonData: any, chainSlug: string): any {
+function mergeEvmTools(
+  chainStatic: any,
+  evmCommonData: any,
+  chainSlug: string
+): any {
   // If not an EVM chain, return as-is
   if (!chainStatic.technology?.isEVM) {
     return chainStatic;
@@ -140,29 +148,27 @@ function mergeEvmTools(chainStatic: any, evmCommonData: any, chainSlug: string):
   };
 
   // Mark common items as "common" source and filter by chain
-  const markedCommonSdks = commonSdks
-    .filter(filterByChain)
-    .map((sdk: any) => ({
-      ...sdk,
-      source: 'common'
-    }));
-  
+  const markedCommonSdks = commonSdks.filter(filterByChain).map((sdk: any) => ({
+    ...sdk,
+    source: "common",
+  }));
+
   const markedCommonTools = commonTools
     .filter(filterByChain)
     .map((tool: any) => ({
       ...tool,
-      source: 'common'
+      source: "common",
     }));
 
   // Chain-specific items take precedence
   const chainSdks = (chainStatic.sdks || []).map((sdk: any) => ({
     ...sdk,
-    source: sdk.source || 'chain'
+    source: sdk.source || "chain",
   }));
-  
+
   const chainTools = (chainStatic.tools || []).map((tool: any) => ({
     ...tool,
-    source: tool.source || 'chain'
+    source: tool.source || "chain",
   }));
 
   // Create maps for deduplication
@@ -197,23 +203,23 @@ function mergeEvmTools(chainStatic: any, evmCommonData: any, chainSlug: string):
 
   // Sort: official/chain-specific first, then common
   const sortOrder = (a: any, b: any) => {
-    if (a.source === 'official' && b.source !== 'official') return -1;
-    if (a.source !== 'official' && b.source === 'official') return 1;
-    if (a.source === 'chain' && b.source === 'common') return -1;
-    if (a.source === 'common' && b.source === 'chain') return 1;
+    if (a.source === "official" && b.source !== "official") return -1;
+    if (a.source !== "official" && b.source === "official") return 1;
+    if (a.source === "chain" && b.source === "common") return -1;
+    if (a.source === "common" && b.source === "chain") return 1;
     return 0;
   };
 
   return {
     ...chainStatic,
     sdks: mergedSdks.sort(sortOrder),
-    tools: mergedTools.sort(sortOrder)
+    tools: mergedTools.sort(sortOrder),
   };
 }
 
 export const load: PageLoad = async ({ params, url }) => {
   const { slug } = params;
-  
+
   // First check if slug is actually a chain ID (numeric)
   if (/^\d+$/.test(slug)) {
     const chainIdNumber = parseInt(slug);
@@ -222,16 +228,16 @@ export const load: PageLoad = async ({ params, url }) => {
       const raw = chainMdModules[path] as string;
       const { frontmatter } = parseFrontmatterAndContent(raw);
       if (frontmatter.chainId === chainIdNumber) {
-        const chainSlug = path.split('/').pop()?.replace('.md', '') || '';
+        const chainSlug = path.split("/").pop()?.replace(".md", "") || "";
         throw redirect(301, `/chain/${chainSlug}`);
       }
     }
     throw error(404, `Chain with ID ${slug} not found`);
   }
-  
+
   // Otherwise, treat it as a slug
   const mdPath = `/src/data/chains/${slug}.md`;
-  
+
   if (!chainMdModules[mdPath]) {
     throw error(404, `Chain ${slug} not found`);
   }
@@ -255,7 +261,8 @@ export const load: PageLoad = async ({ params, url }) => {
   // Merge with common EVM tools if applicable (still critical)
   const evmCommonRaw = evmCommonModule["/src/data/evm-common.md"] as string;
   if (evmCommonRaw) {
-    const { frontmatter: evmCommonData } = parseFrontmatterAndContent(evmCommonRaw);
+    const { frontmatter: evmCommonData } =
+      parseFrontmatterAndContent(evmCommonRaw);
     chainStatic = mergeEvmTools(chainStatic, evmCommonData, slug);
   }
 
@@ -309,3 +316,6 @@ export const load: PageLoad = async ({ params, url }) => {
     },
   };
 };
+
+export const prerender = "auto";
+export const ssr = true;
