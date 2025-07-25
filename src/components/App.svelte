@@ -7,6 +7,12 @@
   import { goto } from "$app/navigation";
   import { overviewStore, tvlLookupByChainId } from "$lib/stores/overviewStore";
 
+  interface Props {
+    initialSearchQuery?: string;
+  }
+
+  let { initialSearchQuery = "" }: Props = $props();
+
   // Center the viewBox on (0,0) where Ethereum is located
   const initialViewBox = { x: -5000, y: -5000, width: 20000, height: 20000 };
   let baseViewBox = $state(initialViewBox);
@@ -578,7 +584,7 @@
 
     // Don't block clicks even if we're panning/interacting
     // The click handler will only fire if we didn't actually pan
-    
+
     goto("/chain/" + chainName);
   }
 
@@ -603,11 +609,27 @@
   let tvlLookupMap = $derived($tvlLookupByChainId);
 
   // Search state
-  let searchQuery = $state("");
+  let searchQuery = $state(initialSearchQuery);
   let searchResults = $state<string[]>([]);
   let currentResultIndex = $state(0);
   let isSearchActive = $state(false);
   let searchDebounceTimer: ReturnType<typeof setTimeout> | null = null;
+
+  // Update URL when search query changes
+  function updateSearchUrl(query: string) {
+    const url = new URL(window.location.href);
+
+    if (query) {
+      url.searchParams.set("q", query);
+    } else {
+      url.searchParams.delete("q");
+    }
+
+    // Use replaceState to update URL without navigation
+    if (url.toString() !== window.location.href) {
+      window.history.replaceState({}, "", url.toString());
+    }
+  }
 
   // Search implementation
   function performSearch(query: string) {
@@ -618,10 +640,16 @@
     if (query.length < 3) {
       searchResults = [];
       currentResultIndex = 0;
+      // Update URL to remove search param when clearing
+      if (query.length === 0) {
+        updateSearchUrl("");
+      }
       return;
     }
 
     searchDebounceTimer = setTimeout(() => {
+      // Update URL with the search query
+      updateSearchUrl(query);
       const lowerQuery = query.toLowerCase().trim();
       const matches: string[] = [];
 
@@ -660,11 +688,11 @@
 
     // If we're zoomed out too much, zoom in a bit to see the island better
     const targetScale = scale < 1.5 ? 1.5 : scale;
-    
+
     // Calculate the viewBox dimensions at target scale
     const targetViewBoxWidth = baseViewBox.width / targetScale;
     const targetViewBoxHeight = baseViewBox.height / targetScale;
-    
+
     // Calculate pan to center the island
     // We want the island position to be at the center of the viewBox
     const targetPanX = position.x - targetViewBoxWidth / 2 - baseViewBox.x;
@@ -680,11 +708,12 @@
     function animate() {
       const elapsed = Date.now() - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      
+
       // Easing function (ease-in-out)
-      const eased = progress < 0.5 
-        ? 2 * progress * progress 
-        : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+      const eased =
+        progress < 0.5
+          ? 2 * progress * progress
+          : 1 - Math.pow(-2 * progress + 2, 2) / 2;
 
       panX = startPanX + (targetPanX - startPanX) * eased;
       panY = startPanY + (targetPanY - startPanY) * eased;
@@ -700,13 +729,14 @@
     animationFrame = requestAnimationFrame(animate);
   }
 
-  function handleSearchNavigation(direction: 'prev' | 'next') {
+  function handleSearchNavigation(direction: "prev" | "next") {
     if (searchResults.length === 0) return;
 
-    if (direction === 'next') {
+    if (direction === "next") {
       currentResultIndex = (currentResultIndex + 1) % searchResults.length;
     } else {
-      currentResultIndex = (currentResultIndex - 1 + searchResults.length) % searchResults.length;
+      currentResultIndex =
+        (currentResultIndex - 1 + searchResults.length) % searchResults.length;
     }
 
     navigateToChain(searchResults[currentResultIndex]);
@@ -720,17 +750,21 @@
     if (searchDebounceTimer) {
       clearTimeout(searchDebounceTimer);
     }
+    // Clear search from URL
+    updateSearchUrl("");
   }
 
   // Keyboard shortcuts
   function handleGlobalKeyDown(event: KeyboardEvent) {
     // Cmd/Ctrl + F to activate search
-    if ((event.metaKey || event.ctrlKey) && event.key === 'f') {
+    if ((event.metaKey || event.ctrlKey) && event.key === "f") {
       event.preventDefault();
       isSearchActive = true;
       // Force focus to search input
       setTimeout(() => {
-        const searchInput = document.querySelector('.search-bar input') as HTMLInputElement;
+        const searchInput = document.querySelector(
+          ".search-bar input"
+        ) as HTMLInputElement;
         searchInput?.focus();
       }, 50);
     }
@@ -776,6 +810,12 @@
       checkMobileViewport();
       calculateInitialScale();
     };
+
+    // Perform initial search if query provided
+    if (initialSearchQuery) {
+      performSearch(initialSearchQuery);
+      isSearchActive = true;
+    }
 
     window.addEventListener("resize", handleResize);
     window.addEventListener("keydown", handleGlobalKeyDown);
@@ -825,9 +865,16 @@
       <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
         <feDropShadow dx="0" dy="10" stdDeviation="15" flood-opacity="0.3" />
       </filter>
-      
+
       <!-- Ocean texture pattern -->
-      <pattern id="oceanTexture" x="0" y="0" width="200" height="200" patternUnits="userSpaceOnUse">
+      <pattern
+        id="oceanTexture"
+        x="0"
+        y="0"
+        width="200"
+        height="200"
+        patternUnits="userSpaceOnUse"
+      >
         <circle cx="50" cy="50" r="2" fill="#a8d5e8" opacity="0.3" />
         <circle cx="150" cy="50" r="3" fill="#a8d5e8" opacity="0.25" />
         <circle cx="100" cy="100" r="2.5" fill="#a8d5e8" opacity="0.28" />
@@ -835,32 +882,43 @@
         <circle cx="150" cy="150" r="2.8" fill="#a8d5e8" opacity="0.26" />
       </pattern>
     </defs>
-    
+
     <!-- Ocean texture overlay -->
-    <rect 
-      x={viewBox.x} 
-      y={viewBox.y} 
-      width={viewBox.width} 
-      height={viewBox.height} 
-      fill="url(#oceanTexture)" 
+    <rect
+      x={viewBox.x}
+      y={viewBox.y}
+      width={viewBox.width}
+      height={viewBox.height}
+      fill="url(#oceanTexture)"
       opacity="0.3"
     />
 
     {#if !showLoader}
       <!-- Isometric grid -->
       <defs>
-        <pattern id="grid" width="500" height="289" patternUnits="userSpaceOnUse">
-          <path d="M 250 0 L 500 144.5 L 250 289 L 0 144.5 Z" fill="none" stroke="#7fc3e6" stroke-width="1" opacity="0.15" />
+        <pattern
+          id="grid"
+          width="500"
+          height="289"
+          patternUnits="userSpaceOnUse"
+        >
+          <path
+            d="M 250 0 L 500 144.5 L 250 289 L 0 144.5 Z"
+            fill="none"
+            stroke="#7fc3e6"
+            stroke-width="1"
+            opacity="0.15"
+          />
         </pattern>
       </defs>
-      <rect 
-        x={viewBox.x} 
-        y={viewBox.y} 
-        width={viewBox.width} 
-        height={viewBox.height} 
-        fill="url(#grid)" 
+      <rect
+        x={viewBox.x}
+        y={viewBox.y}
+        width={viewBox.width}
+        height={viewBox.height}
+        fill="url(#grid)"
       />
-      
+
       <!-- EVM SEA ocean label -->
       <g transform="translate(0, 2500)">
         <!-- White outline for contrast -->
@@ -912,7 +970,8 @@
           y={islandPositions["ethereum"].y}
           {editMode}
           isSearchMatch={searchResults.includes("ethereum")}
-          isCurrentSearchResult={searchResults[currentResultIndex] === "ethereum"}
+          isCurrentSearchResult={searchResults[currentResultIndex] ===
+            "ethereum"}
         />
       {/if}
 
@@ -951,7 +1010,7 @@
       isActive={isSearchActive}
       onSearch={performSearch}
       onNavigate={handleSearchNavigation}
-      onActivate={() => isSearchActive = true}
+      onActivate={() => (isSearchActive = true)}
       onClear={clearSearch}
     />
   {/if}
@@ -996,8 +1055,13 @@
     width: 100%;
     height: 100vh;
     overflow: hidden;
-    background: 
-      radial-gradient(ellipse at center top, #87ceeb 0%, #6bb6d8 30%, #5ca9ce 60%, #4d9bc3 100%),
+    background: radial-gradient(
+        ellipse at center top,
+        #87ceeb 0%,
+        #6bb6d8 30%,
+        #5ca9ce 60%,
+        #4d9bc3 100%
+      ),
       linear-gradient(to bottom, #7fc3e6 0%, #5ca9ce 100%);
     background-blend-mode: normal;
     cursor: grab;
@@ -1121,5 +1185,4 @@
       transform: translateY(0);
     }
   }
-
 </style>

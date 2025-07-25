@@ -1,6 +1,14 @@
 <script lang="ts">
   import App from "../components/App.svelte";
   import SEO from "$lib/components/SEO.svelte";
+  
+  interface Props {
+    data: {
+      searchQuery: string;
+    };
+  }
+  
+  let { data }: Props = $props();
 
   // Homepage-specific structured data
   const jsonLd = {
@@ -34,7 +42,7 @@
 />
 
 <main class="full-map-bg">
-  <App />
+  <App initialSearchQuery={data.searchQuery} />
 </main>
 
 <style>
