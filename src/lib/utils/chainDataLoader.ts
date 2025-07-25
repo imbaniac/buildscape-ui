@@ -11,6 +11,9 @@ interface ChainMetricsResponse {
   block_size: number;
   utilization: number;
   last_block: number;
+  data_start: string;
+  data_end: string;
+  is_complete: boolean;
 }
 
 interface ChainStatusResponse {
@@ -54,6 +57,12 @@ export function getDynamicDataFactory(chainId: number) {
           numTransactions: data.transactions,
           activeUsers: data.active_addresses,
           contractsDeployed: data.contracts,
+        },
+        dataCompleteness: {
+          isComplete: data.is_complete,
+          dataStart: data.data_start,
+          dataEnd: data.data_end,
+          period: data.period,
         },
       };
     } catch (error) {
