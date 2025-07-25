@@ -23,12 +23,13 @@ export const load: LayoutLoad = async () => {
     const posthogApiKey = env.PUBLIC_POSTHOG_API_KEY;
     if (posthogApiKey) {
       posthog.init(posthogApiKey, {
-        api_host: "https://us.i.posthog.com",
+        api_host: "/bscape-metrics",
+        ui_host: "https://us.posthog.com",
         person_profiles: "identified_only",
         autocapture: true,
         capture_pageview: true,
         capture_pageleave: true,
-        persistence: "localStorage", // Allows tracking returning users
+        persistence: "localStorage",
       });
     }
   }
