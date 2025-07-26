@@ -20,9 +20,11 @@ export const load: LayoutLoad = async () => {
       overviewStore.load();
     }
 
-    // Only initialize PostHog if API key is provided
+    // Only initialize PostHog if API key is provided and not in development
     const posthogApiKey = env.PUBLIC_POSTHOG_API_KEY;
-    if (posthogApiKey && !posthog.__loaded) {
+    const isDevelopment = import.meta.env.DEV;
+    
+    if (posthogApiKey && !posthog.__loaded && !isDevelopment) {
       posthog.init(posthogApiKey, {
         api_host: "/bscape-metrics",
         ui_host: "https://us.posthog.com",
