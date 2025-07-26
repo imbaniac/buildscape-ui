@@ -983,6 +983,7 @@
           name={staticChains["ethereum"]?.name}
           color={staticChains["ethereum"]?.color}
           darkColor={staticChains["ethereum"]?.darkColor}
+          brandColor={staticChains["ethereum"]?.color}
           logo={staticChains["ethereum"]?.logoUrl}
           slug="ethereum"
           scale={(() => {
@@ -992,6 +993,7 @@
           })()}
           x={islandPositions["ethereum"].x}
           y={islandPositions["ethereum"].y}
+          chainId={staticChains["ethereum"]?.chainId}
           {editMode}
           isSearchMatch={searchResults.includes("ethereum")}
           isCurrentSearchResult={searchResults[currentResultIndex] ===
@@ -1005,6 +1007,7 @@
           name={blockchain.name}
           color={blockchain.color}
           darkColor={blockchain.darkColor}
+          brandColor={blockchain.color}
           logo={blockchain.logoUrl}
           slug={chainKey}
           scale={(() => {
@@ -1014,6 +1017,7 @@
           })()}
           x={islandPositions[chainKey].x}
           y={islandPositions[chainKey].y}
+          chainId={blockchain.chainId}
           {editMode}
           isSearchMatch={searchResults.includes(chainKey)}
           isCurrentSearchResult={searchResults[currentResultIndex] === chainKey}
