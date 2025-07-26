@@ -675,8 +675,8 @@
 
       // Track search with no results (only for meaningful queries)
       if (matches.length === 0 && query.length > 3) {
-        analytics.track('search_no_results', {
-          query: query
+        analytics.track("search_no_results", {
+          query: query,
         });
       }
 
@@ -693,9 +693,9 @@
 
     // Track successful search conversion
     if (searchQuery && searchQuery.length >= 3) {
-      analytics.track('search_converted', {
+      analytics.track("search_converted", {
         query: searchQuery,
-        selected_chain: chainKey
+        selected_chain: chainKey,
       });
     }
 
