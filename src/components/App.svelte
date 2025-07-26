@@ -1036,14 +1036,16 @@
     />
   {/if}
 
-  <div class="controls">
-    <button onclick={() => (editMode = !editMode)} class:active={editMode}>
-      {editMode ? "Exit Edit Mode" : "Edit Mode"}
-    </button>
-    {#if editMode}
-      <button onclick={savePositions}>Save Positions</button>
-    {/if}
-  </div>
+  {#if import.meta.env.DEV}
+    <div class="controls">
+      <button onclick={() => (editMode = !editMode)} class:active={editMode}>
+        {editMode ? "Exit Edit Mode" : "Edit Mode"}
+      </button>
+      {#if editMode}
+        <button onclick={savePositions}>Save Positions</button>
+      {/if}
+    </div>
+  {/if}
 </div>
 
 {#if showPositionsModal}
