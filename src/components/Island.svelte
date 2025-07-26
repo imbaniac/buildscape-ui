@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { browser } from '$app/environment';
-  import { preloadData } from '$app/navigation';
-  
+  import { browser } from "$app/environment";
+  import { preloadData } from "$app/navigation";
+
   interface Props {
     name: any;
     color: any;
@@ -31,17 +31,18 @@
     editMode = false,
     onDragStart,
     onDragEnd,
-    class: className = '',
+    class: className = "",
     isSearchMatch = false,
     isCurrentSearchResult = false,
     slug,
     chainId,
     ...restProps
   }: Props = $props();
-  
+
   // Detect if we're on a touch device
-  const isTouchDevice = browser && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
-  
+  const isTouchDevice =
+    browser && ("ontouchstart" in window || navigator.maxTouchPoints > 0);
+
   // Handle touch start for mobile prefetching
   function handleTouchStart() {
     if (slug && !editMode && isTouchDevice) {
@@ -50,20 +51,21 @@
     }
   }
 
-  // Dynamic label sizing based on content - use desktop sizes for all devices
-  const logoSize = 120;
-  const gap = 40;
-  const charWidth = 52;
-  const padding = 200;
-  let textWidth = String(name).length * charWidth;
-  let contentWidth = logoSize + gap + textWidth;
-  let labelWidth = contentWidth + padding; // Dynamic width
-  let left = padding / 2; // Start after left padding
+  // Vertical banner sizing - taller for long names
+  const logoSize = 160;
+  const bannerWidth = 480; // Wider for better text readability
+  const bannerHeight = 600; // Even taller to accommodate multi-line text
+  const textPadding = 40;
+  
+  // Consistent font size for all chains
+  const fontSize = 72;
 </script>
 
 <g
   transform={`translate(${x}, ${y})`}
-  class="island-group {editMode ? 'edit-mode' : ''} {isSearchMatch ? 'search-match' : ''} {isCurrentSearchResult ? 'current-search-result' : ''} {className}"
+  class="island-group {editMode ? 'edit-mode' : ''} {isSearchMatch
+    ? 'search-match'
+    : ''} {isCurrentSearchResult ? 'current-search-result' : ''} {className}"
   pointer-events="all"
   style="cursor: {editMode ? 'move' : 'pointer'}"
   onpointerdown={editMode ? onDragStart : undefined}
@@ -254,76 +256,185 @@
     <!-- Label shadow diamond -->
     <polygon points="0,-40 60,0 0,40 -60,0" fill={darkColor} opacity="0.4" />
 
-    <!-- Label with game-like styling -->
-    <g transform="translate({-labelWidth / 2}, -380)">
+    <!-- Vertical medieval banner -->
+    <g transform="translate({-bannerWidth / 2}, -650)">
       <!-- Fancy label frame -->
 
-      <!-- Outer frame -->
-      <rect
-        x="-8"
-        y="-8"
-        width={labelWidth + 16}
-        height="236"
-        rx="12"
-        fill="#8B6914"
-        opacity="0.9"
-      />
+      <!-- Main label background with gradient -->
+      <defs>
+        <linearGradient
+          id="labelGradient{chainId}"
+          x1="0%"
+          y1="0%"
+          x2="0%"
+          y2="100%"
+        >
+          <stop offset="0%" style="stop-color:#f4e4c1" />
+          <stop offset="100%" style="stop-color:#e8d8b5" />
+        </linearGradient>
+        <filter id="innerShadow{chainId}">
+          <feGaussianBlur in="SourceAlpha" stdDeviation="2" />
+          <feOffset dx="0" dy="2" result="offsetblur" />
+          <feFlood flood-color="#000000" flood-opacity="0.1" />
+          <feComposite in2="offsetblur" operator="in" />
+          <feMerge>
+            <feMergeNode />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
 
-      <!-- Inner border -->
+      <!-- Banner pole -->
       <rect
-        x="-4"
-        y="-4"
-        width={labelWidth + 8}
-        height="228"
+        x="-40"
+        y="-30"
+        width={bannerWidth + 80}
+        height="20"
         rx="10"
-        fill="#2c5f7c"
-        opacity="0.8"
+        fill="#8B6914"
+        stroke="#6B5514"
+        stroke-width="2"
       />
 
-      <!-- Main label background -->
-      <rect
-        x="0"
-        y="0"
-        width={labelWidth}
-        height="220"
-        rx="8"
-        fill="#f4e4c1"
+      <!-- Pole ornaments -->
+      <circle
+        cx="-30"
+        cy="-20"
+        r="16"
+        fill="#D4AF37"
         stroke="#8B6914"
         stroke-width="2"
       />
-      <!-- Logo and name horizontally centered inside label -->
-      <g transform={`translate(${left}, 55)`}>
+      <circle
+        cx={bannerWidth + 30}
+        cy="-20"
+        r="16"
+        fill="#D4AF37"
+        stroke="#8B6914"
+        stroke-width="2"
+      />
+
+      <!-- Chain/rope attachments -->
+      <circle cx="60" cy="-20" r="6" fill="#8B6914" />
+      <circle cx={bannerWidth - 60} cy="-20" r="6" fill="#8B6914" />
+
+      <!-- Main banner body with forked tail -->
+      <path
+        d="M 0 0
+           L {bannerWidth} 0
+           L {bannerWidth} {bannerHeight - 40}
+           L {bannerWidth - 20} {bannerHeight - 20}
+           L {bannerWidth * 0.7} {bannerHeight - 30}
+           L {bannerWidth * 0.5} {bannerHeight}
+           L {bannerWidth * 0.3} {bannerHeight - 30}
+           L 20 {bannerHeight - 20}
+           L 0 {bannerHeight - 40}
+           Z"
+        fill="url(#labelGradient{chainId})"
+        stroke="#8B6914"
+        stroke-width="2"
+        style="filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));"
+      />
+
+      <!-- Hanging chains -->
+      <line x1="60" y1="-20" x2="60" y2="0" stroke="#8B6914" stroke-width="6" />
+      <line
+        x1={bannerWidth - 60}
+        y1="-20"
+        x2={bannerWidth - 60}
+        y2="0"
+        stroke="#8B6914"
+        stroke-width="6"
+      />
+
+      <!-- No glow needed with light background -->
+
+      <!-- Banner decorative border -->
+      <path
+        d="M 30 30
+           L {bannerWidth - 30} 30
+           L {bannerWidth - 30} {bannerHeight - 90}
+           L {bannerWidth - 50} {bannerHeight - 50}
+           L {bannerWidth * 0.7} {bannerHeight - 70}
+           L {bannerWidth * 0.5} {bannerHeight - 30}
+           L {bannerWidth * 0.3} {bannerHeight - 70}
+           L 50 {bannerHeight - 50}
+           L 30 {bannerHeight - 90}
+           Z"
+        fill="none"
+        stroke="#D4AF37"
+        stroke-width="4"
+        opacity="0.5"
+      />
+
+      <!-- Logo centered at top -->
+      <g transform={`translate(${bannerWidth / 2 - logoSize / 2}, 60)`}>
         {#if typeof logo === "string"}
-          <g clip-path="circle({logoSize / 2}px at {logoSize / 2}px {logoSize / 2}px)">
-            <image
-              href={logo}
-              x="0"
-              y="0"
-              width={logoSize}
-              height={logoSize}
-            />
-          </g>
+          <image href={logo} x="0" y="0" width={logoSize} height={logoSize} />
         {:else}
-          <g transform="scale(3)">{@html logo}</g>
+          <g transform="scale(4)">{@html logo}</g>
         {/if}
-        <text
-          x={logoSize + gap}
-          y={logoSize / 2 + 6}
-          font-size="100"
-          fill="#4a5568"
-          text-anchor="start"
-          font-weight="bold"
-          alignment-baseline="middle"
-          style="font-family: 'Lato', 'Inter', 'Helvetica Neue', sans-serif; font-weight: 700; letter-spacing: 0.5px; dominant-baseline: middle;"
+      </g>
+
+      <!-- Name centered below logo -->
+      <foreignObject x="20" y="230" width={bannerWidth - 40} height="200">
+        <div
+          style="
+          text-align: center; 
+          font-family: 'Lato', 'Inter', 'Helvetica Neue', sans-serif; 
+          font-weight: 700; 
+          font-size: {fontSize}px; 
+          color: #4a5568;
+          line-height: 1.1;
+          word-wrap: break-word;
+          hyphens: auto;
+        "
         >
           {name}
-        </text>
-      </g>
+        </div>
+      </foreignObject>
+
+      <!-- Decorative divider line -->
+      <line
+        x1="60"
+        y1="440"
+        x2={bannerWidth - 60}
+        y2="440"
+        stroke="#D4AF37"
+        stroke-width="4"
+        opacity="0.5"
+      />
+
+      <!-- Optional chain ID badge -->
+      {#if chainId}
+        <g transform={`translate(${bannerWidth / 2}, 500)`}>
+          <rect
+            x="-80"
+            y="-30"
+            width="160"
+            height="60"
+            rx="30"
+            fill="#8B6914"
+            opacity="0.3"
+          />
+          <text
+            x="0"
+            y="0"
+            font-size="42"
+            fill="#4a5568"
+            text-anchor="middle"
+            dominant-baseline="middle"
+            font-weight="bold"
+          >
+            #{chainId}
+          </text>
+        </g>
+      {/if}
     </g>
   </g>
   {#if slug && !editMode}
-    <a 
-      href="/chain/{slug}" 
+    <a
+      href="/chain/{slug}"
       style="position: absolute; inset: 0; opacity: 0;"
       data-sveltekit-preload-data={isTouchDevice ? "tap" : "hover"}
       aria-label="View {name} details"
@@ -369,19 +480,21 @@
   }
 
   @keyframes searchPulse {
-    0%, 100% { 
+    0%,
+    100% {
       filter: drop-shadow(0 0 40px rgba(127, 195, 230, 0.9)) brightness(1.15);
     }
-    50% { 
+    50% {
       filter: drop-shadow(0 0 50px rgba(127, 195, 230, 1)) brightness(1.2);
     }
   }
 
   @keyframes currentSearchPulse {
-    0%, 100% { 
+    0%,
+    100% {
       filter: drop-shadow(0 0 60px rgba(168, 213, 232, 1)) brightness(1.25);
     }
-    50% { 
+    50% {
       filter: drop-shadow(0 0 80px rgba(168, 213, 232, 1)) brightness(1.3);
     }
   }
