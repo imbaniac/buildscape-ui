@@ -7,7 +7,7 @@ import YAML from "yaml";
 
 // Configuration
 const OUTPUT_DIR = "./static/og";
-const CHAIN_DATA_DIR = "./src/data/chains";
+const CHAIN_DATA_DIR = "./data/chains";
 const FONT_PATH = "./scripts/Inter-Regular.ttf"; // We'll need to download this
 
 // Ensure output directory exists
@@ -430,14 +430,7 @@ async function generateChainOG(chain: any, metrics: any, font: ArrayBuffer) {
   }
 
   try {
-    const logoPath = join(
-      dirname(CHAIN_DATA_DIR),
-      "..",
-      "lib",
-      "assets",
-      "chains",
-      `${logoSlug}.svg`
-    );
+    const logoPath = join("./assets/chains", `${logoSlug}.svg`);
     const logoContent = await readFile(logoPath, "utf-8");
     // Convert SVG to base64 data URL
     logoData = `data:image/svg+xml;base64,${Buffer.from(logoContent).toString(
@@ -446,14 +439,7 @@ async function generateChainOG(chain: any, metrics: any, font: ArrayBuffer) {
   } catch (e) {
     // Try PNG fallback
     try {
-      const logoPngPath = join(
-        dirname(CHAIN_DATA_DIR),
-        "..",
-        "lib",
-        "assets",
-        "chains",
-        `${logoSlug}.png`
-      );
+      const logoPngPath = join("./assets/chains", `${logoSlug}.png`);
       const logoPngContent = await readFile(logoPngPath);
       logoData = `data:image/png;base64,${logoPngContent.toString("base64")}`;
     } catch (e2) {
