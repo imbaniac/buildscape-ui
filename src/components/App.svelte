@@ -3,6 +3,7 @@
   import Island from "./Island.svelte";
   import BoatLoader from "./BoatLoader.svelte";
   import SearchBar from "./SearchBar.svelte";
+  import Header from "./Header.svelte";
   import YAML from "yaml";
   import { goto } from "$app/navigation";
   import { overviewStore, tvlLookupByChainId } from "$lib/stores/overviewStore";
@@ -873,6 +874,9 @@
   ontouchend={handleTouchEnd}
   ontouchcancel={handleTouchEnd}
 >
+  {#if !showLoader}
+    <Header />
+  {/if}
   <svg
     bind:this={svg}
     viewBox={`${viewBox.x} ${viewBox.y} ${viewBox.width} ${viewBox.height}`}
