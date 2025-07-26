@@ -15,8 +15,12 @@
   import SEO from "$lib/components/SEO.svelte";
   import type { PageData } from "./$types";
   import type { BookmarkTab, BookmarkField } from "$lib/types";
+  import { analytics } from "$lib/analytics";
 
   let { data }: { data: PageData } = $props();
+  
+  // Track view duration
+  let viewStartTime: number;
 
   let activeTab = $state(data.initialTab);
   let activeGroup = $state(data.initialTab);
@@ -108,6 +112,9 @@
   }
 
   onMount(() => {
+    // Track view start time
+    viewStartTime = Date.now();
+    
     // Initialize chain data feed for this specific chain
     if (data.chainStatic?.chainId) {
       initializeChainDataFeed(data.chainStatic.chainId.toString());
@@ -123,6 +130,16 @@
   });
 
   onDestroy(() => {
+    // Track view duration
+    if (viewStartTime && data.chainStatic) {
+      const duration = Math.round((Date.now() - viewStartTime) / 1000);
+      analytics.track('chain_view_duration', {
+        chain_name: data.chainStatic.name || data.chainStatic.slug,
+        chain_id: data.chainStatic.chainId || 0,
+        duration_seconds: duration
+      });
+    }
+    
     // Clean up polling for this specific chain
     if (data.chainStatic?.chainId) {
       cleanupChainDataFeed(data.chainStatic.chainId.toString());

@@ -3,6 +3,7 @@ import { env } from "$env/dynamic/public";
 import { overviewStore } from "$lib/stores/overviewStore";
 import type { LayoutLoad } from "./$types";
 import posthog from "posthog-js";
+import { analytics } from "$lib/analytics";
 
 // Enable SSR for all pages by default
 export const ssr = true;
@@ -21,7 +22,7 @@ export const load: LayoutLoad = async () => {
 
     // Only initialize PostHog if API key is provided
     const posthogApiKey = env.PUBLIC_POSTHOG_API_KEY;
-    if (posthogApiKey) {
+    if (posthogApiKey && !posthog.__loaded) {
       posthog.init(posthogApiKey, {
         api_host: "/bscape-metrics",
         ui_host: "https://us.posthog.com",
@@ -30,6 +31,10 @@ export const load: LayoutLoad = async () => {
         capture_pageview: true,
         capture_pageleave: true,
         persistence: "localStorage",
+        loaded: () => {
+          // Initialize analytics after PostHog loads
+          analytics.init();
+        }
       });
     }
   }
