@@ -1,5 +1,4 @@
 import { browser } from "$app/environment";
-import posthog from "posthog-js";
 
 export type AnalyticsEvent = {
   // Chain engagement - PostHog can't measure time spent on a page in SPAs
@@ -26,17 +25,17 @@ class Analytics {
 
   init() {
     this.enabled =
-      browser && typeof posthog !== "undefined" && posthog.__loaded;
+      browser && typeof window !== "undefined" && window.posthog?.__loaded === true;
   }
 
   track<T extends keyof AnalyticsEvent>(
     event: T,
     properties: AnalyticsEvent[T],
   ): void {
-    if (!this.enabled) return;
+    if (!this.enabled || !window.posthog) return;
 
     try {
-      posthog.capture(event, properties);
+      window.posthog.capture(event, properties);
     } catch (error) {
       console.warn("Analytics tracking error:", error);
     }
@@ -44,10 +43,10 @@ class Analytics {
 
   // Helper for SPA navigation tracking
   trackPageView(url: string, pathname: string): void {
-    if (!this.enabled) return;
+    if (!this.enabled || !window.posthog) return;
 
     try {
-      posthog.capture("$pageview", {
+      window.posthog.capture("$pageview", {
         $current_url: url,
         $pathname: pathname,
       });

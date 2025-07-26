@@ -23,10 +23,10 @@ export const load: LayoutLoad = async () => {
     // Only initialize PostHog if API key is provided and not in development
     const posthogApiKey = env.PUBLIC_POSTHOG_API_KEY;
     const isDevelopment = import.meta.env.DEV;
-    
+
     if (posthogApiKey && !posthog.__loaded && !isDevelopment) {
       posthog.init(posthogApiKey, {
-        api_host: "/bscape-metrics",
+        api_host: window.location.origin + "/ingest",
         ui_host: "https://us.posthog.com",
         person_profiles: "identified_only",
         autocapture: true,
@@ -36,8 +36,13 @@ export const load: LayoutLoad = async () => {
         loaded: () => {
           // Initialize analytics after PostHog loads
           analytics.init();
-        }
+        },
       });
+
+      // Make PostHog available globally for autocapture
+      if (typeof window !== "undefined") {
+        window.posthog = posthog;
+      }
     }
   }
 
