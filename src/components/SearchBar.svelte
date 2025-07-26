@@ -4,8 +4,9 @@
     searchResults: string[];
     currentResultIndex: number;
     isActive: boolean;
+    hasSearched: boolean;
     onSearch: (query: string) => void;
-    onNavigate: (direction: 'prev' | 'next') => void;
+    onNavigate: (direction: "prev" | "next") => void;
     onActivate: () => void;
     onClear: () => void;
   }
@@ -15,10 +16,11 @@
     searchResults,
     currentResultIndex,
     isActive,
+    hasSearched,
     onSearch,
     onNavigate,
     onActivate,
-    onClear
+    onClear,
   }: Props = $props();
 
   let inputElement = $state<HTMLInputElement>();
@@ -28,38 +30,38 @@
     if (searchResults.length > 0 && inputElement) {
       const cursorPosition = inputElement.selectionStart || 0;
       const textLength = inputElement.value.length;
-      
+
       // Only intercept arrow keys if:
       // - ArrowLeft when cursor is at position 0
       // - ArrowRight when cursor is at the end
       // - ArrowUp/Down always navigate search results
-      if (event.key === 'ArrowLeft' && cursorPosition === 0) {
+      if (event.key === "ArrowLeft" && cursorPosition === 0) {
         event.preventDefault();
-        onNavigate('prev');
+        onNavigate("prev");
         return;
-      } else if (event.key === 'ArrowRight' && cursorPosition === textLength) {
+      } else if (event.key === "ArrowRight" && cursorPosition === textLength) {
         event.preventDefault();
-        onNavigate('next');
+        onNavigate("next");
         return;
-      } else if (event.key === 'ArrowUp') {
+      } else if (event.key === "ArrowUp") {
         event.preventDefault();
-        onNavigate('prev');
+        onNavigate("prev");
         return;
-      } else if (event.key === 'ArrowDown') {
+      } else if (event.key === "ArrowDown") {
         event.preventDefault();
-        onNavigate('next');
+        onNavigate("next");
         return;
       }
     }
-    
-    if (event.key === 'Tab' && searchResults.length > 0) {
+
+    if (event.key === "Tab" && searchResults.length > 0) {
       event.preventDefault();
-      onNavigate(event.shiftKey ? 'prev' : 'next');
-    } else if (event.key === 'Escape') {
+      onNavigate(event.shiftKey ? "prev" : "next");
+    } else if (event.key === "Escape") {
       event.preventDefault();
       onClear();
       inputElement?.blur();
-    } else if (event.key === 'Enter') {
+    } else if (event.key === "Enter") {
       event.preventDefault();
       // Don't blur on Enter - keep focus for navigation
     }
@@ -77,7 +79,7 @@
   // Handle clicks outside to deactivate search
   function handleClickOutside(event: MouseEvent) {
     const target = event.target as HTMLElement;
-    if (!target.closest('.search-bar')) {
+    if (!target.closest(".search-bar")) {
       inputElement?.blur();
       // Only clear if there are no results
       if (searchResults.length === 0 && searchQuery) {
@@ -88,8 +90,8 @@
 
   $effect(() => {
     if (isActive) {
-      document.addEventListener('click', handleClickOutside);
-      return () => document.removeEventListener('click', handleClickOutside);
+      document.addEventListener("click", handleClickOutside);
+      return () => document.removeEventListener("click", handleClickOutside);
     }
   });
 </script>
@@ -107,7 +109,7 @@
     <circle cx="11" cy="11" r="8" />
     <path d="m21 21-4.35-4.35" />
   </svg>
-  
+
   <input
     bind:this={inputElement}
     type="search"
@@ -119,14 +121,14 @@
     aria-label="Search for blockchain islands"
     aria-describedby={searchResults.length > 0 ? "search-results" : undefined}
   />
-  
+
   {#if searchResults.length > 0}
     <span id="search-results" class="results-count">
       {currentResultIndex + 1} / {searchResults.length}
     </span>
     <button
       class="nav-button"
-      onclick={() => onNavigate('prev')}
+      onclick={() => onNavigate("prev")}
       aria-label="Previous result (← or ↑)"
       title="Previous (← or ↑)"
       disabled={searchResults.length <= 1}
@@ -135,21 +137,19 @@
     </button>
     <button
       class="nav-button"
-      onclick={() => onNavigate('next')}
+      onclick={() => onNavigate("next")}
       aria-label="Next result (→ or ↓)"
       title="Next (→ or ↓)"
       disabled={searchResults.length <= 1}
     >
       ›
     </button>
+  {:else if hasSearched && searchQuery.length > 3}
+    <span class="no-results"> No results found </span>
   {/if}
-  
+
   {#if searchQuery}
-    <button
-      class="clear-button"
-      onclick={onClear}
-      aria-label="Clear search"
-    >
+    <button class="clear-button" onclick={onClear} aria-label="Clear search">
       ×
     </button>
   {/if}
@@ -170,7 +170,7 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    box-shadow: 
+    box-shadow:
       0 2px 8px rgba(0, 0, 0, 0.1),
       inset 0 1px 0 rgba(255, 255, 255, 0.05);
     transition: all 0.3s ease;
@@ -190,7 +190,7 @@
     opacity: 1;
     background: rgba(44, 95, 124, 0.85);
     border-color: rgba(127, 195, 230, 0.35);
-    box-shadow: 
+    box-shadow:
       0 6px 20px rgba(0, 0, 0, 0.2),
       inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
@@ -213,7 +213,7 @@
     font-size: 16px; /* Prevents Safari zoom on focus */
     color: #ffffff;
     min-width: 0;
-    font-family: 'Lato', 'Inter', sans-serif;
+    font-family: "Lato", "Inter", sans-serif;
     font-weight: 400;
     -webkit-appearance: none; /* Remove iOS default styling */
     appearance: none;
@@ -249,7 +249,17 @@
     background: rgba(255, 255, 255, 0.1);
     padding: 3px 10px;
     border-radius: 12px;
-    font-family: 'Lato', 'Inter', sans-serif;
+    font-family: "Lato", "Inter", sans-serif;
+  }
+
+  .no-results {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    flex-shrink: 0;
+    font-weight: 400;
+    font-style: italic;
+    padding: 3px 10px;
+    font-family: "Lato", "Inter", sans-serif;
   }
 
   .nav-button,
@@ -293,7 +303,6 @@
     color: rgba(255, 255, 255, 0.9);
   }
 
-
   /* Mobile adjustments */
   @media (max-width: 768px) {
     .search-bar {
@@ -305,12 +314,12 @@
       opacity: 0.75;
       background: rgba(44, 95, 124, 0.6);
     }
-    
+
     .search-bar.active {
       opacity: 1;
       background: rgba(44, 95, 124, 0.9);
     }
-    
+
     /* Slightly smaller on mobile to fit better */
     input {
       font-size: 16px; /* Still 16px to prevent zoom */

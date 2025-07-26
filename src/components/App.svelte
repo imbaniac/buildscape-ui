@@ -6,6 +6,7 @@
   import YAML from "yaml";
   import { goto } from "$app/navigation";
   import { overviewStore, tvlLookupByChainId } from "$lib/stores/overviewStore";
+  import { analytics } from "$lib/analytics";
 
   interface Props {
     initialSearchQuery?: string;
@@ -47,7 +48,7 @@
 
   // Show loader until we have TVL data
   let showLoader = $derived(
-    overviewStoreState.isLoading || !overviewStoreState.data
+    overviewStoreState.isLoading || !overviewStoreState.data,
   );
 
   // Interaction state tracking
@@ -74,7 +75,7 @@
   let islandPositions = $state<Record<string, { x: number; y: number }>>(
     savedPositions && Object.keys(savedPositions).length > 0
       ? savedPositions
-      : {}
+      : {},
   );
   let isDraggingIsland = $state(false);
   let draggedIsland = $state<string | null>(null);
@@ -153,7 +154,7 @@
 
       // L2s in a circle with larger radius
       const l2Chains = Object.entries(staticChains).filter(
-        ([_, chain]) => chain.chainId !== 1
+        ([_, chain]) => chain.chainId !== 1,
       );
       l2Chains.forEach(([chainKey], i) => {
         const angle = (2 * Math.PI * i) / l2Chains.length;
@@ -172,7 +173,7 @@
       // Check if we're clicking on an island in edit mode
       if (editMode && event.target) {
         const islandElement = (event.target as Element).closest(
-          ".island-group"
+          ".island-group",
         );
         if (islandElement) {
           // Find which chain this island represents by checking position
@@ -274,7 +275,7 @@
     if (potentialClick && !isPanning) {
       const moveDistance = Math.sqrt(
         Math.pow(event.clientX - startPoint.x, 2) +
-          Math.pow(event.clientY - startPoint.y, 2)
+          Math.pow(event.clientY - startPoint.y, 2),
       );
 
       if (moveDistance > clickThreshold) {
@@ -393,7 +394,7 @@
 
     const newScale = Math.min(
       MAX_SCALE,
-      Math.max(MIN_SCALE, scale * (1 + delta))
+      Math.max(MIN_SCALE, scale * (1 + delta)),
     );
 
     if (newScale !== scale && svgContainer) {
@@ -484,7 +485,7 @@
       const distanceRatio = currentDistance / pinchStartDistance;
       const newScale = Math.min(
         MAX_SCALE,
-        Math.max(MIN_SCALE, pinchStartScale * distanceRatio)
+        Math.max(MIN_SCALE, pinchStartScale * distanceRatio),
       );
 
       if (newScale !== scale && svgContainer) {
@@ -613,6 +614,7 @@
   let searchResults = $state<string[]>([]);
   let currentResultIndex = $state(0);
   let isSearchActive = $state(false);
+  let hasSearched = $state(false);
   let searchDebounceTimer: ReturnType<typeof setTimeout> | null = null;
 
   // Update URL when search query changes
@@ -640,6 +642,7 @@
     if (query.length < 3) {
       searchResults = [];
       currentResultIndex = 0;
+      hasSearched = false;
       // Update URL to remove search param when clearing
       if (query.length === 0) {
         updateSearchUrl("");
@@ -667,6 +670,14 @@
 
       searchResults = matches;
       currentResultIndex = 0;
+      hasSearched = true;
+
+      // Track search with no results (only for meaningful queries)
+      if (matches.length === 0 && query.length > 3) {
+        analytics.track('search_no_results', {
+          query: query
+        });
+      }
 
       // Navigate to first result if any
       if (matches.length > 0) {
@@ -678,6 +689,14 @@
   function navigateToChain(chainKey: string) {
     const position = islandPositions[chainKey];
     if (!position) return;
+
+    // Track successful search conversion
+    if (searchQuery && searchQuery.length >= 3) {
+      analytics.track('search_converted', {
+        query: searchQuery,
+        selected_chain: chainKey
+      });
+    }
 
     // Cancel any ongoing momentum animation
     if (animationFrame) {
@@ -747,6 +766,7 @@
     searchResults = [];
     currentResultIndex = 0;
     isSearchActive = false;
+    hasSearched = false;
     if (searchDebounceTimer) {
       clearTimeout(searchDebounceTimer);
     }
@@ -763,7 +783,7 @@
       // Force focus to search input
       setTimeout(() => {
         const searchInput = document.querySelector(
-          ".search-bar input"
+          ".search-bar input",
         ) as HTMLInputElement;
         searchInput?.focus();
       }, 50);
@@ -1008,6 +1028,7 @@
       {searchResults}
       {currentResultIndex}
       isActive={isSearchActive}
+      {hasSearched}
       onSearch={performSearch}
       onNavigate={handleSearchNavigation}
       onActivate={() => (isSearchActive = true)}
@@ -1055,7 +1076,8 @@
     width: 100%;
     height: 100vh;
     overflow: hidden;
-    background: radial-gradient(
+    background:
+      radial-gradient(
         ellipse at center top,
         #87ceeb 0%,
         #6bb6d8 30%,
