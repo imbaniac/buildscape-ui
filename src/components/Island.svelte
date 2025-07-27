@@ -43,14 +43,14 @@
 
   // More realistic earth tones with grass/terrain variety
   const islandPalettes = [
-    { main: '#7A8B3A', dark: '#5A6B2A', accent: '#8FA043' }, // Grassland
-    { main: '#8B7D4E', dark: '#6B5D3E', accent: '#9B8D5E' }, // Plains
-    { main: '#7B8A5B', dark: '#5B6A4B', accent: '#8B9A6B' }, // Forest edge
-    { main: '#9A8A6A', dark: '#7A6A5A', accent: '#AA9A7A' }, // Savanna
-    { main: '#8A7A5A', dark: '#6A5A4A', accent: '#9A8A6A' }, // Desert edge
-    { main: '#6A8B5A', dark: '#4A6B4A', accent: '#7A9B6A' }, // Lush grass
-    { main: '#8B8A7A', dark: '#6B6A6A', accent: '#9B9A8A' }, // Rocky terrain
-    { main: '#7A8A6A', dark: '#5A6A5A', accent: '#8A9A7A' }, // Mixed terrain
+    { main: "#7A8B3A", dark: "#5A6B2A", accent: "#8FA043" }, // Grassland
+    { main: "#8B7D4E", dark: "#6B5D3E", accent: "#9B8D5E" }, // Plains
+    { main: "#7B8A5B", dark: "#5B6A4B", accent: "#8B9A6B" }, // Forest edge
+    { main: "#9A8A6A", dark: "#7A6A5A", accent: "#AA9A7A" }, // Savanna
+    { main: "#8A7A5A", dark: "#6A5A4A", accent: "#9A8A6A" }, // Desert edge
+    { main: "#6A8B5A", dark: "#4A6B4A", accent: "#7A9B6A" }, // Lush grass
+    { main: "#8B8A7A", dark: "#6B6A6A", accent: "#9B9A8A" }, // Rocky terrain
+    { main: "#7A8A6A", dark: "#5A6A5A", accent: "#8A9A7A" }, // Mixed terrain
   ];
 
   // Use chain name to consistently pick a palette
@@ -72,14 +72,11 @@
     }
   }
 
-  // Vertical banner sizing - more compact
-  const logoSize = 120;
-  const bannerWidth = 380;
-  const bannerHeight = 420; // Slightly taller for banner tail
-  const textPadding = 20;
-  
-  // Consistent font size for all chains
-  const fontSize = 56;
+  // Shield and ribbon sizing
+  const shieldScale = 0.35; // Decreased shield size
+  const logoSize = 400; // Adjusted logo size
+
+  const fontSize = 130; // Increased font size
 </script>
 
 <g
@@ -104,16 +101,46 @@
           <stop offset="50%" stop-color={islandColor} stop-opacity="1" />
           <stop offset="100%" stop-color={islandDarkColor} stop-opacity="1" />
         </radialGradient>
-        
+
         <!-- Texture pattern for terrain -->
-        <pattern id="terrainTexture{chainId}" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+        <pattern
+          id="terrainTexture{chainId}"
+          x="0"
+          y="0"
+          width="40"
+          height="40"
+          patternUnits="userSpaceOnUse"
+        >
           <circle cx="5" cy="5" r="1" fill={islandAccentColor} opacity="0.3" />
-          <circle cx="15" cy="15" r="1.5" fill={islandDarkColor} opacity="0.2" />
-          <circle cx="25" cy="10" r="1" fill={islandAccentColor} opacity="0.25" />
-          <circle cx="35" cy="25" r="1.2" fill={islandDarkColor} opacity="0.3" />
-          <circle cx="10" cy="30" r="1" fill={islandAccentColor} opacity="0.2" />
+          <circle
+            cx="15"
+            cy="15"
+            r="1.5"
+            fill={islandDarkColor}
+            opacity="0.2"
+          />
+          <circle
+            cx="25"
+            cy="10"
+            r="1"
+            fill={islandAccentColor}
+            opacity="0.25"
+          />
+          <circle
+            cx="35"
+            cy="25"
+            r="1.2"
+            fill={islandDarkColor}
+            opacity="0.3"
+          />
+          <circle
+            cx="10"
+            cy="30"
+            r="1"
+            fill={islandAccentColor}
+            opacity="0.2"
+          />
         </pattern>
-        
       </defs>
       <g transform="translate(-931, -560)">
         <!-- Using the provided SVG path for the island -->
@@ -290,7 +317,7 @@
           fill="url(#islandGradient{chainId})"
         />
       </g>
-      
+
       <!-- Overlay terrain texture -->
       <g transform="translate(-931, -560)" opacity="0.4">
         <path
@@ -300,99 +327,91 @@
       </g>
     </g>
 
-    <!-- Label shadow diamond -->
-    <polygon points="0,-40 60,0 0,40 -60,0" fill={islandDarkColor} opacity="0.4" />
-
-    <!-- Vertical medieval banner -->
-    <g transform="translate({-bannerWidth / 2}, -550)">
-      <!-- Main label background with gradient -->
-      <defs>
-        <linearGradient
-          id="labelGradient{chainId}"
-          x1="0%"
-          y1="0%"
-          x2="0%"
-          y2="100%"
-        >
-          <stop offset="0%" style="stop-color:#f4e4c1" />
-          <stop offset="100%" style="stop-color:#e8d8b5" />
-        </linearGradient>
-      </defs>
-
-      <!-- Banner pole -->
-      <rect
-        x="-40"
-        y="-30"
-        width={bannerWidth + 80}
-        height="20"
-        rx="10"
-        fill="#8B6914"
-        stroke="#6B5514"
-        stroke-width="2"
-      />
-
-      <!-- Pole ornaments -->
-      <circle
-        cx="-30"
-        cy="-20"
-        r="16"
-        fill="#D4AF37"
-        stroke="#8B6914"
-        stroke-width="2"
-      />
-      <circle
-        cx={bannerWidth + 30}
-        cy="-20"
-        r="16"
-        fill="#D4AF37"
-        stroke="#8B6914"
-        stroke-width="2"
-      />
-
-      <!-- Main banner body with clean tail -->
+    <g
+      transform="translate(-200, -500) scale({shieldScale})"
+      style="shape-rendering: crispEdges;"
+    >
+      <!-- Shield outer layer (red) -->
       <path
-        d="M 0 0
-           L {bannerWidth} 0
-           L {bannerWidth} {bannerHeight - 60}
-           L {bannerWidth * 0.75} {bannerHeight - 30}
-           L {bannerWidth * 0.5} {bannerHeight}
-           L {bannerWidth * 0.25} {bannerHeight - 30}
-           L 0 {bannerHeight - 60}
-           Z"
-        fill="url(#labelGradient{chainId})"
-        stroke="#8B6914"
-        stroke-width="2"
-        style="filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));"
+        d="M127.967 93.2743C127.967 93.2743 123.541 258.313 127.967 431.573C131.761 604.832 242.42 793.9 311.976 876.104C338.534 907.72 382.798 949.454 427.061 989.924V6.64453C357.505 15.4972 127.967 93.2743 127.967 93.2743Z"
+        fill={brandColor || "#95060D"}
+      />
+      <path
+        d="M1017.03 93.2743C1017.03 93.2743 1021.46 258.313 1017.03 431.573C1012.61 604.832 901.948 793.9 832.391 876.104C805.833 907.72 762.202 949.454 717.307 989.924V6.64453C786.863 15.4972 1017.03 93.2743 1017.03 93.2743Z"
+        fill={brandColor || "#95060D"}
+      />
+      <path
+        d="M426.062 6.63951V989.919C499.149 1055.05 572.499 1114.49 572.499 1114.49C572.499 1114.49 645.218 1055.05 718.304 989.919V6.63951C648.379 -2.21317 496.619 -2.21317 426.062 6.63951Z"
+        fill={brandColor || "#95060D"}
       />
 
-      <!-- Logo centered at top -->
-      <g transform={`translate(${bannerWidth / 2 - logoSize / 2}, 40)`}>
+      <!-- Shield inner layer (cream) -->
+      <path
+        d="M200.639 150.203C200.639 150.203 196.951 291.625 200.639 440.09C203.8 588.555 295.995 750.566 353.946 821.006C376.072 848.098 412.95 883.86 449.828 918.538V75.9707C391.877 83.5565 200.639 150.203 200.639 150.203Z"
+        fill="#F8EDCF"
+      />
+      <path
+        d="M941.36 150.203C941.36 150.203 945.048 291.625 941.36 440.09C937.672 588.555 845.478 750.566 787.527 821.006C765.4 848.098 729.049 883.86 691.645 918.538V75.9707C749.595 83.5565 941.36 150.203 941.36 150.203Z"
+        fill="#F8EDCF"
+      />
+      <path
+        d="M448.83 75.9648V918.532C509.888 974.342 571 1025.28 571 1025.28C571 1025.28 631.585 974.342 692.643 918.532V75.9648C634.219 68.3789 507.781 68.3789 448.83 75.9648Z"
+        fill="#F8EDCF"
+      />
+
+      <!-- Banner ribbon -->
+      <path
+        d="M1381.94 1033.409L1443 1200H798.883V807.045H1443L1381.94 1033.409Z"
+        fill="#BB915F"
+      />
+      <path
+        d="M798.883 1131.816V1200L1180.62 1131.816H798.883Z"
+        fill="#865D2D"
+      />
+      <path
+        d="M-238.939 1033.409L-300 1200H344.117V807.045H-300L-238.939 1033.409Z"
+        fill="#BB915F"
+      />
+      <path
+        d="M344.115 1131.816V1200L-37.619 1131.816H344.115Z"
+        fill="#865D2D"
+      />
+      <path
+        d="M1180.62 1131.819H-37.619V765H1180.62V1131.819Z"
+        fill="#D7B031"
+      />
+
+      <!-- Logo -->
+      <g transform={`translate(${571 - logoSize / 2}, ${300})`}>
         {#if typeof logo === "string"}
           <image href={logo} x="0" y="0" width={logoSize} height={logoSize} />
         {:else}
-          <g transform="scale(4)">{@html logo}</g>
+          <g transform="scale(10)">{@html logo}</g>
         {/if}
       </g>
 
-      <!-- Name centered below logo -->
-      <foreignObject x="20" y="180" width={bannerWidth - 40} height="160">
+      <!-- Chain name on banner -->
+      <foreignObject x="-30" y="820" width="1200" height="270">
         <div
           style="
           text-align: center; 
-          font-family: 'Lato', 'Inter', 'Helvetica Neue', sans-serif; 
-          font-weight: 700; 
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+          font-weight: bold; 
           font-size: {fontSize}px; 
-          color: #4a5568;
-          line-height: 1.1;
-          word-wrap: break-word;
-          hyphens: auto;
+          color: #4B2F00;
+          line-height: 1.2;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 100%;
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+          letter-spacing: 1px;
+          text-transform: uppercase;
         "
         >
           {name}
         </div>
       </foreignObject>
-
-
     </g>
   </g>
   {#if slug && !editMode}

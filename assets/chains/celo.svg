@@ -1,7 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 26.3.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Symbol" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 384 383" style="enable-background:new 0 0 384 383;" xml:space="preserve">
-<path d="M383.5,0H0.5v383h383V249.3h-63.6C298,298.1,248.7,332,192.3,332c-77.8,0-140.8-63.6-140.8-140.8
-	C51.4,114,114.5,51,192.3,51C249.8,51,299.1,86,321,135.9h62.5V0z"/>
+<svg width="302" height="301" viewBox="0 0 302 301" fill="none" xmlns="http://www.w3.org/2000/svg">
+	<g clip-path="url(#clip0_215_9479)">
+		<path
+			d="M301.607 0H0.393555V301H301.607V195.925H251.588C234.365 234.277 195.593 260.919 151.236 260.919C90.0498 260.919 40.5029 210.936 40.5029 150.264C40.4243 89.5927 90.0498 40.0809 151.236 40.0809C196.458 40.0809 235.23 67.5875 252.453 106.804H301.607V0Z"
+			fill="black" />
+	</g>
+	<defs>
+		<clipPath id="clip0_215_9479">
+			<rect width="302" height="301" fill="white" />
+		</clipPath>
+	</defs>
 </svg>
