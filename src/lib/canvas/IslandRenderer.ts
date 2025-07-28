@@ -98,25 +98,76 @@ export default class IslandRenderer {
   private baseShieldSvg: string = "";
 
   private async generateIslandVariants(svgText: string): Promise<void> {
-    // Generate color variants by replacing the fill color
+    // Generate gradient-based color variants
     for (const [key, config] of Object.entries(this.TPS_COLORS)) {
-      const coloredSvg = svgText
-        .replace(/#1C8CC9/g, config.color)
-        .replace(/#12AAFF/g, this.lightenColor(config.color));
+      // Create SVG with radial gradient for each TPS category
+      const gradientId = `islandGradient${key}`;
+      const coloredSvg = this.createIslandSvgWithGradient(svgText, gradientId, config.color);
 
       const img = await this.svgToImage(coloredSvg);
       this.assetCache.islands.set(key, img);
     }
   }
 
-  private lightenColor(color: string): string {
-    // Simple color lightening for the top surface
+  private createIslandSvgWithGradient(svgText: string, gradientId: string, baseColor: string): string {
+    // Parse the color to create gradient stops for a 3D effect
+    const accentColor = this.lightenColor(baseColor, 0.15);
+    const mainColor = baseColor;
+    const darkColor = this.darkenColor(baseColor, 0.3);
+    
+    // Create a radial gradient that makes center lighter and edges darker
+    const gradientDef = `
+      <defs>
+        <radialGradient id="${gradientId}">
+          <stop offset="0%" stop-color="${accentColor}" stop-opacity="1" />
+          <stop offset="50%" stop-color="${mainColor}" stop-opacity="1" />
+          <stop offset="100%" stop-color="${darkColor}" stop-opacity="1" />
+        </radialGradient>
+      </defs>
+    `;
+    
+    // Insert the gradient definition
+    let modifiedSvg = svgText.replace(
+      /<svg([^>]*)>/,
+      `<svg$1>${gradientDef}`
+    );
+    
+    // Apply the gradient to all paths
+    modifiedSvg = modifiedSvg.replace(/fill="#[0-9A-Fa-f]{6}"/g, `fill="url(#${gradientId})"`);
+    
+    return modifiedSvg;
+  }
+
+  private lightenColor(color: string, amount: number = 0.15): string {
+    // Lighten color by the specified amount (0-1)
     const hex = color.substring(1);
     const num = parseInt(hex, 16);
-    const r = Math.min(255, ((num >> 16) & 0xff) + 40);
-    const g = Math.min(255, ((num >> 8) & 0xff) + 40);
-    const b = Math.min(255, (num & 0xff) + 40);
-    return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, "0")}`;
+    const r = (num >> 16) & 0xff;
+    const g = (num >> 8) & 0xff;
+    const b = num & 0xff;
+    
+    // Lighten by moving towards white
+    const newR = Math.min(255, Math.round(r + (255 - r) * amount));
+    const newG = Math.min(255, Math.round(g + (255 - g) * amount));
+    const newB = Math.min(255, Math.round(b + (255 - b) * amount));
+    
+    return `#${((newR << 16) | (newG << 8) | newB).toString(16).padStart(6, "0")}`;
+  }
+
+  private darkenColor(color: string, amount: number = 0.15): string {
+    // Darken color by the specified amount (0-1)
+    const hex = color.substring(1);
+    const num = parseInt(hex, 16);
+    const r = (num >> 16) & 0xff;
+    const g = (num >> 8) & 0xff;
+    const b = num & 0xff;
+    
+    // Darken by moving towards black
+    const newR = Math.max(0, Math.round(r * (1 - amount)));
+    const newG = Math.max(0, Math.round(g * (1 - amount)));
+    const newB = Math.max(0, Math.round(b * (1 - amount)));
+    
+    return `#${((newR << 16) | (newG << 8) | newB).toString(16).padStart(6, "0")}`;
   }
 
   private async svgToImage(svgText: string): Promise<HTMLImageElement> {
