@@ -79,3 +79,20 @@ export const tvlLookupByChainId: Readable<Map<number, number>> = derived(
     return lookup;
   }
 );
+
+// Derived store for TPS lookup map by chain ID
+export const tpsLookupByChainId: Readable<Map<number, number>> = derived(
+  overviewStore,
+  ($overviewStore) => {
+    const lookup = new Map<number, number>();
+
+    if (!$overviewStore.data?.chains) return lookup;
+
+    // Create mappings by chain ID
+    for (const chain of $overviewStore.data.chains) {
+      lookup.set(chain.chain_id, chain.tps);
+    }
+
+    return lookup;
+  }
+);
