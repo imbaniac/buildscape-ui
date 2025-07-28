@@ -74,7 +74,7 @@
 
   // Shield and ribbon sizing
   const shieldScale = 0.35; // Decreased shield size
-  const logoSize = 400; // Adjusted logo size
+  const logoSize = 350; // Standardized logo size for consistent display
 
   const fontSize = 130; // Increased font size
 </script>
@@ -384,9 +384,16 @@
       <!-- Logo -->
       <g transform={`translate(${571 - logoSize / 2}, ${300})`}>
         {#if typeof logo === "string"}
-          <image href={logo} x="0" y="0" width={logoSize} height={logoSize} />
+          <image 
+            href={logo} 
+            x="0" 
+            y="0" 
+            width={logoSize} 
+            height={logoSize}
+            preserveAspectRatio="xMidYMid meet"
+          />
         {:else}
-          <g transform="scale(10)">{@html logo}</g>
+          <g transform={`scale(${logoSize / 100})`}>{@html logo}</g>
         {/if}
       </g>
 
