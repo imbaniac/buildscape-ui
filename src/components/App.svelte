@@ -6,7 +6,7 @@
   import Header from "./Header.svelte";
   import YAML from "yaml";
   import { goto } from "$app/navigation";
-  import { overviewStore, tvlLookupByChainId } from "$lib/stores/overviewStore";
+  import { overviewStore, tvlLookupByChainId, tpsLookupByChainId } from "$lib/stores/overviewStore";
   import { analytics } from "$lib/analytics";
 
   interface Props {
@@ -607,8 +607,9 @@
     return Math.max(MIN_SCALE, Math.min(MAX_SCALE, scale));
   }
 
-  // Get TVL lookup from store
+  // Get TVL and TPS lookup from store
   let tvlLookupMap = $derived($tvlLookupByChainId);
+  let tpsLookupMap = $derived($tpsLookupByChainId);
 
   // Search state
   let searchQuery = $state(initialSearchQuery);
@@ -905,6 +906,48 @@
         <circle cx="50" cy="150" r="2" fill="#a8d5e8" opacity="0.3" />
         <circle cx="150" cy="150" r="2.8" fill="#a8d5e8" opacity="0.26" />
       </pattern>
+      
+      <!-- Shared island gradients based on activity levels -->
+      <!-- Desert/Inactive gradient (0-1 TPS) -->
+      <radialGradient id="islandGradientDesert">
+        <stop offset="0%" stop-color="#9B8365" stop-opacity="1" />
+        <stop offset="50%" stop-color="#8B7355" stop-opacity="1" />
+        <stop offset="100%" stop-color="#6B5345" stop-opacity="1" />
+      </radialGradient>
+      
+      <!-- Semi-arid gradient (1-10 TPS) -->
+      <radialGradient id="islandGradientSemiArid">
+        <stop offset="0%" stop-color="#8A8A5A" stop-opacity="1" />
+        <stop offset="50%" stop-color="#7A7A4A" stop-opacity="1" />
+        <stop offset="100%" stop-color="#5A5A3A" stop-opacity="1" />
+      </radialGradient>
+      
+      <!-- Grassland gradient (10-50 TPS) -->
+      <radialGradient id="islandGradientGrassland">
+        <stop offset="0%" stop-color="#7A9B6A" stop-opacity="1" />
+        <stop offset="50%" stop-color="#6A8B5A" stop-opacity="1" />
+        <stop offset="100%" stop-color="#4A6B4A" stop-opacity="1" />
+      </radialGradient>
+      
+      <!-- Lush gradient (50+ TPS) -->
+      <radialGradient id="islandGradientLush">
+        <stop offset="0%" stop-color="#5A8C69" stop-opacity="1" />
+        <stop offset="50%" stop-color="#4A7C59" stop-opacity="1" />
+        <stop offset="100%" stop-color="#2A5C39" stop-opacity="1" />
+      </radialGradient>
+      
+      <!-- Simplified terrain texture (mobile-friendly) -->
+      <pattern
+        id="terrainTextureSimple"
+        x="0"
+        y="0"
+        width="60"
+        height="60"
+        patternUnits="userSpaceOnUse"
+      >
+        <circle cx="15" cy="15" r="2" fill="#000" opacity="0.1" />
+        <circle cx="45" cy="45" r="2" fill="#000" opacity="0.1" />
+      </pattern>
     </defs>
 
     <!-- Ocean texture overlay -->
@@ -994,6 +1037,10 @@
           x={islandPositions["ethereum"].x}
           y={islandPositions["ethereum"].y}
           chainId={staticChains["ethereum"]?.chainId}
+          tps={(() => {
+            const chainId = staticChains["ethereum"]?.chainId;
+            return chainId ? tpsLookupMap.get(chainId) || 0 : 0;
+          })()}
           {editMode}
           isSearchMatch={searchResults.includes("ethereum")}
           isCurrentSearchResult={searchResults[currentResultIndex] ===
@@ -1018,6 +1065,10 @@
           x={islandPositions[chainKey].x}
           y={islandPositions[chainKey].y}
           chainId={blockchain.chainId}
+          tps={(() => {
+            const chainId = blockchain.chainId;
+            return chainId ? tpsLookupMap.get(chainId) || 0 : 0;
+          })()}
           {editMode}
           isSearchMatch={searchResults.includes(chainKey)}
           isCurrentSearchResult={searchResults[currentResultIndex] === chainKey}
