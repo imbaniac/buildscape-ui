@@ -32,6 +32,13 @@ export default class CanvasRenderer {
   // Islands data
   private islands: Island[] = [];
   
+  // Hover state
+  private hoveredIsland: Island | null = null;
+  
+  // Search highlighting
+  private searchResults: Set<string> = new Set();
+  private currentSearchResult: string | null = null;
+  
   constructor(
     backgroundCanvas: HTMLCanvasElement,
     islandsCanvas: HTMLCanvasElement,
@@ -77,7 +84,7 @@ export default class CanvasRenderer {
     }
     
     if (this.needsInteractionRender) {
-      this.renderInteraction();
+      await this.renderInteraction();
       this.needsInteractionRender = false;
     }
   }
@@ -243,13 +250,73 @@ export default class CanvasRenderer {
   }
   
   // Render the interaction layer
-  private renderInteraction(): void {
+  private async renderInteraction(): Promise<void> {
     const canvas = this.interactionCtx.canvas;
     
     // Clear canvas
     this.interactionCtx.clearRect(0, 0, canvas.width, canvas.height);
     
-    // TODO: In Milestone 3, we'll render hover effects and highlights here
+    // Render search highlights first (underneath hover)
+    await this.renderSearchHighlights();
+    
+    // Render hover effect if an island is hovered
+    if (this.hoveredIsland) {
+      await this.renderHoverEffect(this.hoveredIsland);
+    }
+  }
+  
+  // Render hover effect for an island
+  private async renderHoverEffect(island: Island): Promise<void> {
+    // Render the island with brightness effect on the interaction layer
+    await this.islandRenderer.renderIslandWithBrightness(
+      this.interactionCtx,
+      island,
+      1.15 // Same brightness as SVG hover
+    );
+  }
+  
+  // Set hovered island
+  setHoveredIsland(island: Island | null): void {
+    if (this.hoveredIsland !== island) {
+      this.hoveredIsland = island;
+      this.invalidateInteraction();
+    }
+  }
+  
+  // Render search highlights
+  private async renderSearchHighlights(): Promise<void> {
+    for (const island of this.islands) {
+      const isSearchMatch = this.searchResults.has(island.slug);
+      const isCurrentResult = this.currentSearchResult === island.slug;
+      
+      if (isSearchMatch || isCurrentResult) {
+        await this.renderSearchHighlight(island, isCurrentResult);
+      }
+    }
+  }
+  
+  // Render search highlight for a single island
+  private async renderSearchHighlight(island: Island, isCurrent: boolean): Promise<void> {
+    // Simply render the island with increased brightness - no glow/shadow
+    await this.islandRenderer.renderIslandWithBrightness(
+      this.interactionCtx,
+      island,
+      isCurrent ? 1.25 : 1.15
+    );
+  }
+  
+  // Set search results
+  setSearchResults(results: string[]): void {
+    this.searchResults = new Set(results);
+    this.invalidateInteraction();
+  }
+  
+  // Set current search result
+  setCurrentSearchResult(slug: string | null): void {
+    if (this.currentSearchResult !== slug) {
+      this.currentSearchResult = slug;
+      this.invalidateInteraction();
+    }
   }
   
   // Called when viewport changes (pan/zoom)

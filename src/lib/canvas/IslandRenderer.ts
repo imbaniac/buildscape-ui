@@ -452,6 +452,27 @@ export default class IslandRenderer {
     return !this.isLoading;
   }
   
+  // Render a single island with brightness effect for hover
+  async renderIslandWithBrightness(
+    ctx: CanvasRenderingContext2D,
+    island: Island,
+    brightness: number = 1.15
+  ): Promise<void> {
+    if (this.isLoading) {
+      return;
+    }
+    
+    ctx.save();
+    
+    // Apply brightness filter using globalCompositeOperation
+    ctx.filter = `brightness(${brightness}) saturate(1.2)`;
+    
+    // Render the island
+    await this.renderIsland(ctx, island);
+    
+    ctx.restore();
+  }
+  
   // Wrap text to fit within a maximum width
   private wrapText(ctx: CanvasRenderingContext2D, text: string, maxWidth: number): string[] {
     const words = text.split(' ');
