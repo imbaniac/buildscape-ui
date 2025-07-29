@@ -191,7 +191,10 @@
 
     // Center the viewport on the island with minimal zoom adjustment
     const currentScale = viewportManager.getScale();
-    const targetScale = currentScale < 0.2 ? 0.2 : currentScale; // Only zoom in if we're really far out
+
+    const minTargetScale = 0.2;
+    const targetScale =
+      currentScale < minTargetScale ? minTargetScale : currentScale;
     viewportManager.navigateTo(position.x, position.y, targetScale);
 
     // Update search highlighting

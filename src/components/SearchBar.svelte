@@ -96,7 +96,7 @@
   });
 </script>
 
-<div class="search-bar" class:active={isActive || searchQuery.length > 0}>
+<div class="search-bar" class:active={isActive || searchQuery.length > 0} onpointerdown={(e) => e.stopPropagation()}>
   <svg
     class="search-icon"
     width="16"
@@ -128,7 +128,7 @@
     </span>
     <button
       class="nav-button"
-      onclick={() => onNavigate("prev")}
+      onclick={(e) => { e.stopPropagation(); onNavigate("prev"); }}
       aria-label="Previous result (← or ↑)"
       title="Previous (← or ↑)"
       disabled={searchResults.length <= 1}
@@ -137,7 +137,7 @@
     </button>
     <button
       class="nav-button"
-      onclick={() => onNavigate("next")}
+      onclick={(e) => { e.stopPropagation(); onNavigate("next"); }}
       aria-label="Next result (→ or ↓)"
       title="Next (→ or ↓)"
       disabled={searchResults.length <= 1}
@@ -323,6 +323,18 @@
     /* Slightly smaller on mobile to fit better */
     input {
       font-size: 16px; /* Still 16px to prevent zoom */
+    }
+
+    /* Larger touch targets for mobile */
+    .nav-button,
+    .clear-button {
+      width: 32px;
+      height: 32px;
+      font-size: 20px;
+    }
+
+    .nav-button {
+      margin: 0 2px; /* Add a bit of spacing between buttons */
     }
   }
 
