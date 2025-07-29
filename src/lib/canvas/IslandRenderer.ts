@@ -35,20 +35,14 @@ export default class IslandRenderer {
   private readonly BANNER_HEIGHT = 475;
 
   // Composition offsets (relative to island center)
-  private readonly SHIELD_OFFSET_X = -445;
-  private readonly SHIELD_OFFSET_Y = -200;
-  private readonly BANNER_OFFSET_X = -707;
-  private readonly BANNER_OFFSET_Y = 400;
-  private readonly LOGO_OFFSET_X = 445;
-  private readonly LOGO_OFFSET_Y = 400;
   private readonly LOGO_SIZE = 350;
 
-  // TPS color thresholds
+  // TPS color thresholds - clearer progression from barren to lush
   private readonly TPS_COLORS = {
-    desert: { min: 0, max: 1, color: "#8B7355" },
-    semiArid: { min: 1, max: 10, color: "#7A7A4A" },
-    grassland: { min: 10, max: 50, color: "#6A8B5A" },
-    lush: { min: 50, max: Infinity, color: "#4A7C59" },
+    desert: { min: 0, max: 1, color: "#8B7B6B" }, // Light sandy brown
+    semiArid: { min: 1, max: 10, color: "#7A8B6B" }, // Brown-green transition
+    grassland: { min: 10, max: 50, color: "#6B8B6B" }, // Balanced green
+    lush: { min: 50, max: Infinity, color: "#5A8B5A" }, // Vibrant green
   };
 
   constructor(viewportManager: ViewportManager, onAssetsLoaded?: () => void) {
@@ -102,39 +96,50 @@ export default class IslandRenderer {
     for (const [key, config] of Object.entries(this.TPS_COLORS)) {
       // Create SVG with radial gradient for each TPS category
       const gradientId = `islandGradient${key}`;
-      const coloredSvg = this.createIslandSvgWithGradient(svgText, gradientId, config.color);
+      const coloredSvg = this.createIslandSvgWithGradient(
+        svgText,
+        gradientId,
+        config.color,
+      );
 
       const img = await this.svgToImage(coloredSvg);
       this.assetCache.islands.set(key, img);
     }
   }
 
-  private createIslandSvgWithGradient(svgText: string, gradientId: string, baseColor: string): string {
-    // Parse the color to create gradient stops for a 3D effect
-    const accentColor = this.lightenColor(baseColor, 0.15);
+  private createIslandSvgWithGradient(
+    svgText: string,
+    gradientId: string,
+    baseColor: string,
+  ): string {
+    // Parse the color to create gradient stops for a subtle 3D effect
+    const accentColor = this.lightenColor(baseColor, 0.12); // Slightly brighter highlight
     const mainColor = baseColor;
-    const darkColor = this.darkenColor(baseColor, 0.3);
-    
-    // Create a radial gradient that makes center lighter and edges darker
+    const darkColor = this.darkenColor(baseColor, 0.2); // Less dark edges
+    const edgeColor = this.darkenColor(baseColor, 0.1); // Very subtle edge color
+
+    // Create a radial gradient with subtle center highlight
     const gradientDef = `
       <defs>
-        <radialGradient id="${gradientId}">
+        <radialGradient id="${gradientId}" cx="50%" cy="45%" r="70%">
           <stop offset="0%" stop-color="${accentColor}" stop-opacity="1" />
-          <stop offset="50%" stop-color="${mainColor}" stop-opacity="1" />
+          <stop offset="40%" stop-color="${mainColor}" stop-opacity="1" />
           <stop offset="100%" stop-color="${darkColor}" stop-opacity="1" />
         </radialGradient>
       </defs>
     `;
-    
+
     // Insert the gradient definition
-    let modifiedSvg = svgText.replace(
-      /<svg([^>]*)>/,
-      `<svg$1>${gradientDef}`
-    );
-    
-    // Apply the gradient to all paths
-    modifiedSvg = modifiedSvg.replace(/fill="#[0-9A-Fa-f]{6}"/g, `fill="url(#${gradientId})"`);
-    
+    let modifiedSvg = svgText.replace(/<svg([^>]*)>/, `<svg$1>${gradientDef}`);
+
+    // Replace the bright border colors with very subtle versions
+    // Add opacity to make edges blend better
+    modifiedSvg = modifiedSvg.replace(
+      /fill="#1C8CC9"/g,
+      `fill="${edgeColor}" fill-opacity="0.6"`,
+    ); // Semi-transparent edges
+    modifiedSvg = modifiedSvg.replace(/#12AAFF/g, `url(#${gradientId})`); // Main island fill
+
     return modifiedSvg;
   }
 
@@ -145,12 +150,12 @@ export default class IslandRenderer {
     const r = (num >> 16) & 0xff;
     const g = (num >> 8) & 0xff;
     const b = num & 0xff;
-    
+
     // Lighten by moving towards white
     const newR = Math.min(255, Math.round(r + (255 - r) * amount));
     const newG = Math.min(255, Math.round(g + (255 - g) * amount));
     const newB = Math.min(255, Math.round(b + (255 - b) * amount));
-    
+
     return `#${((newR << 16) | (newG << 8) | newB).toString(16).padStart(6, "0")}`;
   }
 
@@ -161,12 +166,12 @@ export default class IslandRenderer {
     const r = (num >> 16) & 0xff;
     const g = (num >> 8) & 0xff;
     const b = num & 0xff;
-    
+
     // Darken by moving towards black
     const newR = Math.max(0, Math.round(r * (1 - amount)));
     const newG = Math.max(0, Math.round(g * (1 - amount)));
     const newB = Math.max(0, Math.round(b * (1 - amount)));
-    
+
     return `#${((newR << 16) | (newG << 8) | newB).toString(16).padStart(6, "0")}`;
   }
 
@@ -339,7 +344,13 @@ export default class IslandRenderer {
       const shieldX = -shieldWidth / 2;
       const shieldY = -500; // Position well above island
 
-      ctx.drawImage(shield, shieldX | 0, shieldY | 0, shieldWidth | 0, shieldHeight | 0);
+      ctx.drawImage(
+        shield,
+        shieldX | 0,
+        shieldY | 0,
+        shieldWidth | 0,
+        shieldHeight | 0,
+      );
 
       ctx.restore();
     }
@@ -392,7 +403,7 @@ export default class IslandRenderer {
       // Center logo on shield (horizontally and vertically)
       const shieldY = -500;
       const logoX = -logoSize / 2;
-      const logoY = shieldY + (shieldHeight * 0.4) - logoSize / 2; // Center in upper portion of shield
+      const logoY = shieldY + shieldHeight * 0.4 - logoSize / 2; // Center in upper portion of shield
 
       ctx.drawImage(logo, logoX | 0, logoY | 0, logoSize | 0, logoSize | 0);
 
@@ -415,7 +426,7 @@ export default class IslandRenderer {
       const bannerY = shieldY + shieldHeight - bannerHeight * 0.7;
 
       // Text settings - scale font size appropriately
-      const fontSize = 110 * shieldScale; // Slightly smaller to better fit multi-line text
+      const fontSize = 120 * shieldScale; // Slightly smaller to better fit multi-line text
       ctx.font = `bold ${fontSize}px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif`;
       ctx.fillStyle = "#4B2F00";
       ctx.textAlign = "center";
@@ -423,18 +434,19 @@ export default class IslandRenderer {
 
       // Position text in center of banner
       const textX = 0;
-      
+
       // Get wrapped text lines
-      const maxWidth = bannerWidth * 0.8; // 80% of banner width for padding
+      const maxWidth = bannerWidth * 0.7; // 80% of banner width for padding
       const lines = this.wrapText(ctx, island.name.toUpperCase(), maxWidth);
-      
+
       // Calculate line height
       const lineHeight = fontSize * 1.2;
-      
+
       // Calculate starting Y position to center all lines
       const totalTextHeight = lines.length * lineHeight;
-      const startY = bannerY + (bannerHeight - totalTextHeight) / 2 + lineHeight / 2;
-      
+      const startY =
+        bannerY + (bannerHeight - totalTextHeight) / 2 + lineHeight / 2 - 10; // Move up by 5 pixels
+
       // Draw each line
       lines.forEach((line, index) => {
         const y = startY + index * lineHeight;
@@ -451,39 +463,43 @@ export default class IslandRenderer {
   isReady(): boolean {
     return !this.isLoading;
   }
-  
+
   // Render a single island with brightness effect for hover
   async renderIslandWithBrightness(
     ctx: CanvasRenderingContext2D,
     island: Island,
-    brightness: number = 1.15
+    brightness: number = 1.15,
   ): Promise<void> {
     if (this.isLoading) {
       return;
     }
-    
+
     ctx.save();
-    
+
     // Apply brightness filter using globalCompositeOperation
     ctx.filter = `brightness(${brightness}) saturate(1.2)`;
-    
+
     // Render the island
     await this.renderIsland(ctx, island);
-    
+
     ctx.restore();
   }
-  
+
   // Wrap text to fit within a maximum width
-  private wrapText(ctx: CanvasRenderingContext2D, text: string, maxWidth: number): string[] {
-    const words = text.split(' ');
+  private wrapText(
+    ctx: CanvasRenderingContext2D,
+    text: string,
+    maxWidth: number,
+  ): string[] {
+    const words = text.split(" ");
     const lines: string[] = [];
-    let currentLine = '';
-    
+    let currentLine = "";
+
     for (let i = 0; i < words.length; i++) {
       const word = words[i];
       const testLine = currentLine ? `${currentLine} ${word}` : word;
       const metrics = ctx.measureText(testLine);
-      
+
       if (metrics.width > maxWidth && currentLine) {
         // Current line is too long, push it and start a new line
         lines.push(currentLine);
@@ -493,23 +509,23 @@ export default class IslandRenderer {
         currentLine = testLine;
       }
     }
-    
+
     // Push the last line
     if (currentLine) {
       lines.push(currentLine);
     }
-    
+
     // If we still have only one line that's too long, try to break it by characters
     if (lines.length === 1 && ctx.measureText(lines[0]).width > maxWidth) {
       const singleLine = lines[0];
       lines.length = 0; // Clear array
-      currentLine = '';
-      
+      currentLine = "";
+
       for (let i = 0; i < singleLine.length; i++) {
         const char = singleLine[i];
         const testLine = currentLine + char;
         const metrics = ctx.measureText(testLine);
-        
+
         if (metrics.width > maxWidth && currentLine) {
           lines.push(currentLine);
           currentLine = char;
@@ -517,42 +533,45 @@ export default class IslandRenderer {
           currentLine = testLine;
         }
       }
-      
+
       if (currentLine) {
         lines.push(currentLine);
       }
     }
-    
+
     // Limit to 2 lines maximum to fit on banner
     if (lines.length > 2) {
       // Combine all lines and truncate with ellipsis
-      const combinedText = lines.join(' ');
+      const combinedText = lines.join(" ");
       lines.length = 0;
-      
+
       // Try to fit in 2 lines with ellipsis
       const halfLength = Math.floor(combinedText.length / 2);
       let line1 = combinedText.substring(0, halfLength);
       let line2 = combinedText.substring(halfLength);
-      
+
       // Adjust to not break words
-      const lastSpaceInLine1 = line1.lastIndexOf(' ');
+      const lastSpaceInLine1 = line1.lastIndexOf(" ");
       if (lastSpaceInLine1 > 0 && halfLength - lastSpaceInLine1 < 10) {
         line2 = combinedText.substring(lastSpaceInLine1 + 1);
         line1 = combinedText.substring(0, lastSpaceInLine1);
       }
-      
+
       // Add ellipsis if needed
       if (ctx.measureText(line2).width > maxWidth) {
-        while (line2.length > 3 && ctx.measureText(line2 + '...').width > maxWidth) {
+        while (
+          line2.length > 3 &&
+          ctx.measureText(line2 + "...").width > maxWidth
+        ) {
           line2 = line2.substring(0, line2.length - 1);
         }
-        line2 = line2 + '...';
+        line2 = line2 + "...";
       }
-      
+
       lines.push(line1);
       lines.push(line2);
     }
-    
+
     return lines;
   }
 }
