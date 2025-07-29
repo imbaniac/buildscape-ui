@@ -6,16 +6,12 @@ export default class ViewportManager {
   // Viewport state (in world/SVG coordinates)
   private centerX: number = 0;
   private centerY: number = 0;
-  private scale: number = 0.1; // Default zoom level - much farther away to see more islands
+  private scale: number = 0.12;
 
   // Zoom constraints
-  private readonly MIN_SCALE = 0.1;
-  private readonly MAX_SCALE = 5;
+  private readonly MIN_SCALE = 0.02;
+  private readonly MAX_SCALE = 0.5;
   private readonly ZOOM_SPEED = 0.001;
-
-  // SVG coordinate system bounds (matching original implementation)
-  private readonly WORLD_WIDTH = 20000;
-  private readonly WORLD_HEIGHT = 20000;
 
   constructor() {
     // Initialize centered on (0,0) where Ethereum is located
