@@ -303,8 +303,8 @@ export default class IslandRenderer {
 
     ctx.save();
 
-    // Translate to island position
-    ctx.translate(screenPos.x, screenPos.y);
+    // Translate to island position (use integers for better performance)
+    ctx.translate(screenPos.x | 0, screenPos.y | 0);
     ctx.scale(screenScale, screenScale);
 
     // 1. Draw island base
@@ -313,10 +313,10 @@ export default class IslandRenderer {
     if (islandImage) {
       ctx.drawImage(
         islandImage,
-        -this.ISLAND_WIDTH / 2,
-        -this.ISLAND_HEIGHT / 2,
-        this.ISLAND_WIDTH,
-        this.ISLAND_HEIGHT,
+        (-this.ISLAND_WIDTH / 2) | 0,
+        (-this.ISLAND_HEIGHT / 2) | 0,
+        this.ISLAND_WIDTH | 0,
+        this.ISLAND_HEIGHT | 0,
       );
     }
 
@@ -339,7 +339,7 @@ export default class IslandRenderer {
       const shieldX = -shieldWidth / 2;
       const shieldY = -500; // Position well above island
 
-      ctx.drawImage(shield, shieldX, shieldY, shieldWidth, shieldHeight);
+      ctx.drawImage(shield, shieldX | 0, shieldY | 0, shieldWidth | 0, shieldHeight | 0);
 
       ctx.restore();
     }
@@ -364,10 +364,10 @@ export default class IslandRenderer {
 
       ctx.drawImage(
         this.assetCache.banner,
-        bannerX,
-        bannerY,
-        bannerWidth,
-        bannerHeight,
+        bannerX | 0,
+        bannerY | 0,
+        bannerWidth | 0,
+        bannerHeight | 0,
       );
 
       ctx.restore();
@@ -394,7 +394,7 @@ export default class IslandRenderer {
       const logoX = -logoSize / 2;
       const logoY = shieldY + (shieldHeight * 0.4) - logoSize / 2; // Center in upper portion of shield
 
-      ctx.drawImage(logo, logoX, logoY, logoSize, logoSize);
+      ctx.drawImage(logo, logoX | 0, logoY | 0, logoSize | 0, logoSize | 0);
 
       ctx.restore();
     }
