@@ -48,6 +48,14 @@ export default class InteractionManager {
   private readonly ISLAND_WIDTH = 1300;
   private readonly ISLAND_HEIGHT = 1000;
 
+  // Edit mode
+  private editMode: boolean = false;
+  private isDraggingIsland: boolean = false;
+  private draggedIsland: Island | null = null;
+  private dragOffset = { x: 0, y: 0 };
+  private onIslandMove?: (slug: string, x: number, y: number) => void;
+  private onDraggingChange?: (isDragging: boolean) => void;
+
   constructor(
     container: HTMLElement,
     viewportManager: ViewportManager,
@@ -110,6 +118,30 @@ export default class InteractionManager {
   private handlePointerDown(event: PointerEvent): void {
     if (event.button !== 0) return; // Only handle left mouse button
 
+    // Check if we're clicking on an island in edit mode
+    if (this.editMode) {
+      const worldPos = this.viewportManager.screenToWorld(
+        event.clientX,
+        event.clientY,
+      );
+      const island = this.getIslandAtPosition(worldPos.x, worldPos.y);
+      
+      if (island) {
+        // Start dragging island
+        this.isDraggingIsland = true;
+        this.draggedIsland = island;
+        this.dragOffset = {
+          x: worldPos.x - island.x,
+          y: worldPos.y - island.y,
+        };
+        this.onDraggingChange?.(true);
+        this.container.style.cursor = "move";
+        this.container.setPointerCapture(event.pointerId);
+        event.preventDefault();
+        return;
+      }
+    }
+
     // Don't start panning immediately - wait for movement (click detection)
     this.potentialClick = true;
     this.panStartPoint = {
@@ -125,6 +157,29 @@ export default class InteractionManager {
   }
 
   private handlePointerMove(event: PointerEvent): void {
+    // Handle island dragging
+    if (this.isDraggingIsland && this.draggedIsland) {
+      const worldPos = this.viewportManager.screenToWorld(
+        event.clientX,
+        event.clientY,
+      );
+
+      // Calculate new position
+      const newX = worldPos.x - this.dragOffset.x;
+      const newY = worldPos.y - this.dragOffset.y;
+
+      // Update island position
+      this.draggedIsland.x = newX;
+      this.draggedIsland.y = newY;
+
+      // Notify about position change
+      this.onIslandMove?.(this.draggedIsland.slug, newX, newY);
+
+      // Notify renderer to update
+      this.renderer.onViewportChange();
+      return;
+    }
+
     // Check if we should start panning
     if (this.potentialClick && !this.isPanning) {
       const moveDistance = Math.sqrt(
@@ -156,7 +211,12 @@ export default class InteractionManager {
       if (island !== this.hoveredIsland) {
         this.hoveredIsland = island;
         this.onHoverChange?.(island);
-        this.container.style.cursor = island ? "pointer" : "grab";
+        // In edit mode, show move cursor when hovering over islands
+        if (this.editMode && island) {
+          this.container.style.cursor = "move";
+        } else {
+          this.container.style.cursor = island ? "pointer" : "grab";
+        }
       }
       return;
     }
@@ -182,6 +242,16 @@ export default class InteractionManager {
   }
 
   private handlePointerUp(event: PointerEvent): void {
+    // Handle island dragging end
+    if (this.isDraggingIsland) {
+      this.isDraggingIsland = false;
+      this.draggedIsland = null;
+      this.onDraggingChange?.(false);
+      this.container.style.cursor = "grab";
+      this.container.releasePointerCapture(event.pointerId);
+      return;
+    }
+
     if (this.potentialClick && !this.isPanning) {
       // This was a click, not a drag
       const worldPos = this.viewportManager.screenToWorld(
@@ -233,8 +303,8 @@ export default class InteractionManager {
 
   // Touch event handlers for pinch zoom
   private handleTouchStart(event: TouchEvent): void {
-    // Check for pinch gesture (two fingers)
-    if (event.touches.length === 2) {
+    // Check for pinch gesture (two fingers) - but not in edit mode
+    if (event.touches.length === 2 && !this.editMode) {
       this.isPinching = true;
       this.pinchStartDistance = this.getTouchDistance(event.touches);
       this.pinchStartScale = this.viewportManager.getScale();
@@ -326,6 +396,28 @@ export default class InteractionManager {
   setIslands(islands: Island[]): void {
     // Sort islands by Y position for proper layering (back to front)
     this.islands = [...islands].sort((a, b) => a.y - b.y);
+  }
+
+  // Set edit mode
+  setEditMode(enabled: boolean): void {
+    this.editMode = enabled;
+    // Update cursor
+    if (!enabled) {
+      this.container.style.cursor = "grab";
+      // Reset drag state
+      this.isDraggingIsland = false;
+      this.draggedIsland = null;
+    }
+  }
+
+  // Set island move callback
+  setOnIslandMove(callback: (slug: string, x: number, y: number) => void): void {
+    this.onIslandMove = callback;
+  }
+
+  // Set dragging change callback
+  setOnDraggingChange(callback: (isDragging: boolean) => void): void {
+    this.onDraggingChange = callback;
   }
 
   // Cleanup

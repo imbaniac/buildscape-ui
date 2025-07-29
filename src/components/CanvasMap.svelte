@@ -41,6 +41,18 @@
   // Interaction state
   let isPanning = $state(false);
 
+  // Edit mode state
+  let editMode = $state(false);
+  let islandPositions = $state<Record<string, { x: number; y: number }>>(
+    savedPositions && Object.keys(savedPositions).length > 0
+      ? savedPositions
+      : {},
+  );
+  let isDraggingIsland = $state(false);
+  let draggedIsland = $state<string | null>(null);
+  let showPositionsModal = $state(false);
+  let positionsJson = $state("");
+
   // Search state
   let searchQuery = $state(initialSearchQuery || "");
   let searchResults = $state<string[]>([]);
@@ -216,6 +228,48 @@
     renderer?.setCurrentSearchResult(null);
   }
 
+  function savePositions() {
+    positionsJson = JSON.stringify(islandPositions, null, 2);
+    showPositionsModal = true;
+  }
+
+  function copyPositions() {
+    navigator.clipboard
+      .writeText(positionsJson)
+      .then(() => {
+        alert("Positions copied to clipboard!");
+      })
+      .catch(() => {
+        alert("Failed to copy to clipboard. Please copy manually.");
+      });
+  }
+
+  // Initialize island positions with saved positions or calculated positions
+  $effect(() => {
+    // Only set default positions if we don't have any loaded positions
+    if (Object.keys(islandPositions).length === 0) {
+      // Use default circular positions
+      const positions: Record<string, { x: number; y: number }> = {};
+
+      // Ethereum at center
+      positions["ethereum"] = { x: 0, y: 0 };
+
+      // L2s in a circle with larger radius
+      const l2Chains = Object.entries(staticChains).filter(
+        ([_, chain]) => chain.chainId !== 1,
+      );
+      l2Chains.forEach(([chainKey], i) => {
+        const angle = (2 * Math.PI * i) / l2Chains.length;
+        positions[chainKey] = {
+          x: 5000 * Math.cos(angle),
+          y: 5000 * Math.sin(angle),
+        };
+      });
+
+      islandPositions = positions;
+    }
+  });
+
   // Build islands array from data
   $effect(() => {
     // Guard: Only run when ALL dependencies are ready
@@ -227,7 +281,7 @@
 
     // Process all chains
     for (const [chainKey, chain] of Object.entries(staticChains)) {
-      const position = (savedPositions as any)[chainKey];
+      const position = islandPositions[chainKey];
       if (!position || !chain.chainId) continue;
 
       const tvl = tvlLookupMap.get(chain.chainId) || 0;
@@ -264,6 +318,13 @@
     }
   });
 
+  // Update edit mode in interaction manager
+  $effect(() => {
+    if (interactionManager) {
+      interactionManager.setEditMode(editMode);
+    }
+  });
+
   onMount(() => {
     if (
       !backgroundCanvas ||
@@ -292,13 +353,28 @@
       },
       (island) => {
         // Handle island click - navigate to chain page
-        goto(`/chain/${island.slug}`);
+        if (!editMode) {
+          goto(`/chain/${island.slug}`);
+        }
       },
       (island) => {
         // Handle hover change
         renderer?.setHoveredIsland(island);
       },
     );
+
+    // Set up island position update callback
+    interactionManager.setOnIslandMove((slug, x, y) => {
+      // Update position in our state
+      islandPositions[slug] = { x, y };
+      // Force islands rebuild
+      islandPositions = { ...islandPositions };
+    });
+
+    // Set up dragging state callback
+    interactionManager.setOnDraggingChange((dragging) => {
+      isDraggingIsland = dragging;
+    });
 
     // Set up canvas size
     const resizeCanvas = () => {
@@ -389,7 +465,9 @@
 
 <div
   bind:this={canvasContainer}
-  class="canvas-container {isPanning ? 'panning' : ''}"
+  class="canvas-container {isPanning ? 'panning' : ''} {isDraggingIsland
+    ? 'dragging-island'
+    : ''}"
 >
   <!-- Background layer - Ocean, grid (rarely updates) -->
   <canvas bind:this={backgroundCanvas} class="canvas-layer background-layer"
@@ -422,7 +500,34 @@
   {/if}
 
   <FPSMeter />
+
+  {#if import.meta.env.DEV}
+    <div class="controls">
+      <button onclick={() => (editMode = !editMode)} class:active={editMode}>
+        {editMode ? "Exit Edit Mode" : "Edit Mode"}
+      </button>
+      {#if editMode}
+        <button onclick={savePositions}>Save Positions</button>
+      {/if}
+    </div>
+  {/if}
 </div>
+
+{#if showPositionsModal}
+  <div
+    class="positions-modal-backdrop"
+    onclick={() => (showPositionsModal = false)}
+  >
+    <div class="positions-modal" onclick={(e) => e.stopPropagation()}>
+      <h2>Island Positions</h2>
+      <textarea readonly rows="20" cols="50">{positionsJson}</textarea>
+      <div class="modal-buttons">
+        <button onclick={copyPositions}>Copy to Clipboard</button>
+        <button onclick={() => (showPositionsModal = false)}>Close</button>
+      </div>
+    </div>
+  </div>
+{/if}
 
 <style>
   .canvas-container {
@@ -444,6 +549,10 @@
     cursor: grabbing;
   }
 
+  .canvas-container.dragging-island {
+    cursor: move;
+  }
+
   .canvas-layer {
     position: absolute;
     top: 0;
@@ -463,5 +572,91 @@
   .interaction-layer {
     z-index: 3;
     pointer-events: none; /* Let events pass through to container */
+  }
+
+  .controls {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 100;
+  }
+
+  button {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  button:hover {
+    background-color: #f0f0f0;
+  }
+
+  button.active {
+    background-color: #4a90e2;
+    color: white;
+  }
+
+  button.active:hover {
+    background-color: #357abd;
+  }
+
+  .positions-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+
+  .positions-modal {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 600px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .positions-modal h2 {
+    margin: 0 0 15px 0;
+    font-size: 1.5em;
+  }
+
+  .positions-modal textarea {
+    flex: 1;
+    min-height: 300px;
+    font-family: monospace;
+    font-size: 12px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+  }
+
+  .modal-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    justify-content: flex-end;
+  }
+
+  /* Hide controls on mobile */
+  @media (max-width: 768px) {
+    .controls {
+      display: none;
+    }
   }
 </style>
