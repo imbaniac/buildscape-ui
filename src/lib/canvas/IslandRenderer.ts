@@ -308,8 +308,8 @@ export default class IslandRenderer {
 
     ctx.save();
 
-    // Translate to island position (use integers for better performance)
-    ctx.translate(screenPos.x | 0, screenPos.y | 0);
+    // Translate to island position
+    ctx.translate(screenPos.x, screenPos.y);
     ctx.scale(screenScale, screenScale);
 
     // 1. Draw island base
@@ -318,145 +318,82 @@ export default class IslandRenderer {
     if (islandImage) {
       ctx.drawImage(
         islandImage,
-        (-this.ISLAND_WIDTH / 2) | 0,
-        (-this.ISLAND_HEIGHT / 2) | 0,
-        this.ISLAND_WIDTH | 0,
-        this.ISLAND_HEIGHT | 0,
+        -this.ISLAND_WIDTH / 2,
+        -this.ISLAND_HEIGHT / 2,
+        this.ISLAND_WIDTH,
+        this.ISLAND_HEIGHT,
       );
     }
 
-    // 2. Draw shield (fixed size, not scaling with island)
+    // Get shield for subsequent renders
     const shield = this.assetCache.shields.get(`shield_${island.chainId}`);
     if (!shield) {
       // Create shield asynchronously but don't block rendering
       this.getOrCreateShield(island.chainId, island.brandColor);
     }
+    
+    // Draw all shield-related elements with a single transform
     if (shield) {
-      // Unscale to get fixed size shield
-      ctx.save();
-      ctx.scale(1 / island.scale, 1 / island.scale);
-
-      const shieldScale = 0.35; // Fixed scale in world units
-      const shieldWidth = this.SHIELD_WIDTH * shieldScale;
-      const shieldHeight = this.SHIELD_HEIGHT * shieldScale;
-
-      // Center horizontally and position above island
-      const shieldX = -shieldWidth / 2;
-      const shieldY = -500; // Position well above island
-
-      ctx.drawImage(
-        shield,
-        shieldX | 0,
-        shieldY | 0,
-        shieldWidth | 0,
-        shieldHeight | 0,
-      );
-
-      ctx.restore();
-    }
-
-    // 3. Draw banner (positioned at bottom of shield)
-    if (this.assetCache.banner && shield) {
-      // Unscale to get fixed size banner
-      ctx.save();
-      ctx.scale(1 / island.scale, 1 / island.scale);
-
+      // Calculate unscaled dimensions once
+      const unscaleRatio = 1 / island.scale;
       const shieldScale = 0.35;
       const shieldWidth = this.SHIELD_WIDTH * shieldScale;
       const shieldHeight = this.SHIELD_HEIGHT * shieldScale;
       const bannerWidth = this.BANNER_WIDTH * shieldScale;
       const bannerHeight = this.BANNER_HEIGHT * shieldScale;
-
-      // Center horizontally on shield, position at bottom of shield
+      const logoSize = this.LOGO_SIZE * shieldScale * 1.2;
+      
+      // Common positions
       const shieldX = -shieldWidth / 2;
       const shieldY = -500;
       const bannerX = -bannerWidth / 2;
-      const bannerY = shieldY + shieldHeight - bannerHeight * 0.7; // Overlap slightly with shield bottom
-
-      ctx.drawImage(
-        this.assetCache.banner,
-        bannerX | 0,
-        bannerY | 0,
-        bannerWidth | 0,
-        bannerHeight | 0,
-      );
-
-      ctx.restore();
-    }
-
-    // 4. Draw logo
-    const logo = this.assetCache.logos.get(`logo_${island.chainId}`);
-    if (!logo && island.logoUrl) {
-      // Load logo asynchronously but don't block rendering
-      this.getOrLoadLogo(island.chainId, island.logoUrl);
-    }
-    if (logo && shield) {
-      // Unscale to get fixed size logo
-      ctx.save();
-      ctx.scale(1 / island.scale, 1 / island.scale);
-
-      const shieldScale = 0.35;
-      const shieldWidth = this.SHIELD_WIDTH * shieldScale;
-      const shieldHeight = this.SHIELD_HEIGHT * shieldScale;
-      const logoSize = this.LOGO_SIZE * shieldScale * 1.2; // Make logo larger and more prominent
-
-      // Center logo on shield (horizontally and vertically)
-      const shieldY = -500;
-      const logoX = -logoSize / 2;
-      const logoY = shieldY + shieldHeight * 0.4 - logoSize / 2; // Center in upper portion of shield
-
-      ctx.drawImage(logo, logoX | 0, logoY | 0, logoSize | 0, logoSize | 0);
-
-      ctx.restore();
-    }
-
-    // 5. Draw chain name on banner
-    if (this.assetCache.banner && shield) {
-      // Unscale to get fixed size text
-      ctx.save();
-      ctx.scale(1 / island.scale, 1 / island.scale);
-
-      const shieldScale = 0.35;
-      const shieldHeight = this.SHIELD_HEIGHT * shieldScale;
-      const bannerWidth = this.BANNER_WIDTH * shieldScale;
-      const bannerHeight = this.BANNER_HEIGHT * shieldScale;
-
-      // Calculate banner position
-      const shieldY = -500;
       const bannerY = shieldY + shieldHeight - bannerHeight * 0.7;
-
-      // Text settings - scale font size appropriately
-      const fontSize = 120 * shieldScale; // Slightly smaller to better fit multi-line text
-      ctx.font = `bold ${fontSize}px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif`;
-      ctx.fillStyle = "#4B2F00";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-
-      // Position text in center of banner
-      const textX = 0;
-
-      // Get wrapped text lines
-      const maxWidth = bannerWidth * 0.7; // 80% of banner width for padding
-      const lines = this.wrapText(ctx, island.name.toUpperCase(), maxWidth);
-
-      // Calculate line height
-      const lineHeight = fontSize * 1.2;
-
-      // Calculate starting Y position to center all lines
-      const totalTextHeight = lines.length * lineHeight;
-      const startY =
-        bannerY + (bannerHeight - totalTextHeight) / 2 + lineHeight / 2 - 10; // Move up by 5 pixels
-
-      // Draw each line
-      lines.forEach((line, index) => {
-        const y = startY + index * lineHeight;
-        ctx.fillText(line, textX, y);
-      });
-
-      ctx.restore();
+      
+      // Apply single transform for all fixed-size elements
+      ctx.save();
+      ctx.scale(unscaleRatio, unscaleRatio);
+      
+      // 2. Draw shield
+      ctx.drawImage(shield, shieldX, shieldY, shieldWidth, shieldHeight);
+      
+      // 3. Draw banner
+      if (this.assetCache.banner) {
+        ctx.drawImage(this.assetCache.banner, bannerX, bannerY, bannerWidth, bannerHeight);
+        
+        // 5. Draw chain name on banner
+        const fontSize = 120 * shieldScale;
+        ctx.font = `bold ${fontSize}px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif`;
+        ctx.fillStyle = "#4B2F00";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        
+        const maxWidth = bannerWidth * 0.7;
+        const lines = this.wrapText(ctx, island.name.toUpperCase(), maxWidth);
+        const lineHeight = fontSize * 1.2;
+        const totalTextHeight = lines.length * lineHeight;
+        const startY = bannerY + (bannerHeight - totalTextHeight) / 2 + lineHeight / 2 - 10;
+        
+        lines.forEach((line, index) => {
+          const y = startY + index * lineHeight;
+          ctx.fillText(line, 0, y);
+        });
+      }
+      
+      // 4. Draw logo
+      const logo = this.assetCache.logos.get(`logo_${island.chainId}`);
+      if (!logo && island.logoUrl) {
+        this.getOrLoadLogo(island.chainId, island.logoUrl);
+      }
+      if (logo) {
+        const logoX = -logoSize / 2;
+        const logoY = shieldY + shieldHeight * 0.4 - logoSize / 2;
+        ctx.drawImage(logo, logoX, logoY, logoSize, logoSize);
+      }
+      
+      ctx.restore(); // Restore from unscale
     }
 
-    ctx.restore();
+    ctx.restore(); // Restore from main transform
   }
 
   // Check if loading is complete
