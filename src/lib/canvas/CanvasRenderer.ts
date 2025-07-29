@@ -39,6 +39,10 @@ export default class CanvasRenderer {
   private searchResults: Set<string> = new Set();
   private currentSearchResult: string | null = null;
   
+  // Animation
+  private animationFrameId: number | null = null;
+  private lastAnimationTime: number = 0;
+  
   constructor(
     backgroundCanvas: HTMLCanvasElement,
     islandsCanvas: HTMLCanvasElement,
@@ -68,6 +72,32 @@ export default class CanvasRenderer {
       ctx.imageSmoothingEnabled = true;
       ctx.imageSmoothingQuality = "high";
     });
+    
+    // Start water animation
+    this.startWaterAnimation();
+  }
+  
+  // Start the water animation loop
+  private startWaterAnimation(): void {
+    const animate = (currentTime: number) => {
+      // Update background every 50ms for smooth water animation
+      if (currentTime - this.lastAnimationTime > 50) {
+        this.needsBackgroundRender = true;
+        this.lastAnimationTime = currentTime;
+      }
+      
+      this.animationFrameId = requestAnimationFrame(animate);
+    };
+    
+    this.animationFrameId = requestAnimationFrame(animate);
+  }
+  
+  // Stop the water animation
+  public stopAnimation(): void {
+    if (this.animationFrameId !== null) {
+      cancelAnimationFrame(this.animationFrameId);
+      this.animationFrameId = null;
+    }
   }
   
   // Main render loop method
@@ -138,61 +168,102 @@ export default class CanvasRenderer {
     // Create gradient if not cached
     if (!this.oceanGradient) {
       this.oceanGradient = this.backgroundCtx.createRadialGradient(
-        width / 2, 0, 0,
-        width / 2, height / 2, Math.max(width, height)
+        width / 2, -height * 0.2, 0,
+        width / 2, height * 0.8, Math.max(width, height) * 1.2
       );
       
-      this.oceanGradient.addColorStop(0, "#87ceeb");
-      this.oceanGradient.addColorStop(0.3, "#6bb6d8");
-      this.oceanGradient.addColorStop(0.6, "#5ca9ce");
-      this.oceanGradient.addColorStop(1, "#4d9bc3");
+      // Lighter ocean colors
+      this.oceanGradient.addColorStop(0, "#4da3c9");
+      this.oceanGradient.addColorStop(0.2, "#4599bf");
+      this.oceanGradient.addColorStop(0.4, "#3d8fb5");
+      this.oceanGradient.addColorStop(0.6, "#3585ab");
+      this.oceanGradient.addColorStop(0.8, "#2d7ba1");
+      this.oceanGradient.addColorStop(1, "#267398");
     }
     
     this.backgroundCtx.fillStyle = this.oceanGradient;
     this.backgroundCtx.fillRect(0, 0, width, height);
   }
   
-  // Draw isometric grid pattern
+  // Draw water wave patterns
   private drawIsometricGrid(): void {
     const bounds = this.viewportManager.getViewBounds();
     const scale = this.viewportManager.getScale();
     
-    // Grid dimensions
-    const gridWidth = 500;
-    const gridHeight = 289;
+    // Wave parameters
+    const waveSpacing = 300;
+    const time = Date.now() * 0.0001;
     
-    // Calculate grid start position (aligned to grid)
-    const startX = Math.floor(bounds.left / gridWidth) * gridWidth;
-    const startY = Math.floor(bounds.top / gridHeight) * gridHeight;
-    const endX = Math.ceil(bounds.right / gridWidth) * gridWidth;
-    const endY = Math.ceil(bounds.bottom / gridHeight) * gridHeight;
+    // Calculate wave start position
+    const startY = Math.floor(bounds.top / waveSpacing) * waveSpacing;
+    const endY = Math.ceil(bounds.bottom / waveSpacing) * waveSpacing;
     
     this.backgroundCtx.save();
     
-    // Set grid style
-    this.backgroundCtx.strokeStyle = "#7fc3e6";
-    this.backgroundCtx.lineWidth = 1 / scale;
-    this.backgroundCtx.globalAlpha = 0.15;
-    
-    // Draw grid cells
-    for (let y = startY; y <= endY; y += gridHeight) {
-      for (let x = startX; x <= endX; x += gridWidth) {
-        const screenPos = this.viewportManager.worldToScreen(x, y);
-        const screenWidth = gridWidth * scale;
-        const screenHeight = gridHeight * scale;
-        
+    // Draw multiple wave layers for depth
+    for (let layer = 0; layer < 3; layer++) {
+      const layerOffset = layer * 100;
+      const opacity = 0.08 - layer * 0.02;
+      
+      // Set wave style with lighter ocean foam colors
+      this.backgroundCtx.strokeStyle = layer === 0 ? "#5ca9ce" : "#54a3c8";
+      this.backgroundCtx.lineWidth = (2 - layer * 0.5) / scale;
+      this.backgroundCtx.globalAlpha = opacity;
+      
+      // Draw horizontal waves
+      for (let y = startY; y <= endY; y += waveSpacing) {
         this.backgroundCtx.beginPath();
-        // Draw diamond shape
-        this.backgroundCtx.moveTo(screenPos.x + screenWidth / 2, screenPos.y);
-        this.backgroundCtx.lineTo(screenPos.x + screenWidth, screenPos.y + screenHeight / 2);
-        this.backgroundCtx.lineTo(screenPos.x + screenWidth / 2, screenPos.y + screenHeight);
-        this.backgroundCtx.lineTo(screenPos.x, screenPos.y + screenHeight / 2);
-        this.backgroundCtx.closePath();
+        
+        for (let x = bounds.left - 200; x <= bounds.right + 200; x += 20) {
+          const screenPos = this.viewportManager.worldToScreen(x, y + layerOffset);
+          
+          // Create wave pattern with sine waves
+          const waveHeight = Math.sin((x * 0.01) + time + layer) * 30;
+          const waveHeight2 = Math.sin((x * 0.02) - time * 1.5 + layer * 2) * 15;
+          const totalHeight = waveHeight + waveHeight2;
+          
+          if (x === bounds.left - 200) {
+            this.backgroundCtx.moveTo(screenPos.x, screenPos.y + totalHeight * scale);
+          } else {
+            this.backgroundCtx.lineTo(screenPos.x, screenPos.y + totalHeight * scale);
+          }
+        }
+        
         this.backgroundCtx.stroke();
       }
     }
     
+    // Add subtle ripple effects
+    this.drawRipples(bounds, scale);
+    
     this.backgroundCtx.restore();
+  }
+  
+  // Draw subtle ripple effects
+  private drawRipples(bounds: any, scale: number): void {
+    const time = Date.now() * 0.001;
+    
+    // Create a few random ripples
+    for (let i = 0; i < 5; i++) {
+      const rippleX = bounds.left + (bounds.right - bounds.left) * ((i * 0.23 + 0.1) % 1);
+      const rippleY = bounds.top + (bounds.bottom - bounds.top) * ((i * 0.37 + 0.2) % 1);
+      
+      const screenPos = this.viewportManager.worldToScreen(rippleX, rippleY);
+      
+      // Draw expanding circles
+      for (let ring = 0; ring < 3; ring++) {
+        const radius = ((time + i * 2 + ring) % 10) * 50 * scale;
+        const opacity = Math.max(0, 0.05 - (radius / (500 * scale)) * 0.05);
+        
+        this.backgroundCtx.strokeStyle = "#6bb6d8";
+        this.backgroundCtx.lineWidth = 1.5 / scale;
+        this.backgroundCtx.globalAlpha = opacity;
+        
+        this.backgroundCtx.beginPath();
+        this.backgroundCtx.arc(screenPos.x, screenPos.y, radius, 0, Math.PI * 2);
+        this.backgroundCtx.stroke();
+      }
+    }
   }
   
   // Draw "EVM SEA" ocean label
@@ -225,7 +296,7 @@ export default class CanvasRenderer {
     this.backgroundCtx.strokeText("EVM SEA", 0, 0);
     
     // Draw main text
-    this.backgroundCtx.fillStyle = "#3a7fa3";
+    this.backgroundCtx.fillStyle = "#1e6084";
     this.backgroundCtx.globalAlpha = 0.7;
     this.backgroundCtx.fillText("EVM SEA", 0, 0);
     

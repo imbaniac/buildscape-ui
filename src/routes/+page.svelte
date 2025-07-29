@@ -1,5 +1,5 @@
 <script lang="ts">
-  import App from "../components/App.svelte";
+  import CanvasMap from "../components/CanvasMap.svelte";
   import SEO from "$lib/components/SEO.svelte";
   
   interface Props {
@@ -42,7 +42,7 @@
 />
 
 <main class="full-map-bg">
-  <App initialSearchQuery={data.searchQuery} />
+  <CanvasMap initialSearchQuery={data.searchQuery} />
 </main>
 
 <style>
