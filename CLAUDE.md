@@ -28,15 +28,15 @@ This is a SvelteKit application that visualizes EVM-compatible blockchain networ
 
 ### Core Components
 
-1. **App.svelte** (`src/components/App.svelte`) - Main map container
+1. **CanvasMap.svelte** (`src/components/CanvasMap.svelte`) - Main map container
    - Implements pan/zoom functionality with momentum scrolling
    - Manages island placement and interaction states
-   - Uses SVG for scalable visualization
+   - Uses HTML5 Canvas for high-performance rendering
 
-2. **Island.svelte** (`src/components/Island.svelte`) - Blockchain visualization
-   - Renders each blockchain as an interactive island
-   - Displays chain logo and name
-   - Handles click events to show details
+2. **CanvasRenderer** (`src/lib/canvas/CanvasRenderer.ts`) - Canvas rendering engine
+   - Handles efficient rendering of islands and ocean
+   - Manages viewport culling and performance optimizations
+   - Renders interactive blockchain islands
 
 3. **Book.svelte** (`src/components/Book.svelte`) - Detail modal
    - Shows comprehensive chain information in tabbed interface
