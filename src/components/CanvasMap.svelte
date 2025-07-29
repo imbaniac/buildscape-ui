@@ -15,6 +15,7 @@
   import Header from "./Header.svelte";
   import SearchBar from "./SearchBar.svelte";
   import { goto } from "$app/navigation";
+  import { memoryDebugger } from "$lib/debug/MemoryDebugger";
 
   interface Props {
     initialSearchQuery?: string;
@@ -411,6 +412,13 @@
 
     // Handle window resize
     window.addEventListener("resize", resizeCanvas);
+
+    // Debug memory after initialization
+    setTimeout(() => {
+      console.log("=== Initial Memory Analysis ===");
+      memoryDebugger.getAllMeasurements();
+      memoryDebugger.countIslandAssets(renderer);
+    }, 2000);
 
     // Start render loop
     const renderLoop = async () => {
