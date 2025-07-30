@@ -1,15 +1,6 @@
 <script lang="ts">
-  import CanvasMap from "../components/CanvasMap.svelte";
   import SEO from "$lib/components/SEO.svelte";
   
-  interface Props {
-    data: {
-      searchQuery: string;
-    };
-  }
-  
-  let { data }: Props = $props();
-
   // Homepage-specific structured data
   const jsonLd = {
     "@context": "https://schema.org",
@@ -41,12 +32,5 @@
   {jsonLd}
 />
 
-<main class="full-map-bg">
-  <CanvasMap initialSearchQuery={data.searchQuery} />
-</main>
-
-<style>
-  .full-map-bg {
-    background-color: #87c1d3;
-  }
-</style>
+<!-- Canvas is now rendered in the layout, so the home page is essentially empty -->
+<!-- This ensures the canvas shows through -->

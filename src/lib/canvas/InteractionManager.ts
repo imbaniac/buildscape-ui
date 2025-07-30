@@ -410,6 +410,29 @@ export default class InteractionManager {
     }
   }
 
+  // Enable/disable all interactions
+  setEnabled(enabled: boolean): void {
+    if (enabled) {
+      // Re-enable interactions
+      this.container.style.pointerEvents = "auto";
+      this.container.style.cursor = "grab";
+    } else {
+      // Disable interactions
+      this.container.style.pointerEvents = "none";
+      this.container.style.cursor = "default";
+      // Reset any ongoing interactions
+      this.isPanning = false;
+      this.isPinching = false;
+      this.potentialClick = false;
+      this.isDraggingIsland = false;
+      this.draggedIsland = null;
+      this.hoveredIsland = null;
+      this.onPanningChange?.(false);
+      this.onDraggingChange?.(false);
+      this.onHoverChange?.(null);
+    }
+  }
+
   // Set island move callback
   setOnIslandMove(callback: (slug: string, x: number, y: number) => void): void {
     this.onIslandMove = callback;
