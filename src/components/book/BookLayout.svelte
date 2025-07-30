@@ -2,12 +2,14 @@
     import { onMount } from "svelte";
 
   interface Props {
+    onClose?: () => void;
     leftPage?: import("svelte").Snippet;
     rightPage?: import("svelte").Snippet;
     brandColor?: string;
   }
 
   let {
+    onClose,
     leftPage,
     rightPage,
     brandColor = "#3b82f6",
@@ -161,7 +163,7 @@
       linear-gradient(to bottom, #7fc3e6 0%, #5ca9ce 100%);
     background-blend-mode: normal;
     overflow: hidden;
-    z-index: 1000;
+    z-index: 10;
   }
 
   .book-header {

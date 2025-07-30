@@ -19,9 +19,10 @@
 
   interface Props {
     initialSearchQuery?: string;
+    isPaused?: boolean;
   }
 
-  let { initialSearchQuery = "" }: Props = $props();
+  let { initialSearchQuery = "", isPaused = false }: Props = $props();
 
   // Canvas container
   let canvasContainer = $state<HTMLDivElement>();
@@ -329,6 +330,14 @@
     }
   });
 
+  // Handle pause state
+  $effect(() => {
+    if (interactionManager) {
+      // Disable interactions when paused
+      interactionManager.setEnabled(!isPaused);
+    }
+  });
+
   onMount(() => {
     if (
       !backgroundCanvas ||
@@ -425,7 +434,7 @@
 
     // Start render loop
     const renderLoop = async () => {
-      if (renderer) {
+      if (renderer && !isPaused) {
         await renderer.renderFrame();
       }
       animationFrameId = requestAnimationFrame(renderLoop);
