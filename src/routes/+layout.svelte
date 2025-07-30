@@ -13,7 +13,17 @@ let { children } = $props();
 
 // Determine if we're on a chain detail page
 const isChainPage = $derived($page.route.id?.startsWith('/chain/[slug]') || false);
-const searchQuery = $derived($page.url.searchParams.get('q') || '');
+
+// Only get search params in browser to avoid prerendering issues
+const searchQuery = $derived(browser ? ($page.url.searchParams.get('q') || '') : '');
+
+// Only render canvas on valid routes (not on error pages)
+const isValidRoute = $derived(
+  $page.route.id === '/' || 
+  $page.route.id?.startsWith('/chain/[slug]') || 
+  false
+);
+const hasError = $derived($page.status >= 400);
 
 // Connect to SSE when the app starts
 onMount(() => {
@@ -43,14 +53,14 @@ if (browser) {
 <SEO />
 
 <!-- Canvas stays mounted but hidden when on chain pages -->
-{#if browser}
+{#if browser && isValidRoute && !hasError}
   <div class="canvas-wrapper" class:canvas-hidden={isChainPage}>
     <CanvasMap initialSearchQuery={searchQuery} isPaused={isChainPage} />
   </div>
 {/if}
 
 <!-- For SSR, only render canvas on home page -->
-{#if !browser && $page.route.id === '/'}
+{#if !browser && $page.route.id === '/' && !hasError}
   <CanvasMap initialSearchQuery={searchQuery} />
 {/if}
 

@@ -32,5 +32,4 @@
   {jsonLd}
 />
 
-<!-- Canvas is now rendered in the layout, so the home page is essentially empty -->
-<!-- This ensures the canvas shows through -->
+<!-- Canvas is rendered in the layout -->

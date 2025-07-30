@@ -1,11 +1,36 @@
+<script lang="ts">
+  import { page } from '$app/stores';
+  
+  const errorMessages = {
+    404: {
+      title: 'Uncharted Territory',
+      message: "This blockchain island hasn't been<br />discovered on our map yet"
+    },
+    500: {
+      title: 'Rough Seas Ahead',
+      message: 'Our ship encountered an unexpected storm.<br />Please try again later.'
+    },
+    503: {
+      title: 'Port Closed',
+      message: 'The harbor is temporarily closed for maintenance.<br />Please check back soon.'
+    },
+    default: {
+      title: 'Navigation Error',
+      message: 'Something went wrong on our voyage.<br />Let\'s get you back to safe waters.'
+    }
+  };
+  
+  $: status = $page.status || 500;
+  $: error = errorMessages[status] || errorMessages.default;
+</script>
+
 <div class="error-container">
   <div class="error-content">
-    <h1 class="error-code">404</h1>
-    <h2 class="error-title">Uncharted Territory</h2>
+    <h1 class="error-code">{status}</h1>
+    <h2 class="error-title">{error.title}</h2>
 
     <p class="error-message">
-      This blockchain island hasn't been<br />
-      discovered on our map yet
+      {@html error.message}
     </p>
 
     <a href="/" class="home-button"> Navigate Home </a>
