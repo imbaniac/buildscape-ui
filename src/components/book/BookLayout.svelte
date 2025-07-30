@@ -1,16 +1,18 @@
 <script lang="ts">
-  import CloseButton from "./ui/CloseButton.svelte";
-  import { onMount } from "svelte";
+    import { onMount } from "svelte";
 
   interface Props {
-    onClose: () => void;
     leftPage?: import("svelte").Snippet;
     rightPage?: import("svelte").Snippet;
     brandColor?: string;
   }
 
-  let { onClose, leftPage, rightPage, brandColor = '#3b82f6' }: Props = $props();
-  
+  let {
+    leftPage,
+    rightPage,
+    brandColor = "#3b82f6",
+  }: Props = $props();
+
   // Mobile page state
   let showRightPage = $state(false);
   let touchStartX = 0;
@@ -19,13 +21,13 @@
 
   onMount(() => {
     isMobile = window.innerWidth <= 800;
-    
+
     const handleResize = () => {
       isMobile = window.innerWidth <= 800;
     };
-    
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   });
 
   // Handle swipe gestures on mobile
@@ -39,10 +41,10 @@
     if (!isMobile) return;
     const touchEndX = e.changedTouches[0].clientX;
     const touchEndY = e.changedTouches[0].clientY;
-    
+
     const deltaX = touchEndX - touchStartX;
     const deltaY = Math.abs(touchEndY - touchStartY);
-    
+
     // Only process horizontal swipes
     if (Math.abs(deltaX) > 50 && deltaY < 100) {
       if (deltaX > 0 && showRightPage) {
@@ -56,46 +58,86 @@
   }
 </script>
 
-<div class="book-fullscreen" ontouchstart={handleTouchStart} ontouchend={handleTouchEnd}>
-  <div class="book-header">
-    <CloseButton onclick={onClose} />
-    {#if isMobile}
+<div
+  class="book-fullscreen"
+  ontouchstart={handleTouchStart}
+  ontouchend={handleTouchEnd}
+>
+  {#if isMobile}
+    <div class="book-header">
       <div class="mobile-page-indicator" style="--brand-color: {brandColor}">
-        <button 
-          class="page-dot" 
+        <button
+          class="page-dot"
           class:active={!showRightPage}
-          onclick={() => showRightPage = false}
+          onclick={() => (showRightPage = false)}
           aria-label="Show info page"
         ></button>
-        <button 
-          class="page-dot" 
+        <button
+          class="page-dot"
           class:active={showRightPage}
-          onclick={() => showRightPage = true}
+          onclick={() => (showRightPage = true)}
           aria-label="Show details page"
         ></button>
       </div>
-    {/if}
-  </div>
-
-  <div class="book-spread">
-    <!-- Left Page -->
-    <div class="book-page-wrapper book-page-wrapper-left" class:mobile-hidden={isMobile && showRightPage}>
-      <div class="book-page book-page-left">
-        {#if leftPage}
-          {@render leftPage()}
-        {/if}
-      </div>
     </div>
+  {/if}
 
-    <!-- Book Spine -->
-    <div class="book-spine-effect"></div>
+  <!-- Book Cover Wrapper -->
+  <div class="book-cover" style="--brand-color: {brandColor}">
+    <div class="book-spread">
+      <!-- Left Page Edges -->
+      <div class="page-edges page-edges-left">
+        <div class="page-edge" style="--index: 0; --brightness: 1"></div>
+        <div class="page-edge" style="--index: 1; --brightness: 0.98"></div>
+        <div class="page-edge" style="--index: 2; --brightness: 0.96"></div>
+        <div class="page-edge" style="--index: 3; --brightness: 0.94"></div>
+        <div class="page-edge" style="--index: 4; --brightness: 0.92"></div>
+        <div class="page-edge" style="--index: 5; --brightness: 0.90"></div>
+        <div class="page-edge" style="--index: 6; --brightness: 0.88"></div>
+      </div>
 
-    <!-- Right Page -->
-    <div class="book-page-wrapper book-page-wrapper-right" class:mobile-hidden={isMobile && !showRightPage}>
-      <div class="book-page book-page-right">
-        {#if rightPage}
-          {@render rightPage()}
-        {/if}
+      <!-- Left Page -->
+      <div
+        class="book-page-wrapper book-page-wrapper-left"
+        class:mobile-hidden={isMobile && showRightPage}
+      >
+        <div class="book-page book-page-left">
+          <div class="book-page-content">
+            {#if leftPage}
+              {@render leftPage()}
+            {/if}
+          </div>
+          <div class="book-page-shadow-left"></div>
+        </div>
+      </div>
+
+      <!-- Book Spine -->
+      <div class="book-spine"></div>
+
+      <!-- Right Page -->
+      <div
+        class="book-page-wrapper book-page-wrapper-right"
+        class:mobile-hidden={isMobile && !showRightPage}
+      >
+        <div class="book-page book-page-right">
+          <div class="book-page-content">
+            {#if rightPage}
+              {@render rightPage()}
+            {/if}
+          </div>
+          <div class="book-page-shadow-right"></div>
+        </div>
+      </div>
+
+      <!-- Right Page Edges -->
+      <div class="page-edges page-edges-right">
+        <div class="page-edge" style="--index: 6; --brightness: 0.88"></div>
+        <div class="page-edge" style="--index: 5; --brightness: 0.90"></div>
+        <div class="page-edge" style="--index: 4; --brightness: 0.92"></div>
+        <div class="page-edge" style="--index: 3; --brightness: 0.94"></div>
+        <div class="page-edge" style="--index: 2; --brightness: 0.96"></div>
+        <div class="page-edge" style="--index: 1; --brightness: 0.98"></div>
+        <div class="page-edge" style="--index: 0; --brightness: 1"></div>
       </div>
     </div>
   </div>
@@ -108,8 +150,14 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: 
-      radial-gradient(ellipse at center top, #87ceeb 0%, #6bb6d8 30%, #5ca9ce 60%, #4d9bc3 100%),
+    background:
+      radial-gradient(
+        ellipse at center top,
+        #87ceeb 0%,
+        #6bb6d8 30%,
+        #5ca9ce 60%,
+        #4d9bc3 100%
+      ),
       linear-gradient(to bottom, #7fc3e6 0%, #5ca9ce 100%);
     background-blend-mode: normal;
     overflow: hidden;
@@ -121,123 +169,116 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 60px;
+    height: 50px;
     display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    padding: 0 2rem;
-    z-index: 10;
-  }
-
-  .book-spread {
-    display: flex;
-    height: 100vh;
-    max-height: 950px;
-    padding: 60px 60px 40px;
-    gap: 0;
     align-items: center;
     justify-content: center;
+    padding: 0 1rem;
+    z-index: 10;
+    background: transparent;
+  }
+
+  /* Book Cover */
+  .book-cover {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    overflow: hidden;
+    background: color-mix(in srgb, var(--brand-color, #3b82f6) 70%, black 30%);
+    background-image:
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.03) 2px,
+        rgba(0, 0, 0, 0.03) 4px
+      ),
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.03) 2px,
+        rgba(0, 0, 0, 0.03) 4px
+      );
+    border-radius: 8px 4px 4px 8px;
+    box-shadow:
+      0 30px 60px rgba(0, 0, 0, 0.4),
+      0 10px 20px rgba(0, 0, 0, 0.2),
+      inset 0 2px 4px rgba(255, 255, 255, 0.1),
+      inset 0 -2px 4px rgba(0, 0, 0, 0.3);
+    padding: 15px 25px;
   }
 
-  .book-spread::before {
-    content: "";
-    position: absolute;
-    top: 60px;
-    bottom: 40px;
-    left: 50%;
-    width: 40px;
-    transform: translateX(-50%);
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      rgba(0, 0, 0, 0.02) 10%,
-      rgba(0, 0, 0, 0.04) 20%,
-      rgba(0, 0, 0, 0.06) 30%,
-      rgba(0, 0, 0, 0.08) 40%,
-      rgba(0, 0, 0, 0.1) 50%,
-      rgba(0, 0, 0, 0.08) 60%,
-      rgba(0, 0, 0, 0.06) 70%,
-      rgba(0, 0, 0, 0.04) 80%,
-      rgba(0, 0, 0, 0.02) 90%,
-      transparent 100%
-    );
-    pointer-events: none;
-    z-index: 1;
+  .book-spread {
+    display: flex;
+    height: calc(100vh - 80px);
+    max-height: 920px;
+    gap: 0;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: visible;
   }
 
   .book-page-wrapper {
     position: relative;
-    height: calc(min(100vh, 950px) - 100px);
-    max-height: 850px;
-    width: calc(50vw - 42px);
-    max-width: min(700px, 45vw);
+    height: 100%;
+    width: calc(50vw - 50px);
+    max-width: min(900px, 48vw);
+    z-index: 5;
+    overflow: visible;
   }
 
   .book-page-wrapper-left {
-    margin-right: -1px;
+    margin-right: 0;
   }
 
   .book-page-wrapper-right {
-    margin-left: -1px;
+    margin-left: 0;
   }
 
-  /* Paper stack effect for left wrapper */
-  .book-page-wrapper-left::before,
-  .book-page-wrapper-left::after {
-    content: "";
+  /* Page Edges */
+  .page-edges {
     position: absolute;
-    background: #f8f8f6;
-    border: 1px solid #e5e2dd;
-    top: 15px;
-    bottom: 15px;
-    z-index: -1;
+    top: 0;
+    bottom: 0;
+    width: 30px;
+    z-index: 1;
+    overflow: visible;
   }
 
-  .book-page-wrapper-left::before {
-    left: -8px;
-    right: 8px;
-    border-radius: 15px 0 0 15px;
-    box-shadow: -4px 0 15px rgba(0, 0, 0, 0.1);
+  .page-edges-left {
+    left: -22px;
   }
 
-  .book-page-wrapper-left::after {
-    left: -16px;
-    right: 16px;
-    border-radius: 12px 0 0 12px;
-    box-shadow: -3px 0 12px rgba(0, 0, 0, 0.08);
-    background: #f5f5f3;
+  .page-edges-right {
+    right: -22px;
   }
 
-  /* Paper stack effect for right wrapper */
-  .book-page-wrapper-right::before,
-  .book-page-wrapper-right::after {
-    content: "";
+  .page-edge {
     position: absolute;
-    background: #f8f8f6;
-    border: 1px solid #e5e2dd;
-    top: 15px;
-    bottom: 15px;
-    z-index: -1;
+    top: 0;
+    bottom: 0;
+    background: linear-gradient(
+      to bottom,
+      hsl(39, 42%, calc(93% * var(--brightness))) 0%,
+      hsl(37, 37%, calc(89% * var(--brightness))) 50%,
+      hsl(35, 32%, calc(86% * var(--brightness))) 100%
+    );
+    box-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    width: 4px;
   }
 
-  .book-page-wrapper-right::before {
-    left: 8px;
-    right: -8px;
-    border-radius: 0 15px 15px 0;
-    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+  .page-edges-left .page-edge {
+    right: calc(var(--index) * 3px - 5px);
+    border-radius: 2px 0 0 2px;
   }
 
-  .book-page-wrapper-right::after {
-    left: 16px;
-    right: -16px;
-    border-radius: 0 12px 12px 0;
-    box-shadow: 3px 0 12px rgba(0, 0, 0, 0.08);
-    background: #f5f5f3;
+  .page-edges-right .page-edge {
+    left: calc(var(--index) * 3px - 5px);
+    border-radius: 0 2px 2px 0;
   }
 
   .book-page {
@@ -245,32 +286,32 @@
     height: 100%;
     width: 100%;
     box-shadow:
-      0 10px 30px rgba(0, 0, 0, 0.15),
+      0 4px 20px rgba(0, 0, 0, 0.25),
+      0 2px 10px rgba(0, 0, 0, 0.15),
       0 0 15px rgba(0, 0, 0, 0.05) inset;
-    overflow: hidden;
+    overflow: visible;
     position: relative;
-    z-index: 1;
-    border: 1px solid #e5e2dd;
+    z-index: 10;
   }
-  
+
   .book-page::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: 
+    background:
       linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, transparent 50%),
       linear-gradient(225deg, rgba(255, 255, 255, 0.3) 0%, transparent 50%);
     pointer-events: none;
     z-index: 1;
     opacity: 0.5;
   }
-  
+
   /* Subtle page texture */
   .book-page::after {
-    content: '';
+    content: "";
     position: absolute;
     top: -50%;
     left: -50%;
@@ -283,69 +324,78 @@
   }
 
   .book-page-left {
-    border-radius: 20px 2px 2px 20px;
+    border-radius: 4px 0 0 4px;
     position: relative;
+    margin-right: -1px;
+    box-shadow:
+      inset 5px 0 10px -5px rgba(0, 0, 0, 0.2),
+      0 0 20px rgba(0, 0, 0, 0.1);
+    border: 1px solid #d8d5d0;
+    border-right: none;
   }
-  
 
-  .book-page-right {
-    border-radius: 2px 20px 20px 2px;
+  .book-page-content {
     position: relative;
-  }
-  
-
-  .book-spine-effect {
-    position: absolute;
-    top: 60px;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80px;
     z-index: 1;
-    pointer-events: none;
+    height: 100%;
+    width: 100%;
   }
 
-  .book-spine-effect::before {
-    content: "";
+  .book-page-shadow-left {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100px;
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      rgba(0, 0, 0, 0.005) 40%,
+      rgba(0, 0, 0, 0.015) 60%,
+      rgba(0, 0, 0, 0.04) 80%,
+      rgba(0, 0, 0, 0.08) 95%,
+      rgba(0, 0, 0, 0.12) 100%
+    );
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  .book-page-shadow-right {
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    height: 100%;
-    background: radial-gradient(
-      ellipse at center,
-      rgba(0, 0, 0, 0.15) 0%,
-      rgba(0, 0, 0, 0.12) 15%,
-      rgba(0, 0, 0, 0.08) 30%,
-      rgba(0, 0, 0, 0.04) 50%,
-      transparent 80%
-    );
-  }
-
-  /* Center crease */
-  .book-spine-effect::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 2px;
-    height: 100%;
+    bottom: 0;
+    width: 100px;
     background: linear-gradient(
-      to bottom,
+      to left,
       transparent 0%,
-      rgba(0, 0, 0, 0.1) 10%,
-      rgba(0, 0, 0, 0.15) 50%,
-      rgba(0, 0, 0, 0.1) 90%,
-      transparent 100%
+      rgba(0, 0, 0, 0.005) 40%,
+      rgba(0, 0, 0, 0.015) 60%,
+      rgba(0, 0, 0, 0.04) 80%,
+      rgba(0, 0, 0, 0.08) 95%,
+      rgba(0, 0, 0, 0.12) 100%
     );
+    pointer-events: none;
+    z-index: 10;
   }
 
-  /* Additional spine details */
-  .book-spine-effect {
-    &:before {
-      filter: blur(2px);
-    }
+  .book-page-right {
+    border-radius: 0 4px 4px 0;
+    position: relative;
+    margin-left: -1px;
+    box-shadow:
+      inset -5px 0 10px -5px rgba(0, 0, 0, 0.2),
+      0 0 20px rgba(0, 0, 0, 0.1);
+    border: 1px solid #d8d5d0;
+    border-left: none;
+  }
+
+  /* Book Spine */
+  .book-spine {
+    width: 0;
+    height: 100%;
+    position: relative;
+    z-index: 4;
   }
 
   @media (max-width: 1280px) {
@@ -366,8 +416,18 @@
       max-height: none;
     }
 
-    .book-spread::before,
-    .book-spine-effect {
+    .book-cover {
+      position: relative;
+      top: 0;
+      left: 0;
+      transform: none;
+      background: transparent;
+      box-shadow: none;
+      border-radius: 0;
+    }
+
+    .book-spine,
+    .page-edges {
       display: none;
     }
 
@@ -396,7 +456,13 @@
       left: 0;
       right: 0;
       height: 2px;
-      background: linear-gradient(to right, transparent 10%, #e2e8f0 30%, #e2e8f0 70%, transparent 90%);
+      background: linear-gradient(
+        to right,
+        transparent 10%,
+        #e2e8f0 30%,
+        #e2e8f0 70%,
+        transparent 90%
+      );
       z-index: 10;
     }
 
@@ -424,8 +490,14 @@
 
   @media (max-width: 800px) {
     .book-fullscreen {
-      background: 
-        radial-gradient(ellipse at center top, #87ceeb 0%, #6bb6d8 30%, #5ca9ce 60%, #4d9bc3 100%),
+      background:
+        radial-gradient(
+          ellipse at center top,
+          #87ceeb 0%,
+          #6bb6d8 30%,
+          #5ca9ce 60%,
+          #4d9bc3 100%
+        ),
         linear-gradient(to bottom, #7fc3e6 0%, #5ca9ce 100%);
       background-blend-mode: normal;
     }
@@ -450,10 +522,14 @@
     }
 
     /* Hide all book decoration effects */
-    .book-spread::before,
-    .book-spine-effect,
-    .book-page-wrapper::before,
-    .book-page-wrapper::after {
+    .book-cover {
+      background: transparent;
+      padding: 0;
+      box-shadow: none;
+    }
+
+    .book-spine,
+    .page-edges {
       display: none;
     }
 
