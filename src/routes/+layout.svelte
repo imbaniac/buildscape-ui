@@ -19,9 +19,24 @@ onDestroy(() => {
   disconnectSSE();
 });
 
-// Enable view transitions
+// Enable view transitions only between map and chain pages
 onNavigate((navigation) => {
   if (!document.startViewTransition) return;
+
+  // Get the from and to paths
+  const fromPath = navigation.from?.route?.id || '';
+  const toPath = navigation.to?.route?.id || '';
+  
+  // Only apply transitions when:
+  // 1. Going from map (root) to chain detail
+  // 2. Going from chain detail back to map
+  const isMapToChain = fromPath === '/' && toPath?.startsWith('/chain/[slug]');
+  const isChainToMap = fromPath?.startsWith('/chain/[slug]') && toPath === '/';
+  
+  if (!isMapToChain && !isChainToMap) {
+    // No transition for tab changes or other navigations
+    return;
+  }
 
   return new Promise((resolve) => {
     document.startViewTransition(() => {
