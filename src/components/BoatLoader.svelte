@@ -4,12 +4,6 @@
 </script>
 
 <div class="boat-loader" transition:fade={{ duration: 500 }}>
-  <div class="sea-background">
-    <div class="wave wave1"></div>
-    <div class="wave wave2"></div>
-    <div class="wave wave3"></div>
-  </div>
-  
   <div class="boat-container">
     <div class="boat">
       <img src={boatUrl} alt="Sailing boat" />
@@ -30,51 +24,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: 
-      radial-gradient(ellipse at center top, #87ceeb 0%, #6bb6d8 30%, #5ca9ce 60%, #4d9bc3 100%),
-      linear-gradient(to bottom, #7fc3e6 0%, #5ca9ce 100%);
-    background-blend-mode: normal;
+    background: #5ca9ce;
     z-index: 100;
-  }
-
-  .sea-background {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 40%;
-    overflow: hidden;
-  }
-
-  .wave {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 200%;
-    height: 100px;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" fill="%235A8BA8"></path></svg>') repeat-x;
-    animation: wave 20s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite;
-  }
-
-  .wave2 {
-    bottom: 10px;
-    animation: wave 17s cubic-bezier(0.36, 0.45, 0.63, 0.53) -0.125s infinite;
-    opacity: 0.5;
-  }
-
-  .wave3 {
-    bottom: 20px;
-    animation: wave 25s cubic-bezier(0.36, 0.45, 0.63, 0.53) -0.25s infinite;
-    opacity: 0.3;
-  }
-
-  @keyframes wave {
-    0% {
-      transform: translateX(0);
-    }
-    100% {
-      transform: translateX(-50%);
-    }
   }
 
   .boat-container {
