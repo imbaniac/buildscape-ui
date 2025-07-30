@@ -2,7 +2,7 @@
 import "../app.css";
 import { onMount, onDestroy } from 'svelte';
 import { browser } from '$app/environment';
-import { afterNavigate } from '$app/navigation';
+import { afterNavigate, onNavigate } from '$app/navigation';
 import { connectSSE, disconnectSSE } from '$lib/stores/sse';
 import SEO from '$lib/components/SEO.svelte';
 import { analytics } from '$lib/analytics';
@@ -17,6 +17,17 @@ onMount(() => {
 // Disconnect when the app is destroyed
 onDestroy(() => {
   disconnectSSE();
+});
+
+// Enable view transitions
+onNavigate((navigation) => {
+  if (!document.startViewTransition) return;
+
+  return new Promise((resolve) => {
+    document.startViewTransition(() => {
+      resolve();
+    });
+  });
 });
 
 // Track page views on client-side navigation
