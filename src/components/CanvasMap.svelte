@@ -139,9 +139,10 @@
   function calculateIslandScale(tvl: number): number {
     const REFERENCE_TVL = 3_400_000_000; // Base TVL
     const REFERENCE_SCALE = 1.0;
-    const scale = REFERENCE_SCALE * Math.pow(tvl / REFERENCE_TVL, 0.35);
-    const MIN_SCALE = 0.3;
-    const MAX_SCALE = 2.0;
+    // Use power of 0.4 for more linear size differences
+    const scale = REFERENCE_SCALE * Math.pow(tvl / REFERENCE_TVL, 0.4);
+    const MIN_SCALE = 0.15; // Balanced minimum for visibility
+    const MAX_SCALE = 2.5; // Increased for larger chains
     return Math.max(MIN_SCALE, Math.min(MAX_SCALE, scale));
   }
 

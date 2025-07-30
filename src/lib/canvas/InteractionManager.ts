@@ -44,9 +44,9 @@ export default class InteractionManager {
   // Event handlers (stored for cleanup)
   private boundHandlers: { [key: string]: any } = {};
 
-  // Bounding box dimensions for click detection
-  private readonly ISLAND_WIDTH = 1300;
-  private readonly ISLAND_HEIGHT = 1000;
+  // Bounding box dimensions for click detection - based on tile grid
+  private readonly TILE_WIDTH = 72;
+  private readonly TILE_HEIGHT = 36;
 
   // Edit mode
   private editMode: boolean = false;
@@ -369,9 +369,20 @@ export default class InteractionManager {
     for (let i = this.islands.length - 1; i >= 0; i--) {
       const island = this.islands[i];
 
-      // Calculate bounding box
-      const halfWidth = (this.ISLAND_WIDTH * island.scale) / 2;
-      const halfHeight = (this.ISLAND_HEIGHT * island.scale) / 2;
+      // Calculate tile grid size based on island scale - must match IslandRenderer
+      const baseSize = 14;
+      const scaleFactor = 0.6 + island.scale * 0.4;
+      const gridSize = Math.max(10, Math.min(18, Math.floor(baseSize * scaleFactor)));
+      
+      // Calculate bounding box for tile-based islands
+      // For isometric tiles, the bounding box is a diamond shape
+      // but we'll use a rectangular approximation for simplicity
+      const tileGridWidth = gridSize * this.TILE_WIDTH / 2;
+      const tileGridHeight = gridSize * this.TILE_HEIGHT;
+      
+      // The bounding box for isometric tiles
+      const halfWidth = tileGridWidth;
+      const halfHeight = tileGridHeight / 2;
 
       const left = island.x - halfWidth;
       const right = island.x + halfWidth;
