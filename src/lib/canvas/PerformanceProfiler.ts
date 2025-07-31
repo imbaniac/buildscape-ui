@@ -23,6 +23,7 @@ interface PerformanceStats {
     background: number;
     islands: number;
     interaction: number;
+    total?: number;
   };
   memoryUsage?: {
     usedJSHeapSize: number;
@@ -58,6 +59,7 @@ export default class PerformanceProfiler {
     background: 0,
     islands: 0,
     interaction: 0,
+    total: 0,
   };
   
   // Performance marks for detailed profiling
@@ -157,7 +159,7 @@ export default class PerformanceProfiler {
     }
   }
   
-  recordLayerTime(layer: 'background' | 'islands' | 'interaction', time: number): void {
+  recordLayerTime(layer: 'background' | 'islands' | 'interaction' | 'total', time: number): void {
     this.layerMetrics[layer] = time;
   }
   
@@ -205,7 +207,7 @@ export default class PerformanceProfiler {
     const stats: PerformanceStats = {
       fps: this.fps,
       frameTime: this.lastFrameTime,
-      renderTime: this.layerMetrics.background + this.layerMetrics.islands + this.layerMetrics.interaction,
+      renderTime: this.layerMetrics.total || (this.layerMetrics.background + this.layerMetrics.islands + this.layerMetrics.interaction),
       drawCalls: this.drawCalls,
       visibleIslands: this.visibleIslands,
       totalIslands: this.totalIslands,

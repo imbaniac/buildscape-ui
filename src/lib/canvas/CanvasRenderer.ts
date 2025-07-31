@@ -15,18 +15,15 @@ interface Island {
 }
 
 export default class CanvasRenderer {
-  private backgroundCtx: CanvasRenderingContext2D;
-  private islandsCtx: CanvasRenderingContext2D;
-  private interactionCtx: CanvasRenderingContext2D;
+  private ctx: CanvasRenderingContext2D;
+  private canvas: HTMLCanvasElement;
 
   private viewportManager: ViewportManager;
   private islandRenderer: IslandRenderer;
   private profiler: PerformanceProfiler | null = null;
 
-  // Rendering flags
-  private needsBackgroundRender: boolean = true;
-  private needsIslandsRender: boolean = true;
-  private needsInteractionRender: boolean = false;
+  // Rendering flags - now we need to render everything in one frame
+  private needsRender: boolean = true;
 
   // Ocean gradient cache
   private oceanGradient: CanvasGradient | null = null;
@@ -47,37 +44,25 @@ export default class CanvasRenderer {
 
   // Animation - removed for performance
 
-  constructor(
-    backgroundCanvas: HTMLCanvasElement,
-    islandsCanvas: HTMLCanvasElement,
-    interactionCanvas: HTMLCanvasElement,
-    viewportManager: ViewportManager,
-  ) {
-    const bgCtx = backgroundCanvas.getContext("2d");
-    const islandsCtx = islandsCanvas.getContext("2d");
-    const interactionCtx = interactionCanvas.getContext("2d");
+  constructor(canvas: HTMLCanvasElement, viewportManager: ViewportManager) {
+    const ctx = canvas.getContext("2d");
 
-    if (!bgCtx || !islandsCtx || !interactionCtx) {
+    if (!ctx) {
       throw new Error("Failed to get 2D context from canvas");
     }
 
-    this.backgroundCtx = bgCtx;
-    this.islandsCtx = islandsCtx;
-    this.interactionCtx = interactionCtx;
+    this.canvas = canvas;
+    this.ctx = ctx;
     this.viewportManager = viewportManager;
 
     // Create island renderer with callback to re-render when assets are loaded
     this.islandRenderer = new IslandRenderer(viewportManager, () => {
-      this.invalidateIslands();
+      this.invalidate();
     });
 
     // Enable image smoothing for better quality
-    [this.backgroundCtx, this.islandsCtx, this.interactionCtx].forEach(
-      (ctx) => {
-        ctx.imageSmoothingEnabled = true;
-        ctx.imageSmoothingQuality = "high";
-      },
-    );
+    this.ctx.imageSmoothingEnabled = true;
+    this.ctx.imageSmoothingQuality = "high";
   }
 
   // Set performance profiler
@@ -90,68 +75,69 @@ export default class CanvasRenderer {
 
   // Main render loop method
   async renderFrame(): Promise<void> {
+    // Always track frame timing for accurate FPS
     this.profiler?.startFrame();
     
-    // Only render layers that need updates
-    if (this.needsBackgroundRender) {
-      const startTime = performance.now();
-      this.profiler?.startMeasure('background');
-      this.renderBackground();
-      this.profiler?.endMeasure('background');
-      this.profiler?.recordLayerTime('background', performance.now() - startTime);
-      this.needsBackgroundRender = false;
-    }
-
-    if (this.needsIslandsRender) {
-      const startTime = performance.now();
-      this.profiler?.startMeasure('islands');
-      await this.renderIslands();
-      this.profiler?.endMeasure('islands');
-      this.profiler?.recordLayerTime('islands', performance.now() - startTime);
-      this.needsIslandsRender = false;
-    }
-
-    if (this.needsInteractionRender) {
-      const startTime = performance.now();
-      this.profiler?.startMeasure('interaction');
-      await this.renderInteraction();
-      this.profiler?.endMeasure('interaction');
-      this.profiler?.recordLayerTime('interaction', performance.now() - startTime);
-      this.needsInteractionRender = false;
+    if (!this.needsRender) {
+      this.profiler?.endFrame();
+      return;
     }
     
+    const startTime = performance.now();
+    
+    // Clear entire canvas once
+    const width = this.canvas.width;
+    const height = this.canvas.height;
+    this.ctx.clearRect(0, 0, width, height);
+    
+    // Render all layers in order
+    this.profiler?.startMeasure('background');
+    this.renderBackground();
+    this.profiler?.endMeasure('background');
+    
+    this.profiler?.startMeasure('islands');
+    await this.renderIslands();
+    this.profiler?.endMeasure('islands');
+    
+    this.profiler?.startMeasure('interaction');
+    await this.renderInteraction();
+    this.profiler?.endMeasure('interaction');
+    
+    // Record total render time
+    this.profiler?.recordLayerTime('total', performance.now() - startTime);
+    
+    this.needsRender = false;
     this.profiler?.endFrame();
   }
 
   // Force render all layers
   async renderAll(): Promise<void> {
-    this.needsBackgroundRender = true;
-    this.needsIslandsRender = true;
-    this.needsInteractionRender = true;
+    this.needsRender = true;
     await this.renderFrame();
   }
 
-  // Mark layers for re-render
+  // Mark for re-render
+  invalidate(): void {
+    this.needsRender = true;
+  }
+  
+  // Legacy methods for compatibility
   invalidateBackground(): void {
-    this.needsBackgroundRender = true;
+    this.invalidate();
   }
 
   invalidateIslands(): void {
-    this.needsIslandsRender = true;
+    this.invalidate();
   }
 
   invalidateInteraction(): void {
-    this.needsInteractionRender = true;
+    this.invalidate();
   }
 
   // Render the background layer (ocean gradient + grid)
   private renderBackground(): void {
-    const canvas = this.backgroundCtx.canvas;
-    const width = canvas.width;
-    const height = canvas.height;
-
-    // Clear canvas
-    this.backgroundCtx.clearRect(0, 0, width, height);
+    const width = this.canvas.width;
+    const height = this.canvas.height;
 
     // Create background cache if needed
     if (!this.backgroundCache || !this.backgroundCacheValid) {
@@ -160,7 +146,7 @@ export default class CanvasRenderer {
 
     // Just draw the cached background
     if (this.backgroundCache) {
-      this.backgroundCtx.drawImage(this.backgroundCache, 0, 0);
+      this.ctx.drawImage(this.backgroundCache, 0, 0);
       this.profiler?.countOperation('drawImage');
     }
 
@@ -170,9 +156,8 @@ export default class CanvasRenderer {
 
   // Create cached background with static elements
   private createBackgroundCache(): void {
-    const canvas = this.backgroundCtx.canvas;
-    const width = canvas.width;
-    const height = canvas.height;
+    const width = this.canvas.width;
+    const height = this.canvas.height;
 
     // Create cache canvas if not exists
     if (!this.backgroundCache) {
@@ -203,10 +188,9 @@ export default class CanvasRenderer {
 
   // Draw ocean gradient background (legacy method - now uses cache)
   private drawOceanGradient(): void {
-    const canvas = this.backgroundCtx.canvas;
-    const width = canvas.width;
-    const height = canvas.height;
-    this.drawOceanGradientToContext(this.backgroundCtx, width, height);
+    const width = this.canvas.width;
+    const height = this.canvas.height;
+    this.drawOceanGradientToContext(this.ctx, width, height);
   }
 
   // Draw ocean gradient to any context
@@ -232,10 +216,8 @@ export default class CanvasRenderer {
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, width, height);
     
-    // Manually track operations for profiler (only when using main context)
-    if (ctx === this.backgroundCtx) {
-      this.profiler?.countOperation('fillRect');
-    }
+    // Manually track operations for profiler
+    this.profiler?.countOperation('fillRect');
   }
 
   // Draw static water pattern (no animation)
@@ -259,32 +241,32 @@ export default class CanvasRenderer {
       return;
     }
 
-    this.backgroundCtx.save();
+    this.ctx.save();
 
     // Set up text properties
     const fontSize = 450 * scale;
-    this.backgroundCtx.font = `700 ${fontSize}px 'Lato', 'Inter', 'Helvetica Neue', sans-serif`;
-    this.backgroundCtx.textAlign = "center";
-    this.backgroundCtx.textBaseline = "middle";
+    this.ctx.font = `700 ${fontSize}px 'Lato', 'Inter', 'Helvetica Neue', sans-serif`;
+    this.ctx.textAlign = "center";
+    this.ctx.textBaseline = "middle";
 
     // Apply isometric transform
-    this.backgroundCtx.translate(screenPos.x, screenPos.y);
-    this.backgroundCtx.scale(1, 0.866); // Isometric Y scale
+    this.ctx.translate(screenPos.x, screenPos.y);
+    this.ctx.scale(1, 0.866); // Isometric Y scale
 
     // Draw white outline
-    this.backgroundCtx.strokeStyle = "#ffffff";
-    this.backgroundCtx.lineWidth = 4 * scale;
-    this.backgroundCtx.globalAlpha = 0.6;
-    this.backgroundCtx.strokeText("EVM SEA", 0, 0);
+    this.ctx.strokeStyle = "#ffffff";
+    this.ctx.lineWidth = 4 * scale;
+    this.ctx.globalAlpha = 0.6;
+    this.ctx.strokeText("EVM SEA", 0, 0);
     this.profiler?.countOperation('stroke');
 
     // Draw main text
-    this.backgroundCtx.fillStyle = "#1e6084";
-    this.backgroundCtx.globalAlpha = 0.7;
-    this.backgroundCtx.fillText("EVM SEA", 0, 0);
+    this.ctx.fillStyle = "#1e6084";
+    this.ctx.globalAlpha = 0.7;
+    this.ctx.fillText("EVM SEA", 0, 0);
     this.profiler?.countOperation('fillText');
 
-    this.backgroundCtx.restore();
+    this.ctx.restore();
   }
 
   // Render the islands layer
@@ -295,7 +277,7 @@ export default class CanvasRenderer {
     }
 
     // Render all islands
-    await this.islandRenderer.renderIslands(this.islandsCtx, this.islands);
+    await this.islandRenderer.renderIslands(this.ctx, this.islands);
     
     // Visibility metrics are now tracked in IslandRenderer
   }
@@ -308,11 +290,8 @@ export default class CanvasRenderer {
 
   // Render the interaction layer
   private async renderInteraction(): Promise<void> {
-    const canvas = this.interactionCtx.canvas;
-
-    // Clear canvas
-    this.interactionCtx.clearRect(0, 0, canvas.width, canvas.height);
-
+    // No need to clear - already cleared in renderFrame
+    
     // Render search highlights first (underneath hover)
     await this.renderSearchHighlights();
 
@@ -324,9 +303,9 @@ export default class CanvasRenderer {
 
   // Render hover effect for an island
   private async renderHoverEffect(island: Island): Promise<void> {
-    // Render the island with brightness effect on the interaction layer
+    // Render the island with brightness effect
     await this.islandRenderer.renderIslandWithBrightness(
-      this.interactionCtx,
+      this.ctx,
       island,
       1.15, // Same brightness as SVG hover
     );
@@ -359,7 +338,7 @@ export default class CanvasRenderer {
   ): Promise<void> {
     // Simply render the island with increased brightness - no glow/shadow
     await this.islandRenderer.renderIslandWithBrightness(
-      this.interactionCtx,
+      this.ctx,
       island,
       isCurrent ? 1.25 : 1.15,
     );

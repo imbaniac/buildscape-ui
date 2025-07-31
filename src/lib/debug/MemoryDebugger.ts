@@ -221,8 +221,6 @@ export class MemoryDebugger {
 
     console.log('\n=== SUMMARY ===');
     console.table(summary);
-    
-    return this.measurements;
   }
 
   // Monitor memory over time

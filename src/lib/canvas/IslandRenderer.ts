@@ -53,6 +53,7 @@ interface Decoration {
 // Cached island terrain data
 interface IslandTerrain {
   tiles: Tile[];
+  sortedTiles: Tile[]; // Pre-sorted tiles for rendering
   decorations: Decoration[];
   size: number;
 }
@@ -316,7 +317,10 @@ export default class IslandRenderer {
       }
     }
 
-    return { tiles, decorations, size };
+    // Pre-sort tiles for rendering to avoid sorting on every frame
+    const sortedTiles = [...tiles].sort((a, b) => a.y + a.x - (b.y + b.x));
+    
+    return { tiles, sortedTiles, decorations, size };
   }
 
   // Adjust color brightness
@@ -603,8 +607,7 @@ export default class IslandRenderer {
       return;
     }
 
-    // Clear canvas
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    // Canvas already cleared in CanvasRenderer.renderFrame() - no need to clear again
 
     // Debug: Track visibility stats
     let totalIslands = islands.length;
@@ -677,10 +680,8 @@ export default class IslandRenderer {
     // 1. Draw island tiles
     const terrain = this.getIslandTerrain(island);
 
-    // Sort tiles for proper depth rendering
-    const sortedTiles = [...terrain.tiles].sort(
-      (a, b) => a.y + a.x - (b.y + b.x),
-    );
+    // Use pre-sorted tiles from cache
+    const sortedTiles = terrain.sortedTiles;
 
     // Draw all tiles
     ctx.save();

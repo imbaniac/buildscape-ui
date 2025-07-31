@@ -29,10 +29,8 @@
   // Canvas container
   let canvasContainer = $state<HTMLDivElement>();
 
-  // Canvas layers
-  let backgroundCanvas = $state<HTMLCanvasElement>();
-  let islandsCanvas = $state<HTMLCanvasElement>();
-  let interactionCanvas = $state<HTMLCanvasElement>();
+  // Single canvas for all rendering
+  let mainCanvas = $state<HTMLCanvasElement>();
 
   // Managers
   let renderer = $state<CanvasRenderer>();
@@ -329,24 +327,14 @@
   });
 
   onMount(() => {
-    if (
-      !backgroundCanvas ||
-      !islandsCanvas ||
-      !interactionCanvas ||
-      !canvasContainer
-    ) {
+    if (!mainCanvas || !canvasContainer) {
       console.error("Canvas elements not found");
       return;
     }
 
     // Initialize managers
     viewportManager = new ViewportManager();
-    renderer = new CanvasRenderer(
-      backgroundCanvas,
-      islandsCanvas,
-      interactionCanvas,
-      viewportManager,
-    );
+    renderer = new CanvasRenderer(mainCanvas, viewportManager);
     
     // Initialize performance profiler
     profiler = new PerformanceProfiler();
@@ -391,21 +379,20 @@
 
       // Set canvas dimensions with device pixel ratio support for sharp rendering on retina screens
       const dpr = window.devicePixelRatio || 1;
-      [backgroundCanvas, islandsCanvas, interactionCanvas].forEach((canvas) => {
-        if (canvas) {
-          // Set actual size in memory (scaled up for retina)
-          canvas.width = width * dpr;
-          canvas.height = height * dpr;
-          // Set display size (CSS pixels)
-          canvas.style.width = `${width}px`;
-          canvas.style.height = `${height}px`;
-          // Scale the drawing context to match device pixel ratio
-          const ctx = canvas.getContext("2d");
-          if (ctx) {
-            ctx.scale(dpr, dpr);
-          }
+      
+      // Set actual size in memory (scaled up for retina)
+      if (mainCanvas) {
+        mainCanvas.width = width * dpr;
+        mainCanvas.height = height * dpr;
+        // Set display size (CSS pixels)
+        mainCanvas.style.width = `${width}px`;
+        mainCanvas.style.height = `${height}px`;
+        // Scale the drawing context to match device pixel ratio
+        const ctx = mainCanvas.getContext("2d");
+        if (ctx) {
+          ctx.scale(dpr, dpr);
         }
-      });
+      }
 
       // Update viewport
       viewportManager?.setScreenSize(width, height);
@@ -499,16 +486,8 @@
     ? 'dragging-island'
     : ''}"
 >
-  <!-- Background layer - Ocean, grid (rarely updates) -->
-  <canvas bind:this={backgroundCanvas} class="canvas-layer background-layer"
-  ></canvas>
-
-  <!-- Islands layer - All island graphics (updates on pan/zoom) -->
-  <canvas bind:this={islandsCanvas} class="canvas-layer islands-layer"></canvas>
-
-  <!-- Interaction layer - Hover effects, search highlights (frequent updates) -->
-  <canvas bind:this={interactionCanvas} class="canvas-layer interaction-layer"
-  ></canvas>
+  <!-- Single canvas for all rendering layers -->
+  <canvas bind:this={mainCanvas} class="canvas-layer"></canvas>
 
   {#if showLoader}
     <BoatLoader />
@@ -589,19 +568,6 @@
     left: 0;
     width: 100%;
     height: 100%;
-  }
-
-  .background-layer {
-    z-index: 1;
-  }
-
-  .islands-layer {
-    z-index: 2;
-  }
-
-  .interaction-layer {
-    z-index: 3;
-    pointer-events: none; /* Let events pass through to container */
   }
 
   .controls {

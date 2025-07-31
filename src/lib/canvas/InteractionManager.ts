@@ -26,6 +26,10 @@ export default class InteractionManager {
   // Hover state
   private hoveredIsland: Island | null = null;
   private onHoverChange?: (island: Island | null) => void;
+  
+  // Hover throttling
+  private lastHoverUpdateTime: number = 0;
+  private readonly HOVER_THROTTLE_MS: number = 33; // ~30fps for hover updates
 
   // Pan state
   private isPanning: boolean = false;
@@ -208,14 +212,23 @@ export default class InteractionManager {
       );
       const island = this.getIslandAtPosition(worldPos.x, worldPos.y);
 
+      // Throttle hover updates to reduce rendering frequency
+      const now = performance.now();
+      const timeSinceLastUpdate = now - this.lastHoverUpdateTime;
+
       if (island !== this.hoveredIsland) {
-        this.hoveredIsland = island;
-        this.onHoverChange?.(island);
-        // In edit mode, show move cursor when hovering over islands
+        // Update cursor immediately for good UX
         if (this.editMode && island) {
           this.container.style.cursor = "move";
         } else {
           this.container.style.cursor = island ? "pointer" : "grab";
+        }
+
+        // Only trigger render update if enough time has passed
+        if (timeSinceLastUpdate >= this.HOVER_THROTTLE_MS) {
+          this.hoveredIsland = island;
+          this.onHoverChange?.(island);
+          this.lastHoverUpdateTime = now;
         }
       }
       return;
