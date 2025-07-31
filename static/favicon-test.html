@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Favicon Test - Buildscape</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .favicon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+        .favicon-item { border: 1px solid #ddd; padding: 10px; text-align: center; }
+        .favicon-item img { max-width: 100%; height: auto; }
+        .status { margin: 10px 0; font-weight: bold; }
+        .success { color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>Buildscape Favicon Test</h1>
+    <p>This page tests all favicon resources. Check the browser's favicon display and console for any errors.</p>
+    
+    <div class="favicon-grid">
+        <div class="favicon-item">
+            <h3>SVG Favicon</h3>
+            <img src="/favicon.svg" alt="SVG Favicon" onload="markSuccess(this)" onerror="markError(this)">
+            <div class="status"></div>
+        </div>
+        
+        <div class="favicon-item">
+            <h3>ICO Favicon</h3>
+            <img src="/favicon.ico" alt="ICO Favicon" onload="markSuccess(this)" onerror="markError(this)">
+            <div class="status"></div>
+        </div>
+        
+        <div class="favicon-item">
+            <h3>32x32 PNG (Browser Tab)</h3>
+            <img src="/favicon-32x32.png" alt="32x32 PNG" onload="markSuccess(this)" onerror="markError(this)">
+            <div class="status"></div>
+        </div>
+        
+        <div class="favicon-item">
+            <h3>Apple Touch Icon</h3>
+            <img src="/apple-touch-icon.png" alt="Apple Touch Icon" onload="markSuccess(this)" onerror="markError(this)">
+            <div class="status"></div>
+        </div>
+        
+        <div class="favicon-item">
+            <h3>Web App Icon 192x192</h3>
+            <img src="/web-app-manifest-192x192.png" alt="Web App 192x192" onload="markSuccess(this)" onerror="markError(this)">
+            <div class="status"></div>
+        </div>
+        
+        <div class="favicon-item">
+            <h3>Web App Icon 512x512</h3>
+            <img src="/web-app-manifest-512x512.png" alt="Web App 512x512" onload="markSuccess(this)" onerror="markError(this)">
+            <div class="status"></div>
+        </div>
+    </div>
+    
+    <h2>Web App Manifest</h2>
+    <pre id="manifest-content">Loading...</pre>
+    
+    <script>
+        function markSuccess(img) {
+            const status = img.parentElement.querySelector('.status');
+            status.textContent = '✓ Loaded';
+            status.className = 'status success';
+        }
+        
+        function markError(img) {
+            const status = img.parentElement.querySelector('.status');
+            status.textContent = '✗ Failed to load';
+            status.className = 'status error';
+        }
+        
+        // Load and display manifest
+        fetch('/site.webmanifest')
+            .then(response => response.text())
+            .then(text => {
+                document.getElementById('manifest-content').textContent = text;
+            })
+            .catch(error => {
+                document.getElementById('manifest-content').textContent = 'Error loading manifest: ' + error;
+            });
+    </script>
+</body>
+</html>
