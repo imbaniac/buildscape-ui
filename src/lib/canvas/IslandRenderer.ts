@@ -502,42 +502,48 @@ export default class IslandRenderer {
     ctx.scale(decorScale, decorScale);
 
     if (type === "tree") {
+      // Adjust Y position to make tree appear grounded
+      const groundOffset = tileHeight / 2 + 5; // Position tree base at tile center
+
       // Draw tree shadow
       ctx.fillStyle = "rgba(0, 0, 0, 0.15)";
       ctx.beginPath();
-      ctx.ellipse(0, tileHeight / 2, 12, 6, 0, 0, Math.PI * 2);
+      ctx.ellipse(0, groundOffset, 12, 6, 0, 0, Math.PI * 2);
       ctx.fill();
 
       // Draw tree trunk
       ctx.fillStyle = "#4a3829";
-      ctx.fillRect(-2, -8, 4, 18);
+      ctx.fillRect(-2, groundOffset - 18, 4, 18);
 
       // Draw tree crown
       const crownColors = ["#2d5016", "#3a6218", "#4a7c1f"];
       ctx.fillStyle = crownColors[variant % crownColors.length];
 
       ctx.beginPath();
-      ctx.arc(0, -12, 10, 0, Math.PI * 2);
+      ctx.arc(0, groundOffset - 22, 10, 0, Math.PI * 2);
       ctx.fill();
       ctx.beginPath();
-      ctx.arc(-5, -8, 8, 0, Math.PI * 2);
+      ctx.arc(-5, groundOffset - 18, 8, 0, Math.PI * 2);
       ctx.fill();
       ctx.beginPath();
-      ctx.arc(5, -8, 8, 0, Math.PI * 2);
+      ctx.arc(5, groundOffset - 18, 8, 0, Math.PI * 2);
       ctx.fill();
     } else if (type === "palm") {
-      // Draw palm tree
+      // Adjust Y position to make palm appear grounded
+      const groundOffset = tileHeight / 2 + 5; // Position palm base at tile center
+
+      // Draw palm tree shadow
       ctx.fillStyle = "rgba(0, 0, 0, 0.15)";
       ctx.beginPath();
-      ctx.ellipse(0, tileHeight / 2, 10, 5, 0, 0, Math.PI * 2);
+      ctx.ellipse(0, groundOffset, 10, 5, 0, 0, Math.PI * 2);
       ctx.fill();
 
       // Palm trunk
       ctx.strokeStyle = "#8b6239";
       ctx.lineWidth = 3;
       ctx.beginPath();
-      ctx.moveTo(0, 10);
-      ctx.quadraticCurveTo(3, -5, 2, -15);
+      ctx.moveTo(0, groundOffset);
+      ctx.quadraticCurveTo(3, groundOffset - 15, 2, groundOffset - 25);
       ctx.stroke();
 
       // Palm fronds
@@ -546,7 +552,7 @@ export default class IslandRenderer {
       const frondAngles = [0, 60, 120, 180, 240, 300];
       frondAngles.forEach((angle) => {
         ctx.save();
-        ctx.translate(2, -15);
+        ctx.translate(2, groundOffset - 25);
         ctx.rotate((angle * Math.PI) / 180);
         ctx.beginPath();
         ctx.moveTo(0, 0);
