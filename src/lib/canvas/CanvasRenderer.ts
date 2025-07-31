@@ -1,5 +1,6 @@
 import type ViewportManager from "./ViewportManager";
 import IslandRenderer from "./IslandRenderer";
+import PerformanceProfiler from "./PerformanceProfiler";
 
 interface Island {
   chainId: number;
@@ -20,6 +21,7 @@ export default class CanvasRenderer {
 
   private viewportManager: ViewportManager;
   private islandRenderer: IslandRenderer;
+  private profiler: PerformanceProfiler | null = null;
 
   // Rendering flags
   private needsBackgroundRender: boolean = true;
@@ -74,23 +76,47 @@ export default class CanvasRenderer {
     );
   }
 
+  // Set performance profiler
+  setProfiler(profiler: PerformanceProfiler): void {
+    this.profiler = profiler;
+    // Don't instrument canvas contexts with proxy - it breaks canvas API
+    // Instead, we'll count operations manually in the profiler
+    this.islandRenderer.setProfiler(profiler);
+  }
+
   // Main render loop method
   async renderFrame(): Promise<void> {
+    this.profiler?.startFrame();
+    
     // Only render layers that need updates
     if (this.needsBackgroundRender) {
+      const startTime = performance.now();
+      this.profiler?.startMeasure('background');
       this.renderBackground();
+      this.profiler?.endMeasure('background');
+      this.profiler?.recordLayerTime('background', performance.now() - startTime);
       this.needsBackgroundRender = false;
     }
 
     if (this.needsIslandsRender) {
+      const startTime = performance.now();
+      this.profiler?.startMeasure('islands');
       await this.renderIslands();
+      this.profiler?.endMeasure('islands');
+      this.profiler?.recordLayerTime('islands', performance.now() - startTime);
       this.needsIslandsRender = false;
     }
 
     if (this.needsInteractionRender) {
+      const startTime = performance.now();
+      this.profiler?.startMeasure('interaction');
       await this.renderInteraction();
+      this.profiler?.endMeasure('interaction');
+      this.profiler?.recordLayerTime('interaction', performance.now() - startTime);
       this.needsInteractionRender = false;
     }
+    
+    this.profiler?.endFrame();
   }
 
   // Force render all layers
@@ -161,6 +187,9 @@ export default class CanvasRenderer {
 
     this.backgroundCtx.fillStyle = this.oceanGradient;
     this.backgroundCtx.fillRect(0, 0, width, height);
+    
+    // Manually track operations for profiler
+    this.profiler?.countOperation('fillRect');
   }
 
   // Draw static water pattern (no animation)
@@ -201,11 +230,13 @@ export default class CanvasRenderer {
     this.backgroundCtx.lineWidth = 4 * scale;
     this.backgroundCtx.globalAlpha = 0.6;
     this.backgroundCtx.strokeText("EVM SEA", 0, 0);
+    this.profiler?.countOperation('stroke');
 
     // Draw main text
     this.backgroundCtx.fillStyle = "#1e6084";
     this.backgroundCtx.globalAlpha = 0.7;
     this.backgroundCtx.fillText("EVM SEA", 0, 0);
+    this.profiler?.countOperation('fillText');
 
     this.backgroundCtx.restore();
   }
@@ -219,6 +250,8 @@ export default class CanvasRenderer {
 
     // Render all islands
     await this.islandRenderer.renderIslands(this.islandsCtx, this.islands);
+    
+    // Visibility metrics are now tracked in IslandRenderer
   }
 
   // Set islands data

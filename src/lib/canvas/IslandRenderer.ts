@@ -1,4 +1,5 @@
 import type ViewportManager from "./ViewportManager";
+import type PerformanceProfiler from "./PerformanceProfiler";
 import { assetUrls, assetRaw } from "./assets";
 import { SeededRandom } from "./SeededRandom";
 
@@ -56,11 +57,13 @@ interface IslandTerrain {
   size: number;
 }
 
+
 export default class IslandRenderer {
   private viewportManager: ViewportManager;
   private assetCache: AssetCache;
   private isLoading: boolean = true;
   private onAssetsLoaded?: () => void;
+  private profiler?: PerformanceProfiler;
 
   // Asset dimensions
   private readonly ISLAND_WIDTH = 1862;
@@ -109,6 +112,10 @@ export default class IslandRenderer {
 
   // Cached terrain data for each island
   private terrainCache: Map<number, IslandTerrain> = new Map();
+  
+  
+  // Debug mode flag
+  private debugMode: boolean = false;
 
   constructor(viewportManager: ViewportManager, onAssetsLoaded?: () => void) {
     this.viewportManager = viewportManager;
@@ -122,6 +129,11 @@ export default class IslandRenderer {
 
     // Start loading assets
     this.loadAssets();
+  }
+
+  // Set profiler for performance tracking
+  setProfiler(profiler: PerformanceProfiler): void {
+    this.profiler = profiler;
   }
 
   private async loadAssets(): Promise<void> {
@@ -452,6 +464,7 @@ export default class IslandRenderer {
     ctx.lineTo(-tileWidth / 2, tileHeight / 2);
     ctx.closePath();
     ctx.fill();
+    this.profiler?.countOperation('fill');
 
     // Draw tile edges for elevation
     if (elevation > 0.05) {
@@ -466,6 +479,7 @@ export default class IslandRenderer {
       ctx.lineTo(0, tileHeight + edgeHeight);
       ctx.closePath();
       ctx.fill();
+      this.profiler?.countOperation('fill');
 
       // Left edge
       ctx.fillStyle = this.adjustBrightness(adjustedColor, 0.45);
@@ -476,6 +490,7 @@ export default class IslandRenderer {
       ctx.lineTo(0, tileHeight + edgeHeight);
       ctx.closePath();
       ctx.fill();
+      this.profiler?.countOperation('fill');
     }
 
     ctx.restore();
@@ -565,6 +580,20 @@ export default class IslandRenderer {
     ctx.restore();
   }
 
+  // Calculate actual island bounds based on terrain
+  private getIslandBounds(island: Island): { width: number; height: number } {
+    const terrain = this.getIslandTerrain(island);
+    const tileSize = this.getTileSize(island.scale);
+    
+    // Calculate bounds for isometric tile layout
+    // Width = (terrain.size) * tileWidth (diagonal extent)
+    // Height = (terrain.size) * tileHeight + elevation
+    const width = terrain.size * tileSize.width;
+    const height = terrain.size * tileSize.height + 100; // Add buffer for elevation
+    
+    return { width, height };
+  }
+
   // Render all islands
   async renderIslands(
     ctx: CanvasRenderingContext2D,
@@ -577,20 +606,38 @@ export default class IslandRenderer {
     // Clear canvas
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
+    // Debug: Track visibility stats
+    let totalIslands = islands.length;
+    let visibleCount = 0;
+
     // Filter and sort islands by distance from center for proper layering
     const visibleIslands = islands
-      .filter((island) =>
-        this.viewportManager.isRectInViewport(
-          island.x - (this.ISLAND_WIDTH * island.scale) / 2,
-          island.y - (this.ISLAND_HEIGHT * island.scale) / 2,
-          this.ISLAND_WIDTH * island.scale,
-          this.ISLAND_HEIGHT * island.scale,
-        ),
-      )
+      .filter((island) => {
+        // Use actual terrain bounds for culling
+        const bounds = this.getIslandBounds(island);
+        const isVisible = this.viewportManager.isRectInViewport(
+          island.x - bounds.width / 2,
+          island.y - bounds.height / 2,
+          bounds.width,
+          bounds.height,
+          200, // Add margin for safety
+        );
+        
+        if (isVisible) visibleCount++;
+        return isVisible;
+      })
       .sort((a, b) => {
         // Sort by Y position for isometric layering (back to front)
         return a.y - b.y;
       });
+
+    // Update profiler metrics
+    if (this.profiler) {
+      this.profiler.setVisibilityMetrics(visibleCount, totalIslands);
+      if (this.debugMode) {
+        console.log(`[Culling] ${visibleCount}/${totalIslands} islands visible (${((1 - visibleCount/totalIslands) * 100).toFixed(1)}% culled)`);
+      }
+    }
 
     // Render each visible island
     for (const island of visibleIslands) {
@@ -598,18 +645,34 @@ export default class IslandRenderer {
     }
   }
 
-  // Render a single island
+
+  // Render a single island (WITHOUT CACHE - performs better)
   private async renderIsland(
     ctx: CanvasRenderingContext2D,
     island: Island,
   ): Promise<void> {
     const screenPos = this.viewportManager.worldToScreen(island.x, island.y);
-    const screenScale = island.scale * this.viewportManager.getScale();
+    const screenScale = this.viewportManager.getScale();
+    
+    ctx.save();
+    ctx.translate(screenPos.x, screenPos.y);
+    ctx.scale(screenScale, screenScale);
+    
+    // Render directly without cache
+    await this.renderIslandContent(ctx, island);
+    
+    ctx.restore();
+  }
 
+  // Original render method renamed for cache rendering
+  private async renderIslandContent(
+    ctx: CanvasRenderingContext2D,
+    island: Island,
+  ): Promise<void> {
     ctx.save();
 
-    // Translate to island position
-    ctx.translate(screenPos.x, screenPos.y);
+    // Scale to island scale (no viewport scale needed for cache)
+    ctx.scale(island.scale, island.scale);
 
     // 1. Draw island tiles
     const terrain = this.getIslandTerrain(island);
@@ -621,7 +684,6 @@ export default class IslandRenderer {
 
     // Draw all tiles
     ctx.save();
-    ctx.scale(screenScale, screenScale);
 
     // Get dynamic tile size based on island scale
     const tileSize = this.getTileSize(island.scale);
@@ -676,7 +738,6 @@ export default class IslandRenderer {
 
     // Draw shield/banner/logo at fixed size (not affected by island scale)
     ctx.save();
-    ctx.scale(screenScale, screenScale);
 
     // Get shield for subsequent renders
     const shield = this.assetCache.shields.get(`shield_${island.chainId}`);
@@ -708,6 +769,7 @@ export default class IslandRenderer {
 
       // 2. Draw shield
       ctx.drawImage(shield, shieldX, shieldY, shieldWidth, shieldHeight);
+      this.profiler?.countOperation('drawImage');
 
       // 3. Draw banner
       if (this.assetCache.banner) {
@@ -718,6 +780,7 @@ export default class IslandRenderer {
           bannerWidth,
           bannerHeight,
         );
+        this.profiler?.countOperation('drawImage');
 
         // 5. Draw chain name on banner
         const fontSize = 120 * shieldScale;
@@ -736,6 +799,7 @@ export default class IslandRenderer {
         lines.forEach((line, index) => {
           const y = startY + index * lineHeight;
           ctx.fillText(line, 0, y);
+          this.profiler?.countOperation('fillText');
         });
       }
 
@@ -748,6 +812,7 @@ export default class IslandRenderer {
         const logoX = -logoSize / 2;
         const logoY = shieldY + shieldHeight * 0.4 - logoSize / 2;
         ctx.drawImage(logo, logoX, logoY, logoSize, logoSize);
+        this.profiler?.countOperation('drawImage');
       }
 
       ctx.restore(); // Restore from unscale
@@ -763,6 +828,7 @@ export default class IslandRenderer {
     return !this.isLoading;
   }
 
+
   // Render a single island with brightness effect for hover
   async renderIslandWithBrightness(
     ctx: CanvasRenderingContext2D,
@@ -773,190 +839,20 @@ export default class IslandRenderer {
       return;
     }
 
-    // For tile-based rendering, we'll adjust colors directly
     const screenPos = this.viewportManager.worldToScreen(island.x, island.y);
-    const screenScale = island.scale * this.viewportManager.getScale();
+    const screenScale = this.viewportManager.getScale();
 
     ctx.save();
     ctx.translate(screenPos.x, screenPos.y);
-
-    // Draw island tiles with brightness adjustment
-    const terrain = this.getIslandTerrain(island);
-    const sortedTiles = [...terrain.tiles].sort(
-      (a, b) => a.y + a.x - (b.y + b.x),
-    );
-
-    ctx.save();
     ctx.scale(screenScale, screenScale);
-
-    // Get dynamic tile size based on island scale
-    const tileSize = this.getTileSize(island.scale);
-
-    // Center the tile grid for isometric projection
-    // Account for the diamond shape - tiles extend diagonally
-    // The center tile should be at (size/2, size/2) in grid coordinates
-    const centerTile = terrain.size / 2;
-    const centerIso = this.gridToIso(
-      centerTile,
-      centerTile,
-      tileSize.width,
-      tileSize.height,
-    );
-    ctx.translate(-centerIso.x, -centerIso.y);
-
-    // Draw tiles with brightened colors
-    for (const tile of sortedTiles) {
-      const iso = this.gridToIso(
-        tile.x,
-        tile.y,
-        tileSize.width,
-        tileSize.height,
-      );
-      const tileY = iso.y - tile.elevation * 45; // Match the tile elevation offset
-
-      ctx.save();
-      ctx.translate(iso.x, tileY);
-
-      // Get brightened color
-      const baseColor = this.terrainColors[tile.terrainType];
-      const colorVariation = ((tile.x * 7 + tile.y * 13) % 10) / 100 - 0.05;
-      const adjustedColor = this.adjustBrightness(
-        baseColor,
-        (1 + colorVariation) * brightness,
-      );
-
-      // Draw tile top
-      ctx.fillStyle = adjustedColor;
-      ctx.beginPath();
-      ctx.moveTo(0, 0);
-      ctx.lineTo(tileSize.width / 2, tileSize.height / 2);
-      ctx.lineTo(0, tileSize.height);
-      ctx.lineTo(-tileSize.width / 2, tileSize.height / 2);
-      ctx.closePath();
-      ctx.fill();
-
-      // Draw edges with brightness
-      if (tile.elevation > 0.05) {
-        const edgeHeight = tile.elevation * 45; // Match the tile elevation offset
-
-        ctx.fillStyle = this.adjustBrightness(adjustedColor, 0.65);
-        ctx.beginPath();
-        ctx.moveTo(0, tileSize.height);
-        ctx.lineTo(tileSize.width / 2, tileSize.height / 2);
-        ctx.lineTo(tileSize.width / 2, tileSize.height / 2 + edgeHeight);
-        ctx.lineTo(0, tileSize.height + edgeHeight);
-        ctx.closePath();
-        ctx.fill();
-
-        ctx.fillStyle = this.adjustBrightness(adjustedColor, 0.45);
-        ctx.beginPath();
-        ctx.moveTo(0, tileSize.height);
-        ctx.lineTo(-tileSize.width / 2, tileSize.height / 2);
-        ctx.lineTo(-tileSize.width / 2, tileSize.height / 2 + edgeHeight);
-        ctx.lineTo(0, tileSize.height + edgeHeight);
-        ctx.closePath();
-        ctx.fill();
-      }
-
-      ctx.restore();
-    }
-
-    // Draw decorations with brightness
+    
+    // Apply brightness filter
     ctx.filter = `brightness(${brightness}) saturate(1.2)`;
-    for (const decoration of terrain.decorations) {
-      const tile = sortedTiles.find(
-        (t) => t.x === decoration.x && t.y === decoration.y,
-      );
-      if (tile) {
-        this.drawDecoration(
-          ctx,
-          decoration.x,
-          decoration.y,
-          decoration.type,
-          decoration.variant,
-          tile.elevation,
-          1,
-          tileSize.width,
-          tileSize.height,
-        );
-      }
-    }
-    ctx.filter = "none";
-
+    
+    // Render directly with brightness effect
+    await this.renderIslandContent(ctx, island);
+    
     ctx.restore();
-
-    // Draw shield/banner/logo normally (not affected by hover)
-    ctx.save();
-    ctx.scale(screenScale, screenScale);
-
-    const shield = this.assetCache.shields.get(`shield_${island.chainId}`);
-    if (!shield) {
-      this.getOrCreateShield(island.chainId, island.brandColor);
-    }
-
-    if (shield) {
-      const unscaleRatio = 1 / island.scale;
-      const shieldScale = 0.35;
-      const shieldWidth = this.SHIELD_WIDTH * shieldScale;
-      const shieldHeight = this.SHIELD_HEIGHT * shieldScale;
-      const bannerWidth = this.BANNER_WIDTH * shieldScale;
-      const bannerHeight = this.BANNER_HEIGHT * shieldScale;
-      const logoSize = this.LOGO_SIZE * shieldScale * 1.2;
-
-      const shieldX = -shieldWidth / 2;
-      const shieldY = -500; // Positioned above the island
-      const bannerX = -bannerWidth / 2;
-      const bannerY = shieldY + shieldHeight - bannerHeight * 0.7;
-
-      ctx.save();
-      ctx.scale(unscaleRatio, unscaleRatio);
-
-      ctx.drawImage(shield, shieldX, shieldY, shieldWidth, shieldHeight);
-
-      if (this.assetCache.banner) {
-        ctx.drawImage(
-          this.assetCache.banner,
-          bannerX,
-          bannerY,
-          bannerWidth,
-          bannerHeight,
-        );
-
-        const fontSize = 120 * shieldScale;
-        ctx.font = `bold ${fontSize}px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif`;
-        ctx.fillStyle = "#4B2F00";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-
-        const maxWidth = bannerWidth * 0.7;
-        const lines = this.wrapText(ctx, island.name.toUpperCase(), maxWidth);
-        const lineHeight = fontSize * 1.2;
-        const totalTextHeight = lines.length * lineHeight;
-        const startY =
-          bannerY + (bannerHeight - totalTextHeight) / 2 + lineHeight / 2 - 10;
-
-        lines.forEach((line, index) => {
-          const y = startY + index * lineHeight;
-          ctx.fillText(line, 0, y);
-        });
-      }
-
-      const logo = this.assetCache.logos.get(`logo_${island.chainId}`);
-      if (!logo && island.logoUrl) {
-        this.getOrLoadLogo(island.chainId, island.logoUrl);
-      }
-      if (logo) {
-        const logoX = -logoSize / 2;
-        const logoY = shieldY + shieldHeight * 0.4 - logoSize / 2;
-        ctx.drawImage(logo, logoX, logoY, logoSize, logoSize);
-      }
-
-      ctx.restore();
-    }
-
-    ctx.restore(); // Restore from screenScale
-
-    ctx.restore(); // Restore from main transform
   }
 
   // Wrap text to fit within a maximum width
