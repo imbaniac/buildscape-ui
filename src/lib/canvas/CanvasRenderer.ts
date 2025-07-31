@@ -30,6 +30,10 @@ export default class CanvasRenderer {
 
   // Ocean gradient cache
   private oceanGradient: CanvasGradient | null = null;
+  
+  // Background cache for static elements
+  private backgroundCache: HTMLCanvasElement | null = null;
+  private backgroundCacheValid: boolean = false;
 
   // Islands data
   private islands: Island[] = [];
@@ -149,47 +153,89 @@ export default class CanvasRenderer {
     // Clear canvas
     this.backgroundCtx.clearRect(0, 0, width, height);
 
-    // Draw ocean gradient
-    this.drawOceanGradient();
+    // Create background cache if needed
+    if (!this.backgroundCache || !this.backgroundCacheValid) {
+      this.createBackgroundCache();
+    }
 
-    // Draw isometric grid
-    this.drawIsometricGrid();
+    // Just draw the cached background
+    if (this.backgroundCache) {
+      this.backgroundCtx.drawImage(this.backgroundCache, 0, 0);
+      this.profiler?.countOperation('drawImage');
+    }
 
-    // Draw "EVM SEA" label
+    // Only draw dynamic "EVM SEA" label (position changes with viewport)
     this.drawOceanLabel();
   }
 
-  // Draw ocean gradient background
-  private drawOceanGradient(): void {
+  // Create cached background with static elements
+  private createBackgroundCache(): void {
     const canvas = this.backgroundCtx.canvas;
     const width = canvas.width;
     const height = canvas.height;
 
-    // Create gradient if not cached
-    if (!this.oceanGradient) {
-      this.oceanGradient = this.backgroundCtx.createRadialGradient(
-        width / 2,
-        -height * 0.2,
-        0,
-        width / 2,
-        height * 0.8,
-        Math.max(width, height) * 1.2,
-      );
-
-      // Lighter ocean colors
-      this.oceanGradient.addColorStop(0, "#4da3c9");
-      this.oceanGradient.addColorStop(0.2, "#4599bf");
-      this.oceanGradient.addColorStop(0.4, "#3d8fb5");
-      this.oceanGradient.addColorStop(0.6, "#3585ab");
-      this.oceanGradient.addColorStop(0.8, "#2d7ba1");
-      this.oceanGradient.addColorStop(1, "#267398");
+    // Create cache canvas if not exists
+    if (!this.backgroundCache) {
+      this.backgroundCache = document.createElement('canvas');
     }
-
-    this.backgroundCtx.fillStyle = this.oceanGradient;
-    this.backgroundCtx.fillRect(0, 0, width, height);
     
-    // Manually track operations for profiler
-    this.profiler?.countOperation('fillRect');
+    // Resize cache canvas to match main canvas
+    this.backgroundCache.width = width;
+    this.backgroundCache.height = height;
+    
+    const cacheCtx = this.backgroundCache.getContext('2d');
+    if (!cacheCtx) return;
+
+    // Draw static elements to cache
+    // Draw ocean gradient
+    this.drawOceanGradientToContext(cacheCtx, width, height);
+
+    // Draw isometric grid (currently removed for performance)
+    // this.drawIsometricGridToContext(cacheCtx);
+
+    this.backgroundCacheValid = true;
+  }
+
+  // Invalidate background cache when canvas size changes
+  invalidateBackgroundCache(): void {
+    this.backgroundCacheValid = false;
+  }
+
+  // Draw ocean gradient background (legacy method - now uses cache)
+  private drawOceanGradient(): void {
+    const canvas = this.backgroundCtx.canvas;
+    const width = canvas.width;
+    const height = canvas.height;
+    this.drawOceanGradientToContext(this.backgroundCtx, width, height);
+  }
+
+  // Draw ocean gradient to any context
+  private drawOceanGradientToContext(ctx: CanvasRenderingContext2D, width: number, height: number): void {
+    // Create gradient
+    const gradient = ctx.createRadialGradient(
+      width / 2,
+      -height * 0.2,
+      0,
+      width / 2,
+      height * 0.8,
+      Math.max(width, height) * 1.2,
+    );
+
+    // Lighter ocean colors
+    gradient.addColorStop(0, "#4da3c9");
+    gradient.addColorStop(0.2, "#4599bf");
+    gradient.addColorStop(0.4, "#3d8fb5");
+    gradient.addColorStop(0.6, "#3585ab");
+    gradient.addColorStop(0.8, "#2d7ba1");
+    gradient.addColorStop(1, "#267398");
+
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, width, height);
+    
+    // Manually track operations for profiler (only when using main context)
+    if (ctx === this.backgroundCtx) {
+      this.profiler?.countOperation('fillRect');
+    }
   }
 
   // Draw static water pattern (no animation)
