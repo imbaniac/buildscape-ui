@@ -3,6 +3,7 @@
   import CanvasRenderer from "$lib/canvas/CanvasRenderer";
   import ViewportManager from "$lib/canvas/ViewportManager";
   import InteractionManager from "$lib/canvas/InteractionManager";
+  import PerformanceProfiler from "$lib/canvas/PerformanceProfiler";
   import { parseFrontmatterAndContent } from "$lib/utils/markdown";
   import {
     overviewStore,
@@ -12,6 +13,7 @@
   import savedPositions from "$lib/positions.json";
   import BoatLoader from "./BoatLoader.svelte";
   import FPSMeter from "./FPSMeter.svelte";
+  import PerformanceMonitor from "./PerformanceMonitor.svelte";
   import Header from "./Header.svelte";
   import SearchBar from "./SearchBar.svelte";
   import { goto } from "$app/navigation";
@@ -36,6 +38,7 @@
   let renderer = $state<CanvasRenderer>();
   let viewportManager = $state<ViewportManager>();
   let interactionManager = $state<InteractionManager>();
+  let profiler = $state<PerformanceProfiler>();
 
   // Animation frame
   let animationFrameId: number | null = null;
@@ -344,6 +347,11 @@
       interactionCanvas,
       viewportManager,
     );
+    
+    // Initialize performance profiler
+    profiler = new PerformanceProfiler();
+    renderer.setProfiler(profiler);
+    
     interactionManager = new InteractionManager(
       canvasContainer,
       viewportManager,
@@ -418,6 +426,18 @@
       memoryDebugger.getAllMeasurements();
       memoryDebugger.countIslandAssets(renderer);
     }, 2000);
+    
+    // Export for debugging in dev mode
+    if (import.meta.env.DEV) {
+      (window as any).__canvasRenderer = renderer;
+      (window as any).__viewportManager = viewportManager;
+      (window as any).__profiler = profiler;
+      
+      // Make benchmark available
+      import('$lib/canvas/performance-benchmark').then(module => {
+        (window as any).PerformanceBenchmark = module.PerformanceBenchmark;
+      });
+    }
 
     // Start render loop
     const renderLoop = async () => {
@@ -506,7 +526,7 @@
     />
   {/if}
 
-  <FPSMeter />
+  <PerformanceMonitor {profiler} expanded={false} />
 
   {#if import.meta.env.DEV}
     <div class="controls">
