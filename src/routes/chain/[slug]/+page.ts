@@ -1,7 +1,7 @@
 import { error, redirect } from "@sveltejs/kit";
 import type { PageLoad } from "./$types";
-import YAML from "yaml";
 import type { BookmarkTab, WalletsByCategory } from "$lib/types";
+import { parseFrontmatterAndContent } from "$lib/utils/markdown";
 
 // Keep chain modules eager for now (they're small text files)
 const chainMdModules = import.meta.glob("/data/chains/*.md", {
@@ -78,19 +78,6 @@ async function resolveWalletLogo(
     }
   }
   return undefined;
-}
-
-function parseFrontmatterAndContent(raw: string): {
-  frontmatter: any;
-  content: string;
-} {
-  const match = /^---\n([\s\S]*?)\n---\n?([\s\S]*)$/m.exec(raw);
-  if (match) {
-    const frontmatter = YAML.parse(match[1]);
-    const content = match[2].trim();
-    return { frontmatter, content };
-  }
-  return { frontmatter: {}, content: raw.trim() };
 }
 
 async function parseWallets(

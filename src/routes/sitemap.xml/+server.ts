@@ -1,5 +1,5 @@
 import type { RequestHandler } from './$types';
-import YAML from 'yaml';
+import { parseFrontmatterAndContent } from '$lib/utils/markdown';
 
 // Import all chain markdown files
 const chainMdModules = import.meta.glob('/data/chains/*.md', {
@@ -7,19 +7,6 @@ const chainMdModules = import.meta.glob('/data/chains/*.md', {
   query: '?raw',
   import: 'default',
 });
-
-function parseFrontmatterAndContent(raw: string): {
-  frontmatter: any;
-  content: string;
-} {
-  const match = /^---\n([\s\S]*?)\n---\n?([\s\S]*)$/m.exec(raw);
-  if (match) {
-    const frontmatter = YAML.parse(match[1]);
-    const content = match[2].trim();
-    return { frontmatter, content };
-  }
-  return { frontmatter: {}, content: raw.trim() };
-}
 
 export const GET: RequestHandler = async ({ url }) => {
   const baseUrl = 'https://buildscape.org';

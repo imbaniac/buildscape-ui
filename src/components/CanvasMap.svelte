@@ -3,7 +3,7 @@
   import CanvasRenderer from "$lib/canvas/CanvasRenderer";
   import ViewportManager from "$lib/canvas/ViewportManager";
   import InteractionManager from "$lib/canvas/InteractionManager";
-  import YAML from "yaml";
+  import { parseFrontmatterAndContent } from "$lib/utils/markdown";
   import {
     overviewStore,
     tvlLookupByChainId,
@@ -94,20 +94,6 @@
       }
     }
     return undefined;
-  }
-
-  // Helper to extract YAML frontmatter
-  function parseFrontmatterAndContent(raw: string): {
-    frontmatter: any;
-    content: string;
-  } {
-    const match = /^---\n([\s\S]*?)\n---\n?([\s\S]*)$/m.exec(raw);
-    if (match) {
-      const frontmatter = YAML.parse(match[1]);
-      const content = match[2].trim();
-      return { frontmatter, content };
-    }
-    return { frontmatter: {}, content: raw.trim() };
   }
 
   // Load static chain data
