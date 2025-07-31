@@ -410,6 +410,9 @@
       // Update viewport
       viewportManager?.setScreenSize(width, height);
 
+      // Invalidate background cache on resize
+      renderer?.invalidateBackgroundCache();
+
       // Force re-render
       renderer?.renderAll();
     };
