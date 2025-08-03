@@ -1,22 +1,13 @@
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1000 1000" style="enable-background:new 0 0 400 400;" xml:space="preserve" width="1000" height="1000"><g transform="translate(0, 0) scale(2.5)"><style type="text/css">
-		.st0 {
-			fill-rule: evenodd;
-			clip-rule: evenodd;
-			fill: transparent;
-		}
-
-		.st1 {
-			fill-rule: evenodd;
-			clip-rule: evenodd;
-			fill: #4E529A;
-		}
-
-		.st2 {
-			fill-rule: evenodd;
-			clip-rule: evenodd;
-			fill: #8C8DFC;
-		}
-	</style><rect x="-0.5" y="-1" class="st0" width="400" height="400"/><g>
-		<path class="st1" d="M316,199l-66.7-66.4v48.6l-66.2,48.7l66.2,0v35.5L316,199z"/>
-		<path class="st2" d="M81,199l66.7,66.4v-48.3l66.2-49.1l-66.2,0v-35.5L81,199z"/>
-	</g></g></svg>
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+	y="0px" viewBox="0 0 1000 1000" style="enable-background:new 0 0 400 400;" xml:space="preserve" width="1000"
+	height="1000">
+	<g transform="translate(0, 0) scale(2.5)">
+		<rect x="-0.5" y="-1" fill="transparent" fill-rule="evenodd" clip-rule="evenodd" width="400" height="400" />
+		<g>
+			<path fill="#4E529A" fill-rule="evenodd" clip-rule="evenodd"
+				d="M316,199l-66.7-66.4v48.6l-66.2,48.7l66.2,0v35.5L316,199z" />
+			<path fill="#8C8DFC" fill-rule="evenodd" clip-rule="evenodd"
+				d="M81,199l66.7,66.4v-48.3l66.2-49.1l-66.2,0v-35.5L81,199z" />
+		</g>
+	</g>
+</svg>
