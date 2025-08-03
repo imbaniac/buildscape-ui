@@ -123,36 +123,30 @@
 
   const staticChains: Record<string, any> = loadStaticChains();
 
-  // Calculate island scale based on TVL using tiered scaling
+  // Calculate island scale based on TVL - power function for clear hierarchy
   function calculateIslandScale(tvl: number): number {
-    // Tiered scaling system for visual hierarchy
     const tvlMillions = tvl / 1_000_000;
-
-    let scale;
+    
+    const MIN_SCALE = 0.3;
+    const MAX_SCALE = 6.0;
+    
     if (tvlMillions < 10) {
-      // Micro tier: < $10M TVL
-      // Start at 0.3, grow slowly to 0.5
-      scale = 0.3 + (tvlMillions / 10) * 0.2;
-    } else if (tvlMillions < 100) {
-      // Small tier: $10M - $100M TVL
-      // Scale from 0.5 to 0.8
-      scale = 0.5 + ((tvlMillions - 10) / 90) * 0.3;
-    } else if (tvlMillions < 1000) {
-      // Medium tier: $100M - $1B TVL
-      // Scale from 0.8 to 1.5
-      scale = 0.8 + ((tvlMillions - 100) / 900) * 0.7;
-    } else if (tvlMillions < 10000) {
-      // Large tier: $1B - $10B TVL
-      // Scale from 1.5 to 2.5
-      scale = 1.5 + ((tvlMillions - 1000) / 9000) * 1.0;
-    } else {
-      // Mega tier: > $10B TVL
-      // Scale from 2.5+, steeper growth for dominance
-      scale = 2.5 + ((tvlMillions - 10000) / 10000) * 1.5;
+      // Tiny chains: keep them small but visible
+      return MIN_SCALE;
     }
-
-    // Cap at 5.0 for maximum size
-    return Math.min(scale, 5.0);
+    
+    // Power function: scale = 0.3 + (tvlMillions^0.4) * 0.08
+    // This gives us:
+    // $10M -> 0.3 + 2.51 * 0.08 = 0.50
+    // $100M -> 0.3 + 6.31 * 0.08 = 0.80
+    // $1B -> 0.3 + 15.85 * 0.08 = 1.57
+    // $3.4B (Base) -> 0.3 + 23.25 * 0.08 = 2.16
+    // $10B -> 0.3 + 39.81 * 0.08 = 3.48
+    // $65B (Ethereum) -> 0.3 + 71.5 * 0.08 = 6.02 (capped at 6.0)
+    
+    const scale = MIN_SCALE + Math.pow(tvlMillions, 0.4) * 0.08;
+    
+    return Math.min(scale, MAX_SCALE);
   }
 
   // Search implementation
