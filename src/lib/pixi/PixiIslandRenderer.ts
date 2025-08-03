@@ -99,7 +99,7 @@ export default class PixiIslandRenderer {
       // Load all logos at once
       await Assets.load(uniqueUrls);
       // Track loaded URLs for cleanup
-      uniqueUrls.forEach(url => this.loadedAssetUrls.add(url));
+      uniqueUrls.forEach((url) => this.loadedAssetUrls.add(url));
     } catch (error) {
       console.error("[PixiIslandRenderer] Error preloading logos:", error);
     }
@@ -132,11 +132,11 @@ export default class PixiIslandRenderer {
 
     try {
       // Add banner to Assets system if not already added
-      const bannerKey = 'island-banner';
+      const bannerKey = "island-banner";
       if (!Assets.cache.has(bannerKey)) {
         Assets.add({ alias: bannerKey, src: assetUrls.banner });
       }
-      
+
       // Load banner texture via Assets system
       this.bannerTexture = await Assets.load(bannerKey);
       this.loadedAssetUrls.add(bannerKey);
@@ -268,9 +268,8 @@ export default class PixiIslandRenderer {
     const rng = new SeededRandom(island.chainId);
 
     // Calculate island size based on TVL (scale)
-    // Direct linear scaling for clear size differences
-    const baseSize = 20;
-    const size = Math.max(8, Math.min(40, Math.floor(baseSize * island.scale)));
+    const baseSize = 15;
+    const size = Math.max(8, Math.min(80, Math.floor(baseSize * island.scale)));
 
     const center = size / 2;
 
