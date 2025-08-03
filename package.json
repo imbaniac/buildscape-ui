@@ -39,6 +39,8 @@
 	"dependencies": {
 		"gray-matter": "^4.0.3",
 		"marked": "^15.0.12",
+		"pixi-viewport": "^6.0.3",
+		"pixi.js": "^8.11.0",
 		"posthog-js": "^1.258.2",
 		"yaml": "^2.8.0",
 		"zod": "^3.25.64"

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from '$app/stores';
   
-  const errorMessages = {
+  const errorMessages: Record<number, { title: string; message: string }> = {
     404: {
       title: 'Uncharted Territory',
       message: "This blockchain island hasn't been<br />discovered on our map yet"
@@ -13,15 +13,16 @@
     503: {
       title: 'Port Closed',
       message: 'The harbor is temporarily closed for maintenance.<br />Please check back soon.'
-    },
-    default: {
-      title: 'Navigation Error',
-      message: 'Something went wrong on our voyage.<br />Let\'s get you back to safe waters.'
     }
   };
   
+  const defaultError = {
+    title: 'Navigation Error',
+    message: 'Something went wrong on our voyage.<br />Let\'s get you back to safe waters.'
+  };
+  
   $: status = $page.status || 500;
-  $: error = errorMessages[status] || errorMessages.default;
+  $: error = errorMessages[status] || defaultError;
 </script>
 
 <div class="error-container">

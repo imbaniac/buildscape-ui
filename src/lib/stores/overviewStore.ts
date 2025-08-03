@@ -1,9 +1,5 @@
 import { writable, derived, type Readable } from "svelte/store";
-import {
-  fetchOverviewData,
-  type OverviewData,
-  type ChainOverview,
-} from "$lib/api/overview";
+import { fetchOverviewData, type OverviewData } from "$lib/api/overview";
 
 interface OverviewStoreState {
   isLoading: boolean;
@@ -77,7 +73,7 @@ export const tvlLookupByChainId: Readable<Map<number, number>> = derived(
     }
 
     return lookup;
-  }
+  },
 );
 
 // Derived store for TPS lookup map by chain ID
@@ -94,5 +90,5 @@ export const tpsLookupByChainId: Readable<Map<number, number>> = derived(
     }
 
     return lookup;
-  }
+  },
 );
