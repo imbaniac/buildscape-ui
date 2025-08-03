@@ -699,20 +699,67 @@ export default class PixiIslandRenderer {
       banner.y = shieldY + (shieldHeight - bannerHeight * 1.2);
       shieldContainer.addChild(banner);
 
-      // Add chain name text using BitmapText
+      // Add chain name text using BitmapText with wrapping support
       const fontSize = 120 * shieldScale;
-      const text = new BitmapText({
-        text: island.name.toUpperCase(),
-        style: {
-          fontFamily: "IslandName",
-          fontSize: fontSize,
-        },
+      const maxWidth = bannerWidth * 0.6;
+      const nameText = island.name.toUpperCase();
+
+      // Create a container for potentially multiple lines of text
+      const textContainer = new Container();
+
+      // Split text into words
+      const words = nameText.split(" ");
+      const lines: string[] = [];
+      let currentLine = "";
+
+      // Build lines by checking width
+      for (const word of words) {
+        const testLine = currentLine ? `${currentLine} ${word}` : word;
+        const testText = new BitmapText({
+          text: testLine,
+          style: {
+            fontFamily: "IslandName",
+            fontSize: fontSize,
+          },
+        });
+
+        if (testText.width > maxWidth && currentLine) {
+          // Current line is too long, save it and start new line
+          lines.push(currentLine);
+          currentLine = word;
+        } else {
+          currentLine = testLine;
+        }
+
+        testText.destroy();
+      }
+
+      // Add remaining text
+      if (currentLine) {
+        lines.push(currentLine);
+      }
+
+      // Create BitmapText for each line
+      const lineHeight = fontSize * 0.9;
+      const totalHeight = lines.length * lineHeight;
+      const startY = -(totalHeight / 2) + lineHeight / 5;
+
+      lines.forEach((line, index) => {
+        const lineText = new BitmapText({
+          text: line,
+          style: {
+            fontFamily: "IslandName",
+            fontSize: fontSize,
+          },
+        });
+
+        lineText.anchor.set(0.5);
+        lineText.y = startY + index * lineHeight;
+        textContainer.addChild(lineText);
       });
 
-      text.anchor.set(0.5);
-      text.y = banner.y;
-      // BitmapText doesn't have maxWidth, rely on font size scaling
-      shieldContainer.addChild(text);
+      textContainer.y = banner.y;
+      shieldContainer.addChild(textContainer);
     }
 
     // Add logo
