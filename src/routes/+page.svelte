@@ -194,8 +194,13 @@
     const position = (savedPositions as any)[chainKey];
     if (!position || !viewport) return;
 
-    // Center the viewport on the island
-    viewport.moveCenter(position.x, position.y);
+    // Animate to the island with a moderate zoom level
+    viewport.animate({
+      position: { x: position.x, y: position.y },
+      scale: 0.25, // Less aggressive zoom - shows island with context
+      time: 600, // Slightly faster animation
+      ease: "easeInOutSine",
+    });
 
     // Update search highlighting
     mapRenderer?.setSearchResults(searchResults);
@@ -396,6 +401,17 @@
 
       // Initialize map renderer with viewport
       mapRenderer = new PixiMapRenderer(app, viewport);
+      
+      // Setup island move callback for edit mode
+      mapRenderer.setOnIslandMove((slug: string, x: number, y: number) => {
+        // Update island positions
+        islandPositions = { ...islandPositions, [slug]: { x, y } };
+      });
+      
+      // Setup dirty callback for re-renders
+      mapRenderer.setOnDirty(() => {
+        renderManager?.markDirty();
+      });
 
       // Initialize render manager with debug mode in development
       renderManager = new RenderManager(app, import.meta.env.DEV);
@@ -414,37 +430,22 @@
 
       // Handle island clicks
       viewport.on("clicked", (event) => {
+        // Don't navigate if in edit mode
+        if (editMode) {
+          return;
+        }
+        
         const island = mapRenderer?.getIslandAtPosition(
           event.world.x,
           event.world.y,
         );
 
         if (island) {
-          if (editMode) {
-            // In edit mode, allow dragging
-            // Will be implemented in Phase 2
-          } else {
-            goto(`/chain/${island.slug}`);
-          }
+          goto(`/chain/${island.slug}`);
         }
       });
 
-      // Handle hover with optimized rendering
-      let lastHoveredIsland: Island | null = null;
-      viewport.on("pointermove", (event) => {
-        if (!viewport || !mapRenderer) return;
-
-        // Get world position from screen coordinates
-        const worldPos = viewport.toWorld(event.global.x, event.global.y);
-        const island = mapRenderer.getIslandAtPosition(worldPos.x, worldPos.y);
-
-        // Only update and render if hover state changed
-        if (island !== lastHoveredIsland) {
-          mapRenderer.setHoveredIsland(island);
-          lastHoveredIsland = island;
-          renderManager?.markDirty();
-        }
-      });
+      // Hover is now handled directly by island containers in PixiMapRenderer
 
       // Keyboard shortcuts
       keyboardHandler = (event: KeyboardEvent) => {
