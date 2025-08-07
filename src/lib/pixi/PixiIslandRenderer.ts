@@ -220,13 +220,14 @@ export default class PixiIslandRenderer {
       const shieldHeight = 1115 * shieldScale;
 
       // Calculate how much the shield extends above the island
+      // Using the same positioning as in addShieldAndBannerToContainer
       let shieldY: number;
       if (island.scale > 1.5) {
         shieldY = -bounds.height / 4;
       } else if (island.scale > 0.8) {
-        shieldY = -bounds.height / 2.5;
+        shieldY = -bounds.height / 2 - 100; // Medium islands - matches line 755
       } else {
-        shieldY = -bounds.height / 2 - 50;
+        shieldY = -bounds.height + 100; // Small islands - matches line 758
       }
 
       // Shield extends from its center point, so top edge is at shieldY - shieldHeight/2
@@ -236,7 +237,7 @@ export default class PixiIslandRenderer {
 
       // If shield extends above island, we need extra space
       if (shieldTop < islandTop) {
-        extraTopPadding = Math.abs(shieldTop - islandTop) + 50;
+        extraTopPadding = Math.abs(shieldTop - islandTop) + 100; // Added more padding
         extraHeight = extraTopPadding;
       }
     }
@@ -268,7 +269,7 @@ export default class PixiIslandRenderer {
     const rng = new SeededRandom(island.chainId);
 
     // Calculate island size based on TVL (scale)
-    const baseSize = 15;
+    const baseSize = 18;
     const size = Math.max(8, Math.min(80, Math.floor(baseSize * island.scale)));
 
     const center = size / 2;
@@ -286,7 +287,7 @@ export default class PixiIslandRenderer {
         const angle = Math.atan2(dy, dx);
         const noiseFreq1 = 3 + (island.chainId % 7);
         const noiseFreq2 = 5 + (island.chainId % 5);
-        const noiseAmp1 = 0.08 + (island.chainId % 3) * 0.02;
+        const noiseAmp1 = 0.04 + (island.chainId % 3) * 0.02;
         const noiseAmp2 = 0.05 + (island.chainId % 4) * 0.015;
 
         const noise =
@@ -367,11 +368,11 @@ export default class PixiIslandRenderer {
           // Tree spawn chance based on TPS
           let treeChance = 0;
           if (island.tps > 50) {
-            treeChance = 0.08; // Lush
+            treeChance = 0.3; // Lush
           } else if (island.tps > 10) {
-            treeChance = 0.04; // Medium
+            treeChance = 0.1; // Medium
           } else if (island.tps > 1) {
-            treeChance = 0.02; // Sparse
+            treeChance = 0.05; // Sparse
           } else if (island.tps > 0.5) {
             treeChance = 0.005; // Very sparse for dry areas
           }
@@ -382,8 +383,8 @@ export default class PixiIslandRenderer {
             decorations.push({
               x: x - center,
               y: y - center,
-              type: isBeach ? "palm" : "tree",
-              variant: rng.intBetween(0, 2),
+              type: isBeach ? "palm" : island.tps < 1 ? "palm" : "tree",
+              variant: rng.intBetween(0, 1),
             });
           }
         }
@@ -510,12 +511,12 @@ export default class PixiIslandRenderer {
       if (decoration.type === "tree") {
         // Tree shadow
         graphics.beginPath();
-        graphics.ellipse(decorX, decorY + tileHeight / 2 + 5, 12, 6);
+        graphics.ellipse(decorX, decorY + tileHeight / 2 + 5, 18, 9);
         graphics.fill({ color: 0x000000, alpha: 0.15 });
 
         // Tree trunk
         graphics.beginPath();
-        graphics.rect(decorX - 2, decorY + tileHeight / 2 - 13, 4, 18);
+        graphics.rect(decorX - 3, decorY + tileHeight / 2 - 19, 6, 27);
         graphics.fill({ color: 0x4a3829 });
 
         // Tree crown
@@ -523,38 +524,89 @@ export default class PixiIslandRenderer {
         const crownColor = crownColors[decoration.variant % crownColors.length];
 
         graphics.beginPath();
-        graphics.circle(decorX, decorY + tileHeight / 2 - 17, 10);
+        graphics.circle(decorX, decorY + tileHeight / 2 - 25, 15);
         graphics.fill({ color: crownColor });
 
         graphics.beginPath();
-        graphics.circle(decorX - 5, decorY + tileHeight / 2 - 13, 8);
+        graphics.circle(decorX - 7, decorY + tileHeight / 2 - 19, 12);
         graphics.fill({ color: crownColor });
 
         graphics.beginPath();
-        graphics.circle(decorX + 5, decorY + tileHeight / 2 - 13, 8);
+        graphics.circle(decorX + 7, decorY + tileHeight / 2 - 19, 12);
         graphics.fill({ color: crownColor });
       } else if (decoration.type === "palm") {
         // Palm shadow
         graphics.beginPath();
-        graphics.ellipse(decorX, decorY + tileHeight / 2 + 5, 10, 5);
+        graphics.ellipse(decorX, decorY + tileHeight / 2 + 5, 15, 7);
         graphics.fill({ color: 0x000000, alpha: 0.15 });
 
         // Palm trunk - simple straight line for now
         graphics.beginPath();
         graphics.moveTo(decorX, decorY + tileHeight / 2 + 5);
-        graphics.lineTo(decorX + 2, decorY + tileHeight / 2 - 20);
-        graphics.stroke({ width: 3, color: 0x8b6239 });
+        graphics.lineTo(decorX + 3, decorY + tileHeight / 2 - 30);
+        graphics.stroke({ width: 4, color: 0x8b6239 });
 
         // Palm fronds
         const frondAngles = [0, 60, 120, 180, 240, 300];
         frondAngles.forEach((angle) => {
           const rad = (angle * Math.PI) / 180;
           graphics.beginPath();
-          graphics.moveTo(decorX + 2, decorY + tileHeight / 2 - 20);
-          const endX = decorX + 2 + Math.cos(rad) * 15;
-          const endY = decorY + tileHeight / 2 - 20 + Math.sin(rad) * 8;
+          graphics.moveTo(decorX + 3, decorY + tileHeight / 2 - 30);
+          const endX = decorX + 3 + Math.cos(rad) * 22;
+          const endY = decorY + tileHeight / 2 - 30 + Math.sin(rad) * 12;
           graphics.lineTo(endX, endY);
-          graphics.stroke({ width: 2, color: 0x228b22 });
+          graphics.stroke({ width: 3, color: 0x228b22 });
+        });
+      }
+
+      if (decoration.type === "tree") {
+        // Tree shadow
+        graphics.beginPath();
+        graphics.ellipse(decorX, decorY + tileHeight / 2 + 5, 24, 12);
+        graphics.fill({ color: 0x000000, alpha: 0.15 });
+
+        // Tree trunk
+        graphics.beginPath();
+        graphics.rect(decorX - 4, decorY + tileHeight / 2 - 26, 8, 36);
+        graphics.fill({ color: 0x4a3829 });
+
+        // Tree crown
+        const crownColors = [0x2d5016, 0x3a6218, 0x4a7c1f];
+        const crownColor = crownColors[decoration.variant % crownColors.length];
+
+        graphics.beginPath();
+        graphics.circle(decorX, decorY + tileHeight / 2 - 34, 20);
+        graphics.fill({ color: crownColor });
+
+        graphics.beginPath();
+        graphics.circle(decorX - 10, decorY + tileHeight / 2 - 26, 16);
+        graphics.fill({ color: crownColor });
+
+        graphics.beginPath();
+        graphics.circle(decorX + 10, decorY + tileHeight / 2 - 26, 16);
+        graphics.fill({ color: crownColor });
+      } else if (decoration.type === "palm") {
+        // Palm shadow
+        graphics.beginPath();
+        graphics.ellipse(decorX, decorY + tileHeight / 2 + 5, 20, 10);
+        graphics.fill({ color: 0x000000, alpha: 0.15 });
+
+        // Palm trunk - simple straight line for now
+        graphics.beginPath();
+        graphics.moveTo(decorX, decorY + tileHeight / 2 + 5);
+        graphics.lineTo(decorX + 4, decorY + tileHeight / 2 - 40);
+        graphics.stroke({ width: 6, color: 0x8b6239 });
+
+        // Palm fronds
+        const frondAngles = [0, 60, 120, 180, 240, 300];
+        frondAngles.forEach((angle) => {
+          const rad = (angle * Math.PI) / 180;
+          graphics.beginPath();
+          graphics.moveTo(decorX + 4, decorY + tileHeight / 2 - 40);
+          const endX = decorX + 4 + Math.cos(rad) * 30;
+          const endY = decorY + tileHeight / 2 - 40 + Math.sin(rad) * 16;
+          graphics.lineTo(endX, endY);
+          graphics.stroke({ width: 4, color: 0x228b22 });
         });
       }
     });
@@ -665,15 +717,16 @@ export default class PixiIslandRenderer {
     // Large islands: shield closer to center
     // Small islands: shield above island to avoid covering it
     let shieldY: number;
+
     if (island.scale > 1.5) {
       // Large islands (Ethereum, BNB, etc) - shield slightly above center
       shieldY = -bounds.height / 4;
-    } else if (island.scale > 0.8) {
+    } else if (island.scale > 0.7) {
       // Medium islands - shield more above
-      shieldY = -bounds.height / 2.5;
+      shieldY = -bounds.height / 2 - 100;
     } else {
       // Small islands - shield well above to not cover the island
-      shieldY = -bounds.height / 2 - 50;
+      shieldY = -bounds.height + 100;
     }
 
     // Add shield
