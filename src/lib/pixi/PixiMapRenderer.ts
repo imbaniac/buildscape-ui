@@ -9,6 +9,7 @@ import {
 import type { Viewport } from "pixi-viewport";
 import { goto } from "$app/navigation";
 import PixiIslandRenderer from "./PixiIslandRenderer";
+import IslandAtlasManager from "./IslandAtlasManager";
 import type { Island } from "$lib/types/island";
 import type RenderManager from "./RenderManager";
 
@@ -16,16 +17,19 @@ export default class PixiMapRenderer {
   private app: Application;
   private viewport: Viewport;
   private islandRenderer: PixiIslandRenderer;
+  private atlasManager: IslandAtlasManager;
   private renderManager: RenderManager | null = null;
 
   // Containers
   private oceanContainer: Container;
   private islandsContainer: Container;
+  private overlayContainer: Container; // For shields/banners on hover
   private highlightContainer: Container;
 
   // Islands data
   private islands: Island[] = [];
-  private islandContainers: Map<string, Container> = new Map();
+  private islandSprites: Map<string, Sprite> = new Map();
+  private islandContainers: Map<string, Container> = new Map(); // Keep for compatibility
 
   // Hover and search state
   private hoveredIsland: Island | null = null;
@@ -48,13 +52,15 @@ export default class PixiMapRenderer {
     this.app = app;
     this.viewport = viewport;
 
-    // Initialize island renderer
+    // Initialize island renderer and atlas manager
     this.islandRenderer = new PixiIslandRenderer();
     this.islandRenderer.setRenderer(app.renderer);
+    this.atlasManager = new IslandAtlasManager(app.renderer, this.islandRenderer);
 
     // Create containers
     this.oceanContainer = new Container();
     this.islandsContainer = new Container();
+    this.overlayContainer = new Container();
     this.highlightContainer = new Container();
 
     // Optimize container event modes for performance
@@ -64,7 +70,8 @@ export default class PixiMapRenderer {
     // Add containers to viewport in correct order
     this.viewport.addChild(this.oceanContainer);
     this.viewport.addChild(this.islandsContainer);
-    this.viewport.addChild(this.highlightContainer); // On top of islands
+    this.viewport.addChild(this.overlayContainer); // For hover overlays
+    this.viewport.addChild(this.highlightContainer); // On top of everything
 
     // Enable sorting for islands by Y position (for isometric depth)
     this.islandsContainer.sortableChildren = true;
@@ -133,6 +140,8 @@ export default class PixiMapRenderer {
 
     // Clear existing islands
     this.islandsContainer.removeChildren();
+    this.overlayContainer.removeChildren();
+    this.islandSprites.clear();
     this.islandContainers.clear();
 
     // Preload all logo assets
@@ -142,16 +151,13 @@ export default class PixiMapRenderer {
 
     await this.islandRenderer.preloadLogos(logoUrls);
 
-    // Pre-render all island textures while still showing loader
-    await this.islandRenderer.prerenderIslands(islands);
+    // Generate the texture atlas with all islands
+    await this.atlasManager.generateAtlas(islands);
 
-    // Create all island containers in parallel (now they'll use cached textures)
-    const containerPromises = islands.map((island) =>
-      this.createIslandContainer(island),
-    );
-
-    // Wait for all containers to be created
-    await Promise.all(containerPromises);
+    // Create sprites from atlas for all islands
+    for (const island of islands) {
+      await this.createIslandFromAtlas(island);
+    }
 
     // Trigger a single dirty update after all islands are added
     if (this.onDirty) {
@@ -159,20 +165,27 @@ export default class PixiMapRenderer {
     }
   }
 
-  private async createIslandContainer(island: Island): Promise<void> {
+  private async createIslandFromAtlas(island: Island): Promise<void> {
+    const sprite = this.atlasManager.createIslandSprite(island);
+    if (!sprite) {
+      console.warn(`[PixiMapRenderer] Failed to create sprite for ${island.slug}`);
+      return;
+    }
+
+    // Create a container wrapper for compatibility
     const container = new Container();
     container.x = island.x;
     container.y = island.y;
-
-    // Set zIndex for proper layering (based on Y position for isometric view)
     container.zIndex = island.y;
-
-    // Create the island graphics
-    const islandGraphics = await this.islandRenderer.createIsland(island);
-    container.addChild(islandGraphics);
+    
+    // Center the sprite in the container
+    sprite.x = 0;
+    sprite.y = 0;
+    container.addChild(sprite);
 
     // Add to containers
     this.islandsContainer.addChild(container);
+    this.islandSprites.set(island.slug, sprite);
     this.islandContainers.set(island.slug, container);
 
     // Make container interactive for hover/click

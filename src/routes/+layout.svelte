@@ -172,9 +172,11 @@
       });
     }
 
-    // Set islands asynchronously
+    // Set islands asynchronously (generates texture atlas)
+    console.log("[Layout] Generating island texture atlas...");
     mapRenderer.setIslands(islands).then(() => {
       islandsInitialized = true;
+      console.log("[Layout] Island texture atlas generated");
 
       // Trigger immediate render and mark map as ready
       renderManager?.markDirty();
@@ -316,7 +318,7 @@
 
       // Set zoom limits
       viewport.clampZoom({
-        minScale: 0.1,
+        minScale: 0.05,
         maxScale: 3,
       });
 
