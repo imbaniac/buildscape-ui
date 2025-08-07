@@ -11,7 +11,12 @@
 <div class="performance-overlay">
   <div class="metric">
     <span class="label">FPS:</span>
-    <span class="value" class:good={fps >= 50} class:warning={fps >= 30 && fps < 50} class:bad={fps < 30}>
+    <span
+      class="value"
+      class:good={fps >= 50}
+      class:warning={fps >= 30 && fps < 50}
+      class:bad={fps < 30}
+    >
       {fps.toFixed(1)}
     </span>
   </div>
@@ -22,7 +27,7 @@
   <div class="metric">
     <span class="label">Status:</span>
     <span class="value status" class:animating={isAnimating}>
-      {isAnimating ? 'Animating' : 'Idle'}
+      {isAnimating ? "Animating" : "Idle"}
     </span>
   </div>
 </div>
@@ -41,7 +46,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
-    z-index: 1000;
+    z-index: 1;
   }
 
   .metric {

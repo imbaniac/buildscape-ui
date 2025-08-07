@@ -1,153 +1,58 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import * as PixiViewport from "pixi-viewport";
-  import { Application } from "pixi.js";
   import { goto } from "$app/navigation";
-  import PixiMapRenderer from "$lib/pixi/PixiMapRenderer";
-  import RenderManager from "$lib/pixi/RenderManager";
-  import { webGLDebugger } from "$lib/pixi/WebGLDebugger";
-  import type { Island } from "$lib/types/island";
-  import {
-    overviewStore,
-    tvlLookupByChainId,
-    tpsLookupByChainId,
-  } from "$lib/stores/overviewStore";
-  import savedPositions from "$lib/positions.json";
-  import { parseFrontmatterAndContent } from "$lib/utils/markdown";
-  import BoatLoader from "../components/BoatLoader.svelte";
+  import { mapStore } from "$lib/stores/mapStore";
   import Header from "../components/Header.svelte";
   import SearchBar from "../components/SearchBar.svelte";
   import PerformanceOverlay from "../components/PerformanceOverlay.svelte";
+  import savedPositions from "$lib/positions.json";
 
-  import { type Viewport as ViewportType } from "pixi-viewport";
-
-  interface Props {
-    initialSearchQuery?: string;
-  }
-
-  let { initialSearchQuery = "" }: Props = $props();
-
-  // Container for Pixi app
-  let pixiContainer = $state<HTMLDivElement>();
-
-  // Pixi application
-  let app = $state<Application>();
-  let viewport = $state<ViewportType>();
-  let mapRenderer = $state<PixiMapRenderer>();
-  let renderManager = $state<RenderManager>();
+  // Get map components from store
+  const map = $derived($mapStore);
+  const viewport = $derived(map.viewport);
+  const mapRenderer = $derived(map.mapRenderer);
+  const renderManager = $derived(map.renderManager);
 
   // Search state
-  let searchQuery = $state(initialSearchQuery || "");
+  let searchQuery = $state("");
   let searchResults = $state<string[]>([]);
   let currentResultIndex = $state(0);
   let isSearchActive = $state(false);
   let hasSearched = $state(false);
   let searchDebounceTimer: ReturnType<typeof setTimeout> | null = null;
 
-  // Edit mode state
+  // Edit mode state (for dev)
   let editMode = $state(false);
-  let islandPositions = $state<Record<string, { x: number; y: number }>>(
-    savedPositions && Object.keys(savedPositions).length > 0
-      ? savedPositions
-      : {},
-  );
-
-  // Track if initial viewport has been set
-  let hasInitialViewportBeenSet = false;
   let showPositionsModal = $state(false);
   let positionsJson = $state("");
 
-  // Store data
-  let overviewStoreState = $derived($overviewStore);
-  let tvlLookupMap = $derived($tvlLookupByChainId);
-  let tpsLookupMap = $derived($tpsLookupByChainId);
-
-  // Show loader until we have TVL data
-  let showLoader = $derived(
-    overviewStoreState.isLoading || !overviewStoreState.data,
-  );
-
-  // Performance metrics
+  // Performance metrics (for dev)
   let performanceMetrics = $state({
     fps: 0,
     renderCount: 0,
     isAnimating: false,
   });
 
-  // Import chain data modules
+  // Load static chain data (same as in layout but we need it for search)
   const chainMdModules = import.meta.glob("/data/chains/*.md", {
     eager: true,
     query: "?raw",
     import: "default",
   });
 
-  const logoAssets = import.meta.glob("/assets/chains/*", {
-    eager: true,
-    query: "?url",
-    import: "default",
-  });
-
-  // Helper to resolve logo URL
-  function resolveLogoUrl(logoFilename: string): string | undefined {
-    for (const path in logoAssets) {
-      if (path.endsWith("/" + logoFilename)) {
-        const logoUrl = logoAssets[path] as string;
-        return logoUrl;
-      }
-    }
-    return undefined;
-  }
-
-  // Load static chain data
   function loadStaticChains(): Record<string, any> {
     const chains: Record<string, any> = {};
     for (const path in chainMdModules) {
       const raw = chainMdModules[path] as string;
       if (!raw) continue;
-      const { frontmatter, content } = parseFrontmatterAndContent(raw);
       const name = path.split("/").pop()?.replace(".md", "");
       if (!name) continue;
-      let logoUrl = undefined;
-      if (frontmatter.logo) {
-        logoUrl = resolveLogoUrl(frontmatter.logo);
-      }
-      chains[name] = {
-        ...frontmatter,
-        logoUrl,
-        description: content,
-        name: frontmatter.name || name,
-      };
+      chains[name] = { name };
     }
     return chains;
   }
 
-  const staticChains: Record<string, any> = loadStaticChains();
-
-  // Calculate island scale based on TVL - power function for clear hierarchy
-  function calculateIslandScale(tvl: number): number {
-    const tvlMillions = tvl / 1_000_000;
-    
-    const MIN_SCALE = 0.3;
-    const MAX_SCALE = 6.0;
-    
-    if (tvlMillions < 10) {
-      // Tiny chains: keep them small but visible
-      return MIN_SCALE;
-    }
-    
-    // Power function: scale = 0.3 + (tvlMillions^0.4) * 0.08
-    // This gives us:
-    // $10M -> 0.3 + 2.51 * 0.08 = 0.50
-    // $100M -> 0.3 + 6.31 * 0.08 = 0.80
-    // $1B -> 0.3 + 15.85 * 0.08 = 1.57
-    // $3.4B (Base) -> 0.3 + 23.25 * 0.08 = 2.16
-    // $10B -> 0.3 + 39.81 * 0.08 = 3.48
-    // $65B (Ethereum) -> 0.3 + 71.5 * 0.08 = 6.02 (capped at 6.0)
-    
-    const scale = MIN_SCALE + Math.pow(tvlMillions, 0.4) * 0.08;
-    
-    return Math.min(scale, MAX_SCALE);
-  }
+  const staticChains = loadStaticChains();
 
   // Search implementation
   function performSearch(query: string) {
@@ -237,7 +142,9 @@
   }
 
   function savePositions() {
-    positionsJson = JSON.stringify(islandPositions, null, 2);
+    // Get current positions from mapStore
+    const currentPositions = map.islandPositions;
+    positionsJson = JSON.stringify(currentPositions, null, 2);
     showPositionsModal = true;
   }
 
@@ -251,69 +158,6 @@
         alert("Failed to copy to clipboard. Please copy manually.");
       });
   }
-
-  // Track if islands have been set
-  let islandsInitialized = false;
-
-  // Build islands array from data
-  $effect(() => {
-    // Guard: Only run when ALL dependencies are ready
-    if (
-      !mapRenderer ||
-      overviewStoreState.isLoading ||
-      !overviewStoreState.data
-    ) {
-      return;
-    }
-
-    // Only set islands once to prevent texture recreation
-    if (islandsInitialized) {
-      return;
-    }
-
-    const islands = [];
-
-    // Process all chains
-    for (const [chainKey, chain] of Object.entries(staticChains)) {
-      const position = islandPositions[chainKey];
-      if (!position || !chain.chainId) continue;
-
-      const tvl = tvlLookupMap.get(chain.chainId) || 0;
-      const tps = tpsLookupMap.get(chain.chainId) || 0;
-      const scale =
-        tvl > 0 ? calculateIslandScale(tvl) : chain.chainId === 1 ? 1.8 : 0.6;
-
-      islands.push({
-        chainId: chain.chainId,
-        name: chain.name,
-        slug: chainKey,
-        x: position.x,
-        y: position.y,
-        scale,
-        tps,
-        brandColor: chain.color || "#95060D",
-        logoUrl: chain.logoUrl,
-      });
-    }
-
-    // Set islands asynchronously
-    mapRenderer.setIslands(islands).then(() => {
-      islandsInitialized = true;
-      renderManager?.markDirty();
-    });
-
-    // Set initial viewport position and zoom (only once when first loaded)
-    if (viewport && !hasInitialViewportBeenSet) {
-      // Center on Ethereum (position 0, 0)
-      viewport.moveCenter(0, 0);
-
-      // Set zoom to show more islands (farther away)
-      viewport.setZoom(0.1); // Adjust this value - lower = farther away
-
-      hasInitialViewportBeenSet = true;
-      renderManager?.markDirty();
-    }
-  });
 
   // Update search results highlighting
   $effect(() => {
@@ -335,106 +179,19 @@
     }
   });
 
-  // Add cleanup tracking
-  let isCleaningUp = false;
-  let keyboardHandler: ((event: KeyboardEvent) => void) | null = null;
+  // Handle island clicks from viewport
+  $effect(() => {
+    if (viewport) {
+      // Remove any existing listener
+      viewport.off("clicked");
 
-  onMount(() => {
-    if (!pixiContainer) {
-      console.error("Pixi container not found");
-      return;
-    }
-
-    // Run async initialization
-    (async () => {
-      // Add small delay in development to ensure proper cleanup during hot reload
-      if (import.meta.env.DEV) {
-        await new Promise(resolve => setTimeout(resolve, 50));
-      }
-      
-      // Check if we're cleaning up (prevents race conditions during hot reload)
-      if (isCleaningUp) {
-        return;
-      }
-      
-      // Initialize Pixi application
-      app = new Application();
-
-      await app.init({
-        antialias: false, // Better mobile performance
-        resolution: window.devicePixelRatio || 1,
-        autoDensity: true,
-        backgroundColor: 0x5ca9ce,
-        resizeTo: window,
-        hello: true,
-      });
-
-      // Set max FPS to 60
-      app.ticker.maxFPS = 60;
-
-      // Add canvas to container
-      pixiContainer.appendChild(app.canvas);
-
-      // Initialize WebGL debugger (only when explicitly enabled via ?debug=webgl)
-      webGLDebugger.init(app.canvas as HTMLCanvasElement);
-
-      // Create viewport
-      viewport = new PixiViewport.Viewport({
-        screenWidth: window.innerWidth,
-        screenHeight: window.innerHeight,
-        worldWidth: 20000,
-        worldHeight: 20000,
-        events: app.renderer.events,
-      });
-
-      // Add viewport to stage
-      app.stage.addChild(viewport);
-
-      // Setup viewport behaviors
-      viewport.drag().pinch().wheel();
-
-      // Set zoom limits
-      viewport.clampZoom({
-        minScale: 0.1,
-        maxScale: 3,
-      });
-
-      // Initialize map renderer with viewport
-      mapRenderer = new PixiMapRenderer(app, viewport);
-      
-      // Setup island move callback for edit mode
-      mapRenderer.setOnIslandMove((slug: string, x: number, y: number) => {
-        // Update island positions
-        islandPositions = { ...islandPositions, [slug]: { x, y } };
-      });
-      
-      // Setup dirty callback for re-renders
-      mapRenderer.setOnDirty(() => {
-        renderManager?.markDirty();
-      });
-
-      // Initialize render manager with debug mode in development
-      renderManager = new RenderManager(app, import.meta.env.DEV);
-      renderManager.setupRenderLoop();
-
-      // Set up viewport render triggers
-      viewport.on("moved", () => renderManager?.markDirty());
-      viewport.on("zoomed", () => renderManager?.markDirty());
-      viewport.on("moved-end", () => renderManager?.setAnimating(false));
-      viewport.on("zoomed-end", () => renderManager?.setAnimating(false));
-
-      // Mark as animating during movement
-      viewport.on("drag-start", () => renderManager?.setAnimating(true));
-      viewport.on("wheel-start", () => renderManager?.setAnimating(true));
-      viewport.on("pinch-start", () => renderManager?.setAnimating(true));
-
-      // Handle island clicks
+      // Add click handler
       viewport.on("clicked", (event) => {
         // Don't navigate if in edit mode
         if (editMode) {
           return;
         }
-        
+
         const island = mapRenderer?.getIslandAtPosition(
           event.world.x,
           event.world.y,
@@ -444,121 +201,78 @@
           goto(`/chain/${island.slug}`);
         }
       });
+    }
+  });
 
-      // Hover is now handled directly by island containers in PixiMapRenderer
-
-      // Keyboard shortcuts
-      keyboardHandler = (event: KeyboardEvent) => {
-        // Cmd/Ctrl + F to activate search
-        if ((event.metaKey || event.ctrlKey) && event.key === "f") {
-          event.preventDefault();
-          isSearchActive = true;
-          // Force focus to search input
-          setTimeout(() => {
-            const searchInput = document.querySelector(
-              ".search-bar input",
-            ) as HTMLInputElement;
-            searchInput?.focus();
-          }, 50);
-        }
-      };
-
-      window.addEventListener("keydown", keyboardHandler);
-
-      // Perform initial search if query provided
-      if (initialSearchQuery) {
-        performSearch(initialSearchQuery);
+  // Keyboard shortcuts
+  onMount(() => {
+    const keyboardHandler = (event: KeyboardEvent) => {
+      // Cmd/Ctrl + F to activate search
+      if ((event.metaKey || event.ctrlKey) && event.key === "f") {
+        event.preventDefault();
         isSearchActive = true;
+        // Force focus to search input
+        setTimeout(() => {
+          const searchInput = document.querySelector(
+            ".search-bar input",
+          ) as HTMLInputElement;
+          searchInput?.focus();
+        }, 50);
       }
-    })(); // End async initialization
+    };
 
-    // Cleanup
-    return () => {
-      isCleaningUp = true;
-      
-      if (searchDebounceTimer) {
-        clearTimeout(searchDebounceTimer);
-      }
+    window.addEventListener("keydown", keyboardHandler);
 
-      // Remove keyboard event listener
-      if (keyboardHandler) {
-        window.removeEventListener("keydown", keyboardHandler);
-        keyboardHandler = null;
-      }
-
-      // Clean up viewport first
-      if (viewport) {
-        viewport.removeAllListeners();
-        viewport.destroy();
-        viewport = undefined;
-      }
-
-      // Clean up render manager
-      if (renderManager) {
-        renderManager.destroy();
-        renderManager = undefined;
-      }
-
-      // Clean up map renderer
-      if (mapRenderer) {
-        mapRenderer.destroy();
-        mapRenderer = undefined;
-      }
-
-      // Clean up WebGL debugger
-      webGLDebugger.destroy();
-
-      // Clean up Pixi app last
-      if (app) {
-        // Remove canvas from DOM before destroying
-        if (app.canvas && app.canvas.parentNode) {
-          app.canvas.parentNode.removeChild(app.canvas);
+    // Update performance metrics in dev mode
+    let metricsInterval: ReturnType<typeof setInterval> | null = null;
+    if (import.meta.env.DEV && renderManager) {
+      metricsInterval = setInterval(() => {
+        if (renderManager) {
+          performanceMetrics = renderManager.getMetrics();
         }
-        app.destroy(true, { children: true, texture: true, baseTexture: true });
-        app = undefined;
+      }, 1000);
+    }
+
+    return () => {
+      window.removeEventListener("keydown", keyboardHandler);
+      if (metricsInterval) {
+        clearInterval(metricsInterval);
       }
-      
-      isCleaningUp = false;
     };
   });
 </script>
 
-<div bind:this={pixiContainer} class="pixi-container">
-  {#if showLoader}
-    <BoatLoader />
-  {/if}
+<!-- UI Controls -->
+{#if map.isReady}
+  <Header />
+  <SearchBar
+    bind:searchQuery
+    {searchResults}
+    {currentResultIndex}
+    isActive={isSearchActive}
+    {hasSearched}
+    onSearch={performSearch}
+    onNavigate={handleSearchNavigation}
+    onActivate={() => (isSearchActive = true)}
+    onClear={clearSearch}
+  />
+{/if}
 
-  {#if !showLoader}
-    <Header />
-    <SearchBar
-      bind:searchQuery
-      {searchResults}
-      {currentResultIndex}
-      isActive={isSearchActive}
-      {hasSearched}
-      onSearch={performSearch}
-      onNavigate={handleSearchNavigation}
-      onActivate={() => (isSearchActive = true)}
-      onClear={clearSearch}
-    />
-  {/if}
-
-  {#if import.meta.env.DEV}
-    <div class="controls">
-      <button onclick={() => (editMode = !editMode)} class:active={editMode}>
-        {editMode ? "Exit Edit Mode" : "Edit Mode"}
-      </button>
-      {#if editMode}
-        <button onclick={savePositions}>Save Positions</button>
-      {/if}
-    </div>
-    <PerformanceOverlay
-      fps={performanceMetrics.fps}
-      renderCount={performanceMetrics.renderCount}
-      isAnimating={performanceMetrics.isAnimating}
-    />
-  {/if}
-</div>
+{#if import.meta.env.DEV}
+  <div class="controls">
+    <button onclick={() => (editMode = !editMode)} class:active={editMode}>
+      {editMode ? "Exit Edit Mode" : "Edit Mode"}
+    </button>
+    {#if editMode}
+      <button onclick={savePositions}>Save Positions</button>
+    {/if}
+  </div>
+  <PerformanceOverlay
+    fps={performanceMetrics.fps}
+    renderCount={performanceMetrics.renderCount}
+    isAnimating={performanceMetrics.isAnimating}
+  />
+{/if}
 
 {#if showPositionsModal}
   <div class="positions-modal-backdrop">
@@ -574,34 +288,12 @@
 {/if}
 
 <style>
-  .pixi-container {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    overflow: hidden;
-    position: fixed;
-    top: 0;
-    left: 0;
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-  }
-
-  .pixi-container :global(canvas) {
-    user-select: none;
-    -webkit-user-select: none;
-    -webkit-user-drag: none;
-    -webkit-touch-callout: none;
-  }
-
   .controls {
-    position: absolute;
+    position: fixed;
     bottom: 20px;
     right: 20px;
     display: flex;
     gap: 10px;
-    z-index: 100;
   }
 
   button {
@@ -637,7 +329,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1000;
+    z-index: 10;
   }
 
   .positions-modal {

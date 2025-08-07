@@ -1,6 +1,6 @@
 export const load = ({ url }) => {
-  const searchQuery = url.searchParams.get('q') || '';
+  const searchQuery = url.searchParams.get("q") || "";
   return {
-    initialSearchQuery: searchQuery
+    initialSearchQuery: searchQuery,
   };
 };

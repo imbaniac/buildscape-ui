@@ -96,7 +96,11 @@
   });
 </script>
 
-<div class="search-bar" class:active={isActive || searchQuery.length > 0} onpointerdown={(e) => e.stopPropagation()}>
+<div
+  class="search-bar"
+  class:active={isActive || searchQuery.length > 0}
+  onpointerdown={(e) => e.stopPropagation()}
+>
   <svg
     class="search-icon"
     width="16"
@@ -128,7 +132,10 @@
     </span>
     <button
       class="nav-button"
-      onclick={(e) => { e.stopPropagation(); onNavigate("prev"); }}
+      onclick={(e) => {
+        e.stopPropagation();
+        onNavigate("prev");
+      }}
       aria-label="Previous result (← or ↑)"
       title="Previous (← or ↑)"
       disabled={searchResults.length <= 1}
@@ -137,7 +144,10 @@
     </button>
     <button
       class="nav-button"
-      onclick={(e) => { e.stopPropagation(); onNavigate("next"); }}
+      onclick={(e) => {
+        e.stopPropagation();
+        onNavigate("next");
+      }}
       aria-label="Next result (→ or ↓)"
       title="Next (→ or ↓)"
       disabled={searchResults.length <= 1}
@@ -174,7 +184,7 @@
       0 2px 8px rgba(0, 0, 0, 0.1),
       inset 0 1px 0 rgba(255, 255, 255, 0.05);
     transition: all 0.3s ease;
-    z-index: 100;
+    z-index: 1;
     width: 380px;
     min-height: 44px;
     opacity: 0.6;
@@ -309,7 +319,6 @@
       bottom: calc(20px + env(safe-area-inset-bottom, 0px));
       width: calc(100% - 40px);
       max-width: 380px;
-      z-index: 1000; /* Ensure it's above other elements */
       /* Better visibility on mobile */
       opacity: 0.75;
       background: rgba(44, 95, 124, 0.6);

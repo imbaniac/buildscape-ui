@@ -10,11 +10,13 @@ import type { Viewport } from "pixi-viewport";
 import { goto } from "$app/navigation";
 import PixiIslandRenderer from "./PixiIslandRenderer";
 import type { Island } from "$lib/types/island";
+import type RenderManager from "./RenderManager";
 
 export default class PixiMapRenderer {
   private app: Application;
   private viewport: Viewport;
   private islandRenderer: PixiIslandRenderer;
+  private renderManager: RenderManager | null = null;
 
   // Containers
   private oceanContainer: Container;
@@ -39,6 +41,7 @@ export default class PixiMapRenderer {
 
   // Callbacks
   private onIslandMove?: (slug: string, x: number, y: number) => void;
+  private onIslandDragEnd?: (slug: string, x: number, y: number) => void;
   private onDirty?: () => void;
 
   constructor(app: Application, viewport: Viewport) {
@@ -53,6 +56,10 @@ export default class PixiMapRenderer {
     this.oceanContainer = new Container();
     this.islandsContainer = new Container();
     this.highlightContainer = new Container();
+
+    // Optimize container event modes for performance
+    this.oceanContainer.eventMode = "none"; // Ocean doesn't need events
+    this.highlightContainer.eventMode = "none"; // Highlights don't need events
 
     // Add containers to viewport in correct order
     this.viewport.addChild(this.oceanContainer);
@@ -91,9 +98,9 @@ export default class PixiMapRenderer {
           container.zIndex = newY; // Update depth sorting
         }
 
-        // Notify parent component
-        if (this.onIslandMove) {
-          this.onIslandMove(this.draggedIsland.slug, newX, newY);
+        // Mark dirty for continuous rendering during drag
+        if (this.renderManager) {
+          this.renderManager.markDirty();
         }
 
         // Update highlight position if this is the hovered island
@@ -115,6 +122,9 @@ export default class PixiMapRenderer {
     graphics.rect(-size / 2, -size / 2, size, size);
     graphics.fill({ color: 0x5ca9ce });
 
+    // Disable events on ocean background for performance
+    graphics.eventMode = "none";
+
     this.oceanContainer.addChild(graphics);
   }
 
@@ -132,10 +142,21 @@ export default class PixiMapRenderer {
 
     await this.islandRenderer.preloadLogos(logoUrls);
 
-    // Create islands
-    islands.forEach((island) => {
-      this.createIslandContainer(island);
-    });
+    // Pre-render all island textures while still showing loader
+    await this.islandRenderer.prerenderIslands(islands);
+
+    // Create all island containers in parallel (now they'll use cached textures)
+    const containerPromises = islands.map((island) =>
+      this.createIslandContainer(island),
+    );
+
+    // Wait for all containers to be created
+    await Promise.all(containerPromises);
+
+    // Trigger a single dirty update after all islands are added
+    if (this.onDirty) {
+      this.onDirty();
+    }
   }
 
   private async createIslandContainer(island: Island): Promise<void> {
@@ -210,6 +231,11 @@ export default class PixiMapRenderer {
         // Change cursor
         this.viewport.cursor = "move";
 
+        // Mark as animating for smooth drag rendering
+        if (this.renderManager) {
+          this.renderManager.setAnimating(true);
+        }
+
         // Prevent viewport dragging
         event.stopPropagation();
       }
@@ -242,6 +268,21 @@ export default class PixiMapRenderer {
   }
 
   private endDrag(): void {
+    // Notify parent component of final position
+    if (this.draggedIsland && this.onIslandDragEnd) {
+      this.onIslandDragEnd(
+        this.draggedIsland.slug,
+        this.draggedIsland.x,
+        this.draggedIsland.y,
+      );
+    }
+
+    // Stop animation mode
+    if (this.renderManager) {
+      this.renderManager.setAnimating(false);
+      this.renderManager.markDirty(); // One final render at the end position
+    }
+
     this.isDragging = false;
     this.draggedIsland = null;
     this.dragData = null;
@@ -280,7 +321,6 @@ export default class PixiMapRenderer {
 
     // Hover gets cyan tint and scale
     container.tint = 0xccffff; // Light cyan tint for hover
-    container.scale.set(1.05); // Subtle scale up
     container.alpha = 1;
   }
 
@@ -378,8 +418,23 @@ export default class PixiMapRenderer {
     this.onIslandMove = callback;
   }
 
+  setOnIslandDragEnd(
+    callback: (slug: string, x: number, y: number) => void,
+  ): void {
+    this.onIslandDragEnd = callback;
+  }
+
   setOnDirty(callback: () => void): void {
     this.onDirty = callback;
+  }
+
+  setRenderManager(renderManager: RenderManager): void {
+    this.renderManager = renderManager;
+  }
+
+  // Get all islands with their current positions
+  getIslands(): Island[] {
+    return this.islands;
   }
 
   // Get island at world position

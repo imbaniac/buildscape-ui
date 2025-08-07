@@ -105,6 +105,30 @@ export default class PixiIslandRenderer {
     }
   }
 
+  /**
+   * Pre-render textures for all islands in parallel
+   */
+  async prerenderIslands(islands: Island[]): Promise<void> {
+    // Wait for assets to be loaded first
+    if (!this.assetsLoaded) {
+      await this.loadAssets();
+    }
+
+    // Pre-render all island textures in parallel (limit concurrency to avoid overwhelming the GPU)
+    const batchSize = 50;
+    for (let i = 0; i < islands.length; i += batchSize) {
+      const batch = islands.slice(i, i + batchSize);
+      const renderPromises = batch.map(async (island) => {
+        try {
+          await this.getOrCreateIslandTexture(island);
+        } catch (error) {
+          console.error(`Failed to pre-render island ${island.slug}:`, error);
+        }
+      });
+      await Promise.all(renderPromises);
+    }
+  }
+
   private createBitmapFont(): void {
     try {
       // Create a bitmap font from the system font
@@ -113,7 +137,7 @@ export default class PixiIslandRenderer {
         style: {
           fontFamily:
             '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-          fontSize: 120,
+          fontSize: 140,
           fontWeight: "bold",
           fill: 0x4b2f00,
         },
@@ -753,7 +777,7 @@ export default class PixiIslandRenderer {
       shieldContainer.addChild(banner);
 
       // Add chain name text using BitmapText with wrapping support
-      const fontSize = 120 * shieldScale;
+      const fontSize = 140 * shieldScale;
       const maxWidth = bannerWidth * 0.6;
       const nameText = island.name.toUpperCase();
 
