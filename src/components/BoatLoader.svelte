@@ -1,6 +1,6 @@
 <script lang="ts">
-  import boatUrl from '$lib/assets/boat.svg?url';
-  import { fade } from 'svelte/transition';
+  import boatUrl from "$lib/assets/boat.svg?url";
+  import { fade } from "svelte/transition";
 </script>
 
 <div class="boat-loader" transition:fade={{ duration: 500 }}>
@@ -9,28 +9,27 @@
       <img src={boatUrl} alt="Sailing boat" />
     </div>
   </div>
-  
+
   <p class="loading-text">Charting the EVM seas...</p>
 </div>
 
 <style>
   .boat-loader {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     background: #5ca9ce;
-    z-index: 100;
+    z-index: 10;
   }
 
   .boat-container {
     position: relative;
-    z-index: 10;
     animation: sail 4s ease-in-out infinite;
   }
 
@@ -48,7 +47,8 @@
   }
 
   @keyframes sail {
-    0%, 100% {
+    0%,
+    100% {
       transform: translateX(-100px);
     }
     50% {
@@ -57,7 +57,8 @@
   }
 
   @keyframes rock {
-    0%, 100% {
+    0%,
+    100% {
       transform: rotate(-5deg) translateY(0);
     }
     25% {
@@ -82,7 +83,8 @@
   }
 
   @keyframes pulse {
-    0%, 100% {
+    0%,
+    100% {
       opacity: 0.8;
     }
     50% {
@@ -96,7 +98,7 @@
       width: 80px;
       height: 80px;
     }
-    
+
     .loading-text {
       font-size: 1.2em;
       bottom: 80px;
