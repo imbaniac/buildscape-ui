@@ -223,20 +223,29 @@
 
     window.addEventListener("keydown", keyboardHandler);
 
-    // Update performance metrics in dev mode
-    let metricsInterval: ReturnType<typeof setInterval> | null = null;
-    if (import.meta.env.DEV && renderManager) {
+    return () => {
+      window.removeEventListener("keydown", keyboardHandler);
+    };
+  });
+
+  // Update performance metrics in dev mode using effect
+  let metricsInterval: ReturnType<typeof setInterval> | null = null;
+  
+  $effect(() => {
+    // Start interval when renderManager becomes available
+    if (import.meta.env.DEV && renderManager && !metricsInterval) {
       metricsInterval = setInterval(() => {
         if (renderManager) {
           performanceMetrics = renderManager.getMetrics();
         }
       }, 1000);
     }
-
+    
+    // Cleanup on destroy
     return () => {
-      window.removeEventListener("keydown", keyboardHandler);
       if (metricsInterval) {
         clearInterval(metricsInterval);
+        metricsInterval = null;
       }
     };
   });

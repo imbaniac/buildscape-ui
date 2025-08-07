@@ -3,7 +3,6 @@ import {
   Graphics,
   Sprite,
   Texture,
-  RenderTexture,
   BitmapFont,
   BitmapText,
   Assets,
@@ -60,10 +59,6 @@ export default class PixiIslandRenderer {
     [TerrainType.GRASS_DARK]: 0x5a7a3f,
   };
 
-  // Cache for pre-rendered island textures and their bounds
-  private islandTextureCache: Map<string, Texture> = new Map();
-  private islandBoundsCache: Map<string, { width: number; height: number }> =
-    new Map();
   private renderer: Renderer | null = null;
 
   // Shield and banner assets
@@ -105,29 +100,7 @@ export default class PixiIslandRenderer {
     }
   }
 
-  /**
-   * Pre-render textures for all islands in parallel
-   */
-  async prerenderIslands(islands: Island[]): Promise<void> {
-    // Wait for assets to be loaded first
-    if (!this.assetsLoaded) {
-      await this.loadAssets();
-    }
-
-    // Pre-render all island textures in parallel (limit concurrency to avoid overwhelming the GPU)
-    const batchSize = 50;
-    for (let i = 0; i < islands.length; i += batchSize) {
-      const batch = islands.slice(i, i + batchSize);
-      const renderPromises = batch.map(async (island) => {
-        try {
-          await this.getOrCreateIslandTexture(island);
-        } catch (error) {
-          console.error(`Failed to pre-render island ${island.slug}:`, error);
-        }
-      });
-      await Promise.all(renderPromises);
-    }
-  }
+  // Removed prerenderIslands - now using atlas
 
   private createBitmapFont(): void {
     try {
@@ -170,122 +143,11 @@ export default class PixiIslandRenderer {
     }
   }
 
-  async createIsland(island: Island): Promise<Container> {
-    const container = new Container();
+  // Removed createIsland - now using atlas sprites
 
-    const { texture } = await this.getOrCreateIslandTexture(island);
+  // Removed getOrCreateIslandTexture - now using atlas
 
-    // Create sprite from texture
-    const sprite = new Sprite(texture);
-    sprite.anchor.set(0.5);
-
-    container.addChild(sprite);
-
-    return container;
-  }
-
-  private async getOrCreateIslandTexture(
-    island: Island,
-  ): Promise<{ texture: Texture; bounds: { width: number; height: number } }> {
-    // Create cache key based on island properties that affect appearance
-    const tpsBucket = Math.floor(island.tps / 10);
-    const scaleBucket = Math.round(island.scale * 10);
-    // Include assets loaded state in cache key to handle texture updates
-    const cacheKey = `${island.chainId}_${scaleBucket}_${tpsBucket}_${this.assetsLoaded ? "full" : "base"}`;
-
-    // Check cache
-    if (this.islandTextureCache.has(cacheKey)) {
-      return {
-        texture: this.islandTextureCache.get(cacheKey)!,
-        bounds: this.islandBoundsCache.get(cacheKey)!,
-      };
-    }
-
-    // Create new texture and bounds
-    const { texture, bounds } = await this.renderIslandToTexture(island);
-    this.islandTextureCache.set(cacheKey, texture);
-    this.islandBoundsCache.set(cacheKey, bounds);
-
-    return { texture, bounds };
-  }
-
-  private async renderIslandToTexture(
-    island: Island,
-  ): Promise<{ texture: Texture; bounds: { width: number; height: number } }> {
-    if (!this.renderer) {
-      throw new Error("Renderer not set");
-    }
-
-    const tempContainer = new Container();
-    const graphics = new Graphics();
-
-    const terrain = this.generateIslandTerrain(island);
-
-    const bounds = this.calculateIslandBounds(terrain.tiles);
-
-    // Draw tiles efficiently using a single Graphics object
-    this.drawIslandTiles(graphics, terrain);
-
-    tempContainer.addChild(graphics);
-
-    // Add shield and banner directly to the render texture
-    // This way everything is baked into a single texture
-    if (this.assetsLoaded) {
-      await this.addShieldAndBannerToContainer(tempContainer, island, bounds);
-    }
-
-    // Calculate extra height needed for shield and banner
-    let extraHeight = 0;
-    let extraTopPadding = 0;
-
-    if (this.assetsLoaded) {
-      // Shield dimensions
-      const shieldScale = 0.35;
-      const shieldHeight = 1115 * shieldScale;
-
-      // Calculate how much the shield extends above the island
-      // Using the same positioning as in addShieldAndBannerToContainer
-      let shieldY: number;
-      if (island.scale > 1.5) {
-        shieldY = -bounds.height / 4;
-      } else if (island.scale > 0.8) {
-        shieldY = -bounds.height / 2 - 100; // Medium islands - matches line 755
-      } else {
-        shieldY = -bounds.height + 100; // Small islands - matches line 758
-      }
-
-      // Shield extends from its center point, so top edge is at shieldY - shieldHeight/2
-      const shieldTop = shieldY - shieldHeight / 2;
-      // The island top is at -bounds.height/2
-      const islandTop = -bounds.height / 2;
-
-      // If shield extends above island, we need extra space
-      if (shieldTop < islandTop) {
-        extraTopPadding = Math.abs(shieldTop - islandTop) + 100; // Added more padding
-        extraHeight = extraTopPadding;
-      }
-    }
-
-    const renderTexture = RenderTexture.create({
-      width: bounds.width,
-      height: bounds.height + extraHeight,
-    });
-
-    // Adjust container position to account for extra top padding
-    tempContainer.x = bounds.width / 2;
-    tempContainer.y = bounds.height / 2 + extraTopPadding;
-
-    // Render to texture
-    this.renderer.render({ container: tempContainer, target: renderTexture });
-
-    // Clean up temporary objects
-    tempContainer.destroy({ children: true });
-
-    return {
-      texture: renderTexture,
-      bounds: { width: bounds.width, height: bounds.height + extraHeight },
-    };
-  }
+  // Removed renderIslandToTexture - now handled by atlas generation
 
   private generateIslandTerrain(island: Island): IslandTerrain {
     const tiles: Tile[] = [];
@@ -418,37 +280,7 @@ export default class PixiIslandRenderer {
     return { tiles, decorations, size };
   }
 
-  private calculateIslandBounds(tiles: Tile[]): {
-    width: number;
-    height: number;
-  } {
-    let minX = Infinity,
-      maxX = -Infinity;
-    let minY = Infinity,
-      maxY = -Infinity;
-
-    const tileWidth = this.TILE_WIDTH;
-    const tileHeight = this.TILE_HEIGHT;
-
-    tiles.forEach((tile) => {
-      const iso = this.gridToIso(tile.x, tile.y, tileWidth, tileHeight);
-      const screenX = iso.x;
-      const screenY = iso.y - tile.elevation * 45;
-
-      // Account for tile dimensions
-      minX = Math.min(minX, screenX - tileWidth / 2);
-      maxX = Math.max(maxX, screenX + tileWidth / 2);
-      minY = Math.min(minY, screenY);
-      maxY = Math.max(maxY, screenY + tileHeight + tile.elevation * 45);
-    });
-
-    // Add padding
-    const padding = 100;
-    return {
-      width: maxX - minX + padding * 2,
-      height: maxY - minY + padding * 2,
-    };
-  }
+  // Removed calculateIslandBounds - now handled in atlas generation
 
   private drawIslandTiles(graphics: Graphics, terrain: IslandTerrain): void {
     const tiles = terrain.tiles;
@@ -466,7 +298,7 @@ export default class PixiIslandRenderer {
     tiles.forEach((tile) => {
       const iso = this.gridToIso(tile.x, tile.y, tileWidth, tileHeight);
       const screenX = iso.x;
-      const screenY = iso.y - tile.elevation * 45;
+      const screenY = iso.y - tile.elevation * 35;
 
       // Get color with variation
       const baseColor = this.terrainColors[tile.terrainType];
@@ -564,22 +396,50 @@ export default class PixiIslandRenderer {
         graphics.ellipse(decorX, decorY + tileHeight / 2 + 5, 15, 7);
         graphics.fill({ color: 0x000000, alpha: 0.15 });
 
-        // Palm trunk - simple straight line for now
+        // Palm trunk - straight, slightly tapered
+        const trunkBase = decorY + tileHeight / 2 + 5;
+        const trunkTop = decorY + tileHeight / 2 - 28;
         graphics.beginPath();
-        graphics.moveTo(decorX, decorY + tileHeight / 2 + 5);
-        graphics.lineTo(decorX + 3, decorY + tileHeight / 2 - 30);
-        graphics.stroke({ width: 4, color: 0x8b6239 });
+        graphics.moveTo(decorX - 2, trunkBase);
+        graphics.lineTo(decorX + 2, trunkBase);
+        graphics.lineTo(decorX + 1, trunkTop);
+        graphics.lineTo(decorX - 1, trunkTop);
+        graphics.closePath();
+        graphics.fill({ color: 0x7b5637 });
 
-        // Palm fronds
-        const frondAngles = [0, 60, 120, 180, 240, 300];
-        frondAngles.forEach((angle) => {
-          const rad = (angle * Math.PI) / 180;
+        // Palm fronds - 5 thick curved leaves, properly sized
+        const fronds = [
+          { angle: -120, length: 16 },  // Left side
+          { angle: -60, length: 15 },   // Left-up
+          { angle: 0, length: 14 },     // Top
+          { angle: 60, length: 15 },    // Right-up
+          { angle: 120, length: 16 },   // Right side
+        ];
+        
+        fronds.forEach(({ angle, length }) => {
+          const rad = angle * Math.PI / 180;
+          const startX = decorX;
+          const startY = trunkTop;
+          
+          // Calculate end position based on angle
+          const endX = startX + Math.cos(rad) * length;
+          const endY = startY + Math.sin(rad) * length * 0.7 + 4; // Natural droop
+          
+          // Control point for the curve (goes up first, then down)
+          const controlX = startX + Math.cos(rad) * (length * 0.5);
+          const controlY = startY + Math.sin(rad) * (length * 0.3) - 6; // Arc upward
+          
+          // Draw as thick curved stroke
           graphics.beginPath();
-          graphics.moveTo(decorX + 3, decorY + tileHeight / 2 - 30);
-          const endX = decorX + 3 + Math.cos(rad) * 22;
-          const endY = decorY + tileHeight / 2 - 30 + Math.sin(rad) * 12;
-          graphics.lineTo(endX, endY);
-          graphics.stroke({ width: 3, color: 0x228b22 });
+          graphics.moveTo(startX, startY);
+          graphics.quadraticCurveTo(controlX, controlY, endX, endY);
+          graphics.stroke({ width: 4, color: 0x3a7119 });
+          
+          // Add a second parallel stroke for depth
+          graphics.beginPath();
+          graphics.moveTo(startX, startY);
+          graphics.quadraticCurveTo(controlX, controlY - 1, endX, endY);
+          graphics.stroke({ width: 3, color: 0x4a8220 });
         });
       }
 
@@ -615,22 +475,50 @@ export default class PixiIslandRenderer {
         graphics.ellipse(decorX, decorY + tileHeight / 2 + 5, 20, 10);
         graphics.fill({ color: 0x000000, alpha: 0.15 });
 
-        // Palm trunk - simple straight line for now
+        // Palm trunk - straight, slightly tapered
+        const trunkBase = decorY + tileHeight / 2 + 5;
+        const trunkTop = decorY + tileHeight / 2 - 38;
         graphics.beginPath();
-        graphics.moveTo(decorX, decorY + tileHeight / 2 + 5);
-        graphics.lineTo(decorX + 4, decorY + tileHeight / 2 - 40);
-        graphics.stroke({ width: 6, color: 0x8b6239 });
+        graphics.moveTo(decorX - 3, trunkBase);
+        graphics.lineTo(decorX + 3, trunkBase);
+        graphics.lineTo(decorX + 1.5, trunkTop);
+        graphics.lineTo(decorX - 1.5, trunkTop);
+        graphics.closePath();
+        graphics.fill({ color: 0x7b5637 });
 
-        // Palm fronds
-        const frondAngles = [0, 60, 120, 180, 240, 300];
-        frondAngles.forEach((angle) => {
-          const rad = (angle * Math.PI) / 180;
+        // Palm fronds - 5 thick curved leaves, properly sized
+        const fronds = [
+          { angle: -120, length: 22 },  // Left side
+          { angle: -60, length: 20 },   // Left-up
+          { angle: 0, length: 18 },     // Top
+          { angle: 60, length: 20 },    // Right-up
+          { angle: 120, length: 22 },   // Right side
+        ];
+        
+        fronds.forEach(({ angle, length }) => {
+          const rad = angle * Math.PI / 180;
+          const startX = decorX;
+          const startY = trunkTop;
+          
+          // Calculate end position based on angle
+          const endX = startX + Math.cos(rad) * length;
+          const endY = startY + Math.sin(rad) * length * 0.7 + 6; // Natural droop
+          
+          // Control point for the curve (goes up first, then down)
+          const controlX = startX + Math.cos(rad) * (length * 0.5);
+          const controlY = startY + Math.sin(rad) * (length * 0.3) - 8; // Arc upward
+          
+          // Draw as thick curved stroke
           graphics.beginPath();
-          graphics.moveTo(decorX + 4, decorY + tileHeight / 2 - 40);
-          const endX = decorX + 4 + Math.cos(rad) * 30;
-          const endY = decorY + tileHeight / 2 - 40 + Math.sin(rad) * 16;
-          graphics.lineTo(endX, endY);
-          graphics.stroke({ width: 4, color: 0x228b22 });
+          graphics.moveTo(startX, startY);
+          graphics.quadraticCurveTo(controlX, controlY, endX, endY);
+          graphics.stroke({ width: 5, color: 0x3a7119 });
+          
+          // Add a second parallel stroke for depth
+          graphics.beginPath();
+          graphics.moveTo(startX, startY);
+          graphics.quadraticCurveTo(controlX, controlY - 1, endX, endY);
+          graphics.stroke({ width: 4, color: 0x4a8220 });
         });
       }
     });
@@ -745,12 +633,10 @@ export default class PixiIslandRenderer {
     if (island.scale > 1.5) {
       // Large islands (Ethereum, BNB, etc) - shield slightly above center
       shieldY = -bounds.height / 4;
-    } else if (island.scale > 0.7) {
-      // Medium islands - shield more above
-      shieldY = -bounds.height / 2 - 100;
     } else {
       // Small islands - shield well above to not cover the island
-      shieldY = -bounds.height + 100;
+      // Increased offset for better visibility
+      shieldY = -bounds.height / 2 - shieldHeight / 2 - 50;
     }
 
     // Add shield
@@ -859,6 +745,60 @@ export default class PixiIslandRenderer {
   }
 
   /**
+   * Render complete island for atlas generation
+   * Returns container with terrain, shield, banner, and logo
+   */
+  async renderIslandForAtlas(island: Island): Promise<Container> {
+    const container = new Container();
+
+    // Create terrain graphics
+    const graphics = new Graphics();
+    const terrain = this.generateIslandTerrain(island);
+    this.drawIslandTiles(graphics, terrain);
+    container.addChild(graphics);
+
+    // Calculate bounds for positioning overlays
+    const bounds = graphics.getLocalBounds();
+    const boundsData = {
+      width: bounds.width,
+      height: bounds.height,
+    };
+
+    // Add shield, banner, and logo if assets are loaded
+    if (this.assetsLoaded) {
+      await this.addShieldAndBannerToContainer(container, island, boundsData);
+    }
+
+    return container;
+  }
+
+  /**
+   * Create overlay container with shield, banner, and logo
+   * Used for hover effects and dynamic rendering
+   */
+  createIslandOverlay(
+    island: Island,
+    bounds: { width: number; height: number },
+  ): Container {
+    const container = new Container();
+
+    // Only add overlays if assets are loaded
+    if (this.assetsLoaded) {
+      // We need to handle this asynchronously
+      this.addShieldAndBannerToContainer(container, island, bounds).catch(
+        (error) => {
+          console.error(
+            `[PixiIslandRenderer] Failed to add overlays for ${island.slug}:`,
+            error,
+          );
+        },
+      );
+    }
+
+    return container;
+  }
+
+  /**
    * Clean up all cached textures and resources
    */
   destroy(): void {
@@ -871,13 +811,6 @@ export default class PixiIslandRenderer {
 
     // Clear logo texture cache (textures are handled by Assets.unload)
     this.logoTextures.clear();
-
-    // Destroy all cached island textures (these are RenderTextures we created)
-    this.islandTextureCache.forEach((texture) => {
-      texture.destroy(true);
-    });
-    this.islandTextureCache.clear();
-    this.islandBoundsCache.clear();
 
     // Destroy all shield textures (created from blob URLs)
     this.shieldTextures.forEach((texture) => {
