@@ -28,7 +28,7 @@
   // Ensure values are valid
   const safeGasPrice = $derived(Math.max(0, gasPrice || 0));
   const safeUtilization = $derived(
-    Math.max(0, Math.min(100, utilization || 0))
+    Math.max(0, Math.min(100, utilization || 0)),
   );
 
   // Calculate trend
@@ -355,9 +355,10 @@
     color: #10b981;
   }
 
-  @media (max-width: 1024px) {
+  @media (max-width: 1280px) {
     .resources-grid {
       grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
     }
   }
 

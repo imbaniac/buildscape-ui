@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-
   interface Props {
     onClose?: () => void;
     leftPage?: import("svelte").Snippet;
@@ -15,32 +13,18 @@
     brandColor = "#3b82f6",
   }: Props = $props();
 
-  // Mobile page state
+  // Mobile page state - for page switching
   let showRightPage = $state(false);
   let touchStartX = 0;
   let touchStartY = 0;
-  let isMobile = $state(false);
-
-  onMount(() => {
-    isMobile = window.innerWidth <= 800;
-
-    const handleResize = () => {
-      isMobile = window.innerWidth <= 800;
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  });
 
   // Handle swipe gestures on mobile
   function handleTouchStart(e: TouchEvent) {
-    if (!isMobile) return;
     touchStartX = e.touches[0].clientX;
     touchStartY = e.touches[0].clientY;
   }
 
   function handleTouchEnd(e: TouchEvent) {
-    if (!isMobile) return;
     const touchEndX = e.changedTouches[0].clientX;
     const touchEndY = e.changedTouches[0].clientY;
 
@@ -65,33 +49,28 @@
   ontouchstart={handleTouchStart}
   ontouchend={handleTouchEnd}
 >
-  {#if isMobile}
-    <div class="book-header">
-      <div class="mobile-page-indicator" style="--brand-color: {brandColor}">
-        <button
-          class="page-dot"
-          class:active={!showRightPage}
-          onclick={() => (showRightPage = false)}
-          aria-label="Show info page"
-        ></button>
-        <button
-          class="page-dot"
-          class:active={showRightPage}
-          onclick={() => (showRightPage = true)}
-          aria-label="Show details page"
-        ></button>
-      </div>
-      {#if onClose}
-        <button
-          class="mobile-close-button"
-          onclick={onClose}
-          aria-label="Close"
-        >
-          ×
-        </button>
-      {/if}
+  <!-- Mobile header - hidden on desktop via CSS -->
+  <div class="book-header">
+    <div class="mobile-page-indicator" style="--brand-color: {brandColor}">
+      <button
+        class="page-dot"
+        class:active={!showRightPage}
+        onclick={() => (showRightPage = false)}
+        aria-label="Show info page"
+      ></button>
+      <button
+        class="page-dot"
+        class:active={showRightPage}
+        onclick={() => (showRightPage = true)}
+        aria-label="Show details page"
+      ></button>
     </div>
-  {/if}
+    {#if onClose}
+      <button class="mobile-close-button" onclick={onClose} aria-label="Close">
+        ×
+      </button>
+    {/if}
+  </div>
 
   <!-- Book Cover Wrapper -->
   <div class="book-cover" style="--brand-color: {brandColor}">
@@ -120,37 +99,41 @@
       </div>
 
       <!-- Left Page -->
-      <div
-        class="book-page-wrapper book-page-wrapper-left"
-        class:mobile-hidden={isMobile && showRightPage}
-      >
-        <div class="book-page book-page-left">
-          <div class="book-page-content">
-            {#if leftPage}
-              {@render leftPage()}
-            {/if}
+      {#key !showRightPage}
+        <div
+          class="book-page-wrapper book-page-wrapper-left"
+          class:mobile-hide={showRightPage}
+        >
+          <div class="book-page book-page-left">
+            <div class="book-page-content">
+              {#if leftPage}
+                {@render leftPage()}
+              {/if}
+            </div>
+            <div class="book-page-shadow-left"></div>
           </div>
-          <div class="book-page-shadow-left"></div>
         </div>
-      </div>
+      {/key}
 
       <!-- Book Spine -->
       <div class="book-spine"></div>
 
       <!-- Right Page -->
-      <div
-        class="book-page-wrapper book-page-wrapper-right"
-        class:mobile-hidden={isMobile && !showRightPage}
-      >
-        <div class="book-page book-page-right">
-          <div class="book-page-content">
-            {#if rightPage}
-              {@render rightPage()}
-            {/if}
+      {#key showRightPage}
+        <div
+          class="book-page-wrapper book-page-wrapper-right"
+          class:mobile-show={showRightPage}
+        >
+          <div class="book-page book-page-right">
+            <div class="book-page-content">
+              {#if rightPage}
+                {@render rightPage()}
+              {/if}
+            </div>
+            <div class="book-page-shadow-right"></div>
           </div>
-          <div class="book-page-shadow-right"></div>
         </div>
-      </div>
+      {/key}
 
       <!-- Right Page Edges -->
       <div class="page-edges page-edges-right">
@@ -168,11 +151,12 @@
 
 <style>
   .book-fullscreen {
+    pointer-events: auto;
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
     background:
       radial-gradient(
         ellipse at center top,
@@ -188,12 +172,12 @@
   }
 
   .book-header {
+    display: none; /* Hidden by default on desktop */
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     height: 50px;
-    display: flex;
     align-items: center;
     justify-content: center;
     padding: 0 1rem;
@@ -234,7 +218,7 @@
 
   .book-spread {
     display: flex;
-    height: calc(100vh - 80px);
+    height: calc(100dvh - 80px);
     max-height: 920px;
     gap: 0;
     align-items: center;
@@ -312,7 +296,6 @@
       0 4px 20px rgba(0, 0, 0, 0.25),
       0 2px 10px rgba(0, 0, 0, 0.15),
       0 0 15px rgba(0, 0, 0, 0.05) inset;
-    overflow: visible;
     position: relative;
     z-index: 10;
   }
@@ -360,8 +343,10 @@
   .book-page-content {
     position: relative;
     z-index: 1;
-    height: 100%;
+    height: 100%; /* Desktop needs full height for scroll */
     width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
   .book-page-shadow-left {
@@ -421,97 +406,8 @@
     z-index: 4;
   }
 
+  /* Mobile/Tablet view - single page */
   @media (max-width: 1280px) {
-    .book-spread {
-      padding: 60px 40px 30px;
-    }
-
-    .book-page-wrapper {
-      max-width: min(600px, 48vw);
-    }
-  }
-
-  @media (max-width: 1100px) {
-    .book-spread {
-      flex-direction: column;
-      padding: 60px 20px 20px;
-      gap: 0;
-      max-height: none;
-    }
-
-    .book-cover {
-      position: relative;
-      top: 0;
-      left: 0;
-      transform: none;
-      background: transparent;
-      box-shadow: none;
-      border-radius: 0;
-    }
-
-    .book-spine,
-    .page-edges {
-      display: none;
-    }
-
-    .book-page-wrapper {
-      width: 100%;
-      max-width: 700px;
-      height: calc(50vh - 50px);
-      min-height: 400px;
-      max-height: 500px;
-    }
-
-    .book-page-wrapper-left,
-    .book-page-wrapper-right {
-      margin: 0;
-    }
-
-    /* Add separator between pages */
-    .book-page-wrapper-left {
-      position: relative;
-    }
-
-    .book-page-wrapper-left::after {
-      content: "";
-      position: absolute;
-      bottom: -1px;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: linear-gradient(
-        to right,
-        transparent 10%,
-        #e2e8f0 30%,
-        #e2e8f0 70%,
-        transparent 90%
-      );
-      z-index: 10;
-    }
-
-    .book-page {
-      height: 100%;
-      width: 100%;
-    }
-
-    .book-page-left {
-      border-radius: 20px 20px 0 0;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .book-page-right {
-      border-radius: 0 0 20px 20px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Hide paper stack effects in column layout */
-    .book-page-wrapper::before,
-    .book-page-wrapper::after {
-      display: none;
-    }
-  }
-
-  @media (max-width: 800px) {
     .book-fullscreen {
       background:
         radial-gradient(
@@ -526,6 +422,7 @@
     }
 
     .book-header {
+      display: flex; /* Show on mobile */
       height: 50px;
       padding: 0 1rem;
       background: white;
@@ -535,10 +432,8 @@
     .book-spread {
       flex-direction: column;
       padding: 0;
-      height: 100vh;
-      top: 0;
-      transform: none;
-      left: 0;
+      height: calc(100dvh - 50px); /* Account for header */
+      margin-top: 50px; /* Space for header */
       gap: 0;
       width: 100%;
       max-width: none;
@@ -546,9 +441,14 @@
 
     /* Hide all book decoration effects */
     .book-cover {
+      position: relative;
+      top: 0;
+      left: 0;
+      transform: none;
       background: transparent;
-      padding: 0;
       box-shadow: none;
+      border-radius: 0;
+      padding: 0;
     }
 
     .book-spine,
@@ -559,24 +459,29 @@
     /* Single page view - only show one at a time */
     .book-page-wrapper {
       width: 100vw;
-      height: calc(100vh - 50px);
+      height: calc(100dvh - 50px);
       max-width: none;
       max-height: none;
       margin: 0 !important;
-      position: absolute;
-      top: 50px;
-      left: 0;
+      position: relative; /* Use normal flow instead of absolute */
     }
 
-    .book-page-wrapper {
-      display: none;
-    }
-
-    .book-page-wrapper-left:not(.mobile-hidden) {
+    /* Show left page by default */
+    .book-page-wrapper-left {
       display: block;
     }
 
-    .book-page-wrapper-right:not(.mobile-hidden) {
+    .book-page-wrapper-right {
+      display: none;
+    }
+
+    /* Hide left page when mobile-hide is active */
+    .book-page-wrapper-left.mobile-hide {
+      display: none;
+    }
+
+    /* Show right page when mobile-show is active */
+    .book-page-wrapper-right.mobile-show {
       display: block;
     }
 
@@ -584,22 +489,35 @@
       border-radius: 0;
       box-shadow: none;
       height: 100%;
+      overflow: hidden;
+      border: none;
+    }
+
+    .book-page-content {
       overflow-y: auto;
       overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
-      /* Keep the parchment background on mobile too */
-      border: none;
     }
 
     .book-page-left,
     .book-page-right {
       border-radius: 0;
+      box-shadow: none;
     }
-  }
 
-  @media (max-width: 640px) {
-    .book-spread {
-      padding: 60px 10px 10px;
+    /* Hide paper stack effects */
+    .book-page-wrapper::before,
+    .book-page-wrapper::after {
+      display: none;
+    }
+
+    .book-page-shadow-left,
+    .book-page-shadow-right {
+      display: none;
+    }
+
+    .bookmark-close {
+      display: none;
     }
   }
 
@@ -703,15 +621,6 @@
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
   }
 
-  @media (max-width: 1100px) {
-    .bookmark-close {
-      top: 10px;
-      right: 20px;
-      left: auto;
-      transform: none;
-    }
-  }
-
   /* Mobile close button */
   .mobile-close-button {
     position: absolute;
@@ -732,17 +641,12 @@
     justify-content: center;
     font-weight: 400;
     padding: 0;
-    padding-bottom: 2px; /* Compensate for × character baseline */
+    line-height: 1;
+    font-family: Arial, sans-serif; /* Use consistent font for × across browsers */
   }
 
   .mobile-close-button:hover {
     background: rgba(0, 0, 0, 0.1);
     color: #475569;
-  }
-
-  @media (max-width: 800px) {
-    .bookmark-close {
-      display: none;
-    }
   }
 </style>
