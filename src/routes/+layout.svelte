@@ -514,9 +514,4 @@
     position: relative;
     z-index: 2;
   }
-
-  .page-content.chain-page {
-    /* Ensure chain pages render above the dimmer */
-    z-index: 10;
-  }
 </style>

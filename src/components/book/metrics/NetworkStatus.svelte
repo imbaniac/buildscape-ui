@@ -28,24 +28,25 @@
 
 <div class="network-status">
   {#if showSkeleton}
-    <SkeletonLoader height="120px" />
+    <SkeletonLoader height="105px" />
   {:else}
     <ResourcePanel
       gasPrice={chainStatus?.gas_price_gwei || chainDynamic?.lastGas || 0}
       utilization={Math.round(
         chainStatus?.utilization_pct ||
-          (chainDynamic?.utilization
-            ? parseInt(chainDynamic.utilization)
-            : 0)
+          (chainDynamic?.utilization ? parseInt(chainDynamic.utilization) : 0),
       )}
       previousGasPrice={chainDynamic?.previousGas}
       {nativeCurrency}
-      blockSize={chainStatus?.block_size_mb?.toFixed(2) || chainDynamic?.lastBlockSize || "0"}
+      blockSize={chainStatus?.block_size_mb?.toFixed(2) ||
+        chainDynamic?.lastBlockSize ||
+        "0"}
       {maxBlockSize}
       lastBlock={formatNumberWithCommas(
-        chainStatus?.current_block || chainDynamic?.lastBlock || 0
+        chainStatus?.current_block || chainDynamic?.lastBlock || 0,
       )}
-      networkStatus={chainStatus?.status || (loadingStatus ? "connecting" : "no_data")}
+      networkStatus={chainStatus?.status ||
+        (loadingStatus ? "connecting" : "no_data")}
       {brandColor}
     />
   {/if}
@@ -55,7 +56,6 @@
   .network-status {
     margin-bottom: 0;
   }
-
 
   @media (max-width: 640px) {
     .network-status {

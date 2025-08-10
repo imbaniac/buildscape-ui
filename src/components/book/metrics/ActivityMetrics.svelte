@@ -1,8 +1,6 @@
 <script lang="ts">
   import { formatNumber, formatNumberWithCommas } from "$lib/utils/formatters";
-  import { getAccessibleBrandColor } from "$lib/utils/colorUtils";
   import MetricCard from "./MetricCard.svelte";
-  import SkeletonLoader from "../ui/SkeletonLoader.svelte";
   import Tooltip from "../ui/Tooltip.svelte";
 
   interface Props {
@@ -23,8 +21,7 @@
 
   const spans: Array<"1h" | "24h" | "7d" | "30d"> = ["1h", "24h", "7d", "30d"];
 
-  // Only show skeleton on initial load
-  const showSkeleton = $derived(loadingDynamic && !chainDynamic);
+  const showSkeleton = $derived(loadingDynamic);
 
   // Check if current data is incomplete
   const isDataIncomplete = $derived(
@@ -299,6 +296,5 @@
       padding: 2rem;
       font-size: 0.875rem;
     }
-
   }
 </style>
