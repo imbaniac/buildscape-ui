@@ -75,10 +75,21 @@ This is a SvelteKit application that visualizes EVM-compatible blockchain networ
 - Uses Svelte 5 runes syntax (`$state`, `$props`, `$derived`)
 - PixiJS v8 for WebGL-accelerated graphics rendering
 - pixi-viewport for smooth pan/zoom interactions
-- TailwindCSS v4 (next generation) for styling
-- Flowbite Svelte components for UI elements
+- CSS with CSS variables for styling (see app.css for design system)
+- Component-scoped styles in Svelte components
 - Dynamic imports via `import.meta.glob` for chain data
 - Gray-matter for parsing markdown frontmatter
+
+### Styling System
+
+- **CSS Variables**: Design tokens defined in `app.css` for fonts and theming
+- **Font System**: 
+  - Display: 'Cinzel' (headers, medieval feel)
+  - Body: 'Crimson Text' (readable serif)
+  - UI: 'Alegreya Sans' (interface elements)
+  - Mono: 'Space Mono' (technical data)
+- **Component Styles**: Scoped styles in `<style>` blocks within Svelte components
+- **No CSS Framework**: Plain CSS with modern features (flexbox, grid, custom properties)
 
 ### Performance Optimizations
 

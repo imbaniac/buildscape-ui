@@ -320,6 +320,7 @@
     margin: 0 0 0.5rem;
     color: #1e293b;
     line-height: 1.2;
+    font-family: var(--font-display);
   }
 
   .chain-subtitle {
@@ -331,6 +332,7 @@
     font-weight: 400;
     justify-content: center;
     line-height: 1.5;
+    font-family: var(--font-ui);
   }
 
   .tech-stamps {
@@ -409,6 +411,7 @@
     text-transform: uppercase;
     letter-spacing: 0.04em;
     line-height: 1;
+    font-family: var(--font-ui);
   }
 
   /* Individual stamp rotations for organic look */
@@ -541,6 +544,7 @@
     font-weight: 400;
     white-space: nowrap;
     letter-spacing: 0.025em;
+    font-family: var(--font-body);
   }
 
   /* Mobile/Tablet view - single page */
@@ -633,6 +637,13 @@
   .separator {
     color: #cbd5e1;
     margin: 0 0.5rem;
+  }
+
+  @media (max-width: 1280px) {
+    .separator {
+      margin: 0rem;
+      line-height: 1px;
+    }
   }
 
   .chain-website {

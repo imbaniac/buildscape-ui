@@ -40,7 +40,7 @@
     position: relative;
     transition: all 0.2s ease;
     margin-bottom: -1px;
-    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
+    font-family: var(--font-ui);
     letter-spacing: -0.01em;
     flex: 1;
     text-align: center;
