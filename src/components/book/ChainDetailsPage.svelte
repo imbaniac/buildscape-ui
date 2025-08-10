@@ -1,11 +1,11 @@
 <script lang="ts">
+  import { goto } from "$app/navigation";
   import TabButton from "./ui/TabButton.svelte";
   import OverviewTab from "./tabs/OverviewTab.svelte";
   import ResourcesTab from "./tabs/ResourcesTab.svelte";
   import ExplorersTab from "./tabs/ExplorersTab.svelte";
   import DevelopmentTab from "./tabs/DevelopmentTab.svelte";
   import WalletsTab from "./tabs/WalletsTab.svelte";
-  import SkeletonLoader from "./SkeletonLoader.svelte";
   import { getAccessibleBrandColor } from "$lib/utils/colorUtils";
   import type {
     BookmarkTab,
@@ -16,18 +16,18 @@
   interface Props {
     chainStatic: any;
     bookmarks: BookmarkTab[];
-    walletsByCategory: WalletsByCategory;
     activeTab: string;
     activeGroup: string;
-    onTabClick: (tabId: string, groupId: string) => void;
+    currentPath: string;
+    onTabClick?: (tabId: string, groupId: string) => void;
   }
 
   let {
     chainStatic,
     bookmarks,
-    walletsByCategory,
     activeTab,
     activeGroup,
+    currentPath,
     onTabClick,
   }: Props = $props();
 
@@ -53,6 +53,41 @@
   const adjustedBrandColor = $derived(
     getAccessibleBrandColor(chainStatic.color || "#3b82f6"),
   );
+
+  // Get base chain path from current path
+  const baseChainPath = $derived(() => {
+    if (!currentPath || typeof currentPath !== "string") {
+      // Fallback to using chain slug if available
+      return chainStatic?.slug ? `/chain/${chainStatic.slug}` : "/";
+    }
+    const match = currentPath.match(/^\/chain\/([^/]+)/);
+    return match ? `/chain/${match[1]}` : "/";
+  });
+
+  // Handle tab navigation
+  function handleTabClick(tabId: string, groupId: string) {
+    if (onTabClick) {
+      // Use provided handler if available (for old behavior)
+      onTabClick(tabId, groupId);
+    } else {
+      // Navigate using new path structure
+      let path = baseChainPath();
+
+      // Map tab IDs to routes
+      if (tabId === "overview") {
+        goto(`${path}/overview`);
+      } else if (tabId === "resources") {
+        goto(`${path}/resources`);
+      } else if (tabId === "explorers") {
+        goto(`${path}/explorers`);
+      } else if (tabId === "wallets") {
+        goto(`${path}/wallets`);
+      } else if (groupId === "development") {
+        // Development sub-routes
+        goto(`${path}/development/${tabId}`);
+      }
+    }
+  }
 </script>
 
 <div class="page-content">
@@ -62,7 +97,7 @@
         {#if group.id !== "wallets" || chainStatic.technology?.isEVM}
           <TabButton
             active={tabGroups.find((g) => g.id === group.id)?.isActive}
-            onclick={() => onTabClick(group.id, group.id)}
+            onclick={() => handleTabClick(group.id, group.id)}
             brandColor={adjustedBrandColor}
             icon={tabIcons[group.id]}
           >
@@ -84,14 +119,10 @@
           {chainStatic}
           {bookmarks}
           {activeTab}
-          onTabChange={(tab) => onTabClick(tab, "development")}
+          onTabChange={(tab) => handleTabClick(tab, "development")}
         />
       {:else if activeTab === "wallets" && chainStatic.technology?.isEVM}
-        {#if Object.keys(walletsByCategory).length === 0}
-          <SkeletonLoader type="wallets" />
-        {:else}
-          <WalletsTab {walletsByCategory} />
-        {/if}
+        <WalletsTab />
       {:else}
         <div class="no-content">
           <p>No data available for this section</p>
