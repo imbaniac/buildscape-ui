@@ -28,7 +28,7 @@
 
   // Get accessible color for UI elements
   const accessibleColor = $derived(
-    getAccessibleBrandColor(chainStatic?.color || "#3b82f6")
+    getAccessibleBrandColor(chainStatic?.color || "#3b82f6"),
   );
 
   async function addToWallet() {
@@ -54,7 +54,7 @@
           let rpcUrl;
           if (Array.isArray(chainStatic.rpcs)) {
             const officialRpc = chainStatic.rpcs.find(
-              (rpc: any) => rpc.type === "official"
+              (rpc: any) => rpc.type === "official",
             );
             rpcUrl =
               officialRpc?.url ||
@@ -281,7 +281,7 @@
     {#if chainStatic.launchDate}
       <div class="footnote">
         <sup>2</sup> Live Since {new Date(
-          chainStatic.launchDate
+          chainStatic.launchDate,
         ).toLocaleDateString("en-US", { year: "numeric", month: "long" })}
       </div>
     {/if}
@@ -290,14 +290,15 @@
 
 <style>
   .page-content {
-    padding: 3rem;
-    padding-right: 3.5rem;
-    height: 100%;
+    position: absolute;
+    top: 2rem;
+    right: 3rem;
+    bottom: 1rem;
+    left: 3rem;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
-    position: relative;
     background-color: #fafaf9;
   }
 
@@ -374,7 +375,8 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: repeating-linear-gradient(
+    background-image:
+      repeating-linear-gradient(
         45deg,
         transparent,
         transparent 2px,
@@ -471,8 +473,8 @@
     border: none;
     font-size: 0.875rem;
     font-weight: 500;
-    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto,
-      sans-serif;
+    font-family:
+      -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
     cursor: pointer;
     transition: color 0.2s;
   }
@@ -487,7 +489,7 @@
 
   /* Footnotes */
   .footnotes {
-    margin-top: auto;
+    margin-top: 1.5rem;
     padding-top: 2rem;
     border-top: 1px solid #e2e8f0;
     display: flex;
@@ -541,119 +543,35 @@
     letter-spacing: 0.025em;
   }
 
+  /* Mobile/Tablet view - single page */
   @media (max-width: 1280px) {
     .page-content {
-      padding: 2rem;
-      padding-right: 2.5rem;
-      gap: 1.25rem;
-    }
-
-    .chain-logo {
-      width: 70px;
-      height: 70px;
-    }
-
-    .chain-title {
-      font-size: 2.25rem;
-    }
-  }
-
-  @media (max-width: 1024px) {
-    .page-content {
-      gap: 2rem;
-      padding-right: 2.5rem;
-    }
-
-    .add-wallet-btn {
-      padding: 0.375rem 0.625rem;
-      font-size: 0.75rem;
-    }
-
-    .chain-title {
-      font-size: 2rem;
-    }
-
-    .author-attribution {
-      margin: 1.25rem 0;
-      padding: 0 1rem;
-    }
-
-    .author-text {
-      font-size: 0.875rem;
-    }
-
-    .tech-stamp {
-      padding: 0.375rem 0.75rem;
-    }
-
-    .stamp-label {
-      font-size: 0.5625rem;
-    }
-
-    .stamp-value {
-      font-size: 0.8125rem;
-    }
-  }
-
-  @media (max-width: 900px) {
-    .page-content {
+      position: relative;
+      top: auto;
+      right: auto;
+      bottom: auto;
+      left: auto;
       padding: 1.5rem;
-      padding-right: 2rem;
-    }
-
-    .chain-logo {
-      width: 65px;
-      height: 65px;
-    }
-
-    .tech-stamps {
-      justify-content: center;
-    }
-  }
-
-  @media (max-width: 800px) {
-    .page-content {
-      padding: 1.5rem 1.25rem;
       gap: 1rem;
-      overflow-x: hidden;
-      height: calc(100vh - 50px);
-    }
-
-    .chain-header {
-      margin-bottom: 0.75rem;
-    }
-
-    .chain-logo {
-      width: 65px;
-      height: 65px;
-    }
-
-    .chain-title {
-      font-size: 2rem;
-    }
-
-    .chain-subtitle {
-      font-size: 1rem;
-    }
-
-    .tech-stamps {
-      justify-content: center;
-    }
-  }
-
-  @media (max-width: 640px) {
-    .page-content {
-      padding: 1.25rem 1rem;
-      padding-bottom: 2rem; /* Extra padding to ensure metrics are visible */
-      gap: 0.75rem;
-      overflow-y: auto;
-      overflow-x: hidden;
-      height: calc(100vh - 50px);
-      -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+      overflow: visible;
+      height: auto; /* Let content determine height */
+      display: flex;
+      flex-direction: column;
     }
 
     .chain-header {
       margin-bottom: 0.5rem;
+    }
+
+    .chain-logo {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 0.75rem;
+    }
+
+    .chain-title {
+      font-size: 1.75rem;
+      margin-bottom: 0.375rem;
     }
 
     .chain-subtitle {
@@ -672,17 +590,6 @@
     .add-wallet-btn svg {
       width: 14px;
       height: 14px;
-    }
-
-    .chain-logo {
-      width: 60px;
-      height: 60px;
-      margin-bottom: 0.75rem;
-    }
-
-    .chain-title {
-      font-size: 1.75rem;
-      margin-bottom: 0.375rem;
     }
 
     .author-attribution {

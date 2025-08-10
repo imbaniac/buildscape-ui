@@ -544,7 +544,7 @@
   }
 
   /* Mobile adjustments */
-  @media (max-width: 800px) {
+  @media (max-width: 640px) {
     .sse-status-indicator {
       top: 0.75rem;
       right: 4rem;

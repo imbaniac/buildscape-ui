@@ -37,7 +37,7 @@
       isActive:
         group.id === activeTab ||
         group.fields.some((f: BookmarkField) => f.field === activeTab),
-    }))
+    })),
   );
 
   // Tab icons mapping - using more subtle icons
@@ -51,7 +51,7 @@
 
   // Get accessible brand color for UI elements
   const adjustedBrandColor = $derived(
-    getAccessibleBrandColor(chainStatic.color || "#3b82f6")
+    getAccessibleBrandColor(chainStatic.color || "#3b82f6"),
   );
 </script>
 
@@ -103,15 +103,22 @@
 
 <style>
   .page-content {
-    padding: 4rem;
-    height: 100%;
-    overflow-x: hidden;
-    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto,
+    position: absolute;
+    top: 2rem;
+    right: 3rem;
+    bottom: 2rem;
+    left: 3rem;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    font-family:
+      -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto,
       "Helvetica Neue", Arial, sans-serif;
   }
 
   .tabs-container {
-    height: 100%;
+    flex: 1;
+    min-height: 0;
     display: flex;
     flex-direction: column;
   }
@@ -128,7 +135,7 @@
   .tab-content {
     flex: 1;
     overflow-y: auto;
-    overflow-x: visible;
+    overflow-x: hidden;
     padding-left: 4px;
     padding-right: 2rem;
   }
@@ -140,58 +147,18 @@
     font-size: 0.9375rem;
   }
 
+  /* Mobile/Tablet view - single page */
   @media (max-width: 1280px) {
     .page-content {
-      padding: 3rem;
-    }
-  }
-
-  @media (max-width: 1024px) {
-    .page-content {
-      padding: 2.5rem;
-    }
-  }
-
-  @media (max-width: 900px) {
-    .page-content {
-      padding: 2rem;
-    }
-
-    .tabs-header {
-      gap: 0;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-    }
-
-    .tabs-header::-webkit-scrollbar {
-      display: none;
-    }
-
-    .tab-content {
-      padding-right: 1rem;
-    }
-  }
-
-  @media (max-width: 800px) {
-    .page-content {
+      position: relative;
+      top: auto;
+      right: auto;
+      bottom: auto;
+      left: auto;
       padding: 1.5rem;
-      height: calc(100vh - 50px);
-    }
-
-    .tabs-header {
-      margin-bottom: 1.75rem;
-    }
-
-    .tab-content {
-      padding-right: 0.5rem;
-    }
-  }
-
-  @media (max-width: 640px) {
-    .page-content {
-      padding: 1rem;
-      height: calc(100vh - 50px);
+      height: auto; /* Let content determine height */
+      display: flex;
+      flex-direction: column;
     }
 
     .tab-content {

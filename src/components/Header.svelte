@@ -14,20 +14,6 @@
   function formatCurrency(num: number) {
     return "$" + formatNumber(num);
   }
-
-  // Check if mobile - using app's standard breakpoints
-  let isMobile = $state(false);
-
-  $effect(() => {
-    const checkMobile = () => {
-      isMobile = window.innerWidth <= 768;
-    };
-
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-
-    return () => window.removeEventListener("resize", checkMobile);
-  });
 </script>
 
 <header class="header-container">
@@ -61,7 +47,8 @@
           >{formatNumber(overviewData?.total_transactions || 0)}</span
         >
         <span class="resource-label">
-          {isMobile ? "TXs (24h)" : "Transactions (24h)"}
+          <span class="mobile-text">TXs (24h)</span>
+          <span class="desktop-text">Transactions (24h)</span>
         </span>
       </div>
     </div>
@@ -139,6 +126,25 @@
     letter-spacing: 0.5px;
     margin-top: 2px;
   }
+  
+  /* Show/hide text based on screen size */
+  .mobile-text {
+    display: none;
+  }
+  
+  .desktop-text {
+    display: inline;
+  }
+  
+  @media (max-width: 640px) {
+    .mobile-text {
+      display: inline;
+    }
+    
+    .desktop-text {
+      display: none;
+    }
+  }
 
   .resource-divider {
     width: 1px;
@@ -160,7 +166,7 @@
   }
 
   /* Mobile styles - matching app's standard breakpoints */
-  @media (max-width: 768px) {
+  @media (max-width: 640px) {
     .header-container {
       padding: 8px;
       width: 100%;
@@ -205,34 +211,15 @@
     }
   }
 
-  /* Small mobile screens */
+  /* Mobile screens */
   @media (max-width: 640px) {
     .resource-bar {
       padding: 6px 8px;
     }
 
     .resource-item {
-      padding: 0 6px;
-      gap: 4px;
-    }
-
-    .resource-icon {
-      font-size: 18px;
-    }
-
-    .resource-number {
-      font-size: 13px;
-    }
-
-    .resource-label {
-      font-size: 8px;
-    }
-  }
-
-  /* Very small mobile screens */
-  @media (max-width: 480px) {
-    .resource-item {
       padding: 0 4px;
+      gap: 4px;
     }
 
     .resource-icon {
@@ -243,13 +230,12 @@
       font-size: 12px;
     }
 
-    .resource-divider {
-      display: none; /* Remove dividers on very small screens to save space */
-    }
-
-    /* Hide labels on extra small screens */
     .resource-label {
-      display: none;
+      font-size: 8px;
+    }
+    
+    .resource-divider {
+      height: 24px;
     }
   }
 </style>

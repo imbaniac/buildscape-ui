@@ -93,7 +93,7 @@
   }
 
   /* Mobile adjustments */
-  @media (max-width: 768px) {
+  @media (max-width: 640px) {
     .boat {
       width: 80px;
       height: 80px;

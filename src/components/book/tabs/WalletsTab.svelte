@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { WalletsByCategory } from '$lib/types';
-  
+  import type { WalletsByCategory } from "$lib/types";
+
   interface Props {
     walletsByCategory: WalletsByCategory;
   }
@@ -42,7 +42,8 @@
     font-weight: 600;
     color: #374151;
     margin-bottom: 1rem;
-    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+    font-family:
+      -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
     letter-spacing: -0.01em;
   }
 
@@ -96,7 +97,7 @@
     text-overflow: ellipsis;
   }
 
-  @media (max-width: 1024px) {
+  @media (max-width: 1280px) {
     .wallets-grid {
       grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     }

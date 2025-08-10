@@ -1,4 +1,3 @@
-import tailwindcss from "@tailwindcss/vite";
 import { sveltekit } from "@sveltejs/kit/vite";
 import { defineConfig, loadEnv } from "vite";
 import { ngrok } from "vite-plugin-ngrok";
@@ -6,14 +5,14 @@ import { ngrok } from "vite-plugin-ngrok";
 const env = loadEnv("", process.cwd(), "NGROK_TOKEN");
 
 export default defineConfig({
-  plugins: [tailwindcss(), sveltekit(), ngrok(env.NGROK_TOKEN)],
+  plugins: [sveltekit(), ngrok(env.NGROK_TOKEN)],
   server: {
     fs: {
-      allow: ['..']
-    }
+      allow: [".."],
+    },
   },
-  assetsInclude: ['**/*.webp'],
+  assetsInclude: ["**/*.webp"],
   optimizeDeps: {
-    include: ['pixi.js', 'pixi-viewport']
-  }
+    include: ["pixi.js", "pixi-viewport"],
+  },
 });

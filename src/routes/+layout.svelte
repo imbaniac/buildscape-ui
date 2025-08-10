@@ -1,5 +1,4 @@
 <script lang="ts">
-  import "../app.css";
   import { onMount, onDestroy } from "svelte";
   import { browser } from "$app/environment";
   import { afterNavigate } from "$app/navigation";
@@ -483,11 +482,6 @@
   {/if}
 </div>
 
-<!-- Dimming overlay for chain pages -->
-{#if isChainPage}
-  <div class="map-dimmer"></div>
-{/if}
-
 <!-- Page content overlays on top of map -->
 <div class="page-content" class:chain-page={isChainPage}>
   {@render children()}
@@ -513,18 +507,6 @@
     -webkit-user-select: none;
     -webkit-user-drag: none;
     -webkit-touch-callout: none;
-  }
-
-  .map-dimmer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(2px);
-    z-index: 1;
-    pointer-events: none;
   }
 
   .page-content {

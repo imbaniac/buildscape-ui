@@ -314,7 +314,7 @@
   }
 
   /* Mobile adjustments */
-  @media (max-width: 768px) {
+  @media (max-width: 640px) {
     .search-bar {
       bottom: calc(20px + env(safe-area-inset-bottom, 0px));
       width: calc(100% - 40px);
@@ -349,7 +349,7 @@
 
   /* When keyboard is visible on mobile */
   @supports (height: 100dvh) {
-    @media (max-width: 768px) and (max-height: 500px) {
+    @media (max-width: 640px) and (max-height: 500px) {
       .search-bar {
         position: absolute;
         bottom: 10px;

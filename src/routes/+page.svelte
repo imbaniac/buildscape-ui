@@ -376,7 +376,7 @@
   }
 
   /* Hide controls on mobile */
-  @media (max-width: 768px) {
+  @media (max-width: 640px) {
     .controls {
       display: none;
     }
