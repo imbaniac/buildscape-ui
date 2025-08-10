@@ -1,3 +1,18 @@
+/* Font Variables */
+:root {
+  /* Font families */
+  --font-display: 'Cinzel', Georgia, serif;
+  --font-body: 'Crimson Text', Georgia, serif;
+  --font-ui: 'Alegreya Sans', -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+  --font-mono: 'Space Mono', 'SF Mono', Monaco, 'Inconsolata', monospace;
+  
+  /* Font weights */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+}
+
 /* Base styles */
 * {
   margin: 0;
@@ -8,9 +23,7 @@
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-ui);
 }
 
 /* Disable Chrome cancel button in search */
@@ -53,5 +66,5 @@ button {
 /* Monospace for technical data */
 code,
 .mono {
-  font-family: "SF Mono", "Monaco", "Inconsolata", "Fira Code", monospace;
+  font-family: var(--font-mono);
 }

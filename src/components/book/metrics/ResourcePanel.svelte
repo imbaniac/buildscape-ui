@@ -328,7 +328,7 @@
   }
 
   .value-number {
-    font-size: 1rem;
+    font-size: 0.6875rem;
     font-weight: 700;
     color: #1e293b;
     font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;

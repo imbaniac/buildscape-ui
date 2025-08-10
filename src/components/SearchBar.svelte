@@ -303,6 +303,9 @@
   .clear-button {
     color: rgba(255, 255, 255, 0.4);
     font-size: 20px;
+    line-height: 1;
+    font-family: Arial, sans-serif;
+    padding: 0;
   }
 
   .search-bar.active .clear-button {

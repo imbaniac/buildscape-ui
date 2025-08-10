@@ -133,7 +133,7 @@
     color: #6b7280;
     text-transform: uppercase;
     letter-spacing: 0.8px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+    font-family: var(--font-ui);
   }
   
   .metric-value-wrapper {
@@ -144,7 +144,7 @@
     font-size: 1.5rem;
     font-weight: 700;
     color: #1e293b;
-    font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+    font-family: var(--font-mono);
     letter-spacing: -0.02em;
   }
 

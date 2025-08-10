@@ -40,6 +40,7 @@
     font-weight: 400;
     letter-spacing: -0.011em;
     overflow-wrap: break-word;
+    font-family: var(--font-body);
   }
 
   .prose :global(h1) {
@@ -50,6 +51,7 @@
     margin-bottom: 1.25rem;
     line-height: 1.3;
     letter-spacing: -0.025em;
+    font-family: var(--font-display);
   }
 
   .prose :global(h2) {
@@ -60,6 +62,7 @@
     margin-bottom: 1rem;
     line-height: 1.35;
     letter-spacing: -0.02em;
+    font-family: var(--font-display);
   }
 
   .prose :global(h2:first-child) {
@@ -74,6 +77,7 @@
     margin-bottom: 0.75rem;
     line-height: 1.4;
     letter-spacing: -0.015em;
+    font-family: var(--font-display);
   }
 
   .prose :global(p) {
@@ -96,7 +100,7 @@
     padding: 0.125rem 0.375rem;
     border-radius: 4px;
     font-size: 0.875em;
-    font-family: "Menlo", "Monaco", "Consolas", monospace;
+    font-family: var(--font-mono);
   }
 
   .prose :global(pre) {

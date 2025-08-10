@@ -1,4 +1,5 @@
 <script lang="ts">
+  import "../app.css";
   import { onMount, onDestroy } from "svelte";
   import { browser } from "$app/environment";
   import { afterNavigate } from "$app/navigation";
@@ -309,7 +310,6 @@
         .drag({
           mouseButtons: "left", // Only left mouse button for drag
         })
-        .decelerate()
         .pinch()
         .wheel({
           smooth: 3, // Reduce smoothing for faster response
@@ -500,6 +500,7 @@
     -moz-user-select: none;
     -ms-user-select: none;
     z-index: 0;
+    touch-action: none;
   }
 
   .pixi-container :global(canvas) {
