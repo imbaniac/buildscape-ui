@@ -1,7 +1,6 @@
 ---
 name: Arbitrum One
 color: "#12AAFF"
-darkColor: "#1C8CC9"
 chainId: 42161
 nativeCurrency: ETH
 logo: arbitrum_one.svg

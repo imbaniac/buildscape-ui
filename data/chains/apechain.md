@@ -1,7 +1,6 @@
 ---
 name: ApeChain
 color: "#0054FA"
-darkColor: "#0040C0"
 chainId: 33139
 nativeCurrency: APE
 logo: apechain.svg

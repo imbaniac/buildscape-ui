@@ -3,7 +3,6 @@ name: Unichain
 chainId: 130
 nativeCurrency: ETH
 color: "#F50FB4"
-darkColor: "#C3008A"
 logo: unichain.svg
 parentOrganization: Uniswap Labs
 website: https://unichain.org

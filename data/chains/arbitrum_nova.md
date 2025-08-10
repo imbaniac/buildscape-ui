@@ -1,7 +1,6 @@
 ---
 name: Arbitrum Nova
 color: "#ff7801"
-darkColor: "#b34f00"
 chainId: 42170
 nativeCurrency: ETH
 logo: arbitrum_nova.svg

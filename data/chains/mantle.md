@@ -2,8 +2,7 @@
 name: Mantle
 chainId: 5000
 nativeCurrency: MNT
-color: "#64B3AE"
-darkColor: "#4B8782"
+color: "#64b3ae"
 logo: mantle.svg
 parentOrganization: Mantle Network
 website: https://mantle.xyz

@@ -34,9 +34,10 @@ bun run build
 ## 🏗️ Architecture
 
 - **Frontend**: SvelteKit with Svelte 5 runes
-- **Styling**: TailwindCSS v4
+- **Rendering**: PixiJS v8 with WebGL acceleration
+- **Styling**: TailwindCSS v4 (next generation)
 - **Data**: Markdown files with YAML frontmatter
-- **Visualization**: SVG-based interactive map
+- **Performance**: Optimized render-on-demand system with texture atlas
 
 ## 🤝 Contributing
 

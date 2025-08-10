@@ -3,7 +3,6 @@ name: Etherlink
 chainId: 42793
 nativeCurrency: XTZ
 color: "#38FF9C"
-darkColor: "#25B970"
 logo: etherlink.svg
 parentOrganization: Tezos Foundation
 website: https://etherlink.com

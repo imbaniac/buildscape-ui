@@ -3,7 +3,6 @@ name: Rootstock
 chainId: 30
 nativeCurrency: RBTC
 color: "#FF931E"
-darkColor: "#D78123"
 logo: rootstock.svg
 parentOrganization: IOV Labs
 website: https://rootstock.io

@@ -28,22 +28,37 @@ This is a SvelteKit application that visualizes EVM-compatible blockchain networ
 
 ### Core Components
 
-1. **+page.svelte** (`src/routes/+page.svelte`) - Main map page
+1. **+layout.svelte** (`src/routes/+layout.svelte`) - App layout and map initialization
    - Initializes PixiJS application and viewport
-   - Manages island data and search functionality
-   - Handles user interactions and navigation
+   - Manages render lifecycle and performance
+   - Handles SSE connections and data loading
 
-2. **PixiMapRenderer** (`src/lib/pixi/PixiMapRenderer.ts`) - Map rendering engine
-   - Manages island containers and ocean background
+2. **+page.svelte** (`src/routes/+page.svelte`) - Main map UI
+   - Manages search functionality and keyboard shortcuts
+   - Tracks performance metrics in development mode
+   - Handles edit mode for island positioning
+
+3. **PixiMapRenderer** (`src/lib/pixi/PixiMapRenderer.ts`) - Map rendering engine
+   - Manages island sprites and ocean background
    - Implements search highlighting and hover states
-   - Uses PixiJS for WebGL-accelerated rendering
+   - Uses texture atlas for optimized rendering
 
-3. **PixiIslandRenderer** (`src/lib/pixi/PixiIslandRenderer.ts`) - Island generator
+4. **RenderManager** (`src/lib/pixi/RenderManager.ts`) - Performance optimization
+   - Implements render-on-demand with dirty flag system
+   - Manages PIXI ticker lifecycle
+   - Tracks FPS and render count metrics
+
+5. **IslandAtlasManager** (`src/lib/pixi/IslandAtlasManager.ts`) - Texture optimization
+   - Creates texture atlas for all islands
+   - Reduces draw calls from ~300 to 1
+   - Manages sprite creation from atlas
+
+6. **PixiIslandRenderer** (`src/lib/pixi/PixiIslandRenderer.ts`) - Island generator
    - Creates procedural islands based on chain metrics
    - Pre-renders islands to textures for performance
    - Handles shield, banner, and logo rendering
 
-4. **Book.svelte** (`src/components/Book.svelte`) - Detail modal
+7. **Book.svelte** (`src/components/Book.svelte`) - Chain detail modal
    - Shows comprehensive chain information in tabbed interface
    - Renders markdown content from chain data files
    - Loads dynamic metrics on demand
@@ -64,6 +79,14 @@ This is a SvelteKit application that visualizes EVM-compatible blockchain networ
 - Flowbite Svelte components for UI elements
 - Dynamic imports via `import.meta.glob` for chain data
 - Gray-matter for parsing markdown frontmatter
+
+### Performance Optimizations
+
+- **Texture Atlas**: All islands pre-rendered into a single texture atlas
+- **Render-on-demand**: Only renders when scene changes (dirty flag system)
+- **Ticker Management**: PIXI ticker stops when idle to save CPU/GPU
+- **Sprite-based Rendering**: Islands are sprites from atlas, not containers
+- **Zoom Limits**: Configurable min/max scale (0.05 to 3.0)
 
 ### Adding New Chains
 

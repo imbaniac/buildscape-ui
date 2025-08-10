@@ -3,7 +3,6 @@ name: Berachain
 chainId: 80094
 nativeCurrency: BERA
 color: "#814625"
-darkColor: "#6E3B1E"
 logo: berachain.svg
 parentOrganization: Berachain Foundation
 website: https://www.berachain.com

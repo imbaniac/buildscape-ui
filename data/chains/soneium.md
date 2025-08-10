@@ -3,7 +3,6 @@ name: Soneium
 chainId: 1868
 nativeCurrency: ETH
 color: "#F5F6F9"
-darkColor: "#8D8D8D"
 logo: soneium.svg
 parentOrganization: Sony Block Solutions Labs
 website: https://soneium.org
