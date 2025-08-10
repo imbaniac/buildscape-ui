@@ -28,17 +28,22 @@ This is a SvelteKit application that visualizes EVM-compatible blockchain networ
 
 ### Core Components
 
-1. **CanvasMap.svelte** (`src/components/CanvasMap.svelte`) - Main map container
-   - Implements pan/zoom functionality with momentum scrolling
-   - Manages island placement and interaction states
-   - Uses HTML5 Canvas for high-performance rendering
+1. **+page.svelte** (`src/routes/+page.svelte`) - Main map page
+   - Initializes PixiJS application and viewport
+   - Manages island data and search functionality
+   - Handles user interactions and navigation
 
-2. **CanvasRenderer** (`src/lib/canvas/CanvasRenderer.ts`) - Canvas rendering engine
-   - Handles efficient rendering of islands and ocean
-   - Manages viewport culling and performance optimizations
-   - Renders interactive blockchain islands
+2. **PixiMapRenderer** (`src/lib/pixi/PixiMapRenderer.ts`) - Map rendering engine
+   - Manages island containers and ocean background
+   - Implements search highlighting and hover states
+   - Uses PixiJS for WebGL-accelerated rendering
 
-3. **Book.svelte** (`src/components/Book.svelte`) - Detail modal
+3. **PixiIslandRenderer** (`src/lib/pixi/PixiIslandRenderer.ts`) - Island generator
+   - Creates procedural islands based on chain metrics
+   - Pre-renders islands to textures for performance
+   - Handles shield, banner, and logo rendering
+
+4. **Book.svelte** (`src/components/Book.svelte`) - Detail modal
    - Shows comprehensive chain information in tabbed interface
    - Renders markdown content from chain data files
    - Loads dynamic metrics on demand
@@ -53,6 +58,8 @@ This is a SvelteKit application that visualizes EVM-compatible blockchain networ
 ### Key Technical Details
 
 - Uses Svelte 5 runes syntax (`$state`, `$props`, `$derived`)
+- PixiJS v8 for WebGL-accelerated graphics rendering
+- pixi-viewport for smooth pan/zoom interactions
 - TailwindCSS v4 (next generation) for styling
 - Flowbite Svelte components for UI elements
 - Dynamic imports via `import.meta.glob` for chain data

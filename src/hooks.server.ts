@@ -21,7 +21,7 @@ export const handle: Handle = async ({ event, resolve }) => {
     headers.set("host", hostname);
 
     // Prepare fetch options
-    const fetchOptions: RequestInit = {
+    const fetchOptions: RequestInit & { duplex?: string } = {
       method: event.request.method,
       headers,
     };
@@ -30,7 +30,7 @@ export const handle: Handle = async ({ event, resolve }) => {
     if (event.request.method !== "GET" && event.request.method !== "HEAD") {
       fetchOptions.body = event.request.body;
       // Required for Node.js fetch when sending a body
-      fetchOptions.duplex = "half" as any;
+      fetchOptions.duplex = "half";
     }
 
     // Proxy the request to the external host

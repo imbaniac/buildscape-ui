@@ -12,5 +12,8 @@ export default defineConfig({
       allow: ['..']
     }
   },
-  assetsInclude: ['**/*.webp']
+  assetsInclude: ['**/*.webp'],
+  optimizeDeps: {
+    include: ['pixi.js', 'pixi-viewport']
+  }
 });

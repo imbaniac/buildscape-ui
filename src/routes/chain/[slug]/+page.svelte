@@ -18,7 +18,7 @@
   import { analytics } from "$lib/analytics";
 
   let { data }: { data: PageData } = $props();
-  
+
   // Track view duration
   let viewStartTime: number;
 
@@ -65,7 +65,7 @@
     const group = data.bookmarks.find(
       (g: BookmarkTab) =>
         g.id === activeTab ||
-        g.fields.some((f: BookmarkField) => f.field === activeTab)
+        g.fields.some((f: BookmarkField) => f.field === activeTab),
     );
     if (group) {
       activeGroup = group.id;
@@ -114,7 +114,7 @@
   onMount(() => {
     // Track view start time
     viewStartTime = Date.now();
-    
+
     // Initialize chain data feed for this specific chain
     if (data.chainStatic?.chainId) {
       initializeChainDataFeed(data.chainStatic.chainId.toString());
@@ -133,13 +133,13 @@
     // Track view duration
     if (viewStartTime && data.chainStatic) {
       const duration = Math.round((Date.now() - viewStartTime) / 1000);
-      analytics.track('chain_view_duration', {
+      analytics.track("chain_view_duration", {
         chain_name: data.chainStatic.name || data.chainStatic.slug,
         chain_id: data.chainStatic.chainId || 0,
-        duration_seconds: duration
+        duration_seconds: duration,
       });
     }
-    
+
     // Clean up polling for this specific chain
     if (data.chainStatic?.chainId) {
       cleanupChainDataFeed(data.chainStatic.chainId.toString());
@@ -498,7 +498,7 @@
     position: fixed;
     top: 1rem;
     right: 5rem; /* Position to the left of the close button */
-    z-index: 15;
+    z-index: 10;
     display: flex;
     align-items: center;
     gap: 0.5rem;
