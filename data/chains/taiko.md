@@ -3,7 +3,6 @@ name: Taiko Alethia
 chainId: 167000
 nativeCurrency: ETH
 color: "#E81899"
-darkColor: "#AE1273"
 logo: taiko.svg
 parentOrganization: Taiko Labs
 website: https://taiko.xyz

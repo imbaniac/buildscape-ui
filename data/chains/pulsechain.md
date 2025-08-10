@@ -3,7 +3,6 @@ name: PulseChain
 chainId: 369
 nativeCurrency: PLS
 color: "#6163F1"
-darkColor: "#4243AF"
 logo: pulsechain.svg
 parentOrganization: PulseChain Foundation
 website: https://pulsechain.com/

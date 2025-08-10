@@ -3,7 +3,6 @@ name: Base
 chainId: 8453
 nativeCurrency: ETH
 color: "#0052FF"
-darkColor: "#0041CC"
 logo: base.svg
 parentOrganization: Coinbase
 website: https://base.org

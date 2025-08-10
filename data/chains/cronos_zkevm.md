@@ -3,7 +3,6 @@ name: Cronos zkEVM
 chainId: 388
 nativeCurrency: zkCRO
 color: "#133750"
-darkColor: "#0D2638"
 logo: cronos_zkevm.svg
 parentOrganization: Crypto.com
 website: https://cronos.org/zkevm

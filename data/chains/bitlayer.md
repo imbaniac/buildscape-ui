@@ -3,7 +3,6 @@ name: Bitlayer
 chainId: 200901
 nativeCurrency: BTC
 color: "#E46F1B"
-darkColor: "#B65713"
 logo: bitlayer.svg
 parentOrganization: 
 website: https://www.bitlayer.org

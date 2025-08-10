@@ -3,7 +3,6 @@ name: Polygon zkEVM
 chainId: 1101
 nativeCurrency: ETH
 color: "#8247E5"
-darkColor: "#5D2FB8"
 logo: polygon.svg
 parentOrganization: Polygon Labs
 website: https://polygon.technology/polygon-zkevm

@@ -2,8 +2,7 @@
 name: Lisk
 chainId: 1135
 nativeCurrency: ETH
-color: "#D1D7E1"
-darkColor: "#8292AB"
+color: "#87672d"
 logo: lisk.svg
 parentOrganization: Lisk
 website: https://lisk.com

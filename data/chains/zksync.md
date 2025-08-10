@@ -3,7 +3,6 @@ name: ZKsync Era
 chainId: 324
 nativeCurrency: ETH
 color: "#0C18EC"
-darkColor: "#0E16A5"
 logo: zksync.svg
 parentOrganization: Matter Labs
 website: https://zksync.io

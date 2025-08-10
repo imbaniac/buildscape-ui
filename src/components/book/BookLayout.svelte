@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { onMount } from "svelte";
+  import { onMount } from "svelte";
 
   interface Props {
     onClose?: () => void;
@@ -81,12 +81,33 @@
           aria-label="Show details page"
         ></button>
       </div>
+      {#if onClose}
+        <button
+          class="mobile-close-button"
+          onclick={onClose}
+          aria-label="Close"
+        >
+          ×
+        </button>
+      {/if}
     </div>
   {/if}
 
   <!-- Book Cover Wrapper -->
   <div class="book-cover" style="--brand-color: {brandColor}">
     <div class="book-spread">
+      <!-- Bookmark close button tucked behind pages -->
+      {#if onClose}
+        <button
+          class="bookmark-close"
+          onclick={onClose}
+          aria-label="Close book"
+        >
+          <div class="bookmark-ribbon"></div>
+          <div class="bookmark-tail"></div>
+        </button>
+      {/if}
+
       <!-- Left Page Edges -->
       <div class="page-edges page-edges-left">
         <div class="page-edge" style="--index: 0; --brightness: 1"></div>
@@ -614,5 +635,114 @@
 
   .mobile-hidden {
     display: none !important;
+  }
+
+  /* Bookmark Close Button */
+  .bookmark-close {
+    position: absolute;
+    top: -35px;
+    right: 10px;
+    z-index: 3; /* Behind pages (which are z-index: 5) but above page edges */
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    width: 32px;
+    height: 55px;
+    transition: transform 0.2s ease;
+  }
+
+  .bookmark-close:hover {
+    transform: translateY(3px);
+  }
+
+  .bookmark-ribbon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 32px;
+    height: 45px;
+    background: linear-gradient(180deg, #dc2626 0%, #b91c1c 50%, #991b1b 100%);
+    border-radius: 2px 2px 0 0;
+    box-shadow:
+      -2px 2px 4px rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease;
+  }
+
+  .bookmark-close:hover .bookmark-ribbon {
+    box-shadow:
+      -2px 3px 6px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+  }
+
+  .bookmark-tail {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 10px 16px 0 16px;
+    border-color: #991b1b transparent transparent transparent;
+  }
+
+  /* Add a subtle X icon on the ribbon */
+  .bookmark-ribbon::after {
+    content: "×";
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  }
+
+  @media (max-width: 1100px) {
+    .bookmark-close {
+      top: 10px;
+      right: 20px;
+      left: auto;
+      transform: none;
+    }
+  }
+
+  /* Mobile close button */
+  .mobile-close-button {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.05);
+    border: none;
+    color: #64748b;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 400;
+    padding: 0;
+    padding-bottom: 2px; /* Compensate for × character baseline */
+  }
+
+  .mobile-close-button:hover {
+    background: rgba(0, 0, 0, 0.1);
+    color: #475569;
+  }
+
+  @media (max-width: 800px) {
+    .bookmark-close {
+      display: none;
+    }
   }
 </style>

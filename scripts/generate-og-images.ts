@@ -225,10 +225,10 @@ async function generateMapOG(font: ArrayBuffer) {
                         children:
                           metrics.total_transactions >= 1e6
                             ? `${(metrics.total_transactions / 1e6).toFixed(
-                                1
+                                1,
                               )}M`
                             : `${(metrics.total_transactions / 1e3).toFixed(
-                                0
+                                0,
                               )}K`,
                       },
                     },
@@ -272,10 +272,10 @@ async function generateMapOG(font: ArrayBuffer) {
                         children:
                           metrics.total_active_addresses >= 1e6
                             ? `${(metrics.total_active_addresses / 1e6).toFixed(
-                                1
+                                1,
                               )}M`
                             : `${(metrics.total_active_addresses / 1e3).toFixed(
-                                0
+                                0,
                               )}K`,
                       },
                     },
@@ -384,8 +384,7 @@ async function generateMapOG(font: ArrayBuffer) {
 
 // Generate chain-specific OG image
 async function generateChainOG(chain: any, metrics: any, font: ArrayBuffer) {
-  const { name, chainId, nativeCurrency, color, darkColor, technology, slug } =
-    chain;
+  const { name, chainId, color, technology, slug } = chain;
 
   // Fetch real metrics from API
   let chainMetrics = {
@@ -396,7 +395,7 @@ async function generateChainOG(chain: any, metrics: any, font: ArrayBuffer) {
 
   try {
     const response = await fetch(
-      `https://api.buildscape.org/chains/${chainId}/metrics?period=24h`
+      `https://api.buildscape.org/chains/${chainId}/metrics?period=24h`,
     );
 
     if (response.ok) {
@@ -434,7 +433,7 @@ async function generateChainOG(chain: any, metrics: any, font: ArrayBuffer) {
     const logoContent = await readFile(logoPath, "utf-8");
     // Convert SVG to base64 data URL
     logoData = `data:image/svg+xml;base64,${Buffer.from(logoContent).toString(
-      "base64"
+      "base64",
     )}`;
   } catch (e) {
     // Try PNG fallback
@@ -648,7 +647,7 @@ async function generateChainOG(chain: any, metrics: any, font: ArrayBuffer) {
                                             lineHeight: "1",
                                           },
                                           children: formatNumber(
-                                            chainMetrics.population
+                                            chainMetrics.population,
                                           ),
                                         },
                                       },
@@ -715,7 +714,7 @@ async function generateChainOG(chain: any, metrics: any, font: ArrayBuffer) {
                                             lineHeight: "1",
                                           },
                                           children: formatNumber(
-                                            chainMetrics.transactions
+                                            chainMetrics.transactions,
                                           ),
                                         },
                                       },
@@ -915,12 +914,12 @@ async function generateAllOGImages() {
   } catch (e) {
     console.error("Font file not found. Downloading Inter font...");
     const response = await fetch(
-      "https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2"
+      "https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2",
     );
     const woff2 = await response.arrayBuffer();
     // Note: We need TTF, not WOFF2. For now, you'll need to download Inter-Regular.ttf manually
     console.error(
-      "Please download Inter-Regular.ttf and place it in scripts/Inter-Regular.ttf"
+      "Please download Inter-Regular.ttf and place it in scripts/Inter-Regular.ttf",
     );
     process.exit(1);
   }

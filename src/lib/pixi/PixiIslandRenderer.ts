@@ -59,8 +59,6 @@ export default class PixiIslandRenderer {
     [TerrainType.GRASS_DARK]: 0x5a7a3f,
   };
 
-  private renderer: Renderer | null = null;
-
   // Shield and banner assets
   private shieldTextures: Map<string, Texture> = new Map();
   private bannerTexture: Texture | null = null;
@@ -99,8 +97,6 @@ export default class PixiIslandRenderer {
       console.error("[PixiIslandRenderer] Error preloading logos:", error);
     }
   }
-
-  // Removed prerenderIslands - now using atlas
 
   private createBitmapFont(): void {
     try {
@@ -143,12 +139,6 @@ export default class PixiIslandRenderer {
     }
   }
 
-  // Removed createIsland - now using atlas sprites
-
-  // Removed getOrCreateIslandTexture - now using atlas
-
-  // Removed renderIslandToTexture - now handled by atlas generation
-
   private generateIslandTerrain(island: Island): IslandTerrain {
     const tiles: Tile[] = [];
     const decorations: Decoration[] = [];
@@ -156,7 +146,7 @@ export default class PixiIslandRenderer {
 
     // Calculate island size based on TVL (scale)
     const baseSize = 18;
-    const size = Math.max(8, Math.min(80, Math.floor(baseSize * island.scale)));
+    const size = Math.max(4, Math.min(80, Math.floor(baseSize * island.scale)));
 
     const center = size / 2;
 
@@ -409,32 +399,32 @@ export default class PixiIslandRenderer {
 
         // Palm fronds - 5 thick curved leaves, properly sized
         const fronds = [
-          { angle: -120, length: 16 },  // Left side
-          { angle: -60, length: 15 },   // Left-up
-          { angle: 0, length: 14 },     // Top
-          { angle: 60, length: 15 },    // Right-up
-          { angle: 120, length: 16 },   // Right side
+          { angle: -120, length: 16 }, // Left side
+          { angle: -60, length: 15 }, // Left-up
+          { angle: 0, length: 14 }, // Top
+          { angle: 60, length: 15 }, // Right-up
+          { angle: 120, length: 16 }, // Right side
         ];
-        
+
         fronds.forEach(({ angle, length }) => {
-          const rad = angle * Math.PI / 180;
+          const rad = (angle * Math.PI) / 180;
           const startX = decorX;
           const startY = trunkTop;
-          
+
           // Calculate end position based on angle
           const endX = startX + Math.cos(rad) * length;
           const endY = startY + Math.sin(rad) * length * 0.7 + 4; // Natural droop
-          
+
           // Control point for the curve (goes up first, then down)
           const controlX = startX + Math.cos(rad) * (length * 0.5);
           const controlY = startY + Math.sin(rad) * (length * 0.3) - 6; // Arc upward
-          
+
           // Draw as thick curved stroke
           graphics.beginPath();
           graphics.moveTo(startX, startY);
           graphics.quadraticCurveTo(controlX, controlY, endX, endY);
           graphics.stroke({ width: 4, color: 0x3a7119 });
-          
+
           // Add a second parallel stroke for depth
           graphics.beginPath();
           graphics.moveTo(startX, startY);
@@ -488,32 +478,32 @@ export default class PixiIslandRenderer {
 
         // Palm fronds - 5 thick curved leaves, properly sized
         const fronds = [
-          { angle: -120, length: 22 },  // Left side
-          { angle: -60, length: 20 },   // Left-up
-          { angle: 0, length: 18 },     // Top
-          { angle: 60, length: 20 },    // Right-up
-          { angle: 120, length: 22 },   // Right side
+          { angle: -120, length: 22 }, // Left side
+          { angle: -60, length: 20 }, // Left-up
+          { angle: 0, length: 18 }, // Top
+          { angle: 60, length: 20 }, // Right-up
+          { angle: 120, length: 22 }, // Right side
         ];
-        
+
         fronds.forEach(({ angle, length }) => {
-          const rad = angle * Math.PI / 180;
+          const rad = (angle * Math.PI) / 180;
           const startX = decorX;
           const startY = trunkTop;
-          
+
           // Calculate end position based on angle
           const endX = startX + Math.cos(rad) * length;
           const endY = startY + Math.sin(rad) * length * 0.7 + 6; // Natural droop
-          
+
           // Control point for the curve (goes up first, then down)
           const controlX = startX + Math.cos(rad) * (length * 0.5);
           const controlY = startY + Math.sin(rad) * (length * 0.3) - 8; // Arc upward
-          
+
           // Draw as thick curved stroke
           graphics.beginPath();
           graphics.moveTo(startX, startY);
           graphics.quadraticCurveTo(controlX, controlY, endX, endY);
           graphics.stroke({ width: 5, color: 0x3a7119 });
-          
+
           // Add a second parallel stroke for depth
           graphics.beginPath();
           graphics.moveTo(startX, startY);

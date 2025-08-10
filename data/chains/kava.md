@@ -3,7 +3,6 @@ name: Kava
 chainId: 2222
 nativeCurrency: KAVA
 color: "#FF433E"
-darkColor: "#C9332F"
 logo: kava.svg
 parentOrganization: Kava Labs
 website: https://www.kava.io

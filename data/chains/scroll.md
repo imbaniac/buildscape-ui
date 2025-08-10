@@ -3,7 +3,6 @@ name: Scroll
 chainId: 534352
 nativeCurrency: ETH
 color: "#edcca2"
-darkColor: "#C5AA86"
 logo: scroll.svg
 parentOrganization: 
 website: https://scroll.io
