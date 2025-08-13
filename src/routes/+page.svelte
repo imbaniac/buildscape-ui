@@ -5,6 +5,7 @@
   import Header from "../components/Header.svelte";
   import SearchBar from "../components/SearchBar.svelte";
   import PerformanceOverlay from "../components/PerformanceOverlay.svelte";
+  import SEO from "$lib/components/SEO.svelte";
   import savedPositions from "$lib/positions.json";
 
   // Get map components from store
@@ -230,7 +231,7 @@
 
   // Update performance metrics in dev mode using effect
   let metricsInterval: ReturnType<typeof setInterval> | null = null;
-  
+
   $effect(() => {
     // Start interval when renderManager becomes available
     if (import.meta.env.DEV && renderManager && !metricsInterval) {
@@ -240,7 +241,7 @@
         }
       }, 1000);
     }
-    
+
     // Cleanup on destroy
     return () => {
       if (metricsInterval) {
@@ -249,7 +250,63 @@
       }
     };
   });
+
+  // FAQ structured data for homepage
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "What is the Chain ID for a blockchain network?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Chain ID is a unique identifier for each blockchain network. You can find the Chain ID for any network by clicking on its island in our interactive map. Each chain page displays its Chain ID prominently.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "How do I add a blockchain network to MetaMask?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "To add a network to MetaMask: 1) Click on any blockchain island in our map, 2) Click on Add to Wallet button.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "What is the RPC URL for blockchain networks?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "RPC URLs allow your wallet or dApp to connect to blockchain networks. Each chain page on Buildscape provides multiple verified public RPC endpoints you can use for free.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Which blockchain has the lowest gas fees?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Gas fees vary in real-time. Use our interactive blockchain map to compare current gas fees across all EVM chains. Layer 2 solutions like Base, Arbitrum, and Polygon typically offer lower fees than Ethereum mainnet.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "What is a Layer 2 blockchain?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Layer 2 (L2) blockchains are scaling solutions built on top of Layer 1 networks like Ethereum. They process transactions off the main chain for faster speeds and lower costs while inheriting security from the L1.",
+        },
+      },
+    ],
+  };
 </script>
+
+<SEO
+  title="Blockchain Explorer Map - Interactive Chains Visualization"
+  description="Explore blockchains ecosystem on an interactive map. Real-time metrics, gas fees, RPCs, and chain IDs for Ethereum, Base, Arbitrum, Polygon and more."
+  keywords="blockchain explorer, EVM chains, chain id, blockchain map, RPC endpoints, gas fees, layer 2, Ethereum, Base, Arbitrum, Polygon, MetaMask, blockchain metrics, TVL, TPS"
+  canonical="https://buildscape.org"
+  jsonLd={faqJsonLd}
+/>
 
 <!-- UI Controls -->
 {#if map.isReady}

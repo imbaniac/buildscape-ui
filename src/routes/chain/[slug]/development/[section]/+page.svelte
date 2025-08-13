@@ -36,26 +36,36 @@
     tools: "Development Tools"
   };
 
-  // SEO metadata
+  // SEO metadata - optimized for search queries
   const seoTitle = $derived(() => {
     const name = chainStatic?.name || layoutData.name;
     if (!name) return "Development | Blockchain Explorer";
-    const sectionName = sectionNames[section] || "Development";
-    return `${name} ${sectionName} - Developer Resources`;
+    
+    // More targeted titles for search
+    const titles: Record<string, string> = {
+      rpcs: `${name} RPC Endpoints - Mainnet RPC URLs & Node Providers`,
+      testnets: `${name} Testnet - Faucets & Test Network RPC`,
+      sdks: `${name} SDKs & Libraries - Web3 Development Tools`,
+      tools: `${name} Development Tools - Build & Deploy on ${name}`
+    };
+    
+    return titles[section || ""] || `${name} Development Resources`;
   });
 
   const seoDescription = $derived(() => {
     const name = chainStatic?.name || layoutData.name;
+    const chainId = chainStatic?.chainId || layoutData.chainId;
     if (!name) return "Access blockchain development resources";
     
+    // Optimized descriptions with search keywords
     const descriptions: Record<string, string> = {
-      rpcs: `Access verified RPC endpoints for ${name}. Connect your dApps, wallets, and development tools to the blockchain network with reliable node providers.`,
-      testnets: `Explore ${name} testnet environments for development and testing. Get testnet faucets, RPC endpoints, and deployment guides.`,
-      sdks: `Find SDKs and libraries for ${name} development. Language-specific tools for smart contract deployment, transaction signing, and blockchain interaction.`,
-      tools: `Discover development tools for building on ${name}. IDEs, testing frameworks, deployment tools, and infrastructure services for dApp development.`
+      rpcs: `Access ${name} RPC endpoints and mainnet RPC URLs. Connect to ${name} network with verified node providers. Chain ID: ${chainId}. Free and paid RPC services for Web3 development.`,
+      testnets: `${name} testnet information, faucets for free test tokens, and testnet RPC endpoints. Deploy and test smart contracts on ${name} test network. Chain ID for testnet included.`,
+      sdks: `${name} SDKs and libraries for Web3 development. JavaScript, Python, Go libraries for ${name} blockchain. Smart contract deployment and transaction tools.`,
+      tools: `Development tools for building on ${name} blockchain. Smart contract tools, debugging, deployment services, and infrastructure for ${name} dApp development.`
     };
     
-    return descriptions[section || ""] || `Development resources and tools for ${name} blockchain.`;
+    return descriptions[section || ""] || `Development resources and tools for ${name} blockchain. Chain ID: ${chainId}.`;
   });
 </script>
 

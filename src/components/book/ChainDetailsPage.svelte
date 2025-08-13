@@ -82,8 +82,11 @@
         goto(`${path}/explorers`);
       } else if (tabId === "wallets") {
         goto(`${path}/wallets`);
+      } else if (tabId === "development") {
+        // When clicking on "Dev" tab, go to first subtab (rpcs)
+        goto(`${path}/development/rpcs`);
       } else if (groupId === "development") {
-        // Development sub-routes
+        // Development sub-routes for specific subtabs
         goto(`${path}/development/${tabId}`);
       }
     }
