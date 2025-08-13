@@ -13,22 +13,28 @@
 
 <div class="prose" style="--brand-color: {brandColor}; --accessible-brand-color: {accessibleBrandColor}">
   <h2>What is {chainStatic.name}?</h2>
-  {@html marked.parse(chainStatic.description)}
+  {#if chainStatic.description}
+    {@html marked.parse(chainStatic.description)}
+  {:else}
+    <p>No description available.</p>
+  {/if}
 
-  <h3>Contract Languages</h3>
-  <div>
-    <p>This blockchain supports the following smart contract languages:</p>
-    <div class="languages-grid">
-      {#each chainStatic.contractLanguages as lang}
-        <a href={lang.url} target="_blank" class="language-card" class:primary={lang.details === 'Primary'}>
-          <span class="language-name">{lang.name}</span>
-          {#if lang.details}
-            <span class="language-details">{lang.details}</span>
-          {/if}
-        </a>
-      {/each}
+  {#if chainStatic.contractLanguages && chainStatic.contractLanguages.length > 0}
+    <h3>Contract Languages</h3>
+    <div>
+      <p>This blockchain supports the following smart contract languages:</p>
+      <div class="languages-grid">
+        {#each chainStatic.contractLanguages as lang}
+          <a href={lang.url} target="_blank" class="language-card" class:primary={lang.details === 'Primary'}>
+            <span class="language-name">{lang.name}</span>
+            {#if lang.details}
+              <span class="language-details">{lang.details}</span>
+            {/if}
+          </a>
+        {/each}
+      </div>
     </div>
-  </div>
+  {/if}
 </div>
 
 <style>

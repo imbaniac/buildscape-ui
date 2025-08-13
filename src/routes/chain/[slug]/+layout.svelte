@@ -16,9 +16,13 @@
   // Track view duration
   let viewStartTime: number;
 
+  // Get data directly from layout (no longer streamed)
+  const chainStatic = $derived(data.chainStatic);
+  const dynamicLoader = $derived(data.dynamicLoader);
+
   // Get real-time chain data from SSE store
-  const chainDataStore = data.chainStatic?.chainId
-    ? getChainData(data.chainStatic.chainId.toString())
+  const chainDataStore = data.chainId
+    ? getChainData(data.chainId.toString())
     : null;
 
   // Derive chain status from store
@@ -31,7 +35,6 @@
   let loadingDynamic = $state(false);
 
   async function loadDynamic(span: "1h" | "24h" | "7d" | "30d") {
-    const dynamicLoader = data.dynamicLoader;
     if (!dynamicLoader) return;
 
     loadingDynamic = true;
@@ -46,7 +49,7 @@
 
   // Load dynamic data when loader becomes available
   $effect(() => {
-    if (data.dynamicLoader && !chainDynamic) {
+    if (dynamicLoader && !chainDynamic) {
       loadDynamic(metricsSpan);
     }
   });
@@ -62,6 +65,7 @@
 
   // Provide dynamic data to child pages via context
   setContext('chainDynamicData', {
+    get chainStatic() { return chainStatic; },
     get chainDynamic() { return chainDynamic; },
     get loadingDynamic() { return loadingDynamic; },
     get metricsSpan() { return metricsSpan; },
@@ -85,8 +89,8 @@
     viewStartTime = Date.now();
 
     // Initialize chain data feed for this specific chain
-    if (data.chainStatic?.chainId) {
-      initializeChainDataFeed(data.chainStatic.chainId.toString());
+    if (data.chainId) {
+      initializeChainDataFeed(data.chainId.toString());
     }
 
     window.addEventListener("keydown", handleKeydown);
@@ -98,18 +102,18 @@
 
   onDestroy(() => {
     // Track view duration
-    if (viewStartTime && data.chainStatic) {
+    if (viewStartTime && (chainStatic || data.name)) {
       const duration = Math.round((Date.now() - viewStartTime) / 1000);
       analytics.track("chain_view_duration", {
-        chain_name: data.chainStatic.name || data.chainStatic.slug,
-        chain_id: data.chainStatic.chainId || 0,
+        chain_name: chainStatic?.name || data.name || data.slug,
+        chain_id: data.chainId || 0,
         duration_seconds: duration,
       });
     }
 
     // Clean up polling for this specific chain
-    if (data.chainStatic?.chainId) {
-      cleanupChainDataFeed(data.chainStatic.chainId.toString());
+    if (data.chainId) {
+      cleanupChainDataFeed(data.chainId.toString());
     }
   });
 </script>
