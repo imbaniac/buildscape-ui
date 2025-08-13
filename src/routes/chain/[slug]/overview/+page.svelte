@@ -6,11 +6,19 @@
   import ChainDetailsPage from "../../../../components/book/ChainDetailsPage.svelte";
   import SEO from "$lib/components/SEO.svelte";
   import { getAccessibleBrandColor } from "$lib/utils/colorUtils";
+  import { getContext } from "svelte";
 
   // Get data from layout  
   const layoutData = $derived($page.data);
-  const chainStatic = $derived(layoutData.chainStatic);
   const bookmarks = $derived(layoutData.bookmarks);
+  
+  // Get dynamic data from context (set by layout)
+  const dynamicData = getContext<{
+    chainStatic: any;
+  }>("chainDynamicData");
+  
+  // Use chainStatic from context, fallback to layoutData
+  const chainStatic = $derived(dynamicData?.chainStatic || layoutData);
 
   function handleClose() {
     goto("/");

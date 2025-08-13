@@ -1,26 +1,30 @@
 <script lang="ts">
-  import { page } from '$app/stores';
-  
+  import { page } from "$app/stores";
+
   const errorMessages: Record<number, { title: string; message: string }> = {
     404: {
-      title: 'Uncharted Territory',
-      message: "This blockchain island hasn't been<br />discovered on our map yet"
+      title: "Uncharted Territory",
+      message:
+        "This blockchain island hasn't been<br />discovered on our map yet",
     },
     500: {
-      title: 'Rough Seas Ahead',
-      message: 'Our ship encountered an unexpected storm.<br />Please try again later.'
+      title: "Rough Seas Ahead",
+      message:
+        "Our ship encountered an unexpected storm.<br />Please try again later.",
     },
     503: {
-      title: 'Port Closed',
-      message: 'The harbor is temporarily closed for maintenance.<br />Please check back soon.'
-    }
+      title: "Port Closed",
+      message:
+        "The harbor is temporarily closed for maintenance.<br />Please check back soon.",
+    },
   };
-  
+
   const defaultError = {
-    title: 'Navigation Error',
-    message: 'Something went wrong on our voyage.<br />Let\'s get you back to safe waters.'
+    title: "Navigation Error",
+    message:
+      "Something went wrong on our voyage.<br />Let's get you back to safe waters.",
   };
-  
+
   $: status = $page.status || 500;
   $: error = errorMessages[status] || defaultError;
 </script>
@@ -87,9 +91,9 @@
   .error-title {
     font-size: 2rem;
     font-weight: 400;
-    margin: -3rem 0 1.5rem 0;
     letter-spacing: 0.05em;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    margin-bottom: 0.5rem;
   }
 
   .error-message {
@@ -179,10 +183,6 @@
     .error-title {
       font-size: 1.5rem;
       margin: -2.5rem 0 1rem 0;
-    }
-
-    .island {
-      font-size: 4rem;
     }
   }
 </style>

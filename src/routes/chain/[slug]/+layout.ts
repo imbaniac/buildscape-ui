@@ -1,7 +1,7 @@
 import { error, redirect } from "@sveltejs/kit";
 import type { LayoutLoad } from "./$types";
-import type { BookmarkTab } from "$lib/types";
 import { parseFrontmatterAndContent } from "$lib/utils/markdown";
+import { CHAIN_TABS } from "$lib/constants/tabs";
 
 // Keep chain modules eager for now (they're small text files)
 const chainMdModules = import.meta.glob("/data/chains/*.md", {
@@ -17,13 +17,6 @@ import { getDynamicDataFactory } from "$lib/utils/chainDataLoader";
 const logoAssets = import.meta.glob("/assets/chains/*", {
   eager: true,
   query: "?url",
-  import: "default",
-});
-
-// Keep bookmarks eager (small file)
-const bookmarksModule = import.meta.glob("/data/bookmarks.md", {
-  eager: true,
-  query: "?raw",
   import: "default",
 });
 
@@ -133,6 +126,7 @@ function mergeEvmTools(
   };
 }
 
+
 export const load: LayoutLoad = async ({ params }) => {
   const { slug } = params;
 
@@ -158,15 +152,17 @@ export const load: LayoutLoad = async ({ params }) => {
     throw error(404, `Chain ${slug} not found`);
   }
 
-  // CRITICAL DATA - Load immediately
+  // Parse markdown once to get both frontmatter and content
   const raw = chainMdModules[mdPath] as string;
   const { frontmatter, content } = parseFrontmatterAndContent(raw);
 
+  // Resolve logo URL immediately (it's critical for display)
   let logoUrl = undefined;
   if (frontmatter.logo) {
     logoUrl = resolveLogoUrl(frontmatter.logo);
   }
 
+  // Build complete chainStatic object immediately
   let chainStatic = {
     ...frontmatter,
     logoUrl,
@@ -174,7 +170,7 @@ export const load: LayoutLoad = async ({ params }) => {
     name: frontmatter.name || slug,
   };
 
-  // Merge with common EVM tools if applicable (still critical)
+  // Merge with common EVM tools if applicable
   const evmCommonRaw = evmCommonModule["/data/evm-common.md"] as string;
   if (evmCommonRaw) {
     const { frontmatter: evmCommonData } =
@@ -182,26 +178,24 @@ export const load: LayoutLoad = async ({ params }) => {
     chainStatic = mergeEvmTools(chainStatic, evmCommonData, slug);
   }
 
-  // Parse bookmarks structure (critical for tab navigation)
-  const bookmarksRaw = bookmarksModule["/data/bookmarks.md"] as string;
-  const { frontmatter: bookmarksData } =
-    parseFrontmatterAndContent(bookmarksRaw);
-
-  // Get dynamic loader using chainId
-  let dynamicLoader = null;
-  if (chainStatic.chainId) {
-    dynamicLoader = getDynamicDataFactory(chainStatic.chainId);
-  }
-
-  // Wallets will be loaded on-demand in WalletsTab component
-
-  // Return all data
+  // Return all data immediately - no streaming needed
   return {
+    // All data is ready immediately
     slug,
-    chainId: chainStatic.chainId,
+    chainId: frontmatter.chainId,
+    name: frontmatter.name || slug,
+    logoUrl,
+    color: frontmatter.color || "#3b82f6",
+    bookmarks: CHAIN_TABS,
+    technology: frontmatter.technology, // Needed for wallet tab visibility
+    
+    // Pass chainStatic directly, no streaming
     chainStatic,
-    bookmarks: bookmarksData.tabs as BookmarkTab[],
-    dynamicLoader,
+    
+    // Only dynamic loader needs to be async (it's a factory function)
+    dynamicLoader: frontmatter.chainId
+      ? getDynamicDataFactory(frontmatter.chainId)
+      : null,
   };
 };
 

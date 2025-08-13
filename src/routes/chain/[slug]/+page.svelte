@@ -6,63 +6,38 @@
   import ChainDetailsPage from "../../../components/book/ChainDetailsPage.svelte";
   import SEO from "$lib/components/SEO.svelte";
   import { getAccessibleBrandColor } from "$lib/utils/colorUtils";
-  import { getChainData } from "$lib/stores/chainDataStore";
+  import { getContext } from "svelte";
 
   // Get data from layout
   const layoutData = $derived($page.data);
-  const chainStatic = $derived(layoutData.chainStatic);
   const bookmarks = $derived(layoutData.bookmarks);
+  
+  // Get dynamic data from context (set by layout)
+  const dynamicData = getContext<{
+    chainStatic: any;
+    chainDynamic: any;
+    loadingDynamic: boolean;
+    metricsSpan: "1h" | "24h" | "7d" | "30d";
+    chainStatus: any;
+    loadingStatus: boolean;
+    setMetricsSpan: (span: "1h" | "24h" | "7d" | "30d") => void;
+  }>("chainDynamicData");
 
-  // Get real-time chain data from SSE store
-  const chainDataStore = chainStatic?.chainId
-    ? getChainData(chainStatic.chainId.toString())
-    : null;
-
-  // Derive chain status from store
-  const chainStatus = $derived(chainDataStore ? $chainDataStore : null);
-  const loadingStatus = $derived(!chainStatus);
-
-  // State for metrics span (kept in component state only)
-  let metricsSpan = $state<"1h" | "24h" | "7d" | "30d">("24h");
-  let chainDynamic = $state<any>(null);
-  let loadingDynamic = $state(false);
-
-  async function loadDynamic(span: "1h" | "24h" | "7d" | "30d") {
-    const dynamicLoader = layoutData.dynamicLoader;
-    if (!dynamicLoader) return;
-
-    loadingDynamic = true;
-    try {
-      chainDynamic = await dynamicLoader(span);
-    } catch (error) {
-      console.error("Failed to load dynamic data:", error);
-    } finally {
-      loadingDynamic = false;
-    }
-  }
-
-  // Load dynamic data when loader becomes available
-  $effect(() => {
-    if (layoutData.dynamicLoader && !chainDynamic) {
-      loadDynamic(metricsSpan);
-    }
-  });
-
-  // React to metricsSpan changes
-  let previousSpan = metricsSpan;
-  $effect(() => {
-    if (metricsSpan !== previousSpan) {
-      previousSpan = metricsSpan;
-      loadDynamic(metricsSpan);
-    }
-  });
+  // Use derived values for cleaner template access
+  const chainStatic = $derived(dynamicData.chainStatic);
+  const chainDynamic = $derived(dynamicData.chainDynamic);
+  const chainStatus = $derived(dynamicData.chainStatus);
+  const loadingDynamic = $derived(dynamicData.loadingDynamic);
+  const loadingStatus = $derived(dynamicData.loadingStatus);
+  const metricsSpan = $derived(dynamicData.metricsSpan);
+  const onSpanChange = dynamicData.setMetricsSpan;
 
   // Different title formats based on chain characteristics
   const seoTitle = $derived(() => {
-    if (!chainStatic?.name) return "Blockchain Explorer | Buildscape";
+    const name = chainStatic?.name || layoutData.name;
+    if (!name) return "Blockchain Explorer | Buildscape";
 
-    const name = chainStatic.name;
-    const isL2 = chainStatic.technology?.isL2;
+    const isL2 = chainStatic?.technology?.isL2 || layoutData.technology?.isL2;
 
     // L2s emphasize their L2 nature
     if (isL2) {
@@ -75,17 +50,17 @@
 
   // Rich, intent-driven descriptions with actual chain description when available
   const seoDescription = $derived(() => {
-    if (!chainStatic?.name)
+    const name = chainStatic?.name || layoutData.name;
+    if (!name)
       return "Explore blockchain metrics and resources on Buildscape";
 
-    const name = chainStatic.name;
-    const chainId = chainStatic.chainId;
-    const nativeCurrency = chainStatic.nativeCurrency || "ETH";
-    const isEVM = chainStatic.technology?.isEVM;
-    const isL2 = chainStatic.technology?.isL2;
+    const chainId = chainStatic?.chainId || layoutData.chainId;
+    const nativeCurrency = chainStatic?.nativeCurrency || "ETH";
+    const isEVM = chainStatic?.technology?.isEVM || layoutData.technology?.isEVM;
+    const isL2 = chainStatic?.technology?.isL2 || layoutData.technology?.isL2;
 
     // Use actual description if available and truncate to ~160 chars for SEO
-    if (chainStatic.description) {
+    if (chainStatic?.description) {
       const cleanDesc = chainStatic.description
         .split("\n")[0] // First paragraph only
         .replace(/[*#]/g, "") // Remove markdown
@@ -349,24 +324,34 @@
 
 <BookLayout
   onClose={handleClose}
-  brandColor={getAccessibleBrandColor(chainStatic?.color || "#3b82f6")}
+  brandColor={getAccessibleBrandColor(layoutData.color || "#3b82f6")}
   currentPath={$page.url.pathname}
 >
   {#snippet leftPage()}
     <ChainInfoPage
-      {chainStatic}
+      chainStatic={chainStatic || { 
+        name: layoutData.name, 
+        chainId: layoutData.chainId,
+        logoUrl: layoutData.logoUrl,
+        color: layoutData.color,
+        technology: layoutData.technology
+      }}
       {chainDynamic}
       {chainStatus}
       {loadingDynamic}
       {loadingStatus}
       {metricsSpan}
-      onSpanChange={(span) => (metricsSpan = span)}
+      onSpanChange={onSpanChange}
     />
   {/snippet}
 
   {#snippet rightPage()}
     <ChainDetailsPage
-      {chainStatic}
+      chainStatic={chainStatic || { 
+        name: layoutData.name,
+        chainId: layoutData.chainId,
+        technology: layoutData.technology
+      }}
       {bookmarks}
       activeTab="overview"
       activeGroup="overview"
