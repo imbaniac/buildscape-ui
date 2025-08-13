@@ -5,26 +5,31 @@
   import { tooltipTexts } from "$lib/tooltips";
   import { getAccessibleBrandColor } from "$lib/utils/colorUtils";
   import { formatTVL } from "$lib/utils/formatters";
+  import { getContext } from "svelte";
 
   interface Props {
     chainStatic: any;
-    chainDynamic: any;
-    chainStatus: any;
-    loadingDynamic: boolean;
-    loadingStatus: boolean;
-    metricsSpan: "1h" | "24h" | "7d" | "30d";
-    onSpanChange: (span: "1h" | "24h" | "7d" | "30d") => void;
   }
 
-  let {
-    chainStatic,
-    chainDynamic,
-    chainStatus,
-    loadingDynamic,
-    loadingStatus,
-    metricsSpan,
-    onSpanChange,
-  }: Props = $props();
+  let { chainStatic }: Props = $props();
+
+  // Get dynamic data directly from layout context
+  const dynamicData = getContext<{
+    chainDynamic: any;
+    loadingDynamic: boolean;
+    metricsSpan: "1h" | "24h" | "7d" | "30d";
+    chainStatus: any;
+    loadingStatus: boolean;
+    setMetricsSpan: (span: "1h" | "24h" | "7d" | "30d") => void;
+  }>("chainDynamicData");
+
+  // Use derived values for cleaner template access
+  const chainDynamic = $derived(dynamicData.chainDynamic);
+  const chainStatus = $derived(dynamicData.chainStatus);
+  const loadingDynamic = $derived(dynamicData.loadingDynamic);
+  const loadingStatus = $derived(dynamicData.loadingStatus);
+  const metricsSpan = $derived(dynamicData.metricsSpan);
+  const onSpanChange = dynamicData.setMetricsSpan;
 
   // Get accessible color for UI elements
   const accessibleColor = $derived(

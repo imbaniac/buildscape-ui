@@ -1,9 +1,12 @@
 <script lang="ts">
+  import { goto } from "$app/navigation";
+
   interface Props {
     onClose?: () => void;
     leftPage?: import("svelte").Snippet;
     rightPage?: import("svelte").Snippet;
     brandColor?: string;
+    currentPath?: string;
   }
 
   let {
@@ -11,10 +14,27 @@
     leftPage,
     rightPage,
     brandColor = "#3b82f6",
+    currentPath,
   }: Props = $props();
 
-  // Mobile page state - for page switching
-  let showRightPage = $state(false);
+  // Determine if we're on a sub-route (shows right page on mobile)
+  const isSubRoute = $derived(() => {
+    if (!currentPath || typeof currentPath !== "string") return false;
+    // Check if we're on a sub-route like /chain/slug/something
+    const pathParts = currentPath.split("/").filter(Boolean);
+    return pathParts.length > 2; // ['chain', 'slug', 'something']
+  });
+
+  // Mobile page state - derived from route
+  const showRightPage = $derived(isSubRoute());
+
+  // Get base chain path
+  const baseChainPath = $derived(
+    currentPath && typeof currentPath === "string"
+      ? currentPath.match(/^\/chain\/([^/]+)/)?.[0] || "/"
+      : "/",
+  );
+
   let touchStartX = 0;
   let touchStartY = 0;
 
@@ -34,11 +54,13 @@
     // Only process horizontal swipes
     if (Math.abs(deltaX) > 50 && deltaY < 100) {
       if (deltaX > 0 && showRightPage) {
-        // Swipe right - go to left page
-        showRightPage = false;
+        // Swipe right - go to left page (root route)
+        goto(baseChainPath);
       } else if (deltaX < 0 && !showRightPage) {
-        // Swipe left - go to right page
-        showRightPage = true;
+        // Swipe left - go to right page (overview if on root)
+        if (!isSubRoute()) {
+          goto(`${baseChainPath}/overview`);
+        }
       }
     }
   }
@@ -49,19 +71,30 @@
   ontouchstart={handleTouchStart}
   ontouchend={handleTouchEnd}
 >
+  <!-- Backdrop to dim the map behind -->
+  <div class="book-backdrop"></div>
+
   <!-- Mobile header - hidden on desktop via CSS -->
   <div class="book-header">
     <div class="mobile-page-indicator" style="--brand-color: {brandColor}">
       <button
         class="page-dot"
         class:active={!showRightPage}
-        onclick={() => (showRightPage = false)}
+        onclick={() => {
+          // Navigate to root route to show left page
+          goto(baseChainPath);
+        }}
         aria-label="Show info page"
       ></button>
       <button
         class="page-dot"
         class:active={showRightPage}
-        onclick={() => (showRightPage = true)}
+        onclick={() => {
+          // If on root, navigate to overview, otherwise stay on current route
+          if (!isSubRoute()) {
+            goto(`${baseChainPath}/overview`);
+          }
+        }}
         aria-label="Show details page"
       ></button>
     </div>
@@ -157,18 +190,21 @@
     left: 0;
     width: 100vw;
     height: 100dvh;
-    background:
-      radial-gradient(
-        ellipse at center top,
-        #87ceeb 0%,
-        #6bb6d8 30%,
-        #5ca9ce 60%,
-        #4d9bc3 100%
-      ),
-      linear-gradient(to bottom, #7fc3e6 0%, #5ca9ce 100%);
-    background-blend-mode: normal;
     overflow: hidden;
     z-index: 10;
+  }
+
+  .book-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* background: #314955;
+    opacity: 0.6; */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 1;
   }
 
   .book-header {
@@ -181,17 +217,19 @@
     align-items: center;
     justify-content: center;
     padding: 0 1rem;
-    z-index: 10;
+    z-index: 3;
     background: transparent;
   }
 
   /* Book Cover */
   .book-cover {
     position: absolute;
+    max-width: 1500px;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     background: color-mix(in srgb, var(--brand-color, #3b82f6) 70%, black 30%);
+    z-index: 2;
     background-image:
       repeating-linear-gradient(
         90deg,
@@ -343,7 +381,7 @@
   .book-page-content {
     position: relative;
     z-index: 1;
-    height: 100%; /* Desktop needs full height for scroll */
+    height: 100%;
     width: 100%;
     overflow-y: auto;
     overflow-x: hidden;
@@ -642,7 +680,8 @@
     font-weight: 400;
     padding: 0;
     line-height: 1;
-    font-family: Arial, sans-serif; /* Use consistent font for × across browsers */
+    font-family:
+      Arial, sans-serif; /* Use consistent font for × across browsers */
   }
 
   .mobile-close-button:hover {

@@ -1,30 +1,36 @@
 <script lang="ts">
-  import Tooltip from '../ui/Tooltip.svelte';
-  import SkeletonLoader from '../ui/SkeletonLoader.svelte';
-  import NumberAnimation from '../ui/NumberAnimation.svelte';
-  
+  import Tooltip from "../ui/Tooltip.svelte";
+  import SkeletonLoader from "../ui/SkeletonLoader.svelte";
+
   interface Props {
     label: string;
     value?: string | number;
     tooltip?: string;
     loading?: boolean;
     formatter?: (value: number) => string;
-    useAnimation?: boolean;
     icon?: string;
     brandColor?: string;
   }
 
-  let { label, value, tooltip, loading = false, formatter, useAnimation = true, icon, brandColor = '#3b82f6' }: Props = $props();
-  
+  let {
+    label,
+    value,
+    tooltip,
+    loading = false,
+    formatter,
+    icon,
+    brandColor = "#3b82f6",
+  }: Props = $props();
+
   // Map labels to icons - subtle strategy game icons
   const defaultIcons: Record<string, string> = {
-    'TPS': '⚡',
-    'Transactions': '💱',
-    'Population': '👥',
-    'Contracts': '📋'
+    TPS: "⚡",
+    Transactions: "💱",
+    Population: "👥",
+    Contracts: "📋",
   };
-  
-  const displayIcon = $derived(icon || defaultIcons[label] || '');
+
+  const displayIcon = $derived(icon || defaultIcons[label] || "");
 </script>
 
 <div class="metric-card" style="--brand-color: {brandColor}">
@@ -35,27 +41,23 @@
     <span class="metric-label">{label}</span>
   </div>
   {#if loading}
-    <SkeletonLoader height="1.5rem" width="80%" />
+    <SkeletonLoader height="24px" width="80%" />
   {:else if tooltip}
     <Tooltip text={tooltip}>
       <div class="metric-value-wrapper">
-        {#if useAnimation && typeof value === 'number'}
-          <NumberAnimation value={value} formatter={formatter} />
-        {:else if typeof value === 'number' && formatter}
+        {#if typeof value === "number" && formatter}
           <span class="metric-value with-tooltip">{formatter(value)}</span>
         {:else}
-          <span class="metric-value with-tooltip">{value || '0'}</span>
+          <span class="metric-value with-tooltip">{value || "0"}</span>
         {/if}
       </div>
     </Tooltip>
   {:else}
     <div class="metric-value-wrapper">
-      {#if useAnimation && typeof value === 'number'}
-        <NumberAnimation value={value} formatter={formatter} />
-      {:else if typeof value === 'number' && formatter}
+      {#if typeof value === "number" && formatter}
         <span class="metric-value">{formatter(value)}</span>
       {:else}
-        <span class="metric-value">{value || '0'}</span>
+        <span class="metric-value">{value || "0"}</span>
       {/if}
     </div>
   {/if}
@@ -74,14 +76,14 @@
     transition: all 0.2s ease;
     position: relative;
     overflow: visible;
-    box-shadow: 
+    box-shadow:
       0 1px 3px rgba(0, 0, 0, 0.05),
       inset 0 2px 4px rgba(255, 255, 255, 0.9);
   }
-  
+
   /* Tab indicator line */
   .metric-card::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 50%;
@@ -91,27 +93,33 @@
     background: var(--brand-color);
     border-radius: 0 0 3px 3px;
   }
-  
+
   /* Folder edge shadow */
   .metric-card::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: -1px;
     left: -1px;
     right: -1px;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(52, 73, 94, 0.1) 20%, rgba(52, 73, 94, 0.1) 80%, transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(52, 73, 94, 0.1) 20%,
+      rgba(52, 73, 94, 0.1) 80%,
+      transparent
+    );
   }
 
   .metric-card:hover {
     transform: translateY(-2px);
-    box-shadow: 
+    box-shadow:
       0 -2px 6px rgba(44, 62, 80, 0.08),
       inset 0 1px 0 rgba(255, 255, 255, 0.9);
     border-color: #d1d5db;
     background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
   }
-  
+
   .metric-header {
     display: flex;
     align-items: center;
@@ -121,7 +129,7 @@
     margin-bottom: 0.25rem;
     border-bottom: 1px solid rgba(52, 73, 94, 0.08);
   }
-  
+
   .metric-icon {
     font-size: 1rem;
     opacity: 0.7;
@@ -135,13 +143,13 @@
     letter-spacing: 0.8px;
     font-family: var(--font-ui);
   }
-  
+
   .metric-value-wrapper {
     position: relative;
   }
 
   .metric-value {
-    font-size: 1.5rem;
+    font-size: 1rem;
     font-weight: 700;
     color: #1e293b;
     font-family: var(--font-mono);
@@ -169,8 +177,6 @@
     }
 
     .metric-value {
-      font-size: 1.25rem;
-      font-weight: 700;
       text-align: center;
       width: 100%;
     }

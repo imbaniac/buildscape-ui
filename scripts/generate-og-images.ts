@@ -8,7 +8,8 @@ import YAML from "yaml";
 // Configuration
 const OUTPUT_DIR = "./static/og";
 const CHAIN_DATA_DIR = "./data/chains";
-const FONT_PATH = "./scripts/Inter-Regular.ttf"; // We'll need to download this
+const INTER_FONT_PATH = "./scripts/Inter-Regular.ttf";
+const CINZEL_FONT_PATH = "./scripts/Cinzel-SemiBold.ttf";
 
 // Ensure output directory exists
 async function ensureDir(path: string) {
@@ -43,8 +44,17 @@ async function svgToPng(svg: string): Promise<Buffer> {
 }
 
 // Generate homepage/map OG image
-async function generateMapOG(font: ArrayBuffer) {
+async function generateMapOG(interFont: ArrayBuffer, cinzelFont: ArrayBuffer) {
   console.log("Generating map OG image...");
+
+  // Load favicon logo
+  let logoData = null;
+  try {
+    const logoContent = await readFile("./static/favicon.svg", "utf-8");
+    logoData = `data:image/svg+xml;base64,${Buffer.from(logoContent).toString("base64")}`;
+  } catch (e) {
+    console.log("Could not load favicon.svg");
+  }
 
   // Fetch metrics from API
   let metrics = {
@@ -66,25 +76,30 @@ async function generateMapOG(font: ArrayBuffer) {
     console.log("Using default metrics");
   }
 
+  // Format numbers helper
+  const formatNumber = (num: number) => {
+    if (num >= 1e6) return `${(num / 1e6).toFixed(1)}M`;
+    if (num >= 1e3) return `${(num / 1e3).toFixed(0)}K`;
+    return String(num);
+  };
+
   const element = {
     type: "div",
     props: {
       style: {
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "space-between",
         width: "100%",
         height: "100%",
         background:
           "linear-gradient(180deg, #0a2342 0%, #1e4c8a 50%, #2c5f7c 100%)",
-        padding: "60px",
         fontFamily: "Inter",
         position: "relative",
         overflow: "hidden",
+        padding: "80px",
       },
       children: [
-        // Wave pattern overlay
+        // Wave pattern overlay (same as chain OG)
         {
           type: "div",
           props: {
@@ -104,65 +119,20 @@ async function generateMapOG(font: ArrayBuffer) {
             },
           },
         },
-        // Top section
+        // Main content
         {
           type: "div",
           props: {
             style: {
               display: "flex",
               flexDirection: "column",
-              alignItems: "center",
-              zIndex: 1,
-              marginTop: "20px",
-            },
-            children: [
-              {
-                type: "h1",
-                props: {
-                  style: {
-                    fontSize: "72px",
-                    fontWeight: "800",
-                    color: "white",
-                    margin: "0 0 10px 0",
-                    textAlign: "center",
-                    letterSpacing: "-2px",
-                    textShadow: "0 4px 12px rgba(0, 0, 0, 0.3)",
-                  },
-                  children: "BUILDSCAPE",
-                },
-              },
-              {
-                type: "p",
-                props: {
-                  style: {
-                    fontSize: "28px",
-                    color: "#5dade2",
-                    textAlign: "center",
-                    margin: "0",
-                    fontWeight: "500",
-                    letterSpacing: "2px",
-                  },
-                  children: "Sea of Chains",
-                },
-              },
-            ],
-          },
-        },
-        // Metrics section
-        {
-          type: "div",
-          props: {
-            style: {
-              display: "flex",
-              gap: "80px",
               alignItems: "center",
               justifyContent: "center",
+              flex: "1",
               zIndex: 1,
-              marginTop: "40px",
-              marginBottom: "40px",
             },
             children: [
-              // Chains metric
+              // Logo and title section
               {
                 type: "div",
                 props: {
@@ -170,190 +140,372 @@ async function generateMapOG(font: ArrayBuffer) {
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
+                    marginBottom: "60px",
                   },
                   children: [
-                    {
+                    // Logo
+                    logoData && {
                       type: "div",
                       props: {
                         style: {
-                          fontSize: "64px",
-                          fontWeight: "800",
-                          color: "#fff",
-                          lineHeight: "1",
-                          textShadow: "0 4px 20px rgba(93, 173, 226, 0.5)",
+                          width: "100px",
+                          height: "100px",
+                          marginBottom: "24px",
+                          background: "rgba(255, 255, 255, 0.95)",
+                          borderRadius: "20px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
                         },
-                        children: String(metrics.active_chains),
+                        children: {
+                          type: "img",
+                          props: {
+                            src: logoData,
+                            style: {
+                              width: "60px",
+                              height: "60px",
+                              objectFit: "contain",
+                            },
+                          },
+                        },
                       },
                     },
+                    // Title
                     {
-                      type: "div",
+                      type: "h1",
                       props: {
                         style: {
-                          fontSize: "18px",
-                          color: "#aed6f1",
-                          marginTop: "8px",
+                          fontSize: "72px",
                           fontWeight: "600",
-                          letterSpacing: "1px",
-                          textTransform: "uppercase",
+                          color: "white",
+                          margin: "0 0 12px 0",
+                          textAlign: "center",
+                          letterSpacing: "6px",
+                          lineHeight: "1",
+                          fontFamily: "Cinzel",
                         },
-                        children: "CHAINS",
+                        children: "BUILDSCAPE",
                       },
                     },
-                  ],
+                    // Subtitle
+                    {
+                      type: "p",
+                      props: {
+                        style: {
+                          fontSize: "22px",
+                          color: "#85c1e5",
+                          textAlign: "center",
+                          margin: "0",
+                          fontWeight: "300",
+                          letterSpacing: "4px",
+                          textTransform: "uppercase",
+                          opacity: 0.9,
+                        },
+                        children: "Sea of Chains",
+                      },
+                    },
+                  ].filter(Boolean),
                 },
               },
-              // Transactions metric
+              // Metrics cards section (matching chain OG style)
               {
                 type: "div",
                 props: {
                   style: {
                     display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
+                    gap: "24px",
+                    marginBottom: "40px",
                   },
                   children: [
+                    // Active Chains card
                     {
                       type: "div",
                       props: {
                         style: {
-                          fontSize: "64px",
-                          fontWeight: "800",
-                          color: "#fff",
-                          lineHeight: "1",
-                          textShadow: "0 4px 20px rgba(52, 152, 219, 0.5)",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "20px",
+                          background: "rgba(255, 255, 255, 0.05)",
+                          borderRadius: "16px",
+                          padding: "24px 32px",
+                          border: "1px solid rgba(255, 255, 255, 0.1)",
+                          backdropFilter: "blur(10px)",
+                          minWidth: "200px",
                         },
-                        children:
-                          metrics.total_transactions >= 1e6
-                            ? `${(metrics.total_transactions / 1e6).toFixed(
-                                1,
-                              )}M`
-                            : `${(metrics.total_transactions / 1e3).toFixed(
-                                0,
-                              )}K`,
+                        children: [
+                          {
+                            type: "div",
+                            props: {
+                              style: {
+                                width: "4px",
+                                height: "40px",
+                                background: "#4599BF",
+                                borderRadius: "2px",
+                              },
+                            },
+                          },
+                          {
+                            type: "div",
+                            props: {
+                              style: {
+                                display: "flex",
+                                flexDirection: "column",
+                              },
+                              children: [
+                                {
+                                  type: "div",
+                                  props: {
+                                    style: {
+                                      fontSize: "36px",
+                                      fontWeight: "800",
+                                      color: "white",
+                                      lineHeight: "1",
+                                    },
+                                    children: String(metrics.active_chains),
+                                  },
+                                },
+                                {
+                                  type: "div",
+                                  props: {
+                                    style: {
+                                      fontSize: "14px",
+                                      color: "#8b9dc3",
+                                      marginTop: "4px",
+                                      fontWeight: "600",
+                                      letterSpacing: "0.5px",
+                                    },
+                                    children: "ACTIVE CHAINS",
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
                       },
                     },
+                    // Transactions card
                     {
                       type: "div",
                       props: {
                         style: {
-                          fontSize: "18px",
-                          color: "#aed6f1",
-                          marginTop: "8px",
-                          fontWeight: "600",
-                          letterSpacing: "1px",
-                          textTransform: "uppercase",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "20px",
+                          background: "rgba(255, 255, 255, 0.05)",
+                          borderRadius: "16px",
+                          padding: "24px 32px",
+                          border: "1px solid rgba(255, 255, 255, 0.1)",
+                          backdropFilter: "blur(10px)",
+                          minWidth: "200px",
                         },
-                        children: "TRANSACTIONS",
+                        children: [
+                          {
+                            type: "div",
+                            props: {
+                              style: {
+                                width: "4px",
+                                height: "40px",
+                                background: "#5dade2",
+                                borderRadius: "2px",
+                              },
+                            },
+                          },
+                          {
+                            type: "div",
+                            props: {
+                              style: {
+                                display: "flex",
+                                flexDirection: "column",
+                              },
+                              children: [
+                                {
+                                  type: "div",
+                                  props: {
+                                    style: {
+                                      fontSize: "36px",
+                                      fontWeight: "800",
+                                      color: "white",
+                                      lineHeight: "1",
+                                    },
+                                    children: formatNumber(
+                                      metrics.total_transactions,
+                                    ),
+                                  },
+                                },
+                                {
+                                  type: "div",
+                                  props: {
+                                    style: {
+                                      fontSize: "14px",
+                                      color: "#8b9dc3",
+                                      marginTop: "4px",
+                                      fontWeight: "600",
+                                      letterSpacing: "0.5px",
+                                    },
+                                    children: "TRANSACTIONS (24H)",
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    // Active Users card
+                    {
+                      type: "div",
+                      props: {
+                        style: {
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "20px",
+                          background: "rgba(255, 255, 255, 0.05)",
+                          borderRadius: "16px",
+                          padding: "24px 32px",
+                          border: "1px solid rgba(255, 255, 255, 0.1)",
+                          backdropFilter: "blur(10px)",
+                          minWidth: "200px",
+                        },
+                        children: [
+                          {
+                            type: "div",
+                            props: {
+                              style: {
+                                width: "4px",
+                                height: "40px",
+                                background: "#48c9b0",
+                                borderRadius: "2px",
+                              },
+                            },
+                          },
+                          {
+                            type: "div",
+                            props: {
+                              style: {
+                                display: "flex",
+                                flexDirection: "column",
+                              },
+                              children: [
+                                {
+                                  type: "div",
+                                  props: {
+                                    style: {
+                                      fontSize: "36px",
+                                      fontWeight: "800",
+                                      color: "white",
+                                      lineHeight: "1",
+                                    },
+                                    children: formatNumber(
+                                      metrics.total_active_addresses,
+                                    ),
+                                  },
+                                },
+                                {
+                                  type: "div",
+                                  props: {
+                                    style: {
+                                      fontSize: "14px",
+                                      color: "#8b9dc3",
+                                      marginTop: "4px",
+                                      fontWeight: "600",
+                                      letterSpacing: "0.5px",
+                                    },
+                                    children: "ACTIVE USERS (24H)",
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
                       },
                     },
                   ],
                 },
               },
-              // Population metric
-              {
-                type: "div",
-                props: {
-                  style: {
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  },
-                  children: [
-                    {
-                      type: "div",
-                      props: {
-                        style: {
-                          fontSize: "64px",
-                          fontWeight: "800",
-                          color: "#fff",
-                          lineHeight: "1",
-                          textShadow: "0 4px 20px rgba(41, 128, 185, 0.5)",
-                        },
-                        children:
-                          metrics.total_active_addresses >= 1e6
-                            ? `${(metrics.total_active_addresses / 1e6).toFixed(
-                                1,
-                              )}M`
-                            : `${(metrics.total_active_addresses / 1e3).toFixed(
-                                0,
-                              )}K`,
-                      },
-                    },
-                    {
-                      type: "div",
-                      props: {
-                        style: {
-                          fontSize: "18px",
-                          color: "#aed6f1",
-                          marginTop: "8px",
-                          fontWeight: "600",
-                          letterSpacing: "1px",
-                          textTransform: "uppercase",
-                        },
-                        children: "POPULATION",
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-          },
-        },
-        // Bottom tagline
-        {
-          type: "div",
-          props: {
-            style: {
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              zIndex: 1,
-              marginBottom: "20px",
-            },
-            children: [
+              // Tagline
               {
                 type: "p",
                 props: {
                   style: {
-                    fontSize: "22px",
-                    color: "#85c1e5",
+                    fontSize: "20px",
+                    color: "#aed6f1",
                     textAlign: "center",
                     margin: "0",
                     fontStyle: "italic",
                     opacity: 0.9,
                   },
-                  children: "Navigate the decentralized ocean",
+                  children: "Navigate the blockchain ecosystem",
                 },
               },
             ],
           },
         },
-        // Wave decorations
+        // Buildscape branding (matching chain OG placement)
+        {
+          type: "div",
+          props: {
+            style: {
+              position: "absolute",
+              bottom: "40px",
+              right: "80px",
+              display: "flex",
+              alignItems: "center",
+              gap: "12px",
+            },
+            children: [
+              {
+                type: "div",
+                props: {
+                  style: {
+                    width: "24px",
+                    height: "1px",
+                    background: "rgba(255, 255, 255, 0.3)",
+                  },
+                },
+              },
+              {
+                type: "div",
+                props: {
+                  style: {
+                    fontSize: "16px",
+                    color: "rgba(255, 255, 255, 0.5)",
+                    fontWeight: "500",
+                    letterSpacing: "0.5px",
+                  },
+                  children: "buildscape.org",
+                },
+              },
+            ],
+          },
+        },
+        // Ocean wave at bottom (matching chain OG)
         {
           type: "svg",
           props: {
             width: "100%",
-            height: "100",
-            viewBox: "0 0 1200 100",
+            height: "120",
+            viewBox: "0 0 1200 120",
             style: {
               position: "absolute",
               bottom: "0",
               left: "0",
-              opacity: "0.2",
+              opacity: "0.1",
             },
             children: [
               {
                 type: "path",
                 props: {
-                  d: "M0,40 Q300,20 600,40 T1200,40 L1200,100 L0,100 Z",
-                  fill: "rgba(255, 255, 255, 0.1)",
+                  d: "M0,60 Q300,30 600,60 T1200,60 L1200,120 L0,120 Z",
+                  fill: "#4599BF",
+                  opacity: "0.3",
                 },
               },
               {
                 type: "path",
                 props: {
-                  d: "M0,60 Q300,40 600,60 T1200,60 L1200,100 L0,100 Z",
-                  fill: "rgba(93, 173, 226, 0.1)",
+                  d: "M0,80 Q300,50 600,80 T1200,80 L1200,120 L0,120 Z",
+                  fill: "rgba(93, 173, 226, 0.2)",
                 },
               },
             ],
@@ -369,8 +521,14 @@ async function generateMapOG(font: ArrayBuffer) {
     fonts: [
       {
         name: "Inter",
-        data: font,
+        data: interFont,
         weight: 400,
+        style: "normal",
+      },
+      {
+        name: "Cinzel",
+        data: cinzelFont,
+        weight: 600,
         style: "normal",
       },
     ],
@@ -907,25 +1065,26 @@ async function generateChainOG(chain: any, metrics: any, font: ArrayBuffer) {
 async function generateAllOGImages() {
   console.log("Starting OG image generation...\n");
 
-  // Download font if not exists (you'll need to do this manually for now)
-  let font: ArrayBuffer;
+  // Load fonts
+  let interFont: ArrayBuffer;
+  let cinzelFont: ArrayBuffer;
+  
   try {
-    font = await readFile(FONT_PATH);
+    interFont = await readFile(INTER_FONT_PATH);
   } catch (e) {
-    console.error("Font file not found. Downloading Inter font...");
-    const response = await fetch(
-      "https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2",
-    );
-    const woff2 = await response.arrayBuffer();
-    // Note: We need TTF, not WOFF2. For now, you'll need to download Inter-Regular.ttf manually
-    console.error(
-      "Please download Inter-Regular.ttf and place it in scripts/Inter-Regular.ttf",
-    );
+    console.error("Inter font file not found at", INTER_FONT_PATH);
+    process.exit(1);
+  }
+  
+  try {
+    cinzelFont = await readFile(CINZEL_FONT_PATH);
+  } catch (e) {
+    console.error("Cinzel font file not found at", CINZEL_FONT_PATH);
     process.exit(1);
   }
 
   // Generate map OG
-  await generateMapOG(font);
+  await generateMapOG(interFont, cinzelFont);
 
   // Load chain data
   console.log("\nGenerating chain OG images...");
@@ -946,7 +1105,7 @@ async function generateAllOGImages() {
       gas_price_gwei: Math.random() * 50, // Placeholder
     };
 
-    await generateChainOG({ ...chain, slug }, metrics, font);
+    await generateChainOG({ ...chain, slug }, metrics, interFont);
   }
 
   console.log("\n✅ OG image generation complete!");

@@ -38,7 +38,6 @@ When using this data, please include:
 │   ├── ethereum.md       # Ethereum mainnet
 │   ├── base.md           # Base L2
 │   └── ...               # Other chains
-├── bookmarks.md          # Bookmark categories
 ├── wallets.md            # Wallet information
 └── evm-common.md         # Common EVM tools
 ```
