@@ -192,6 +192,7 @@
     height: 100dvh;
     overflow: hidden;
     z-index: 10;
+    cursor: default; /* Ensure default cursor over the entire modal */
   }
 
   .book-backdrop {
@@ -205,6 +206,7 @@
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     z-index: 1;
+    cursor: default; /* Override any inherited cursor */
   }
 
   .book-header {
@@ -587,10 +589,6 @@
     background: var(--brand-color, #3b82f6);
     width: 24px;
     border-radius: 5px;
-  }
-
-  .mobile-hidden {
-    display: none !important;
   }
 
   /* Bookmark Close Button */
