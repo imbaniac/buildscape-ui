@@ -27,22 +27,33 @@
     goto("/");
   }
 
-  // SEO metadata
+  // SEO metadata - optimized for search queries
   const seoTitle = $derived(() => {
-    if (!chainStatic?.name) return "Resources | Blockchain Explorer";
-    return `${chainStatic.name} Resources - Documentation, Forums & Source Code`;
+    const name = chainStatic?.name || layoutData.name;
+    if (!name) return "Resources | Blockchain Explorer";
+    return `${name} Documentation & Resources - Developer Guides`;
   });
 
   const seoDescription = $derived(() => {
-    if (!chainStatic?.name)
-      return "Access blockchain resources and documentation";
-    return `Explore ${chainStatic.name} resources including official documentation, community forums, source code repositories, and developer guides.`;
+    const name = chainStatic?.name || layoutData.name;
+    
+    if (!name) return "Access blockchain resources and documentation";
+    
+    return `${name} documentation, developer guides, and resources. Access ${name} docs, community forums, GitHub repositories, whitepapers, and technical specifications for building on ${name}.`;
+  });
+  
+  const seoKeywords = $derived(() => {
+    const name = chainStatic?.name || layoutData.name;
+    if (!name) return "";
+    
+    return `${name} documentation, ${name} docs, ${name} developer guide, ${name} resources, ${name} GitHub, ${name} whitepaper, ${name} technical docs, ${name} community`;
   });
 </script>
 
 <SEO
   title={seoTitle()}
   description={seoDescription()}
+  keywords={seoKeywords()}
   canonical={`https://buildscape.org/chain/${layoutData.slug}/resources`}
   ogImage={`https://buildscape.org/og/chain/${layoutData.slug}.png`}
   ogType="article"

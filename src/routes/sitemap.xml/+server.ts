@@ -52,12 +52,69 @@ export const GET: RequestHandler = async ({ url }) => {
     { url: '/map', changefreq: 'daily', priority: 0.8 },
   ];
   
-  // Add all chain pages
+  // Add all chain pages with their tab routes
   chains.forEach(chain => {
+    // Overview page (main chain page)
     pages.push({
-      url: `/chain/${chain.slug}`,
-      changefreq: 'hourly', // Chain metrics update frequently
-      priority: chain.priority,
+      url: `/chain/${chain.slug}/overview`,
+      changefreq: 'hourly',
+      priority: chain.priority * 0.9, // Slightly lower than RPC for overview
+      lastMod: chain.lastMod
+    });
+    
+    // Development - RPC page (highest priority for search)
+    pages.push({
+      url: `/chain/${chain.slug}/development/rpcs`,
+      changefreq: 'daily',
+      priority: chain.priority, // Keep original high priority for RPC pages
+      lastMod: chain.lastMod
+    });
+    
+    // Development - Testnets
+    pages.push({
+      url: `/chain/${chain.slug}/development/testnets`,
+      changefreq: 'weekly',
+      priority: chain.priority * 0.8,
+      lastMod: chain.lastMod
+    });
+    
+    // Development - SDKs
+    pages.push({
+      url: `/chain/${chain.slug}/development/sdks`,
+      changefreq: 'weekly',
+      priority: chain.priority * 0.8,
+      lastMod: chain.lastMod
+    });
+    
+    // Development - Tools
+    pages.push({
+      url: `/chain/${chain.slug}/development/tools`,
+      changefreq: 'weekly',
+      priority: chain.priority * 0.8,
+      lastMod: chain.lastMod
+    });
+    
+    // Explorers page
+    pages.push({
+      url: `/chain/${chain.slug}/explorers`,
+      changefreq: 'weekly',
+      priority: chain.priority * 0.85,
+      lastMod: chain.lastMod
+    });
+    
+    // Wallets page
+    pages.push({
+      url: `/chain/${chain.slug}/wallets`,
+      changefreq: 'weekly',
+      priority: chain.priority * 0.85,
+      lastMod: chain.lastMod
+    });
+    
+    // Resources page
+    pages.push({
+      url: `/chain/${chain.slug}/resources`,
+      changefreq: 'monthly',
+      priority: chain.priority * 0.7,
       lastMod: chain.lastMod
     });
   });
