@@ -64,12 +64,37 @@
       }
     }
   }
+
+  // Prevent pinch/zoom gestures from propagating to the viewport
+  function handleGestureStart(e: Event) {
+    e.preventDefault();
+  }
+
+  function handleGestureChange(e: Event) {
+    e.preventDefault();
+  }
+
+  function handleGestureEnd(e: Event) {
+    e.preventDefault();
+  }
+
+  // Prevent wheel zoom when modal is open
+  function handleWheel(e: WheelEvent) {
+    // Only prevent if it's a pinch gesture (ctrl/cmd + wheel)
+    if (e.ctrlKey || e.metaKey) {
+      e.preventDefault();
+    }
+  }
 </script>
 
 <div
   class="book-fullscreen"
   ontouchstart={handleTouchStart}
   ontouchend={handleTouchEnd}
+  ongesturestart={handleGestureStart}
+  ongesturechange={handleGestureChange}
+  ongestureend={handleGestureEnd}
+  onwheel={handleWheel}
 >
   <!-- Backdrop to dim the map behind -->
   <div class="book-backdrop"></div>
@@ -193,6 +218,9 @@
     overflow: hidden;
     z-index: 10;
     cursor: default; /* Ensure default cursor over the entire modal */
+    touch-action: pan-x pan-y; /* Allow scrolling but prevent pinch zoom */
+    -webkit-user-select: none; /* Prevent text selection on iOS */
+    user-select: none;
   }
 
   .book-backdrop {
@@ -604,6 +632,8 @@
     width: 32px;
     height: 55px;
     transition: transform 0.2s ease;
+    touch-action: none; /* Prevent any touch gestures on the button */
+    -webkit-tap-highlight-color: transparent; /* Remove tap highlight on iOS */
   }
 
   .bookmark-close:hover {
@@ -680,6 +710,8 @@
     line-height: 1;
     font-family:
       Arial, sans-serif; /* Use consistent font for × across browsers */
+    touch-action: none; /* Prevent any touch gestures on the button */
+    -webkit-tap-highlight-color: transparent; /* Remove tap highlight on iOS */
   }
 
   .mobile-close-button:hover {
