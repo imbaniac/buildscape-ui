@@ -72,8 +72,7 @@ sdks:
 tools:
 ---
 
-Hybrid L2 that combines OP Stack rollup security with Bitcoin finality via Babylon staking. Operates as both a Superchain member and a Bitcoin Secured Network — BOB L2 actively inheriting security from both chains.
-The key difference: Dual finality model where Ethereum provides fraud proofs while Bitcoin stakers validate state through Babylon — if validators sign conflicting chains, their BTC gets slashed on Bitcoin itself.
+An L2 that brings Bitcoin into Ethereum DeFi while being secured by both chains — Bitcoin holders stake their BTC to validate the network and earn yield. The key difference: Unlike wrapped BTC on other chains, here your Bitcoin actively secures the network through Babylon staking, and if validators misbehave, their actual BTC gets slashed on Bitcoin itself.
 
 **Best for:** Bitcoin DeFi needing EVM compatibility, BTC liquid staking protocols, cross-chain apps wanting both Ethereum composability and Bitcoin security.
 
