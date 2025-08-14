@@ -194,12 +194,22 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-The original smart contract chain and backbone of web3.
+The chain that matters. While "Ethereum killers" come and go, Ethereum remains the settlement layer for crypto — where real value lives, DeFi was born, and L2s post their proofs. Post-EIP-4844, it's no longer trying to be fast or cheap; it's the neutral, credible base layer that everything else builds on.
 
-- **Security**: Most battle-tested, decentralized L1 (proof-of-stake, thousands of validators).  
-- **Ecosystem**: Largest dev and app ecosystem by far.  
-- **Stability**: Conservative upgrade path; prioritizes neutrality and backward compatibility.  
+**Best for:** Blue-chip DeFi, high-value transactions, NFT originals, being the canonical source of truth.
+
+**Technical:** The original smart contract chain and backbone of web3, now optimized as a settlement layer for L2s.
+
+- **Security**: Most decentralized L1 with thousands of validators, battle-tested since 2015.  
+- **Ecosystem**: Largest by far — all major DeFi, most developers, deepest liquidity.  
+- **Performance**: ~15 TPS on L1, but L2s handle volume. EIP-4844 blobs reduced L2 costs by 90%+.
+- **Use Cases**:
+  - **DeFi headquarters**: Uniswap, Aave, MakerDAO, Curve — the originals with deepest liquidity
+  - **L2 settlement**: All major L2s (Arbitrum, Optimism, Base, zkSync) post proofs here
+  - **Staking economy**: 30M+ ETH staked, Lido alone manages $34B+
+  - **NFT bluechips**: CryptoPunks, BAYC, Art Blocks — provenance matters
+  - **Institutional entry**: ETH ETFs, regulated custody, enterprise deployments
 - **Trade-offs**:  
-  - High and volatile gas fees during congestion  
-  - Limited throughput (even after Merge & Dencun)  
-  - Slow protocol changes — favors reliability over rapid innovation  
+  - Gas fees still high for complex operations ($5-50+ during congestion)
+  - Slow by design — 12-second blocks, conservative upgrades
+  - Not for micropayments or high-frequency trading (use L2s)  

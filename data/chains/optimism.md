@@ -155,28 +155,36 @@ sdks:
 # Additional SDKs and tools are inherited from evm-common.md
 ---
 
-Ethereum Layer 2 built on the OP Stack, using optimistic execution and focused on modular infrastructure and decentralization.
+Ethereum rollup that pioneered the modular OP Stack, now powering multiple chains including Base. Unlike pure speed-focused competitors, Optimism emphasizes public goods funding and building an interconnected "Superchain" of compatible L2s.
+The key difference: Optimism's open-source OP Stack enables other chains to join a unified ecosystem (Base, Mode, Frax) while funding builders through RetroPGF — $3.3B allocated to reward impactful contributions.
 
-- **Security & Execution**  
-  - Optimistic rollup: transactions are executed off-chain and posted to Ethereum with a ~7-day fraud proof window.  
+**Best for:** Projects wanting to build on or launch their own L2, public goods builders seeking retroactive funding, apps needing interoperability across OP Stack chains.
+
+**Technical:** Optimistic rollup with 7-day fraud proof window, modular OP Stack architecture, and governance-driven public goods funding via RetroPGF.
+
+- **Security & Data Availability**  
+  - Optimistic rollup: transactions execute off-chain, posted to Ethereum with ~7-day fraud proof window.  
   - Fault proof system is active — state transitions can be challenged by any participant.  
-  - Permissionless proof submissions enabled, backed by a Security Council that can intervene in edge cases.
+  - Posts full calldata to Ethereum using blob transactions (EIP-4844), no external DA layer.
 
-- **Data Availability**  
-  - Posts full calldata to Ethereum using blob transactions (EIP-4844).  
-  - No external DA layer — inherits Ethereum’s data availability and censorship resistance.  
-  - Cost and throughput are tied to Ethereum blob pricing and L1 congestion.
-
-- **Infra & Throughput**  
+- **Infra & Execution**  
   - Uses op-geth and op-node stack with ~2s block times.  
-  - Modular architecture separates sequencing, proposing, and proof generation.  
-  - Sequencer is still centralized; plans exist for proposer and validator decentralization.
+  - Modular OP Stack architecture enables other chains to deploy compatible L2s.  
+  - Sequencer is centralized; proposer and validator decentralization planned.
+
+- **Performance**  
+  - Handles significant daily volume with established DeFi ecosystem.  
+  - Withdrawal finality requires 7-day challenge period.  
+  - Cost and throughput tied to Ethereum blob pricing and L1 congestion.
 
 - **Use Cases**  
-  - Well-suited for general-purpose dApps needing Ethereum alignment: DeFi, DAOs, NFT platforms, and infra-heavy deployments that benefit from modular stack design.
+  - **DeFi powerhouses**: Velodrome (native DEX, $130M+ TVL), Synthetix ($274M TVL), Aave V3 ($161M TVL)
+  - **Superchain builders**: Base (Coinbase), Mode, Frax launching on OP Stack
+  - **Public goods projects**: 643+ projects funded via RetroPGF, including dev tools and governance infra
+  - **Cross-chain apps**: Projects leveraging Superchain interoperability
 
 - **Trade-offs**  
   - Sequencer centralization persists — censorship risk at the inclusion level.  
-  - Challenge period introduces a 7-day delay for withdrawal finality.  
-  - Fault proofs rely on honest challengers — subject to liveness and economic assumptions.  
-  - Governance is evolving — emergency powers still rest with a Security Council.
+  - 7-day withdrawal delay vs instant finality of zkEVMs.  
+  - Fault proofs rely on honest challengers — subject to liveness assumptions.  
+  - Superchain vision still developing — cross-chain communication limited.

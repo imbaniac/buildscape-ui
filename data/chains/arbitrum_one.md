@@ -179,15 +179,36 @@ tools:
     description: Full-stack development platform with RPCs, APIs, and contract analytics for scaling on Arbitrum One.
 ---
 
-A general-purpose optimistic rollup and the main chain of the Arbitrum ecosystem.
+Ethereum's largest L2 by ecosystem, using interactive multi-round fraud proofs and powering dozens of Orbit L3s. While competitors build monolithic chains, Arbitrum enables anyone to launch custom chains using their battle-tested stack.
+The key difference: Arbitrum's interactive fraud proofs isolate disputed computations for efficiency, plus Stylus enables WASM smart contracts in Rust/C++ alongside Solidity — cutting compute costs by 10x for intensive apps.
 
-- **Security**: Inherits Ethereum security via fraud proofs. Verifier whitelist is still in place — not fully permissionless.  
-- **Infra**: Nitro stack with custom WASM EVM (Arbitrum Virtual Machine), calldata compression, and support for chain-local precompiles.  
-- **Sequencer**: Centralized and run by Offchain Labs. Censorship resistance depends on fallback L1 posting (24h+ delay).  
-- **Cost**: ~10–50x cheaper than Ethereum L1, varies with calldata usage and compression. More expensive than Nova.  
-- **Ecosystem**: Large and composable, but fragmented with the rise of Orbit chains. Main home for DeFi protocols like GMX, Radiant, and native infra.  
-- **Governance**: Arbitrum DAO controls upgrades. Security Council (9/12 multisig) can fast-track upgrades or pause the system.  
-- **Trade-offs**:  
-  - Fraud proofs still rely on trusted parties; challenge game not yet widely used  
-  - Sequencer is centralized, upgrade delay can be bypassed  
-  - Complexity of Nitro adds non-trivial surface area for bugs and audit requirements  
+**Best for:** DeFi protocols needing deep liquidity, compute-heavy applications using Stylus, projects wanting to launch their own Orbit L3 chain.
+
+**Technical:** Optimistic rollup with interactive multi-round fraud proofs, Nitro stack with AVM, Stylus WASM support, and Orbit chain deployment framework.
+
+- **Security & Data Availability**  
+  - Uses interactive multi-round fraud proofs that isolate disputed computation steps for efficiency.  
+  - BoLD protocol (2024) prevents delay attacks with execution history commitments.  
+  - Posts compressed calldata to Ethereum; inherits L1 security with 7-day challenge window.
+
+- **Infra & Execution**  
+  - Nitro stack with custom Arbitrum Virtual Machine (AVM) supporting all EVM languages.  
+  - Stylus enables WASM contracts in Rust/C++, reducing compute costs by ~10x.  
+  - Orbit framework lets projects deploy custom L3s on Arbitrum (30+ chains live).
+
+- **Performance**  
+  - ~10-50x cheaper than Ethereum L1, more expensive than Nova's sub-penny fees.  
+  - Handles highest gas throughput in Ethereum ecosystem via Orbit chains.  
+  - Calldata compression and batching optimize costs.
+
+- **Use Cases**  
+  - **DeFi giants**: GMX ($671M TVL), Radiant Capital (largest lending), Camelot DEX (native, $75M TVL)
+  - **Orbit L3s**: Xai (gaming), Proof of Play Apex/Boss, Degen Chain, Sanko, 30+ chains live
+  - **Stylus apps**: Renegade, Fairblock, Crypto Valley Exchange using WASM for compute optimization
+  - **Native protocols**: Arbitrum-first projects leveraging deep liquidity and ecosystem
+
+- **Trade-offs**  
+  - Centralized sequencer operated by Offchain Labs — censorship risk.  
+  - 7-day withdrawal delay for fraud proof window.  
+  - Verifier whitelist still active — not fully permissionless.  
+  - Ecosystem fragmentation as projects move to Orbit L3s.  

@@ -62,22 +62,38 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-An EVM-compatible Layer 2 built on the OP Stack, part of the Optimism Superchain. The legacy JavaScript-based SDK and sidechain model has been deprecated.
+Former JavaScript blockchain that pivoted to become an L2 focused on bringing crypto to emerging markets. The key difference: While other L2s fight for Silicon Valley users, Lisk targets Africa and Southeast Asia where low fees actually matter for daily use.
 
-- **Consensus & Finality**  
-  - Finality is probabilistic and subject to a challenge period (~7 days) on Ethereum L1.  
-  - Sequencer currently centralized; decentralization planned via Superchain roadmap.
+**Best for:** Building for emerging markets, RWA tokenization projects, developers needing grants and support.
 
-- **Security Model**  
-  - Secured by Ethereum L1 with fraud-proof-based dispute resolution.  
-  - Sequencer trust assumptions apply — censorship resistance depends on future upgrades.  
-  - Shared infrastructure with the Superchain improves auditability and upgrade velocity.
+**Technical:** OP Stack rollup optimized for low-cost transactions, part of the Optimism Superchain.
+
+- **Security & Data Availability**  
+  - Standard optimistic rollup with 7-day withdrawal period
+  - Centralized sequencer with decentralization roadmap
+  - Fault proofs implementation planned
+  - Secured by Ethereum L1 via fraud proofs
+
+- **Infra & Execution**  
+  - Built on OP Stack, fully EVM-compatible
+  - Part of Optimism Superchain for cross-chain composability
+  - Transitioned from JavaScript L1 to EVM for broader compatibility
+  - Transaction fees under $0.01
+
+- **Performance**  
+  - Standard L2 throughput and latency
+  - Low congestion due to early-stage adoption
+  - Growing through targeted incentive programs
+  - African Blockchain Incubation Hub supporting local builders
 
 - **Use Cases**  
-  - Suitable for developers building general-purpose dApps on Ethereum L2: DeFi, gaming, identity, etc.  
-  - Integrated into a broader Superchain vision with composability across OP Stack chains.
+  - **Emerging market solutions**: Focus on real problems in Africa/Southeast Asia
+  - **RWA tokenization**: Partnerships with Backed and Obligate
+  - **Builder programs**: 3.65M LSK grants with 95% going directly to developers
+  - **Financial inclusion**: Low fees enable microtransactions and remittances
 
 - **Trade-offs**  
-  - Subject to standard optimistic rollup trade-offs (latency, challenge delays).  
-  - Sequencer currently centralized; liveness and censorship resistance not yet trustless.  
-  - Competes with other OP Stack chains — differentiation depends on ecosystem support and UX.
+  - Still building ecosystem after L1-to-L2 transition
+  - Emerging markets focus means different growth trajectory
+  - Competing with other OP Stack chains for developers
+  - Success depends on adoption in target regions

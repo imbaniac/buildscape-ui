@@ -60,30 +60,36 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-A Validium-style ZK rollup built using ZKsync’s ZK Stack, designed to scale the Cronos ecosystem with low-cost ZK execution and native yield features.
+Crypto.com's new Ethereum L2 using ZK tech, launched 2024 as the "v2" to original Cronos. Keeps data off-chain to save costs.
+The key difference: This is an Ethereum L2 Validium with ZK proofs, while original Cronos is a Cosmos chain. Cheaper but riskier than Cronos v1, with yield-bearing zkCRO gas.
 
-- **Architecture**  
-  - Validium model: ZK proofs posted to Ethereum, but data availability is off-chain and controlled by the sequencer.  
-  - Based on ZK Stack with native account abstraction and EVM compatibility.  
-  - Gas token is **zkCRO**, backed by liquid-staked CRO.  
+**Best for:** Crypto.com users wanting cheaper transactions, DeFi apps needing sponsored gas, yield farmers chasing zkCRO rewards.
 
-- **Security Model**  
-  - State transitions verified via STARK proofs.  
-  - No on-chain data availability — exit safety depends on sequencer honesty.  
-  - Upgrades go through a delay window (typically 4–8 days), but can be bypassed via emergency governance paths.  
+**Technical:** ZK Validium on ZK Stack with off-chain data availability, zkCRO (liquid staked CRO) as gas token, native account abstraction.
+
+- **Security & Data Availability**  
+  - ZK proofs posted to Ethereum, but transaction data kept off-chain (Validium).  
+  - Exit safety depends entirely on sequencer — if it fails, funds stuck.  
+  - Emergency governance can bypass upgrade delays.
+
+- **Infra & Execution**  
+  - Built on ZKsync's ZK Stack with native account abstraction.  
+  - zkCRO gas token earns CRO staking yield while used for fees.  
+  - Part of ZK Stack ecosystem enabling bridges to other ZK chains.
 
 - **Performance**  
-  - Benchmarked throughput >100 TPS with “hyperchain” parallelism.  
-  - Real performance depends on sequencer and DA system.  
-  - Fees are low (≈$0.001 per op), but sensitive to DA and proof generation delays.  
+  - Very low fees due to off-chain data storage.  
+  - Claims >100 TPS but real performance untested.  
+  - Alpha mainnet since August 2024.
 
-- **Features**  
-  - Native account abstraction: supports sponsor-paid gas and smart wallets by default.  
-  - Yield-bearing gas: zkCRO accrues staking yield while being used for transactions.  
-  - Interoperability: part of ZK Stack ecosystem, enabling shared sequencers and bridges with other ZK chains.  
+- **Use Cases**  
+  - **DeFi apps**: Fulcrom Finance (derivatives), VVS Finance, H2 Finance
+  - **Crypto.com integration**: Natural bridge for exchange users
+  - **Yield farming**: zkCRO "triple yield" opportunities
+  - **Pioneer program**: 5M+ ZK tokens in rewards pool
 
 - **Trade-offs**  
-  - Centralized DA is a major risk — sequencer failure or censorship can block withdrawals.  
-  - Upgrade process is not trustless; emergency upgrades can override timelocks.  
-  - Yield-bearing gas introduces financial exposure and complexity at the protocol level.  
-  - Many features (hyperchain execution, zkCRO mechanics) are still early-stage and lightly tested.  
+  - Validium = major centralization risk — sequencer controls your exit.  
+  - Very early (alpha) with limited battle-testing.  
+  - Success tied to Crypto.com ecosystem relevance.  
+  - Yield-bearing gas adds protocol complexity and financial risk.  

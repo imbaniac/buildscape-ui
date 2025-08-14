@@ -65,16 +65,38 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-A Layer 1 chain with a novel Proof-of-Liquidity (PoL) consensus model, built on a modular BeaconKit + CometBFT stack.
+The NFT meme chain that became a serious L1 with a novel twist: your staked assets keep earning DeFi yields. The key difference: Proof-of-Liquidity means validators must provide actual liquidity to earn rewards, not just lock tokens — creating the first chain where security literally equals liquidity.
 
-- **Consensus (PoL)**: Validators must stake and provide protocol liquidity to earn governance power. Uses a tri-token system:  
-  - **BERA**: gas and fee token  
-  - **BGT**: non-transferable governance token, earned via liquidity provision  
-  - **Honey**: reward token used in ecosystem apps  
-- **Infra**: Runs on CometBFT with BeaconKit coordination, enabling fast block times and single-slot finality.  
-- **Ecosystem**: Native DeFi suite includes BEX (DEX), Honey stablecoin, lending/perps. Designed to incentivize liquidity as a security primitive.  
-- **Trade-offs**:  
-  - PoL is untested at scale and depends on sustained DeFi activity  
-  - Validator incentives are tightly coupled to protocol usage  
-  - Governance (via BGT) is non-transferable and controlled by liquidity dynamics  
-  - Modular design introduces coordination and implementation complexity  
+**Best for:** Liquidity mining maximalists, DeFi protocols wanting built-in rewards, projects needing cultural momentum.
+
+**Technical:** An EVM-identical L1 using Proof-of-Liquidity consensus with a tri-token system (BERA/BGT/HONEY) built on Cosmos SDK.
+
+- **Security & Data Availability**  
+  - Proof-of-Liquidity: validators stake LP tokens instead of native tokens
+  - Staked assets remain productive in DeFi while securing the network
+  - 69 active validators with ~$38M in delegated BGT governance tokens
+  - Built on CometBFT (Tendermint) with single-slot finality
+
+- **Infra & Execution**  
+  - 100% EVM-identical — MetaMask, Hardhat, Foundry work without modifications
+  - BeaconKit framework enables modular consensus and L2 integration
+  - Native DeFi primitives built into protocol layer (BEX, BEND, BERP)
+  - Tri-token model: BERA (gas), BGT (non-transferable governance), HONEY (stablecoin)
+
+- **Performance**  
+  - 1-2.5M daily transactions sustained post-launch
+  - Sub-3 second block times with instant finality
+  - Gas costs comparable to other Cosmos chains
+  - Hit $3B TVL within weeks of mainnet launch
+
+- **Use Cases**  
+  - **Native DeFi suite**: BEX (DEX with gas rebates), BEND (lending), BERP (20x leverage perps)
+  - **Liquidity wars**: Kodiak, Infrared competing for BGT bribes and rewards
+  - **Meme culture**: Originated from Bong Bears NFT, "Ooga Booga" community
+  - **Cross-chain liquidity**: BeraHub manages BGT rewards across protocols
+
+- **Trade-offs**  
+  - PoL is experimental — economic security depends on sustained DeFi activity
+  - BGT governance is non-transferable, creating complex delegation dynamics
+  - Validator rewards tied to liquidity provision, not just validation
+  - Young ecosystem despite rapid growth — infrastructure still maturing

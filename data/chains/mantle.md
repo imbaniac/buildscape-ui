@@ -80,27 +80,36 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-An Ethereum Layer 2 built with Optimistic Rollup architecture, integrating modular data availability (EigenDA) and transitioning toward ZK finality via OP Succinct.
+BitDAO's L2 with a massive treasury backing its ecosystem. Still an optimistic rollup but testing ZK upgrade for 1-hour withdrawals.
+The key difference: $3.9B treasury (from BitDAO merger) funding ecosystem growth, plus first L2 using EigenDA for cheaper data storage and SP1 zkVM on testnet.
+
+**Best for:** Projects wanting treasury-backed grants/incentives, DeFi needing deep liquidity pools, apps betting on the ZK transition.
+
+**Technical:** Optimistic rollup transitioning to ZK validity rollup via OP Succinct/SP1, EigenDA for data availability, MNT token.
 
 - **Security & Data Availability**  
-  - Runs as an optimistic rollup with fraud proofs; proof window still ~7 days.  
-  - Posts calldata to Ethereum and now uses EigenDA for off-chain data availability with slashed validator nodes.  
-  - Plans to enable zk-proof finality (~1 hour) via SP1 (ZKVM) integration.  
+  - Still optimistic rollup with 7-day withdrawal period on mainnet.  
+  - First L2 using EigenDA for data availability (80% cheaper than posting to Ethereum).  
+  - ZK upgrade with SP1 in testnet, mainnet timeline unclear.
 
 - **Infra & Execution**  
-  - Modular architecture separates execution, data availability, and settlement layers.  
-  - Sequencer is centralized, but roadmap includes gradual decentralization.  
+  - Modular architecture: separate execution, DA, and settlement layers.  
+  - Centralized sequencer (decentralization "on roadmap").  
+  - MNT as native token, plus mETH/cmETH liquid staking derivatives.
 
 - **Performance**  
-  - High throughput (~2M txs per quarter reported).  
-  - Low gas fees under normal L1 conditions; DA costs can rise with Ethereum congestion.  
-  - Fast block inclusion; zk-based finality (when live) will reduce settlement delay drastically.  
+  - Sub-cent transaction fees with EigenDA.  
+  - Standard optimistic rollup throughput currently.  
+  - After ZK upgrade: 1-hour finality vs 7 days.
 
 - **Use Cases**  
-  - Suitable for DeFi protocols and financial apps that need deep liquidity, fast confirmation, and modular infra without leaving the Ethereum trust boundary.  
+  - **Treasury-backed DeFi**: $200M EcoFund investing in projects
+  - **Liquid staking**: mETH ($335M+ staked), integrated yield products
+  - **Stablecoin integrations**: Ethena USDe, Agora AUSD, Ondo USDy
+  - **Bitcoin bridge**: fBTC for wrapped Bitcoin liquidity
 
 - **Trade-offs**  
-  - Still depends on centralized sequencer and token-governed upgrade path.  
-  - DA decentralization (EigenDA) improves censorship resistance but introduces new validator assumptions.  
-  - zk finality not yet live — current withdrawals require fraud proof challenge period.  
-  - Not ideal for real-time apps or builders requiring full trust minimization today.
+  - Centralized sequencer with vague decentralization timeline.  
+  - ZK upgrade not live yet — still 7-day withdrawals.  
+  - Success depends on treasury management and DAO governance.  
+  - EigenDA adds external dependency and validator assumptions.

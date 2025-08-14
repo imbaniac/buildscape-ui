@@ -69,27 +69,36 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-An Ethereum fork with modified consensus and low-fee design, launched in 2023 by Richard Heart. Positioned as a high-throughput, low-cost alternative to Ethereum.
+Ethereum's controversial "system state fork" — copied every wallet balance, NFT, and smart contract from Ethereum at launch. Created by Richard Heart, it promises cheaper fees but runs on just 33 validators instead of Ethereum's thousands.
+The key difference: Complete Ethereum state duplication at genesis meant everyone got free copies of their ETH holdings as PLS, though most copied tokens have no real value or liquidity.
 
-- **Consensus & Finality**  
-  - Uses Proof-of-Staked-Authority with a limited validator set (~33 validators).  
-  - Validators require large stakes and are not permissionlessly elected.  
-  - Block time ~10s; finality is quick but relies entirely on validator honesty.
+**Best for:** Experimenting with Ethereum forks cheaply, users holding pre-fork Ethereum assets wanting free copies, Richard Heart ecosystem participants.
+
+**Technical:** Proof-of-Stake fork with 33 validators, 10-second blocks, no L2 scaling or Ethereum security connection.
+
+- **Security & Data Availability**  
+  - Proof-of-Staked-Authority with ~33 validators controlling the network.  
+  - Validators are permissioned, not openly elected like Ethereum.  
+  - No fraud proofs, validity proofs, or Ethereum anchoring — standalone security model.
 
 - **Infra & Execution**  
-  - Full-state Ethereum fork — copied all balances, contracts, and NFTs at genesis.  
-  - No rollup or proof system; no connection to Ethereum security.
+  - Full Ethereum state fork — copied all ETH balances, ERC-20s, NFTs at May 2023 genesis.  
+  - Standard EVM execution without rollup tech or blob data availability.  
+  - Most copied assets (stablecoins, wrapped tokens) have no backing or bridge connectivity.
 
-- **Performance & Fees**  
-  - Very low fees due to low network usage and no gas auction dynamics.  
-  - Throughput is higher than Ethereum, but depends on validator performance and network activity.  
-  - Lacks scalability techniques like rollups or blob-based DA.
+- **Performance**  
+  - 10-second block times vs Ethereum's 12 seconds.  
+  - Low fees primarily due to minimal usage, not technical innovation.  
+  - Lacks modern scaling: no rollups, blobs, or sharding technology.
 
 - **Use Cases**  
-  - Can be used for quick experimentation, forks of Ethereum dApps, or apps targeting low-fee environments without strict security needs.
+  - **PulseX DEX**: Main app with majority of chain's activity and liquidity
+  - **HEX ecosystem**: Richard Heart's token projects concentrated here
+  - **Copied DeFi forks**: Non-functional copies of Ethereum protocols without maintenance
+  - **Speculative trading**: Low-liquidity tokens within the Heart ecosystem
 
 - **Trade-offs**  
-  - Validator set is small and permissioned — centralization and censorship risk.  
-  - No fraud or validity proofs — chain security is weak.  
-  - Governance is opaque and closely tied to founder.  
-  - Ecosystem is small, with low adoption beyond speculative or founder-related projects.
+  - Extreme centralization: 33 validators vs thousands on Ethereum or legitimate L2s.  
+  - No major exchange listings — trading limited to native DEXs.  
+  - Copied assets misleading: USDC/USDT copies have no backing or redemption.  
+  - SEC investigation history and founder controversies affect credibility.

@@ -65,32 +65,36 @@ sdks:
 tools:
 ---
 
-An OP Stack-based L2 from Frax Finance with centralized infra, custom data availability, and incentive mechanisms for user and dev activity.
+A blockchain by the FRAX stablecoin team where users automatically earn rewards just for making transactions. Like airline miles but for crypto activity.
+The key difference: Every transaction earns FXTL points that will likely convert to tokens. Trade-off: less secure than major L2s — the Frax team controls everything with no safety checks.
 
-- **Security**  
-  - Centralized sequencer and multisig-controlled upgrades (no delay).  
-  - No fraud proofs or permissionless verifiers — state validity depends on sequencer honesty.  
-  - Uses custom off-chain data availability — no Ethereum calldata fallback.
+**Best for:** Users who want rewards for normal DeFi activity, FRAX stablecoin holders, apps that want to incentivize usage.
 
-- **Infra**  
-  - Built on OP Stack (EVM-equivalent).  
-  - Hourly state commitments to Ethereum; data submitted ~30 min later.  
-  - Native gas token is FRAX.  
+**Technical:** OP Stack rollup without fraud proofs, FRAX as gas token, Flox reward system distributing FXTL points.
 
-- **Incentives**  
-  - “Flox” system rewards users/devs with FXTL points based on activity.  
-  - FXTL has no formal token mechanics yet; subject to Frax governance.
+- **Security & Data Availability**  
+  - No fraud proofs — requires trusting Frax team won't steal or make errors.  
+  - Data stored off-chain (IPFS/AWS) to reduce costs.  
+  - 3/5 multisig can change anything instantly.
+
+- **Infra & Execution**  
+  - Built on OP Stack, compatible with Ethereum apps.  
+  - Gas paid in FRAX stablecoin (pegged to $1).  
+  - State posted to Ethereum hourly.
 
 - **Performance**  
-  - Sub-cent fees; throughput comparable to other OP Stack chains.  
-  - No ZK or fraud-proof enhancements.  
+  - Very cheap transactions (under penny).  
+  - Normal speed for this type of chain.  
+  - ~200 TPS capacity.
+
+- **Use Cases**  
+  - **Reward farming**: Earn FXTL points just by using any app on the chain
+  - **FRAX ecosystem**: Lending, swapping, and other FRAX protocol features
+  - **Stable gas costs**: Gas in FRAX means predictable dollar costs
+  - **Incentivized apps**: Projects can multiply user rewards
 
 - **Trade-offs**  
-  - No trustless settlement — sequencer has full control over execution and ordering.  
-  - Off-chain DA layer means data withholding is possible.  
-  - Multisig-controlled upgrades without delay → high governance risk.  
-  - Incentive model introduces complexity without formal guarantees.
-
-- **Why use it**  
-  - Suitable for apps that want EVM compatibility and low fees, and are comfortable with Frax-controlled infra and incentive mechanisms.  
-  - Not appropriate for trust-minimized or censorship-sensitive applications.  
+  - Must trust Frax team completely — no technical safeguards.  
+  - FXTL points have uncertain value and conversion timeline.  
+  - Less established than Arbitrum/Optimism/Base.  
+  - Data storage depends on external services working.  

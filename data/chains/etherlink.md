@@ -57,34 +57,36 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-An EVM-compatible rollup built on Tezos Smart Rollups, designed for fast, low-cost execution secured by Tezos L1.
+The only EVM rollup on Tezos, using XTZ for gas. Cheap and fast but isolated from mainstream EVM liquidity.
+The key difference: Built directly into Tezos protocol ("enshrined") rather than external, with fraud proofs settled by Tezos validators instead of Ethereum.
 
-- **Security**  
-  - Settles on Tezos Layer 1 using fraud proofs and commitment publishing.  
-  - Finality achieved in ~2 Tezos blocks (~8 seconds).  
-  - Permissionless: anyone can run a node, post commitments, and challenge invalid state.  
+**Best for:** Projects already in Tezos ecosystem wanting EVM compatibility, apps needing sub-cent transaction costs.
 
-- **Infra**  
-  - Built with Tezos Smart Rollup framework.  
-  - EVM execution environment supports most Solidity contracts and Ethereum tooling.  
-  - Some differences in state hashing and RPC behavior compared to Ethereum.  
+**Technical:** Smart Rollup on Tezos with fraud proofs, XTZ as native token, sub-second confirmations with 16-second finality.
+
+- **Security & Data Availability**  
+  - Settles on Tezos L1 using fraud proofs and commitment publishing.  
+  - Finality in 2 Tezos blocks (16 seconds after Quebec upgrade).  
+  - Permissionless: anyone can run a node and challenge invalid state.
+
+- **Infra & Execution**  
+  - Built with Tezos Smart Rollup framework, enshrined in protocol.  
+  - Standard EVM with some RPC differences due to Tezos backend.  
+  - Uses XTZ for gas instead of ETH.
 
 - **Performance**  
-  - Sub-second soft confirmation (<500ms).  
-  - Transaction fees are extremely low (~$0.001 per ERC-20 transfer).  
-  - Good for high-frequency and cost-sensitive workloads.  
+  - Sub-second soft confirmations.  
+  - Very low fees (sub-cent transactions).  
+  - Calypso upgrade improved contract processing speed significantly.
 
-- **RPC & Nodes**  
-  - Public RPC endpoints available but rate-limited (~1000 req/min).  
-  - WebSocket support is limited; most subscriptions require polling.  
-  - Full nodes can be self-hosted for better performance and no rate limits.  
-
-- **Ecosystem**  
-  - Integrated with Tezos-native DeFi, gaming, NFTs, identity, and RWA protocols.  
-  - Bridges to Ethereum and other chains via external providers.  
-  - Ecosystem still growing but active developer engagement and incentives.  
+- **Use Cases**  
+  - **DeFi**: IguanaDEX (concentrated liquidity DEX), SuperLend (lending), Curve deployment
+  - **Gaming**: BattleRise, Bit Hotel, UPvsDOWN, Degeneratives
+  - **Incentives**: Apple Farm program boosted TVL from low millions to peak near $50M
+  - **Bridges**: LayerZero and Stargate for cross-chain connectivity
 
 - **Trade-offs**  
-  - Differences in RPC methods and state structure may cause compatibility issues with some Ethereum tooling.  
-  - Sequencer is permissionless but could become a performance bottleneck.  
-  - Requires custom handling for gas metering and state interactions due to Tezos-based infra.  
+  - Isolated from Ethereum L2 ecosystem — bridges required for ETH assets.  
+  - Limited tooling support compared to Ethereum-based L2s.  
+  - Smaller ecosystem despite incentive programs.  
+  - WebSocket support limited, requiring polling for subscriptions.  

@@ -119,20 +119,38 @@ sdks:
 tools:
 ---
 
-An OP Stack-based optimistic rollup with built-in native yield for ETH and stablecoins.
+The L2 that pays you yield just for holding ETH and stablecoins — no staking needed, your balance just grows. The key difference: Your bridge deposits get invested in DeFi protocols behind the scenes, but this means extra risk beyond typical L2s, and the chain saw massive user decline after airdrop incentives ended.
 
-- **Security**:  
-  - Centralized sequencer with full control over block production  
-  - No live fraud proofs; withdrawal security depends on a challenge window that isn’t enforced  
-  - Contracts are upgradeable without delay, controlled by a multisig—no permissionless governance  
+**Best for:** Users wanting automatic yield on idle funds, yield-focused DeFi experiments, risk-tolerant builders.
 
-- **Native Yield**:  
-  - Bridged ETH is auto-staked in LST protocols  
-  - Stablecoins are deployed into external yield strategies (e.g. T-Bill wrappers)  
-  - Rebasing balances accrue passively to user wallets on L2  
+**Technical:** Modified OP Stack that auto-stakes bridge funds and implements rebasing token balances.
 
-- **Trade-offs**:  
-  - No active fraud-proof system—state security depends on sequencer honesty  
-  - Yield mechanism introduces dependency on external DeFi protocols  
-  - Upgradeability without delay adds high governance and censorship risk  
-  - Centralized control across all layers (sequencer, upgrades, bridge)  
+- **Security & Data Availability**  
+  - Optimistic rollup but fraud proofs aren't live yet
+  - Fully centralized sequencer control
+  - Contracts upgradeable instantly via multisig
+  - Your funds are actively at risk in external DeFi protocols
+
+- **Infra & Execution**  
+  - OP Stack heavily modified for native yield
+  - Bridge ETH goes into liquid staking tokens
+  - Stablecoins deployed to T-Bill protocols
+  - Balances automatically rebase (increase) in your wallet
+
+- **Performance**  
+  - Can handle high TPS but actual usage is low
+  - 2-second block times
+  - Had massive TVL at launch, lost most after airdrop
+  - Currently minimal organic activity
+
+- **Use Cases**  
+  - **Passive yield**: Your ETH/USDB earn ~4-5% doing nothing
+  - **Yield-first apps**: Build assuming users already earn baseline yield
+  - **High-risk DeFi**: Leverage the native yield for experiments
+  - **Fantasy.top**: One of the few apps with real users
+
+- **Trade-offs**  
+  - Your bridge funds are in DeFi protocols (can be hacked or lose value)
+  - No fraud proofs means trusting sequencer completely
+  - Can be upgraded instantly (rug risk)
+  - Lost significant adoption after incentives dried up

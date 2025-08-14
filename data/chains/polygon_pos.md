@@ -156,11 +156,15 @@ sdks:
 # Additional SDKs and tools are inherited from evm-common.md
 ---
 
-An EVM-compatible proof-of-stake sidechain optimized for low fees, high throughput, and broad dApp deployment.
+The original Polygon chain that kickstarted L2 adoption — now a mature sidechain transitioning to become a zkEVM validium. Still processes massive volume with ultra-low fees, but unlike true L2s, security depends on validators not Ethereum proofs. Planning to join AggLayer as a ZK chain.
+
+**Best for:** High-volume, low-value transactions, NFT minting, GameFi, apps needing sub-cent fees over maximum security.
+
+**Technical:** An EVM-compatible proof-of-stake sidechain optimized for low fees, high throughput, and broad dApp deployment.
 
 - **Consensus & Finality**  
-  - Validators stake tokens to secure the network, with ~100+ active validators.  
-  - Fast block times (~2–5 seconds) with deterministic finality via Heimdall checkpoints to Ethereum.  
+  - Validators stake POL (formerly MATIC) to secure the network, ~100+ active validators.  
+  - Fast block times (~2 seconds) with checkpoints to Ethereum every ~30 minutes.  
   - Not a rollup — security depends on validator honesty, not Ethereum proofs.
 
 - **Infra & Execution**  
@@ -168,7 +172,9 @@ An EVM-compatible proof-of-stake sidechain optimized for low fees, high throughp
   - Runs on a hybrid system using Tendermint-based consensus and Ethereum-like execution.
 
 - **Use Cases**  
-  - Well-suited for cost-sensitive, high-traffic dApps such as consumer wallets, NFT platforms, and games that prioritize UX over strict Ethereum-level trust assumptions.
+  - **NFT ecosystem**: OpenSea, Reddit Collectibles, major gaming NFTs
+  - **DeFi**: Aave, QuickSwap, Balancer with deep liquidity
+  - **Future**: Transitioning to zkEVM validium to join AggLayer with ZK security
 
 - **Trade-offs**  
   - No rollup-grade security — lacks fraud or zk-proof guarantees.  

@@ -65,28 +65,35 @@ sdks:
 tools:
 ---
 
-An EVM-compatible hybrid rollup combining optimistic execution with optional ZK fallback and a decentralized sequencer set.
+Optimistic rollup that only generates ZK proofs when challenged, reducing costs. Positioned for "consumer apps" but launched late 2024 with minimal traction.
+The key difference: Responsive Validity Proof shortens withdrawals to 2-3 days (vs 7 for Optimism/Arbitrum) by using ZK proofs only during disputes.
 
-- **Security & Sequencing**  
-  - Uses a decentralized sequencer network based on BLS and Tendermint consensus.  
-  - Execution is optimistic by default; zero-knowledge proofs are used only when disputes are raised.  
-  - Aims to reduce censorship risk and improve reliability vs. centralized rollups.
+**Best for:** Apps needing faster withdrawals than standard optimistic rollups without paying for constant ZK proving.
 
-- **Data Availability & Settlement**  
-  - Uses Ethereum calldata for DA and finality.  
-  - Batches are posted on Ethereum; withdrawals are gated by fraud challenge windows.  
-  - ZK fallback kicks in during disputes, offering stronger correctness guarantees.
+**Technical:** Optimistic zkEVM with RVP system, SP1 zkVM for disputes, planned decentralized sequencer.
+
+- **Security & Data Availability**  
+  - Responsive Validity Proof (RVP) — optimistic by default, ZK proofs only when challenged.  
+  - Uses Ethereum calldata for DA; 2-3 day challenge window.  
+  - Planned decentralized sequencer with Tendermint/BLS (currently centralized).
+
+- **Infra & Execution**  
+  - Modular architecture: separate Sequencer, Rollup, and zkEVM components.  
+  - Powered by Succinct's SP1 zkVM for proof generation.  
+  - Standard EVM compatibility.
 
 - **Performance**  
-  - Medium throughput, optimized with calldata batching.  
-  - Fees are kept low through efficient compression and batching strategies.  
-  - UX close to optimistic rollups; fallback to ZK introduces conditional latency.
+  - Lower costs than always-on zkEVMs.  
+  - Faster withdrawals than standard optimistic rollups.  
+  - Limited current throughput due to early adoption.
 
 - **Use Cases**  
-  - Suitable for consumer-facing apps like marketplaces, social wallets, or payments where fast UX is critical but trust minimization is still desirable.
+  - **Live apps**: BulbaSwap (Uniswap fork), basic DeFi, NFT platforms
+  - **Target market**: Consumer apps, though mostly theoretical so far
+  - **Backing**: Bitget exchange partnership
 
 - **Trade-offs**  
-  - Decentralized sequencer set is still maturing — not yet fully trustless.  
-  - ZK fallback is reactive, not default — correctness still hinges on honest challengers.  
-  - Complex infra with dual-layer architecture may increase dev and ops overhead.  
-  - Ecosystem and dev tooling are early-stage compared to more established rollups.
+  - Very early — launched October 2024 with low activity.  
+  - Sequencer still centralized despite decentralization claims.  
+  - Complex hybrid architecture without proven benefits yet.  
+  - Limited ecosystem compared to any established L2.

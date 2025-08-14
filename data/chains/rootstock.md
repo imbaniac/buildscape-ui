@@ -70,35 +70,36 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
+The original Bitcoin sidechain from 2018 — run Ethereum smart contracts secured by Bitcoin miners. Gets its security from 81% of Bitcoin's hashpower through merged mining, where miners earn both BTC and RBTC rewards simultaneously.
+The key difference: True sidechain architecture, not a rollup — runs parallel to Bitcoin with its own consensus. Bitcoin miners validate blocks but can't steal funds thanks to hardware-secured federation controlling the bridge.
 
-A Bitcoin sidechain with EVM-compatible smart contracts, secured via merged mining with Bitcoin miners.
+**Best for:** Bitcoin purists wanting EVM without leaving Bitcoin security, projects needing stable proven infrastructure, DeFi protocols wanting BTC collateral without wrapped tokens.
 
-- **Consensus & Security**  
-  - Uses merged mining with Bitcoin (DECOR+ protocol).  
-  - ~80% of Bitcoin hashpower participates, aligning security with Bitcoin PoW.  
-  - Block time ~30 seconds; no rollup-level validity or fraud proofs.  
-  - Security depends on miner participation and the integrity of a federation-controlled peg.
+**Technical:** EVM sidechain with merged mining (81% of Bitcoin hashpower), federation-controlled two-way peg, 30-second blocks.
 
-- **Peg Mechanism**  
-  - BTC is bridged via a two-way peg (rBTC) controlled by the Powpeg federation.  
-  - Peg is semi-centralized: validators use hardware-secured multisig to release assets.  
-  - Peg-in and peg-out times are long (~24–36 hours).
+- **Security & Data Availability**  
+  - Merged mining with Bitcoin — 740+ exahashes/second securing the network.  
+  - DECOR+ protocol prevents mining centralization issues.  
+  - Powpeg federation uses hardware security modules (HSMs) for bridge control.
 
 - **Infra & Execution**  
-  - EVM-equivalent via Rootstock Virtual Machine (RVM) — supports Solidity contracts.  
-  - Gas is paid in rBTC (1:1 with BTC).  
-  - No modular architecture or DA layer — single-chain state and execution.
+  - Full EVM compatibility via RVM — deploy unchanged Solidity contracts.  
+  - Gas paid in RBTC (1:1 pegged to BTC).  
+  - Transaction fees down 60% in 2025, making it competitive with newer L2s.
 
 - **Performance**  
-  - ~10 TPS under normal conditions.  
-  - Lower gas costs after recent upgrades, but still slower than most rollups or L2s.  
-  - No sequencing or batching — each block is mined individually.
+  - 300+ TPS capability (though typical usage much lower).  
+  - 30-second block times — slower than modern L2s but predictable.  
+  - Peg-in/out takes 24-36 hours — optimized for security over speed.
 
 - **Use Cases**  
-  - Useful for deploying Bitcoin-native DeFi, lending markets, or DEXs with BTC collateral and EVM logic.
+  - **Sovryn**: Bitcoin-native DEX and lending protocol
+  - **Money On Chain**: Dollar On Chain (DOC) — only 100% BTC-backed stablecoin
+  - **150+ ecosystem partners**: Established DeFi on Bitcoin since 2018
+  - **Mining revenue**: Miners earn additional rewards without extra hardware
 
 - **Trade-offs**  
-  - No trustless peg — bridge relies on federation security, not proofs.  
-  - Throughput and latency are limited by Bitcoin mining constraints.  
-  - Finality is slower and less deterministic than ZK or optimistic rollups.  
-  - Ecosystem is niche — fewer devs, apps, and infra support compared to Ethereum L2s.
+  - Federation-controlled bridge — not fully trustless like newer BitVM designs.  
+  - 30-second blocks feel slow vs sub-second modern L2s.  
+  - Smaller ecosystem than newer Bitcoin L2s despite being oldest.  
+  - Sidechain model less capital efficient than rollups.

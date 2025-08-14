@@ -82,34 +82,38 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
+A Cosmos chain with EVM tacked on, trying to be the bridge between both ecosystems but mostly empty. The key difference: They pay you in KAVA tokens to deploy there — if you're in the top 100 protocols by TVL, you get monthly rewards.
 
-A Cosmos-based L1 with built-in EVM support. Aims to bridge Ethereum and Cosmos ecosystems with low fees and high IBC interoperability.
+**Best for:** Builders who want incentive tokens, projects needing both IBC and EVM but don't mind low activity.
 
-- **Consensus & Finality**  
-  - Runs Tendermint BFT consensus with ~100 validators.  
-  - Finality in ~6 seconds assuming >⅔ validator honesty.  
-  - No fraud/validity proofs — finality is subjective under network partitions or validator failure.  
+**Technical:** Cosmos SDK chain with an EVM module, marketed as "co-chains" but it's really just both runtimes in one validator set.
+
+- **Security & Data Availability**  
+  - Standard Tendermint consensus with ~100 validators
+  - 6-second finality like any Cosmos chain
+  - IBC enabled for Cosmos ecosystem
+  - Native USDT and wBTC (though limited liquidity)
 
 - **Infra & Execution**  
-  - Dual runtime: Cosmos SDK for native modules and a parallel EVM layer.  
-  - Solidity contracts run via the Kava EVM module (EVM 2.0+).  
-  - Cosmos-native tooling (REST/gRPC) + EVM-compatible RPC/WebSocket.  
+  - Runs both Cosmos SDK modules and EVM in parallel
+  - "Translator Module" is just internal message passing between runtimes
+  - Standard EVM tooling works (MetaMask, etc.)
+  - Recently added AI chatbot for transactions (basically a wrapper)
 
 - **Performance**  
-  - Block time ~6s.  
-  - Throughput in the hundreds of TPS under normal conditions.  
-  - Gas fees typically <$0.001 per tx.  
-
-- **Interoperability**  
-  - Full IBC support — assets and messages can move between Kava and other Cosmos chains.  
-  - Internal bridging between Kava EVM and Cosmos modules.  
-  - No native Ethereum L1 bridging — relies on third-party bridges.
+  - Block times ~6 seconds, few hundred TPS max
+  - Cheap fees (<$0.001) because barely anyone uses it
+  - Current TVL ~$77M despite years of incentives
+  - Most activity is farming the incentive program
 
 - **Use Cases**  
-  - Good fit for cross-chain DeFi products that need IBC access and familiar Solidity dev experience — e.g. lending markets, stablecoin strategies, Cosmos<>EVM DEXs.  
+  - **Incentive farming**: Top protocols split 1M KAVA/month based on TVL
+  - **Cross-chain experiments**: If you need both IBC and EVM access
+  - **Testing ground**: Low activity means predictable performance
+  - Main apps: Kinetix (DEX), Mare Finance (lending) — mostly farming rewards
 
 - **Trade-offs**  
-  - No Ethereum-level decentralization — validator set is smaller and governance is team-aligned.  
-  - EVM is isolated — lacks native composability with external Ethereum dApps.  
-  - Tendermint finality is weaker than ZK/fraud-proof rollups.  
-  - Ecosystem is relatively isolated despite IBC — limited external DeFi integration.
+  - Ghost chain problem — lots of incentives, little organic activity
+  - "DeAI" pivot is just adding chatbots, not real innovation
+  - Been around since 2019 but never gained real traction
+  - Dependent on KAVA token value for incentives (down 95% from ATH)
