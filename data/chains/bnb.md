@@ -102,7 +102,11 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-An EVM-compatible chain using Proof-of-Staked-Authority (PoSA), built for high-throughput applications with fast finality.
+Binance's centralized but cheap EVM chain — where retail traders go for memecoins and yield farming. Not decentralized (21 validators controlled by Binance), but nobody cares because fees are pennies and PancakeSwap has all the liquidity. If you want "DeFi" without the high fees or decentralization theater, BSC delivers.
+
+**Best for:** Memecoin trading, yield farming, retail DeFi, projects needing Binance ecosystem access.
+
+**Technical:** An EVM-compatible chain using Proof-of-Staked-Authority (PoSA), built for high-throughput applications with fast finality.
 
 - **Consensus & Security**  
   - PoSA combines delegated staking with authority-based validator rotation  
@@ -112,9 +116,9 @@ An EVM-compatible chain using Proof-of-Staked-Authority (PoSA), built for high-t
   - Validator set is permissioned—centralization risk is significant  
 
 - **Performance & Fees**  
-  - Typical throughput ~100–200 TPS, theoretical max ~2,000+ TPS under ideal conditions  
-  - Fees generally low ($0.01–0.03), but can spike under load  
-  - Ongoing upgrades aim for 0.75s block times and faster finality  
+  - Real-world throughput ~100–200 TPS (enough for current demand)
+  - Fees stay at pennies even during memecoin frenzies
+  - Pascal hard fork added EIP-7702 wallet support, MEV protection  
 
 - **Infra & Architecture**  
   - C-Chain handles EVM smart contracts  
@@ -125,6 +129,12 @@ An EVM-compatible chain using Proof-of-Staked-Authority (PoSA), built for high-t
 - **Governance**  
   - On-chain proposal system tied to validator and delegator voting  
   - Upgrades controlled by validator set, without enforced timelocks  
+
+- **Use Cases**  
+  - **PancakeSwap dominance**: 91.8% of all DEX activity, often beats Uniswap volume
+  - **Memecoin central**: GraFun, Four.Meme launchpads, Binance listings pipeline
+  - **Retail DeFi**: Venus Finance, yield farms with actual volume
+  - **Binance integration**: Direct CEX bridge, easy fiat on/off
 
 - **Trade-offs**  
   - Limited validator set → lower decentralization and higher censorship risk  

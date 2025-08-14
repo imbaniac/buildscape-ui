@@ -73,26 +73,36 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-Ethereum Layer 2 using the OP Stack and EigenDA. Fully migrated from a standalone L1 in March 2025.
+Mobile payments blockchain that migrated from L1 to become an OP Stack L2 in March 2025. Powers Africa's crypto economy with 7M+ MiniPay wallets and stablecoins you can send via phone numbers for under $0.01.
+The key difference: Pay gas fees with stablecoins (cUSD, USDC, USDT) instead of native tokens, plus SocialConnect lets you send money to phone numbers — both preserved through the L2 migration.
 
-- **Consensus & Security**  
-  - Operates as an optimistic rollup with a centralized sequencer and a 7-day fraud-proof window.  
-  - Settlement and finality occur on Ethereum; no longer uses IBFT or native consensus.  
-  - Data availability provided by EigenDA.  
+**Best for:** Mobile payment apps in emerging markets, remittance platforms, stablecoin-based commerce, developers building for users without crypto knowledge.
+
+**Technical:** OP Stack rollup with EigenDA, 1-second blocks, gas abstraction for stablecoin fee payments, part of Optimism Superchain.
+
+- **Security & Data Availability**  
+  - Optimistic rollup with 7-day fraud proof window for withdrawals.  
+  - Settlement on Ethereum, data availability via EigenDA (cheaper than blobs).  
+  - No longer uses native IBFT consensus — now inherits Ethereum security.
 
 - **Infra & Execution**  
-  - Supports gas payments in CELO, cUSD, and cEUR.  
-  - Block times reduced to ~1s post-migration.  
+  - Pay gas fees in cUSD, cEUR, USDC, or USDT — not just native CELO.  
+  - SocialConnect maps phone numbers to wallet addresses for easy payments.  
+  - 1-second block times (improved from 5 seconds as L1).
 
-- **Mobile Optimizations**  
-  - Retains lightweight mobile client architecture.  
-  - Users interact via light clients with optional fees to full nodes.  
+- **Performance**  
+  - Processed 700M+ transactions across 150 countries before migration.  
+  - Sub-cent transaction costs maintained post-migration.  
+  - Full history preserved — no regenesis required during transition.
 
-- **Governance**  
-  - Protocol upgrades governed off-chain, likely coordinated through the Celo community and core contributors.  
-  - Sequencer remains centralized; fraud-proof fallback ensures Ethereum-backed finality.  
+- **Use Cases**  
+  - **MiniPay**: Opera's wallet with 7M+ users in Africa, built on Celo
+  - **Valora**: Multi-chain wallet with phone number payments, expanding to Brazil/Vietnam
+  - **GoodDollar**: One of the largest UBI protocols globally
+  - **Stablecoin payments**: cUSD, cEUR, cREAL for local currency transactions
 
 - **Trade-offs**  
-  - Centralized sequencer with standard OP Stack trust assumptions  
-  - Migration removed deterministic finality of IBFT in favor of fraud-proof-based model  
-  - Dependence on EigenDA adds an additional trust layer for data availability  
+  - Centralized sequencer like all OP Stack chains — censorship risk.  
+  - EigenDA dependency adds trust assumption vs pure Ethereum DA.  
+  - Lost instant finality from L1 days — now has optimistic rollup delays.  
+  - Smaller DeFi ecosystem vs Arbitrum/Base — focused on payments over trading.  

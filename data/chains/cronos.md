@@ -73,26 +73,36 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-An EVM-compatible chain built on Cosmos SDK and Tendermint consensus, designed for low-fee smart contracts with IBC interoperability.
+Crypto.com's original EVM chain built on Cosmos, not Ethereum. The mature chain with established DeFi but older tech.
+The key difference: Built on Cosmos SDK with IBC bridges to Cosmos ecosystem, while Cronos zkEVM is their new Ethereum L2 with ZK tech. Think of this as v1, zkEVM as v2.
 
-- **Security**  
-  - Tendermint-based PoA/PoS hybrid with ~33 permissioned validators.  
-  - Finality in ~5–6 seconds. Validators are selected by the core team — not permissionless.  
+**Best for:** DeFi users wanting established protocols, Cosmos ecosystem connectivity via IBC, projects needing proven infrastructure.
 
-- **Infra**  
-  - Cosmos SDK chain with an Ethermint-based EVM module.  
-  - Compatible with most Solidity tooling, but some differences exist vs Ethereum clients (e.g. event indexing, gas metering).  
-  - No native WebSocket support — real-time event subscriptions require workarounds.  
+**Technical:** Cosmos SDK chain with Ethermint EVM, Tendermint consensus, ~30 permissioned validators, IBC enabled.
+
+- **Security & Data Availability**  
+  - Tendermint PoA consensus with ~30 validators selected by Crypto.com.  
+  - 5-6 second finality, not decentralized — validators are permissioned.  
+  - All data on-chain (unlike zkEVM's off-chain Validium).
+
+- **Infra & Execution**  
+  - Cosmos SDK with Ethermint-based EVM module.  
+  - IBC enabled for Cosmos ecosystem bridges.  
+  - Some EVM quirks due to Cosmos backend (WebSocket issues, event indexing).
 
 - **Performance**  
-  - Realistic throughput: a few hundred TPS.  
-  - Low and predictable fees (~$0.01–$0.10).  
-  - Block times around 5 seconds.  
+  - Few hundred TPS real throughput.  
+  - Low stable fees ($0.01-0.10).  
+  - 5 second block times.
 
-- **Interoperability**  
-  - Supports IBC for cross-chain transfers with Cosmos chains.  
-  - Bridges available to Ethereum, but not natively trustless.  
+- **Use Cases**  
+  - **Major DeFi**: VVS Finance (largest AMM), Tectonic (lending), MM Finance
+  - **Established ecosystem**: $500M+ TVL, mature protocols since 2021
+  - **Cosmos connectivity**: IBC bridges to entire Cosmos ecosystem
+  - **Crypto.com integration**: Direct fiat onramps from exchange
 
 - **Trade-offs**  
-  - Validator set is centralized and permissioned — limited decentralization and censorship resistance.  
-  - Cosmos-based infra differs from Ethereum norms; edge cases may affect compatibility.
+  - Centralized validators controlled by Crypto.com.  
+  - Older tech stack compared to modern L2s.  
+  - Cosmos-based quirks affect some Ethereum tooling.  
+  - Not an Ethereum L2 — separate security model.

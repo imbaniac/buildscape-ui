@@ -63,28 +63,37 @@ sdks:
 # Additional SDKs and tools are inherited from evm-common.md
 ---
 
-An OP Stack-based optimistic rollup built by Sony Network Communications, launched in early 2025 and part of the Superchain ecosystem.
+Sony's entertainment-focused L2 with IP protection that blocked meme coins on launch day, sparking community backlash.
+The key difference: Built-in IP protection system that restricts contracts suspected of infringement — blocked Sony-themed meme coins (Aibo, Toro) and froze funds, prioritizing corporate IP over permissionless deployment.
 
-- **Security & Sequencing**  
-  - Optimistic rollup using OP Stack architecture.  
-  - Centralized sequencer handles block production and calldata posting to Ethereum.  
-  - Fraud-proof window exists, but only limited actors can submit challenges — not fully permissionless yet.
+**Best for:** Entertainment companies needing IP protection, Sony ecosystem partners, regulated applications requiring compliance controls.
 
-- **Data Availability**  
-  - Uses Ethereum calldata (blobs) for data availability.  
-  - Withdrawals depend on batch publication and challenge window processing.
+**Technical:** OP Stack optimistic rollup with IP protection layer, RPC-level contract restrictions, curated application ecosystem.
 
-- **Infra & Usage**  
-  - Fully EVM-equivalent — standard Ethereum tooling and contracts work out of the box.  
-  - Processes around 8 micro-operations per second on average.  
-  - State updates and calldata batches are posted at regular intervals (~9 minutes for tx batches, ~2 hours for state updates).  
-  - On-chain costs are low, typically <$0.001 per op.
+- **Security & Data Availability**  
+  - Optimistic rollup on OP Stack with standard 7-day withdrawal period.  
+  - Centralized sequencer operated by Sony Block Solutions Labs.  
+  - Fraud proofs limited to authorized actors, not permissionless.
+
+- **Infra & Execution**  
+  - EVM-equivalent with OP Stack and Superchain compatibility.  
+  - IP protection system flags suspected infringing contracts.  
+  - Restrictions apply at RPC level; direct L1 submission possible with delays.
+
+- **Performance**  
+  - Processes ~8 operations per second on average.  
+  - Low fees (typically <$0.001 per transaction).  
+  - Batch intervals: ~9 minutes for transactions, ~2 hours for state updates.
 
 - **Use Cases**  
-  - Suitable for applications wanting Ethereum alignment with low fees and OP Stack compatibility — e.g., consumer-facing apps, gaming, or compliant DeFi.
+  - **Entertainment IP**: Sony Music/Pictures NFTs, anime titles like Solo Leveling
+  - **Event management**: On-chain ticketing, fan engagement platforms
+  - **Curated ecosystem**: Soneium Spark selected 32 apps from 1,700+ applicants
+  - **Corporate Web3**: Applications requiring IP compliance and content controls
 
 - **Trade-offs**  
-  - Centralized sequencer introduces censorship and liveness risk.  
-  - Fraud proofs are limited to select actors — weaker trust assumptions than fully open rollups.  
-  - RPC-level censorship has been observed — risk for permission-sensitive apps.  
-  - Exit finality is delayed by batch posting intervals and challenge periods.
+  - Blocked popular meme coins on launch, freezing ~$100k in user funds.  
+  - Contract restrictions prevent permissionless deployment.  
+  - RPC-level controls make flagged contracts invisible on explorers.  
+  - 12-hour delay required to bypass restrictions via L1.  
+  - Philosophy conflicts with crypto's permissionless ethos.

@@ -70,28 +70,36 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-A performance-focused EVM Layer 1 chain built on a DAG-based consensus model, forked from Fantom. Prioritizes fast block times and cheap transactions over decentralization or formal security guarantees.
+Fantom reborn as Sonic — the same DAG consensus tech pushed to the limit with 10,000 TPS capability and sub-second finality. Built by Andre Cronje's team, it's an independent L1 that rewards developers with 90% of the gas fees their apps generate.
+The key difference: Developer revenue sharing model where builders earn from their app's usage, not just from token speculation — creating Web2-like sustainable business models on-chain.
 
-- **Consensus & Finality**  
-  - DAG-based Proof-of-Stake consensus achieves ~700ms block times.  
-  - Validator set is permissioned and centralized — participation requires significant stake.  
-  - No cryptographic proofs (ZK or fraud); finality is based on validator honesty.
+**Best for:** DeFi protocols wanting revenue streams, high-frequency trading apps, gaming that needs instant finality, developers migrating from Fantom.
 
-- **Execution & Infra**  
-  - EVM-compatible with standard Solidity support.  
-  - Uses custom SonicVM and SonicDB for faster execution and state access.  
-  - Native bridging exists but lacks formal guarantees — no canonical message passing or trustless bridges.
+**Technical:** DAG-based consensus L1 with 720ms finality, custom SonicVM for speed, FTM→S token migration at 1:1 ratio.
+
+- **Security & Data Availability**  
+  - DAG-based Lachesis consensus with asynchronous Byzantine Fault Tolerance.  
+  - Limited validator set (41 validators) — more centralized than major L1s.  
+  - No L2 rollup proofs or Ethereum anchoring — standalone L1 security model.
+
+- **Infra & Execution**  
+  - Full EVM compatibility with standard Solidity/Vyper support.  
+  - Custom SonicVM and SonicDB optimize execution and state access.  
+  - Node sync 10x faster than Fantom Opera, RPC costs reduced by 96%.
 
 - **Performance**  
-  - Targets high TPS, but current usage is modest (~5–10 TPS).  
-  - Sub-cent fees and low latency under normal load.  
-  - Block production can vary; edge cases under high load or network instability may impact consistency.
+  - Theoretical 10,000 TPS capability with 720ms finality.  
+  - Transaction costs under $0.0001 in normal conditions.  
+  - Actual usage varies — network handles current demand without congestion.
 
 - **Use Cases**  
-  - Viable for low-stakes, latency-sensitive apps (e.g. gaming, trading UIs) that need EVM support without high security requirements.
+  - **DeFi infrastructure**: Silo Finance (lending), Beethoven X/BEETS (DEX and staking), SpookySwap V3 (concentrated liquidity)
+  - **Revenue-generating apps**: Fee Monetization returns 90% of gas to developers
+  - **Fantom migrations**: Full compatibility for existing Fantom projects
+  - **High-frequency applications**: Trading bots, gaming, real-time applications
 
 - **Trade-offs**  
-  - Centralized validator set — limited censorship resistance and protocol neutrality.  
-  - No Ethereum anchoring or proof system — security assumptions are weak.  
-  - DAG consensus introduces added complexity and limited ecosystem familiarity.  
-  - Tooling and ecosystem still maturing — limited support outside core team.
+  - Small validator set (41) creates centralization risk vs thousands on Ethereum.  
+  - Standalone L1 without Ethereum security — relies entirely on validator honesty.  
+  - Smaller ecosystem despite growth — competing with established L1s and L2s.  
+  - Token price volatility despite technical improvements — market confidence still building.

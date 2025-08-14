@@ -72,24 +72,36 @@ sdks:
 tools:
 ---
 
-A hybrid L2 using the OP Stack, designed to eventually settle on Bitcoin. Currently operates as an optimistic rollup on Ethereum.
+Hybrid L2 that combines OP Stack rollup security with Bitcoin finality via Babylon staking. Operates as both a Superchain member and a Bitcoin Secured Network — BOB L2 actively inheriting security from both chains.
+The key difference: Dual finality model where Ethereum provides fraud proofs while Bitcoin stakers validate state through Babylon — if validators sign conflicting chains, their BTC gets slashed on Bitcoin itself.
 
-- **Security**  
-  - Runs as an OP rollup on Ethereum — no connection to Bitcoin for finality today.  
-  - Fraud proofs and settlement rely on Ethereum challenge window (7 days).  
-  - Plans to move to Bitcoin-based settlement with merged mining and BitVM-style challenge proofs, but not implemented yet.
+**Best for:** Bitcoin DeFi needing EVM compatibility, BTC liquid staking protocols, cross-chain apps wanting both Ethereum composability and Bitcoin security.
 
-- **Infra**  
-  - Implements a Bitcoin light client to read BTC state inside contracts.  
-  - Native BTC support and bridging under development — not fully live or trustless yet.
+**Technical:** OP Stack rollup with Babylon BTC staking for finality, BitVM bridges in development, member of Optimism Superchain.
 
-- **Design Goals**  
-  - Long-term vision is Bitcoin-aligned smart contract infra.  
-  - Current architecture inherits OP Stack’s centralization risks (sequencer, upgrade keys).  
-  - Future plans introduce more complexity: PoW-based validator layer, Bitcoin settlement, and BTC-denominated gas.
+- **Security & Data Availability**  
+  - OP rollup with standard 7-day fraud proof window on Ethereum.  
+  - Bitcoin finality via Babylon — BTC stakers validate BOB state with slashing.  
+  - ZK proofs being added for cryptographic state validity (Phase 2).
+
+- **Infra & Execution**  
+  - Bitcoin light client enables reading BTC state directly in contracts.  
+  - BitVM bridge on testnet — trust-minimized BTC transfers without wrapping.  
+  - Supports all major BTC LSTs (Babylon, Solv, Bedrock, PumpBTC).
+
+- **Performance**  
+  - Standard OP Stack performance with 2-second blocks.  
+  - Bitcoin finality adds 10-60 minute confirmation for maximum security.  
+  - Network fees contribute to BTC staking rewards, creating sustainable economics.
+
+- **Use Cases**  
+  - **BTC liquid staking hub**: Native integration with Babylon LST ecosystem
+  - **Bitcoin DeFi**: Major protocols deployed for BTC-native yield
+  - **Cross-chain infrastructure**: Part of both Superchain and Bitcoin networks
+  - **Institutional BTC**: Secure Bitcoin yield without leaving the ecosystem
 
 - **Trade-offs**  
-  - Present-day security is fully Ethereum-based — no actual Bitcoin finality.  
-  - BTC interoperability is partial; bridge and validator coordination not trust-minimized yet.  
-  - Hybrid architecture adds operational and conceptual overhead for devs.  
-  - Builders relying on Bitcoin-native guarantees will need to wait for later phases. 
+  - Dual finality more complex than single-chain L2s.  
+  - BitVM bridge still on testnet — wrapped tokens dominate for now.  
+  - Centralized sequencer like all OP Stack chains.  
+  - Higher complexity for developers navigating two security models. 

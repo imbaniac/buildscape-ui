@@ -78,32 +78,36 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-A Type-1 zkEVM rollup on Ethereum built around the “based rollup” model—designed to be permissionless and fully EVM-equivalent.
+A zkEVM that lets Ethereum validators sequence your transactions directly — no middleman sequencer collecting fees or deciding transaction order. Every Ethereum validator can propose Taiko blocks, making censorship nearly impossible.
+The key difference: "Based rollup" design where Ethereum L1 handles sequencing, making it the most decentralized L2 architecture. Preconfirmations solve the UX problem with 2-second transaction times.
 
-- **Security & Sequencing**  
-  - Every block is validated via ZK proofs; no fraud windows or optimistic fallback.  
-  - Based rollup design: any participant can propose and prove blocks, aiming for open participation.  
-  - Finality occurs once proofs are verified on Ethereum.
+**Best for:** Projects requiring unstoppable operation, DeFi protocols avoiding sequencer risk, developers wanting exact Ethereum behavior without modifications.
 
-- **Data Availability**  
-  - Posts calldata directly to Ethereum using blob transactions (EIP‑4844).  
-  - Fully inherits Ethereum’s DA guarantees — no reliance on off-chain data.
+**Technical:** Type-1 zkEVM with based sequencing, permissionless proving, preconfirmations for fast UX, no separate consensus layer.
+
+- **Security & Data Availability**  
+  - Every block validated via ZK proofs; no fraud windows or optimistic fallback.  
+  - Based rollup design: any Ethereum validator can propose blocks, ensuring open participation.  
+  - Posts calldata directly to Ethereum using blob transactions (EIP‑4844).
 
 - **Infra & Execution**  
   - Bytecode-equivalent with Ethereum — supports full opcode set, gas model, and state hashing.  
-  - Node roles include proposers and provers.  
-  - Prover/sequencer roles are permissionless by design, but current rollout is partially centralized.
+  - Permissionless block proposing and proving — anyone can participate.  
+  - Preconfirmation system delivers fast transaction times while staying decentralized.
 
 - **Performance**  
-  - Throughput and latency depend on prover efficiency and blob availability.  
-  - No artificial TPS cap, but constrained by Ethereum L1 bandwidth and proof speed.  
-  - Block time is tied to Ethereum L1 (~12–20s), limiting UX flexibility.
+  - Preconfirmations provide ~2 second transaction acknowledgment.  
+  - Final settlement follows Ethereum L1 cadence for maximum security.  
+  - No artificial TPS cap, constrained by Ethereum blob space and proof generation.
 
 - **Use Cases**  
-  - Best for Ethereum-native dApps requiring exact EVM behavior, fast finality with ZK guarantees, and censorship resistance without trusting centralized sequencers.
+  - **DeFi infrastructure**: Ritsu DEX with Rhythm AMM, Meridian Lend, Avalon Finance
+  - **Bitcoin on Ethereum**: SolvBTC bringing native Bitcoin liquidity to L2
+  - **Censorship-resistant apps**: Leverage based sequencing for unstoppable operation
+  - **Gaming and high-frequency trading**: Preconfirmations enable responsive UX
 
 - **Trade-offs**  
-  - Decentralization of proposers and provers is not yet fully live.  
-  - Finality lags behind UX due to ZK proof generation and L1 verification delay.  
-  - Based rollup model limits block frequency to L1 cadence, which may reduce flexibility and MEV options.  
-  - Still early in ecosystem maturity — infra, tooling, and ecosystem support are evolving.
+  - Smaller ecosystem vs established L2s — less liquidity and fewer integrations.  
+  - Based design limits MEV extraction opportunities compared to centralized sequencers.  
+  - Type-1 zkEVM prioritizes compatibility over proof speed — slower than custom VMs.  
+  - Proving infrastructure still bootstrapping toward full decentralization.

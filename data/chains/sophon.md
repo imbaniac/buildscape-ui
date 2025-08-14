@@ -54,28 +54,36 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-A consumer-focused ZK-validium built on zkSync’s Elastic Chain—optimized for high-throughput, low-cost apps like games and social platforms.
+zkSync's entertainment chain backed by $500M from node sales — built for games, AI apps, and social platforms that need millions of cheap transactions. Uses Validium architecture trading Ethereum data availability for sub-cent costs.
+The key difference: Apps can sponsor all user gas fees via paymasters, letting mainstream users interact without ever buying crypto or understanding blockchain — pure Web2 experience on Web3 rails.
+
+**Best for:** Mobile games needing free transactions, AI apps requiring cheap compute verification, social platforms with high-frequency interactions, entertainment dapps targeting non-crypto users.
+
+**Technical:** zkSync Stack Validium with Avail DA, native account abstraction, paymasters for gasless UX, part of Elastic Chain ecosystem.
 
 - **Security & Data Availability**  
-  - ZK validity proofs verify all state transitions.  
-  - Uses off-chain data availability via Avail (Validium model).  
-  - No data is posted to Ethereum — withdrawals depend on off-chain providers being online and honest.
+  - ZK validity proofs verify all state transitions before finalization.  
+  - Validium model uses Avail for off-chain data availability — cheaper than rollups.  
+  - No data posted to Ethereum — withdrawals depend on Avail being online.
 
-- **Sequencing & Proofs**  
-  - Centralized sequencer handles transaction inclusion and proof generation.  
-  - Proofs and state roots are submitted to Ethereum roughly once per hour.  
-  - Guardian and staking model exists but decentralization is not yet production-grade.
+- **Infra & Execution**  
+  - Built on zkSync's ZK Stack with native account abstraction.  
+  - Paymasters enable apps to sponsor all user gas fees.  
+  - Part of Elastic Chain — interoperable with zkSync Era, Abstract, and other ZK chains.
 
-- **Performance & Fees**  
-  - Capable of handling hundreds of thousands of transactions per day.  
-  - Fees remain very low (typically ~0.001 USD or less).  
-  - Batch timing introduces hourly delay for finality.
+- **Performance**  
+  - Sub-cent transaction costs — optimized for gaming microtransactions.  
+  - Instant perceived finality for users, ZK proofs settle to Ethereum hourly.  
+  - Scales to millions of transactions without Ethereum data costs.
 
 - **Use Cases**  
-  - Works for high-frequency consumer apps where cost and UX matter more than trust minimization — e.g., games, social, or AI-integrated apps.
+  - **Gaming partners**: Beam ecosystem games, Mirai Labs (27M+ wallets onboarded)
+  - **AI infrastructure**: Aethir GPU marketplace (100K+ compute hours), $40M Tactical Compute initiative
+  - **Entertainment apps**: OPEN Ticketing (7M+ tickets across 24K events)
+  - **Social platforms**: Zentry ecosystem, high-frequency social interactions
 
 - **Trade-offs**  
-  - Off-chain DA creates dependency on third-party availability — if Avail or sequencer fails, withdrawals may be blocked.  
-  - No fallback to Ethereum for data recovery.  
-  - Centralized sequencer introduces censorship and liveness risk.  
-  - Still early in ecosystem maturity — infra, tooling, and validator decentralization remain under development.
+  - Validium model trades Ethereum data availability for cost — Avail dependency risk.  
+  - Centralized sequencer during bootstrap phase — decentralization roadmap pending.  
+  - New ecosystem — fewer native apps vs established L2s like Arbitrum.  
+  - Guardian nodes locked until December 2025 — limited liquidity for early supporters.

@@ -129,7 +129,11 @@ sdks:
 # Additional SDKs and tools are inherited from evm-common.md
 ---
 
-A ZK-rollup using Polygon’s ZK Stack with full EVM equivalence and calldata-based data availability.
+The enterprise-friendly zkEVM balancing compatibility and performance. Unlike Scroll's pure bytecode focus or zkSync's custom VM, Polygon zkEVM uses a custom assembly language (zkASM) that achieves near-perfect EVM equivalence while enabling proof generation in minutes, not hours.
+
+**Best for:** Enterprise deployments, existing DeFi protocols wanting ZK security, projects needing fast withdrawals to L1.
+
+**Technical:** A ZK-rollup using Polygon's ZK Stack with full EVM equivalence and calldata-based data availability.
 
 - **Security & Data Availability**  
   - Validity proofs verify state correctness before finalization.  
@@ -142,12 +146,15 @@ A ZK-rollup using Polygon’s ZK Stack with full EVM equivalence and calldata-ba
   - Governance is multisig-controlled and not permissionless.
 
 - **Performance & Fees**  
-  - Block inclusion in ~2s; finalization shortly after proof generation.  
-  - Throughput limited by prover performance and L1 calldata cost.  
-  - Fees are low but increase with Ethereum gas spikes.
+  - Block inclusion in ~2s; proof generation and finalization in minutes.  
+  - Uses FFLONK prover (30% cheaper to verify than PLONK).  
+  - Fees track Ethereum gas prices but remain significantly lower.
 
 - **Use Cases**  
-  - Suitable for teams needing EVM-equivalent ZK security: DeFi, protocol tooling, and Ethereum-aligned infra.
+  - **Major DeFi**: Aave, Uniswap, QuickSwap deployed with minimal changes
+  - **Enterprise adoption**: 30+ Fortune 500 companies, Walmart using CDK for private chains
+  - **Fast withdrawals**: ~30 minute bridge back to L1 (vs 7 days on Optimistic rollups)
+  - **CDK ecosystem**: 190+ projects building custom L2/L3 chains using Polygon's tech
 
 - **Trade-offs**  
   - Centralized sequencer can censor or reorder transactions.  

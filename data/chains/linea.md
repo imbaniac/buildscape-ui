@@ -84,7 +84,11 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-A fully EVM-equivalent ZK-rollup developed by ConsenSys, focused on Ethereum compatibility and zk-proven execution.
+ConsenSys's zkEVM with built-in MetaMask integration — the corporate answer to zkSync and Scroll. Unlike community-driven chains, Linea leverages ConsenSys's enterprise connections (Mastercard, JPMorgan) and direct access to MetaMask's 100M+ users. If you trust ConsenSys infrastructure, this is your zkEVM.
+
+**Best for:** Projects wanting MetaMask distribution, enterprise DeFi, ConsenSys ecosystem tools (Truffle, Infura).
+
+**Technical:** A fully EVM-equivalent ZK-rollup developed by ConsenSys, focused on Ethereum compatibility and zk-proven execution.
 
 - **Security & Data Availability**  
   - Validity proofs verify all EVM operations before finalization.  
@@ -101,11 +105,13 @@ A fully EVM-equivalent ZK-rollup developed by ConsenSys, focused on Ethereum com
   - No known artificial throughput caps — performance depends on Ethereum calldata limits.
 
 - **Use Cases**  
-  - Suitable for DeFi protocols, Ethereum-aligned dApps, and apps needing full zk security guarantees.  
-  - Good fit for teams migrating existing contracts or tooling from Ethereum mainnet without changes.
+  - **MetaMask integration**: Default network option, Portfolio dApp for cross-chain swaps
+  - **Enterprise connections**: Backed by Mastercard, Visa, JPMorgan relationships
+  - **ConsenSys stack**: Native Truffle, Infura, Diligence integration
+  - **Growing DeFi**: Etherex DEX, Surge Program with LXP rewards
 
 - **Trade-offs**  
-  - Sequencer is still centralized.  
-  - No native data availability fallback — if Ethereum calldata is congested or expensive, UX suffers.  
-  - L2 upgrades and system parameters are not fully decentralized yet.  
-  - Proof systems are still maturing — developers should monitor reliability and upgrade timelines.
+  - ConsenSys controls everything — sequencer, upgrades, prover (open-sourcing "planned" for 2025)
+  - Corporate chain — some crypto natives distrust ConsenSys's centralized approach
+  - Stage 0 maturity — far from decentralized despite zkEVM claims
+  - Competing with Scroll/zkSync without clear technical differentiation

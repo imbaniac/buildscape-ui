@@ -148,30 +148,38 @@ sdks:
 # Additional SDKs and tools are inherited from evm-common.md
 ---
 
-A Stage-1 OP Stack rollup by Uniswap Labs, designed for fast, low-cost DeFi and onchain trading applications.
+Uniswap built their own blockchain to make trading cheaper and protect users from bots that profit off their trades. The key difference: when bots extract value from trades, that money goes back to liquidity providers instead of disappearing to third parties.
 
-- **Consensus & Finality**  
-  - Optimistic rollup with active fraud-proof system and permissionless proof submission.  
-  - Targets 1-second block times, with roadmap toward 250ms sub-blocks for lower-latency UX.
+**Best for:** Trading on Uniswap, providing liquidity to pools, any DeFi app that wants faster and fairer trades.
 
-- **Data Availability & Sequencing**  
-  - Posts calldata to Ethereum via EIP‑4844 blobs.  
-  - Sequencer is currently centralized. Decentralized validation via the Uniswap Validation Network (UVN) is in development.
+**Technical:** OP Stack rollup with Flashbots TEE block builder for MEV redistribution and sub-second confirmations.
 
-- **Infra & Tooling**  
-  - Fully EVM-compatible — supports existing Solidity contracts and Ethereum development tooling.  
-  - RPC infrastructure and node support are available but still maturing.
+- **Security & Data Availability**  
+  - Stage 1 optimistic rollup with permissionless fault proofs
+  - Standard 7-day withdrawal period for optimistic rollups
+  - Currently centralized sequencer, decentralized validation network planned
+  - TEE-based block building for transparent transaction ordering
+
+- **Infra & Execution**  
+  - Built on OP Stack, fully EVM-compatible
+  - TEE (Trusted Execution Environment) enables encrypted mempool
+  - Priority fee ordering protects against sandwich attacks
+  - Working toward 250ms block times (Flashblocks), currently 1 second
 
 - **Performance**  
-  - Fast block times (~1s) and low fees (~95% cheaper than Ethereum).  
-  - Supports high daily throughput — hundreds of thousands of txs live.  
-  - TVL places it among top L2s for DeFi usage.
+  - Comparable gas costs to other L2s
+  - Block times faster than most L2s at 1 second
+  - Significant adoption among DeFi protocols
+  - Strong liquidity depth inherited from Uniswap ecosystem
 
 - **Use Cases**  
-  - Best suited for high-performance DeFi apps, DEXs, aggregators, or any protocol that needs fast confirmation and low execution cost.
+  - **Uniswap trading**: Lower costs and better prices due to MEV protection
+  - **Liquidity provision**: Earn from MEV that would normally be extracted
+  - **DeFi protocols**: Euler, Morpho, and others already deployed
+  - **Fast trading apps**: Near-instant confirmation for better UX
 
 - **Trade-offs**  
-  - Centralized sequencer — censorship and reorg risk until UVN rollout.  
-  - 7-day withdrawal delay due to optimistic rollup design.  
-  - Sub-blocks and low-latency sequencing demand advanced MEV protection and builder coordination, which are still in progress.  
-  - Governance, decentralization, and cross-rollup messaging infra are still in early stages.
+  - Primarily benefits Uniswap ecosystem participants
+  - Requires trust in hardware security (TEE) not just cryptography
+  - Another L2 adding to ecosystem fragmentation
+  - Still building out decentralization features

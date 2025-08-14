@@ -43,29 +43,36 @@ forums: []
 # SDKs and tools are inherited from evm-common.md
 ---
 
-A Bitcoin-anchored modular L2 with an EVM execution layer and direct access to Bitcoin block and UTXO state.
+Bitcoin L2 with a full Bitcoin node running inside the EVM — smart contracts can read Bitcoin blocks, UTXOs, and transactions directly. Founded by early Bitcoin developer Jeff Garzik who worked with Satoshi, launched March 2025 with $440M TVL.
+The key difference: hVM (Hemi Virtual Machine) wraps an entire Bitcoin node inside an EVM, enabling native Bitcoin programmability without bridges or wrapped tokens — your contracts can trigger on Bitcoin events automatically.
 
-- **Architecture & Security**  
-  - Uses Proof-of-Proof (PoP): periodically posts state commitments ("keystones") to Bitcoin for long-term finality.  
-  - Sequencer is PoS-based and operates independently of Bitcoin, but keystone anchoring adds Bitcoin-aligned settlement guarantees.  
-  - Not a rollup — no fraud or validity proofs; relies on Bitcoin for settlement anchoring and economic honesty.
+**Best for:** Bitcoin DeFi protocols, native BTC staking without wrapping, cross-chain apps needing real Bitcoin state, developers wanting Bitcoin security with EVM tools.
 
-- **Finality**  
-  - Soft finality via sequencer (seconds).  
-  - Superfinality depends on Bitcoin block confirmation (~10–60 min depending on keystone interval).  
-  - Security only as strong as keystone anchoring frequency and sequencer assumptions.
+**Technical:** Modular L2 with Proof-of-Proof consensus anchoring to Bitcoin, hVM for Bitcoin state access, Tunnels for trustless asset transfer.
 
-- **Bitcoin Integration**  
-  - Contracts can access Bitcoin UTXO set and block headers directly from within EVM logic.  
-  - Supports asset movement through “Hemi Tunnels” — native BTC and ETH bridged into the environment.  
-  - Allows for BTC-aware dApps and hybrid assets.
+- **Security & Data Availability**  
+  - Proof-of-Proof (PoP) consensus posts "keystones" to Bitcoin for superfinality.  
+  - PoS sequencer for fast blocks, Bitcoin anchoring for long-term security.  
+  - Not a rollup — no fraud/validity proofs, relies on Bitcoin anchoring and honest majority.
 
-- **When to Use It**  
-  - You need contracts that verify or react to Bitcoin state.  
-  - You’re building BTC-denominated apps, UTXO-aware agents, or experimenting with Bitcoin-based DAOs.  
-  - You want Bitcoin-linked settlement while retaining EVM programmability.
+- **Infra & Execution**  
+  - hVM: Full indexed Bitcoin node inside EVM — read blocks, UTXOs, transactions directly.  
+  - Bitcoin Kit (hBK) provides granular Bitcoin state access to smart contracts.  
+  - Automatic callbacks triggered by Bitcoin events — no oracles needed.
+
+- **Performance**  
+  - Soft finality in seconds via sequencer.  
+  - Superfinality after Bitcoin confirmation (10-60 minutes).  
+  - Tunnels provide withdrawal proofs in 40 minutes — faster than optimistic rollups.
+
+- **Use Cases**  
+  - **DeFi ecosystem**: Sushi, DODO, Izumi (DEXs), LayerBank, ZeroLend (lending)
+  - **Bitcoin native apps**: Native BTC staking with self-custody, Bitcoin MEV marketplaces
+  - **Cross-chain infrastructure**: LayerZero, Pyth, RedStone oracles integrated
+  - **Institutional products**: Pendle, Swell, Symbiotic yield strategies on Bitcoin
 
 - **Trade-offs**  
-  - Sequencer is centralized; PoP anchoring introduces latency and added complexity.  
-  - No fraud proofs or trustless escape — relies on Bitcoin anchoring and honest majority.  
-  - Early infra: limited tooling, documentation, and ecosystem maturity.  
+  - Not a true rollup — less security than fraud/ZK proof systems.  
+  - Centralized sequencer during bootstrap phase.  
+  - Newer ecosystem vs established Bitcoin L2s like Rootstock.  
+  - PoP finality slower than instant rollup confirmations.  

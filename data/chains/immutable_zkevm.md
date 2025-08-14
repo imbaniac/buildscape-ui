@@ -58,7 +58,11 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-A ZK-rollup built on Polygon's CDK, focused on gaming and NFT-specific infrastructure with EVM compatibility.
+L2 built specifically for games, with gas-free transactions for players and built-in gaming infrastructure. Unlike general-purpose chains trying to attract games, Immutable provides game-specific tools: player wallets (Passport), marketplace APIs, and SDKs that handle blockchain complexity.
+
+**Best for:** Web3 games needing player-friendly UX, NFT-heavy games, studios wanting blockchain without the complexity.
+
+**Technical:** A ZK-rollup built on Polygon's CDK, focused on gaming and NFT-specific infrastructure with EVM compatibility.
 
 - **Security & Data Availability**  
   - Uses ZK proofs for state correctness — transactions are verified before being finalized.  
@@ -71,17 +75,19 @@ A ZK-rollup built on Polygon's CDK, focused on gaming and NFT-specific infrastru
   - IMX is used for gas and staking, but validator decentralization does not yet exist.  
 
 - **Performance**  
-  - High transaction throughput (~500k daily txs as of mid-2025).  
-  - Low, predictable fees — paid in IMX.  
-  - Fast block times and batch proofs improve UX for gaming applications.  
+  - High transaction throughput optimized for gaming patterns (item trades, battles, rewards).  
+  - Gas-free for players through sponsored transactions (studios pay).  
+  - Fast block times and batch proofs for responsive gameplay.  
 
 - **Tooling & Dev Experience**  
   - Integrated with gaming SDKs, onchain orderbook infra, and Immutable Passport (non-custodial auth).  
   - Contract deployment and indexing flows are streamlined for game devs.  
 
 - **Use Cases**  
-  - Designed for game economies, onchain marketplaces, and NFT minting/trading at scale.  
-  - Well-suited for projects needing fast finality, low fees, and built-in user onboarding tools.
+  - **Major games**: Gods Unchained (migrating), Guild of Guardians, Illuvium, Space Nation
+  - **Gaming infrastructure**: Immutable Passport (wallets), Orderbook (marketplace), game-specific SDKs
+  - **Player features**: Gas-free transactions, simplified onboarding, cross-game asset trading
+  - **Studio benefits**: Pre-built gaming stack, no blockchain expertise needed
 
 - **Trade-offs**  
   - Centralized sequencer and DA — not trust-minimized.  
