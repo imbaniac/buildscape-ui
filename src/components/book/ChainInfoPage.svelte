@@ -128,7 +128,9 @@
       <sup class="footnote-ref">1</sup>
     </h1>
     <div class="chain-subtitle">
-      <span>Chain ID: {chainStatic.chainId}</span>
+      <div>
+        Chain ID: <span class="chain-id-badge">{chainStatic.chainId}</span>
+      </div>
       {#if chainStatic.website}
         <span class="separator">•</span>
         <a
@@ -347,6 +349,11 @@
     justify-content: center;
     line-height: 1.5;
     font-family: var(--font-ui);
+  }
+
+  .chain-id-badge {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
   }
 
   .tech-stamps {
@@ -699,11 +706,11 @@
     .data-disclaimer {
       padding-top: 1rem;
     }
-    
+
     .disclaimer-text {
       font-size: 0.625rem;
     }
-    
+
     .disclaimer-ornament {
       font-size: 0.5625rem;
     }
