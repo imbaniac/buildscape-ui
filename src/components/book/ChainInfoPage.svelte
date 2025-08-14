@@ -291,6 +291,15 @@
       </div>
     {/if}
   </div>
+
+  <div class="data-disclaimer">
+    <div class="disclaimer-ornament">◆ ◇ ◆</div>
+    <div class="disclaimer-text">
+      The reader is advised that data herein may not be current.<br />
+      Independent verification is recommended.
+    </div>
+    <div class="disclaimer-ornament">◆ ◇ ◆</div>
+  </div>
 </div>
 
 <style>
@@ -659,5 +668,44 @@
   .chain-website:hover {
     opacity: 0.8;
     text-decoration: underline;
+  }
+
+  /* Data disclaimer - Book style */
+  .data-disclaimer {
+    text-align: center;
+    margin-top: auto;
+    padding-top: 1.5rem;
+    font-family: var(--font-body);
+    color: #8b7355;
+    line-height: 1.6;
+  }
+
+  .disclaimer-ornament {
+    font-size: 0.625rem;
+    letter-spacing: 0.25em;
+    opacity: 0.6;
+    margin: 0.25rem 0;
+  }
+
+  .disclaimer-text {
+    font-size: 0.6875rem;
+    font-style: italic;
+    letter-spacing: 0.02em;
+    line-height: 1.5;
+    opacity: 0.85;
+  }
+
+  @media (max-width: 1280px) {
+    .data-disclaimer {
+      padding-top: 1rem;
+    }
+    
+    .disclaimer-text {
+      font-size: 0.625rem;
+    }
+    
+    .disclaimer-ornament {
+      font-size: 0.5625rem;
+    }
   }
 </style>
