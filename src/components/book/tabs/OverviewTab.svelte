@@ -40,11 +40,11 @@
 <style>
   .prose {
     color: #374151;
-    line-height: 1.75;
+    line-height: 1.8;
     font-size: 1rem;
     max-width: 70ch;
     font-weight: 400;
-    letter-spacing: -0.011em;
+    letter-spacing: 0;
     overflow-wrap: break-word;
     font-family: var(--font-body);
   }

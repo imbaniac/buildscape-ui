@@ -1,11 +1,13 @@
 /* Font Variables */
 :root {
   /* Font families */
-  --font-display: 'Cinzel', Georgia, serif;
-  --font-body: 'Crimson Text', Georgia, serif;
-  --font-ui: 'Alegreya Sans', -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
-  --font-mono: 'Space Mono', 'SF Mono', Monaco, 'Inconsolata', monospace;
-  
+  --font-display: "Cinzel", Georgia, serif;
+  --font-body: "Lora", Georgia, serif;
+  --font-ui:
+    "Alegreya Sans", -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI",
+    sans-serif;
+  --font-mono: "Space Mono", "SF Mono", Monaco, "Inconsolata", monospace;
+
   /* Font weights */
   --font-weight-normal: 400;
   --font-weight-medium: 500;
