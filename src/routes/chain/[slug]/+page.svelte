@@ -8,6 +8,7 @@
   import { getAccessibleBrandColor } from "$lib/utils/colorUtils";
   import { getContext } from "svelte";
 
+
   // Get data from layout
   const layoutData = $derived($page.data);
   const bookmarks = $derived(layoutData.bookmarks);
@@ -307,8 +308,16 @@
     ],
   });
 
+  // Determine where to navigate back to based on navigation state
+  const backPath = $derived(
+    $page.state?.from === "/chains" ? "/chains" : 
+    $page.state?.from === "/" ? "/" :
+    "/"
+  );
+
   function handleClose() {
-    goto("/");
+    // Navigate back to where the user came from (map or table view)
+    goto(backPath);
   }
 </script>
 

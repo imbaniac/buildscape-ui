@@ -199,7 +199,8 @@
         );
 
         if (island) {
-          goto(`/chain/${island.slug}`);
+          // Pass state to track that we came from the map view
+          goto(`/chain/${island.slug}`, { state: { from: "/" } });
         }
       });
     }
