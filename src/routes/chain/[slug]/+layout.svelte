@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { page } from "$app/stores";
   import { goto } from "$app/navigation";
   import { onMount, onDestroy } from "svelte";
   import { sseConnection } from "$lib/stores/sse";
@@ -74,8 +75,15 @@
     setMetricsSpan: (span: "1h" | "24h" | "7d" | "30d") => { metricsSpan = span; }
   });
 
+  // Determine where to navigate back to based on navigation state
+  const backPath = $derived(
+    $page.state?.from === "/chains" ? "/chains" : 
+    $page.state?.from === "/" ? "/" :
+    "/"
+  );
+
   function handleClose() {
-    goto("/");
+    goto(backPath);
   }
 
   function handleKeydown(event: KeyboardEvent) {

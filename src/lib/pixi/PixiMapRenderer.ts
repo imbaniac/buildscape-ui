@@ -267,7 +267,8 @@ export default class PixiMapRenderer {
 
         if (dist < 5) {
           // It was a click, not a drag - navigate to chain page
-          goto(`/chain/${island.slug}`);
+          // Pass state to track that we came from the map view
+          goto(`/chain/${island.slug}`, { state: { from: "/" } });
         }
       }
     });
