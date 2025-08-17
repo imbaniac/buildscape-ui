@@ -51,8 +51,9 @@
 
   // Show loader until we have TVL data AND map is ready
   let mapReady = $state(false);
+  // Only show loader on initial load, not when updating overview period
   let showLoader = $derived(
-    overviewStoreState.isLoading || !overviewStoreState.data || !mapReady,
+    (!overviewStoreState.data && overviewStoreState.isLoading) || !mapReady,
   );
 
   // Track if initial viewport has been set

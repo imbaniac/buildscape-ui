@@ -25,7 +25,7 @@
 
   // Check if current data is incomplete
   const isDataIncomplete = $derived(
-    chainDynamic?.dataCompleteness && !chainDynamic.dataCompleteness.isComplete,
+    chainDynamic && !chainDynamic.data_complete,
   );
 
   // Format date range for display
@@ -49,10 +49,10 @@
   };
 
   const dataRangeText = $derived(
-    chainDynamic?.dataCompleteness
+    chainDynamic
       ? formatDateRange(
-          chainDynamic.dataCompleteness.dataStart,
-          chainDynamic.dataCompleteness.dataEnd,
+          chainDynamic.data_start,
+          chainDynamic.data_end,
         )
       : "",
   );
@@ -97,37 +97,37 @@
   <div class="metrics-grid">
     <MetricCard
       label="TPS"
-      value={chainDynamic?.metrics?.txPerSecond}
+      value={chainDynamic?.tps}
       formatter={(v) => v.toFixed(2)}
       loading={showSkeleton}
       {brandColor}
     />
     <MetricCard
       label="Transactions"
-      value={chainDynamic?.metrics?.numTransactions}
+      value={chainDynamic?.transactions}
       formatter={(v) => formatNumber(v)}
-      tooltip={chainDynamic?.metrics?.numTransactions
-        ? formatNumberWithCommas(chainDynamic.metrics.numTransactions)
+      tooltip={chainDynamic?.transactions
+        ? formatNumberWithCommas(chainDynamic.transactions)
         : undefined}
       loading={showSkeleton}
       {brandColor}
     />
     <MetricCard
       label="Population"
-      value={chainDynamic?.metrics?.activeUsers}
+      value={chainDynamic?.active_addresses}
       formatter={(v) => formatNumber(v)}
-      tooltip={chainDynamic?.metrics?.activeUsers
-        ? formatNumberWithCommas(chainDynamic.metrics.activeUsers)
+      tooltip={chainDynamic?.active_addresses
+        ? formatNumberWithCommas(chainDynamic.active_addresses)
         : undefined}
       loading={showSkeleton}
       {brandColor}
     />
     <MetricCard
       label="Contracts"
-      value={chainDynamic?.metrics?.contractsDeployed}
+      value={chainDynamic?.contracts}
       formatter={(v) => formatNumber(v)}
-      tooltip={chainDynamic?.metrics?.contractsDeployed
-        ? formatNumberWithCommas(chainDynamic.metrics.contractsDeployed)
+      tooltip={chainDynamic?.contracts
+        ? formatNumberWithCommas(chainDynamic.contracts)
         : undefined}
       loading={showSkeleton}
       {brandColor}

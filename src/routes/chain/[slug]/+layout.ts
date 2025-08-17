@@ -2,9 +2,6 @@ import { error, redirect } from "@sveltejs/kit";
 import type { LayoutLoad } from "./$types";
 import { CHAIN_TABS } from "$lib/constants/tabs";
 
-// Import the chain data loader factory
-import { getDynamicDataFactory } from "$lib/utils/chainDataLoader";
-
 function mergeEvmTools(
   chainStatic: any,
   evmCommonData: any,
@@ -131,11 +128,6 @@ export const load: LayoutLoad = async ({ params, parent }) => {
     
     // Pass chainStatic directly, no streaming
     chainStatic,
-    
-    // Only dynamic loader needs to be async (it's a factory function)
-    dynamicLoader: chainData.chainId
-      ? getDynamicDataFactory(chainData.chainId)
-      : null,
   };
 };
 
