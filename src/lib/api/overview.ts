@@ -10,9 +10,22 @@ export interface ChainOverview {
   active_addresses: number;
   contracts: number;
   block_time?: number;
+  // New fields from enhanced API
+  gas_price: number;
+  block_size: number;
+  utilization: number;
+  last_block: number;
+  sync_progress: number;
+  data_complete: boolean;
+  data_start: string;
+  data_end: string;
+  tvl_change_24h?: number | null;
+  tvl_change_7d?: number | null;
+  tvl_change_30d?: number | null;
 }
 
 export interface OverviewData {
+  period_hours: number; // Period that was requested (1, 24, 168, 720)
   total_tps: number;
   total_transactions: number;
   total_active_addresses: number;

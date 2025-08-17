@@ -8,6 +8,7 @@
     initializeChainDataFeed,
     cleanupChainDataFeed,
   } from "$lib/stores/chainDataStore";
+  import { overviewStore, getChainById, getPeriodFromHours } from "$lib/stores/overviewStore";
   import { analytics } from "$lib/analytics";
   import type { LayoutData } from "./$types";
   import { setContext } from "svelte";
@@ -17,9 +18,8 @@
   // Track view duration
   let viewStartTime: number;
 
-  // Get data directly from layout (no longer streamed)
+  // Get data directly from layout
   const chainStatic = $derived(data.chainStatic);
-  const dynamicLoader = $derived(data.dynamicLoader);
 
   // Get real-time chain data from SSE store
   const chainDataStore = data.chainId
@@ -30,45 +30,41 @@
   const chainStatus = $derived(chainDataStore ? $chainDataStore : null);
   const loadingStatus = $derived(!chainStatus);
 
-  // State for metrics span and dynamic data - shared across all tabs
+  // Get chain data from overview store
+  const chainOverviewStore = data.chainId ? getChainById(data.chainId) : null;
+  const chainOverview = $derived(chainOverviewStore ? $chainOverviewStore : null);
+  const overviewStoreState = $derived($overviewStore);
+  
+  // Check if the overview data matches the requested period
+  const isCorrectPeriod = $derived(
+    overviewStoreState.data && 
+    getPeriodFromHours(overviewStoreState.data.period_hours) === metricsSpan
+  );
+
+  // State for metrics span - shared across all tabs
   let metricsSpan = $state<"1h" | "24h" | "7d" | "30d">("24h");
-  let chainDynamic = $state<any>(null);
   let loadingDynamic = $state(false);
+  
+  // Actual loading state considering period mismatch
+  const actualLoadingDynamic = $derived(
+    overviewStoreState.isLoading || !isCorrectPeriod || !chainOverview
+  );
 
-  async function loadDynamic(span: "1h" | "24h" | "7d" | "30d") {
-    if (!dynamicLoader) return;
-
-    loadingDynamic = true;
-    try {
-      chainDynamic = await dynamicLoader(span);
-    } catch (error) {
-      console.error("Failed to load dynamic data:", error);
-    } finally {
-      loadingDynamic = false;
-    }
-  }
-
-  // Load dynamic data when loader becomes available
-  $effect(() => {
-    if (dynamicLoader && !chainDynamic) {
-      loadDynamic(metricsSpan);
-    }
-  });
-
-  // React to metricsSpan changes
+  // Load overview data when span changes
   let previousSpan = metricsSpan;
   $effect(() => {
     if (metricsSpan !== previousSpan) {
       previousSpan = metricsSpan;
-      loadDynamic(metricsSpan);
+      // The smart loading in overviewStore will handle avoiding unnecessary fetches
+      overviewStore.load(metricsSpan);
     }
   });
 
   // Provide dynamic data to child pages via context
   setContext('chainDynamicData', {
     get chainStatic() { return chainStatic; },
-    get chainDynamic() { return chainDynamic; },
-    get loadingDynamic() { return loadingDynamic; },
+    get chainDynamic() { return isCorrectPeriod ? chainOverview : null; }, // Only provide data if period matches
+    get loadingDynamic() { return actualLoadingDynamic; },
     get metricsSpan() { return metricsSpan; },
     get chainStatus() { return chainStatus; },
     get loadingStatus() { return loadingStatus; },
@@ -100,6 +96,9 @@
     if (data.chainId) {
       initializeChainDataFeed(data.chainId.toString());
     }
+
+    // Load overview data only if needed (smart loading handles staleness check)
+    overviewStore.load(metricsSpan);
 
     window.addEventListener("keydown", handleKeydown);
 

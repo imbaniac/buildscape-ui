@@ -29,16 +29,15 @@
     <SkeletonLoader height="105px" />
   {:else}
     <ResourcePanel
-      gasPrice={chainStatus?.gas_price_gwei || chainDynamic?.lastGas || 0}
+      gasPrice={chainStatus?.gas_price_gwei || chainDynamic?.gas_price || 0}
       utilization={Math.round(
-        chainStatus?.utilization_pct ||
-          (chainDynamic?.utilization ? parseInt(chainDynamic.utilization) : 0),
+        chainStatus?.utilization_pct || chainDynamic?.utilization || 0,
       )}
-      previousGasPrice={chainDynamic?.previousGas}
+      previousGasPrice={null}
       {nativeCurrency}
-      blockTime={chainDynamic?.blockTime}
+      blockTime={chainDynamic?.block_time}
       lastBlock={formatNumberWithCommas(
-        chainStatus?.current_block || chainDynamic?.lastBlock || 0,
+        chainStatus?.current_block || chainDynamic?.last_block || 0,
       )}
       networkStatus={chainStatus?.status ||
         (loadingStatus ? "connecting" : "no_data")}

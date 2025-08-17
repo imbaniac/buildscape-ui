@@ -7,11 +7,14 @@
   }
 
   let { chainStatic }: Props = $props();
-  const brandColor = chainStatic.color || '#3b82f6';
+  const brandColor = chainStatic.color || "#3b82f6";
   const accessibleBrandColor = $derived(getAccessibleBrandColor(brandColor));
 </script>
 
-<div class="prose" style="--brand-color: {brandColor}; --accessible-brand-color: {accessibleBrandColor}">
+<div
+  class="prose"
+  style="--brand-color: {brandColor}; --accessible-brand-color: {accessibleBrandColor}"
+>
   <h2>What is {chainStatic.name}?</h2>
   {#if chainStatic.description}
     {@html marked.parse(chainStatic.description)}
@@ -25,7 +28,12 @@
       <p>This blockchain supports the following smart contract languages:</p>
       <div class="languages-grid">
         {#each chainStatic.contractLanguages as lang}
-          <a href={lang.url} target="_blank" class="language-card" class:primary={lang.details === 'Primary'}>
+          <a
+            href={lang.url}
+            target="_blank"
+            class="language-card"
+            class:primary={lang.details === "Primary"}
+          >
             <span class="language-name">{lang.name}</span>
             {#if lang.details}
               <span class="language-details">{lang.details}</span>
@@ -204,7 +212,7 @@
     color: #6b7280;
     line-height: 1.2;
   }
-  
+
   .language-card.primary .language-details {
     color: var(--accessible-brand-color);
   }
