@@ -7,6 +7,7 @@
   import DevelopmentTab from "./tabs/DevelopmentTab.svelte";
   import WalletsTab from "./tabs/WalletsTab.svelte";
   import { getAccessibleBrandColor } from "$lib/utils/colorUtils";
+  import { page } from "$app/stores";
   import type {
     BookmarkTab,
     BookmarkField,
@@ -125,7 +126,7 @@
           onTabChange={(tab) => handleTabClick(tab, "development")}
         />
       {:else if activeTab === "wallets" && chainStatic.technology?.isEVM}
-        <WalletsTab />
+        <WalletsTab walletsByCategory={$page.data.wallets} />
       {:else}
         <div class="no-content">
           <p>No data available for this section</p>

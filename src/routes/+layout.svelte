@@ -22,11 +22,10 @@
     tpsLookupByChainId,
   } from "$lib/stores/overviewStore";
   import savedPositions from "$lib/positions.json";
-  import { parseFrontmatterAndContent } from "$lib/utils/markdown";
   import BoatLoader from "../components/BoatLoader.svelte";
   import type { Viewport as ViewportType } from "pixi-viewport";
 
-  let { children } = $props();
+  let { children, data } = $props();
 
   // Determine if we're on a chain page
   const isChainPage = $derived(
@@ -69,54 +68,8 @@
       : {},
   );
 
-  // Import chain data modules
-  const chainMdModules = import.meta.glob("/data/chains/*.md", {
-    eager: true,
-    query: "?raw",
-    import: "default",
-  });
-
-  const logoAssets = import.meta.glob("/assets/chains/*", {
-    eager: true,
-    query: "?url",
-    import: "default",
-  });
-
-  // Helper to resolve logo URL
-  function resolveLogoUrl(logoFilename: string): string | undefined {
-    for (const path in logoAssets) {
-      if (path.endsWith("/" + logoFilename)) {
-        const logoUrl = logoAssets[path] as string;
-        return logoUrl;
-      }
-    }
-    return undefined;
-  }
-
-  // Load static chain data
-  function loadStaticChains(): Record<string, any> {
-    const chains: Record<string, any> = {};
-    for (const path in chainMdModules) {
-      const raw = chainMdModules[path] as string;
-      if (!raw) continue;
-      const { frontmatter, content } = parseFrontmatterAndContent(raw);
-      const name = path.split("/").pop()?.replace(".md", "");
-      if (!name) continue;
-      let logoUrl = undefined;
-      if (frontmatter.logo) {
-        logoUrl = resolveLogoUrl(frontmatter.logo);
-      }
-      chains[name] = {
-        ...frontmatter,
-        logoUrl,
-        description: content,
-        name: frontmatter.name || name,
-      };
-    }
-    return chains;
-  }
-
-  const staticChains: Record<string, any> = loadStaticChains();
+  // Get parsed chains from server-side data
+  const staticChains = $derived(data.chains || {});
 
   // Calculate island scale based on TVL
   function calculateIslandScale(tvl: number): number {

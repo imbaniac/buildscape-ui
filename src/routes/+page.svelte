@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
+  import { page } from "$app/stores";
   import { mapStore } from "$lib/stores/mapStore";
   import Header from "../components/Header.svelte";
   import SearchBar from "../components/SearchBar.svelte";
@@ -8,7 +9,6 @@
   import SEO from "$lib/components/SEO.svelte";
   import savedPositions from "$lib/positions.json";
   import { searchChains } from "$lib/utils/searchUtils";
-  import { parseFrontmatterAndContent } from "$lib/utils/markdown";
 
   // Get map components from store
   const map = $derived($mapStore);
@@ -36,36 +36,9 @@
     isAnimating: false,
   });
 
-  // Load static chain data (same as in layout but we need it for search)
-  const chainMdModules = import.meta.glob("/data/chains/*.md", {
-    eager: true,
-    query: "?raw",
-    import: "default",
-  });
-
-  function loadStaticChains(): Record<string, any> {
-    const chains: Record<string, any> = {};
-    for (const path in chainMdModules) {
-      const raw = chainMdModules[path] as string;
-      if (!raw) continue;
-      
-      const slug = path.split("/").pop()?.replace(".md", "");
-      if (!slug) continue;
-      
-      // Parse frontmatter to get all chain metadata
-      const { frontmatter } = parseFrontmatterAndContent(raw);
-      
-      chains[slug] = {
-        name: frontmatter.name || slug,
-        chainId: frontmatter.chainId,
-        nativeCurrency: frontmatter.nativeCurrency,
-        slug
-      };
-    }
-    return chains;
-  }
-
-  const staticChains = loadStaticChains();
+  // Get parsed chains from page data for search
+  const { data } = $props();
+  const staticChains = $derived(data.chains || {});
 
   // Search implementation
   function performSearch(query: string) {
@@ -83,7 +56,7 @@
     searchDebounceTimer = setTimeout(() => {
       // Filter chains to only those with positions
       const chainsWithPositions: Record<string, any> = {};
-      for (const [chainKey, chain] of Object.entries(staticChains)) {
+      for (const [chainKey, chain] of Object.entries(data.chains || {})) {
         const position = (savedPositions as any)[chainKey];
         if (position) {
           chainsWithPositions[chainKey] = chain;
