@@ -9,6 +9,7 @@
     transactions: number;
     activeAddresses: number;
     contracts: number;
+    blockTime?: number;
     logoUrl?: string;
     color?: string;
     gasPrice?: number;
@@ -17,7 +18,7 @@
 
   interface Props {
     chain: Chain;
-    formatValue: (value: number, type: "tvl" | "tps" | "gas" | "count") => string;
+    formatValue: (value: number | undefined, type: "tvl" | "tps" | "gas" | "count" | "blockTime") => string;
     onClick: () => void;
   }
 
@@ -69,6 +70,9 @@
   </td>
   <td class="chain-tps">
     <span class="value-text">{formatValue(chain.tps, "tps")} TPS</span>
+  </td>
+  <td class="chain-block-time">
+    <span class="value-text">{formatValue(chain.blockTime, "blockTime")}</span>
   </td>
   <td class="chain-transactions">
     <span class="value-text">{formatValue(chain.transactions, "count")}</span>
@@ -319,6 +323,12 @@
     min-width: 80px;
   }
 
+  .chain-block-time {
+    text-align: right;
+    color: #4a4742;
+    min-width: 90px;
+  }
+
   .chain-transactions {
     text-align: right;
     color: #4a4742;
@@ -447,7 +457,7 @@
       font-size: 0.85rem;
     }
 
-    .chain-tvl, .chain-tps, .chain-transactions, .chain-addresses, .chain-contracts {
+    .chain-tvl, .chain-tps, .chain-block-time, .chain-transactions, .chain-addresses, .chain-contracts {
       text-align: right;
     }
 

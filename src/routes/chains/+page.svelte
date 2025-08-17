@@ -47,6 +47,7 @@
       const transactions = overviewData?.transactions || 0;
       const activeAddresses = overviewData?.active_addresses || 0;
       const contracts = overviewData?.contracts || 0;
+      const blockTime = overviewData?.block_time;
 
       combined.push({
         ...chain,
@@ -56,6 +57,7 @@
         transactions,
         activeAddresses,
         contracts,
+        blockTime,
         // Use technology data from frontmatter if available, otherwise determine from patterns
         type:
           chain.technology?.isL2 === true

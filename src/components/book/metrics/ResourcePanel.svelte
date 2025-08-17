@@ -6,8 +6,7 @@
     utilization: number;
     previousGasPrice?: number;
     nativeCurrency?: string;
-    blockSize?: string;
-    maxBlockSize?: number;
+    blockTime?: number;
     lastBlock?: string;
     networkStatus?: string;
     brandColor?: string;
@@ -18,8 +17,7 @@
     utilization,
     previousGasPrice,
     nativeCurrency = "ETH",
-    blockSize,
-    maxBlockSize,
+    blockTime,
     lastBlock,
     networkStatus = "live",
     brandColor = "#3b82f6",
@@ -144,12 +142,14 @@
       </div>
 
       <div class="resource-item">
-        <span class="resource-icon">📦</span>
+        <span class="resource-icon">⏱️</span>
         <div class="resource-data">
-          <span class="resource-label">BLOCK SIZE</span>
+          <span class="resource-label">SPEED</span>
           <div class="resource-value">
-            <span class="value-number">{blockSize || "0"}</span>
-            <span class="value-unit">/{maxBlockSize || 30}MB</span>
+            <span class="value-number"
+              >{blockTime ? blockTime.toFixed(1) : "-"}</span
+            >
+            <span class="value-unit">s</span>
           </div>
         </div>
       </div>
