@@ -9,7 +9,6 @@
     chainStatus: any;
     loadingStatus: boolean;
     brandColor?: string;
-    maxBlockSize?: number;
     nativeCurrency?: string;
   }
 
@@ -18,7 +17,6 @@
     chainStatus,
     loadingStatus,
     brandColor = "#8b5cf6",
-    maxBlockSize,
     nativeCurrency = "ETH",
   }: Props = $props();
 
@@ -38,10 +36,7 @@
       )}
       previousGasPrice={chainDynamic?.previousGas}
       {nativeCurrency}
-      blockSize={chainStatus?.block_size_mb?.toFixed(2) ||
-        chainDynamic?.lastBlockSize ||
-        "0"}
-      {maxBlockSize}
+      blockTime={chainDynamic?.blockTime}
       lastBlock={formatNumberWithCommas(
         chainStatus?.current_block || chainDynamic?.lastBlock || 0,
       )}

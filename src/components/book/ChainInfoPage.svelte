@@ -269,7 +269,6 @@
     {chainStatus}
     {loadingStatus}
     brandColor={chainStatic.color}
-    maxBlockSize={chainStatic.maxBlockSize}
     nativeCurrency={chainStatic.nativeCurrency}
   />
 

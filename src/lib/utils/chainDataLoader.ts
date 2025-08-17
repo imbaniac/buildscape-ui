@@ -9,6 +9,7 @@ interface ChainMetricsResponse {
   contracts: number;
   gas_price: number;
   block_size: number;
+  block_time?: number;
   utilization: number;
   last_block: number;
   data_start: string;
@@ -51,6 +52,7 @@ export function getDynamicDataFactory(chainId: number) {
         lastBlock: data.last_block,
         lastGas: Math.round(data.gas_price), // Convert to gwei
         lastBlockSize: Number(data.block_size.toFixed(2)),
+        blockTime: data.block_time,
         utilization: `${Math.round(data.utilization)}%`,
         metrics: {
           txPerSecond: Number(data.tps.toFixed(2)),

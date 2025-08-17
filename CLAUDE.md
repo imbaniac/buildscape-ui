@@ -22,6 +22,9 @@ bun run check
 bun run check:watch  # Watch mode
 ```
 
+DO NOT RUN local dev server. DO NOT run `bun run dev`
+Ask user to run and verify changes
+
 ## Architecture Overview
 
 This is a SvelteKit application that visualizes EVM-compatible blockchain networks as an interactive "sea of islands" map.

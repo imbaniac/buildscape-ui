@@ -16,6 +16,7 @@
     transactions: number;
     activeAddresses: number;
     contracts: number;
+    blockTime?: number;
     logoUrl?: string;
     color?: string;
     gasPrice?: number;
@@ -46,7 +47,13 @@
   // State
   let searchQuery = $state("");
   let sortColumn = $state<
-    "name" | "tvl" | "tps" | "transactions" | "activeAddresses" | "contracts"
+    | "name"
+    | "tvl"
+    | "tps"
+    | "transactions"
+    | "activeAddresses"
+    | "contracts"
+    | "blockTime"
   >("tvl");
   let sortDirection = $state<"asc" | "desc">("desc");
   let activeFilters = $state<Map<string, Set<string>>>(new Map([]));
@@ -135,9 +142,13 @@
 
   // Format large numbers
   function formatValue(
-    value: number,
-    type: "tvl" | "tps" | "gas" | "count",
+    value: number | undefined,
+    type: "tvl" | "tps" | "gas" | "count" | "blockTime",
   ): string {
+    if (value === undefined || value === null) {
+      return "-";
+    }
+
     if (type === "tvl") {
       if (value >= 1_000_000_000) {
         return `$${(value / 1_000_000_000).toFixed(1)}B`;
@@ -151,6 +162,8 @@
       return value.toFixed(0);
     } else if (type === "gas") {
       return value ? `${value.toFixed(1)}` : "-";
+    } else if (type === "blockTime") {
+      return value ? `${value.toFixed(1)}s` : "-";
     } else if (type === "count") {
       if (value >= 1_000_000_000) {
         return `${(value / 1_000_000_000).toFixed(1)}B`;
@@ -230,6 +243,13 @@
             <ChartHeader
               column="tps"
               label="Activity"
+              currentSort={sortColumn}
+              direction={sortDirection}
+              onSort={handleSort}
+            />
+            <ChartHeader
+              column="blockTime"
+              label="SPEED"
               currentSort={sortColumn}
               direction={sortDirection}
               onSort={handleSort}

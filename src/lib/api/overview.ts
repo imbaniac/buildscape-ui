@@ -9,6 +9,7 @@ export interface ChainOverview {
   transactions: number;
   active_addresses: number;
   contracts: number;
+  block_time?: number;
 }
 
 export interface OverviewData {

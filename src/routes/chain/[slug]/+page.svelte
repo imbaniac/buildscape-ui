@@ -345,12 +345,6 @@
         color: layoutData.color,
         technology: layoutData.technology
       }}
-      {chainDynamic}
-      {chainStatus}
-      {loadingDynamic}
-      {loadingStatus}
-      {metricsSpan}
-      onSpanChange={onSpanChange}
     />
   {/snippet}
 
