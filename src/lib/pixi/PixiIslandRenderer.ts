@@ -46,6 +46,7 @@ enum TerrainType {
 export default class PixiIslandRenderer {
   private readonly TILE_WIDTH = 72;
   private readonly TILE_HEIGHT = 36;
+  private renderer?: Renderer;
 
   // Terrain colors
   private readonly terrainColors: Record<TerrainType, number> = {

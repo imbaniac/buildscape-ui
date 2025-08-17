@@ -13,14 +13,16 @@
 
   let { chainStatic }: Props = $props();
 
+  import type { PeriodType } from "$lib/stores/userPreferencesStore";
+
   // Get dynamic data directly from layout context
   const dynamicData = getContext<{
     chainDynamic: any;
     loadingDynamic: boolean;
-    metricsSpan: "1h" | "24h" | "7d" | "30d";
+    metricsSpan: PeriodType;
     chainStatus: any;
     loadingStatus: boolean;
-    setMetricsSpan: (span: "1h" | "24h" | "7d" | "30d") => void;
+    setMetricsSpan: (span: PeriodType) => void;
   }>("chainDynamicData");
 
   // Use derived values for cleaner template access
@@ -604,17 +606,6 @@
       font-size: 0.8125rem;
     }
 
-    .add-wallet-btn {
-      padding: 0.625rem 1rem;
-      font-size: 0.875rem;
-      width: 100%;
-      max-width: 200px;
-    }
-
-    .add-wallet-btn svg {
-      width: 14px;
-      height: 14px;
-    }
 
     .author-attribution {
       margin: 0.75rem 0;

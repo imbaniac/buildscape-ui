@@ -91,9 +91,6 @@
   class="book-fullscreen"
   ontouchstart={handleTouchStart}
   ontouchend={handleTouchEnd}
-  ongesturestart={handleGestureStart}
-  ongesturechange={handleGestureChange}
-  ongestureend={handleGestureEnd}
   onwheel={handleWheel}
 >
   <!-- Backdrop to dim the map behind -->

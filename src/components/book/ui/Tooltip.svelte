@@ -138,8 +138,10 @@
     isVisible = false;
   }
   
-  function handleClick(e: MouseEvent) {
-    e.stopPropagation();
+  function handleClick(e?: MouseEvent) {
+    if (e) {
+      e.stopPropagation();
+    }
     if (isClickedOpen) {
       isClickedOpen = false;
       hideTooltip();
@@ -254,8 +256,16 @@
 </script>
 
 <span 
-  class="tooltip-wrapper" 
+  class="tooltip-wrapper"
+  role="button"
+  tabindex="0"
   onclick={handleClick}
+  onkeydown={(e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleClick();
+    }
+  }}
   onmouseenter={() => {
     if (!isClickedOpen) {
       showTooltip();

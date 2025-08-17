@@ -30,11 +30,13 @@
     };
   }
 
+  import type { PeriodType } from "$lib/stores/userPreferencesStore";
+
   interface Props {
     chains: Chain[];
     isLoading?: boolean;
-    selectedPeriod?: "1h" | "24h" | "7d" | "30d";
-    onPeriodChange?: (period: "1h" | "24h" | "7d" | "30d") => void;
+    selectedPeriod?: PeriodType;
+    onPeriodChange?: (period: PeriodType) => void;
     tableWrapper?: HTMLDivElement;
   }
 
@@ -59,10 +61,10 @@
   >("tvl");
   let sortDirection = $state<"asc" | "desc">("desc");
   let activeFilters = $state<Map<string, Set<string>>>(new Map([]));
-  let selectedPeriod = $state<"1h" | "24h" | "7d" | "30d">(initialPeriod);
+  let selectedPeriod = $state<PeriodType>(initialPeriod);
 
   // Handle period change
-  function handlePeriodChange(period: "1h" | "24h" | "7d" | "30d") {
+  function handlePeriodChange(period: PeriodType) {
     selectedPeriod = period;
     onPeriodChange?.(period);
   }
@@ -108,6 +110,11 @@
         aVal = aVal?.toString().toLowerCase() || "";
         bVal = bVal?.toString().toLowerCase() || "";
       }
+
+      // Handle undefined values
+      if (aVal == null && bVal == null) return 0;
+      if (aVal == null) return sortDirection === "asc" ? -1 : 1;
+      if (bVal == null) return sortDirection === "asc" ? 1 : -1;
 
       if (aVal < bVal) return sortDirection === "asc" ? -1 : 1;
       if (aVal > bVal) return sortDirection === "asc" ? 1 : -1;
@@ -204,7 +211,7 @@
       </div>
       <div class="controls-right">
         <div class="period-selector">
-          {#each ["1h", "24h", "7d", "30d"] as period}
+          {#each (["1h", "24h", "7d", "30d"] as const) as period}
             <button
               class="period-btn"
               class:active={selectedPeriod === period}
@@ -504,7 +511,6 @@
     min-width: 70px;
   }
 
-  .loading,
   .no-results {
     text-align: center;
     padding: 3rem;

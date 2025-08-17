@@ -33,7 +33,7 @@
       utilization={Math.round(
         chainStatus?.utilization_pct || chainDynamic?.utilization || 0,
       )}
-      previousGasPrice={null}
+      previousGasPrice={undefined}
       {nativeCurrency}
       blockTime={chainDynamic?.block_time}
       lastBlock={formatNumberWithCommas(

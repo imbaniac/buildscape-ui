@@ -106,7 +106,8 @@
 
   <div class="filter-dropdowns">
     {#each filterConfigs as config}
-      {@const options = filterOptions()[config.id]}
+      {@const allOptions = filterOptions()}
+      {@const options = allOptions[config.id as keyof typeof allOptions] || []}
       {@const activeValues = activeFilters.get(config.id) || new Set()}
       {@const isOpen = openDropdowns.has(config.id)}
 

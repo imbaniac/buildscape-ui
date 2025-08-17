@@ -19,7 +19,7 @@
     dataUpdateFrequency: [] as number[]
   });
 
-  let eventSource: EventSource | null = null;
+  let eventSource = $state<EventSource | null>(null);
   let startTime = Date.now();
   let updateInterval: ReturnType<typeof setInterval>;
 
@@ -167,27 +167,27 @@
     <h2>Statistics</h2>
     <div class="stats-grid">
       <div class="stat">
-        <label>Total Events</label>
+        <span>Total Events</span>
         <value>{stats.totalEvents}</value>
       </div>
       <div class="stat">
-        <label>Events/min</label>
+        <span>Events/min</span>
         <value>{stats.eventsPerMinute}</value>
       </div>
       <div class="stat">
-        <label>Avg Update Interval</label>
+        <span>Avg Update Interval</span>
         <value>{getAverageUpdateInterval()}</value>
       </div>
       <div class="stat">
-        <label>Uptime</label>
+        <span>Uptime</span>
         <value>{stats.connectionUptime}s</value>
       </div>
       <div class="stat">
-        <label>Last Update</label>
+        <span>Last Update</span>
         <value>{$lastUpdate ? new Date($lastUpdate).toLocaleTimeString() : 'Never'}</value>
       </div>
       <div class="stat">
-        <label>Data Mode</label>
+        <span>Data Mode</span>
         <value>{$dataMode || 'Unknown'}</value>
       </div>
     </div>
@@ -215,27 +215,27 @@
         <h3>{selectedChainData.name}</h3>
         <div class="chain-grid">
           <div class="detail">
-            <label>Status</label>
+            <span>Status</span>
             <value class="status-{selectedChainData.status}">{selectedChainData.status}</value>
           </div>
           <div class="detail">
-            <label>Current Block</label>
+            <span>Current Block</span>
             <value>{selectedChainData.currentBlock.toLocaleString()}</value>
           </div>
           <div class="detail">
-            <label>Target Block</label>
+            <span>Target Block</span>
             <value>{selectedChainData.targetBlock.toLocaleString()}</value>
           </div>
           <div class="detail">
-            <label>Sync Progress</label>
+            <span>Sync Progress</span>
             <value>{selectedChainData.syncProgress.toFixed(2)}%</value>
           </div>
           <div class="detail">
-            <label>TPS</label>
+            <span>TPS</span>
             <value>{selectedChainData.tps.toFixed(2)}</value>
           </div>
           <div class="detail">
-            <label>Gas Price</label>
+            <span>Gas Price</span>
             <value>{selectedChainData.gasPrice} gwei</value>
           </div>
         </div>
@@ -370,7 +370,8 @@
     border: 1px solid #e0e0e0;
   }
 
-  .stat label {
+  .stat span,
+  .detail span {
     display: block;
     font-size: 0.8rem;
     color: #666;
@@ -414,12 +415,6 @@
     margin-bottom: 1rem;
   }
 
-  .detail label {
-    display: block;
-    font-size: 0.8rem;
-    color: #666;
-    margin-bottom: 0.25rem;
-  }
 
   .detail value {
     display: block;
