@@ -8,11 +8,19 @@
     initializeChainDataFeed,
     cleanupChainDataFeed,
   } from "$lib/stores/chainDataStore";
-  import { overviewStore, getChainById, getPeriodFromHours } from "$lib/stores/overviewStore";
+  import {
+    overviewStore,
+    getChainById,
+    getPeriodFromHours,
+  } from "$lib/stores/overviewStore";
   import { analytics } from "$lib/analytics";
   import type { LayoutData } from "./$types";
   import { setContext } from "svelte";
   import type { PeriodType } from "$lib/stores/userPreferencesStore";
+  import BookLayout from "../../../components/book/BookLayout.svelte";
+  import ChainInfoPage from "../../../components/book/ChainInfoPage.svelte";
+  import TabButton from "../../../components/book/ui/TabButton.svelte";
+  import { getAccessibleBrandColor } from "$lib/utils/colorUtils";
 
   let { data, children }: { data: LayoutData; children: any } = $props();
 
@@ -33,27 +41,29 @@
 
   // Get chain data from overview store
   const chainOverviewStore = data.chainId ? getChainById(data.chainId) : null;
-  const chainOverview = $derived(chainOverviewStore ? $chainOverviewStore : null);
+  const chainOverview = $derived(
+    chainOverviewStore ? $chainOverviewStore : null,
+  );
   const overviewStoreState = $derived($overviewStore);
-  
+
   // Check if the overview data matches the requested period
   const isCorrectPeriod = $derived(
-    overviewStoreState.data && 
-    getPeriodFromHours(overviewStoreState.data.period_hours) === metricsSpan
+    overviewStoreState.data &&
+      getPeriodFromHours(overviewStoreState.data.period_hours) === metricsSpan,
   );
 
   // State for metrics span - shared across all tabs
   // Initialize from overviewStore's current period if available, otherwise default
-  let initialPeriod: PeriodType = overviewStoreState.currentPeriod 
+  let initialPeriod: PeriodType = overviewStoreState.currentPeriod
     ? (overviewStoreState.currentPeriod as PeriodType)
     : "24h";
-  
+
   let metricsSpan = $state<PeriodType>(initialPeriod);
   let loadingDynamic = $state(false);
-  
+
   // Actual loading state considering period mismatch
   const actualLoadingDynamic = $derived(
-    overviewStoreState.isLoading || !isCorrectPeriod || !chainOverview
+    overviewStoreState.isLoading || !isCorrectPeriod || !chainOverview,
   );
 
   // Load overview data when span changes
@@ -66,26 +76,94 @@
     }
   });
 
-  // Provide dynamic data to child pages via context
-  setContext('chainDynamicData', {
-    get chainStatic() { return chainStatic; },
-    get chainDynamic() { return isCorrectPeriod ? chainOverview : null; }, // Only provide data if period matches
-    get loadingDynamic() { return actualLoadingDynamic; },
-    get metricsSpan() { return metricsSpan; },
-    get chainStatus() { return chainStatus; },
-    get loadingStatus() { return loadingStatus; },
-    setMetricsSpan: (span: PeriodType) => { metricsSpan = span; }
+  // Tabs configuration
+  const tabIcons: Record<string, string> = {
+    overview: "📋",
+    resources: "📚",
+    explorers: "🔍",
+    development: "🛠️",
+    wallets: "💰",
+  };
+
+  // Reference to tabs header for scroll preservation
+  let tabsHeader = $state<HTMLDivElement>();
+
+  // Determine active tab from current path
+  const activeTab = $derived.by(() => {
+    const path = $page.url.pathname;
+    // Check for specific routes
+    if (path.endsWith("/overview") || path.includes("/overview/"))
+      return "overview";
+    if (path.endsWith("/resources") || path.includes("/resources/"))
+      return "resources";
+    if (path.endsWith("/explorers") || path.includes("/explorers/"))
+      return "explorers";
+    if (path.includes("/development")) return "development";
+    if (path.endsWith("/wallets") || path.includes("/wallets/"))
+      return "wallets";
+    // Base chain path (e.g., /chain/ethereum) should show overview as active
+    if (path.match(/^\/chain\/[^\/]+$/)) return "overview";
+    // Default to overview
+    return "overview";
   });
 
-  // Determine where to navigate back to based on navigation state
-  const backPath = $derived(
-    $page.state?.from === "/chains" ? "/chains" : 
-    $page.state?.from === "/" ? "/" :
-    "/"
-  );
+  // Handle tab navigation
+  function handleTabClick(tabId: string) {
+    const basePath = `/chain/${data.slug}`;
+    if (tabId === "development") {
+      // Navigate to first development subtab - use replaceState to avoid creating history entries
+      goto(`${basePath}/development/rpcs`, { replaceState: true });
+    } else {
+      goto(`${basePath}/${tabId}`, { replaceState: true });
+    }
+  }
+
+  // Export snapshot for tabs scroll preservation
+  export const snapshot = {
+    capture: () => ({
+      tabsScrollLeft: tabsHeader?.scrollLeft ?? 0,
+    }),
+    restore: (value) => {
+      if (tabsHeader && value?.tabsScrollLeft !== undefined) {
+        requestAnimationFrame(() => {
+          if (tabsHeader) {
+            tabsHeader.scrollLeft = value.tabsScrollLeft;
+          }
+        });
+      }
+    },
+  };
+
+  // Provide dynamic data to child pages via context
+  setContext("chainDynamicData", {
+    get chainStatic() {
+      return chainStatic;
+    },
+    get chainDynamic() {
+      return isCorrectPeriod ? chainOverview : null;
+    }, // Only provide data if period matches
+    get loadingDynamic() {
+      return actualLoadingDynamic;
+    },
+    get metricsSpan() {
+      return metricsSpan;
+    },
+    get chainStatus() {
+      return chainStatus;
+    },
+    get loadingStatus() {
+      return loadingStatus;
+    },
+    get activeTab() {
+      return activeTab;
+    },
+    setMetricsSpan: (span: PeriodType) => {
+      metricsSpan = span;
+    },
+  });
 
   function handleClose() {
-    goto(backPath);
+    history.back();
   }
 
   function handleKeydown(event: KeyboardEvent) {
@@ -150,7 +228,45 @@
   </div>
 {/if}
 
-{@render children()}
+<!-- Book Layout with tabs inside -->
+<BookLayout
+  onClose={handleClose}
+  brandColor={getAccessibleBrandColor(chainStatic?.color || "#3b82f6")}
+  currentPath={$page.url.pathname}
+>
+  {#snippet leftPage()}
+    <ChainInfoPage {chainStatic} />
+  {/snippet}
+
+  {#snippet rightPage()}
+    <div class="page-content">
+      <!-- Tabs Header inside the book -->
+      {#if data.bookmarks}
+        <div class="tabs-header" bind:this={tabsHeader}>
+          {#each data.bookmarks as group}
+            {#if group.id !== "wallets" || chainStatic?.technology?.isEVM}
+              <TabButton
+                active={activeTab === group.id}
+                onclick={() => handleTabClick(group.id)}
+                brandColor={getAccessibleBrandColor(
+                  chainStatic?.color || "#3b82f6",
+                )}
+                icon={tabIcons[group.id]}
+              >
+                {group.name}
+              </TabButton>
+            {/if}
+          {/each}
+        </div>
+      {/if}
+
+      <!-- Tab content from child routes -->
+      <div class="tab-content">
+        {@render children()}
+      </div>
+    </div>
+  {/snippet}
+</BookLayout>
 
 <style>
   .sse-status-indicator {
@@ -214,6 +330,71 @@
     .status-dot {
       width: 6px;
       height: 6px;
+    }
+  }
+
+  /* Page content styles */
+  .page-content {
+    position: absolute;
+    top: 2rem;
+    right: 3rem;
+    bottom: 2rem;
+    left: 3rem;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tabs-header {
+    display: flex;
+    gap: 0.5rem;
+    border-bottom: 1px solid #e2e8f0;
+    margin-bottom: 2.5rem;
+    padding-bottom: 0;
+  }
+
+  .tab-content {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-left: 4px;
+    padding-right: 2rem;
+  }
+
+  /* Mobile/Tablet view - single page */
+  @media (max-width: 1280px) {
+    .page-content {
+      position: relative;
+      top: auto;
+      right: auto;
+      bottom: auto;
+      left: auto;
+      padding: 1.5rem;
+      height: auto;
+    }
+
+    .tabs-header {
+      margin-bottom: 1.5rem;
+      gap: 0;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .tabs-header::-webkit-scrollbar {
+      display: none;
+    }
+
+    .tabs-header :global(.tab-button) {
+      padding: 0.625rem 0.875rem;
+      font-size: 0.75rem;
+      flex: 0 0 auto;
+      white-space: nowrap;
+    }
+
+    .tab-content {
+      padding-left: 0;
+      padding-right: 0;
     }
   }
 </style>

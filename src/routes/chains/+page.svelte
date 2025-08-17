@@ -4,7 +4,10 @@
     tvlLookupByChainId,
     tpsLookupByChainId,
   } from "$lib/stores/overviewStore";
-  import { userPreferencesStore, type PeriodType } from "$lib/stores/userPreferencesStore";
+  import {
+    userPreferencesStore,
+    type PeriodType,
+  } from "$lib/stores/userPreferencesStore";
   import ChartTable from "../../components/charts/ChartTable.svelte";
   import Header from "../../components/Header.svelte";
   import SEO from "$lib/components/SEO.svelte";
@@ -15,7 +18,12 @@
   let { data }: { data: PageData } = $props();
 
   // State for selected period - initialized from user preferences
-  let selectedPeriod = $state<PeriodType>(userPreferencesStore.getTablePeriod());
+  let selectedPeriod = $state<PeriodType>(
+    userPreferencesStore.getTablePeriod(),
+  );
+
+  // Reference to table wrapper for scroll preservation
+  let tableWrapper = $state<HTMLDivElement>();
 
   // Get dynamic data from stores
   const overviewStoreState = $derived($overviewStore);
@@ -99,6 +107,24 @@
     // Default to L1 for other mainnets
     return "L1";
   }
+
+  // Export snapshot for automatic scroll preservation
+  export const snapshot = {
+    capture: () => {
+      return {
+        scrollTop: tableWrapper?.scrollTop ?? 0,
+        scrollLeft: tableWrapper?.scrollLeft ?? 0,
+      };
+    },
+    restore: async (value) => {
+      if (value) {
+        if (tableWrapper) {
+          tableWrapper.scrollTop = value.scrollTop;
+          tableWrapper.scrollLeft = value.scrollLeft;
+        }
+      }
+    },
+  };
 </script>
 
 <SEO
@@ -118,6 +144,7 @@
       isLoading={overviewStoreState.isLoading}
       {selectedPeriod}
       onPeriodChange={handlePeriodChange}
+      bind:tableWrapper
     />
   </div>
 {/if}

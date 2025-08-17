@@ -35,12 +35,14 @@ function createOverviewStore() {
     // Check if we need to load
     const now = Date.now();
     const fiveMinutes = 5 * 60 * 1000;
-    
+
     // Skip if we have recent data for the same period
-    if (currentState.data && 
-        currentState.currentPeriod === period &&
-        currentState.lastLoadedAt && 
-        (now - currentState.lastLoadedAt) < fiveMinutes) {
+    if (
+      currentState.data &&
+      currentState.currentPeriod === period &&
+      currentState.lastLoadedAt &&
+      now - currentState.lastLoadedAt < fiveMinutes
+    ) {
       return; // Data is fresh enough
     }
 
@@ -48,12 +50,12 @@ function createOverviewStore() {
 
     try {
       const data = await fetchOverviewData(period);
-      set({ 
-        isLoading: false, 
-        data, 
+      set({
+        isLoading: false,
+        data,
         error: null,
         lastLoadedAt: now,
-        currentPeriod: period
+        currentPeriod: period,
       });
     } catch (error) {
       console.error("Error loading overview data:", error);
@@ -62,7 +64,7 @@ function createOverviewStore() {
         data: null,
         error: error instanceof Error ? error : new Error("Unknown error"),
         lastLoadedAt: null,
-        currentPeriod: null
+        currentPeriod: null,
       });
     }
   }
@@ -126,22 +128,26 @@ export const tpsLookupByChainId: Readable<Map<number, number>> = derived(
 
 // Helper to get a single chain by ID from overview data
 export function getChainById(chainId: number) {
-  return derived(
-    overviewStore,
-    ($overviewStore) => {
-      if (!$overviewStore.data?.chains) return null;
-      return $overviewStore.data.chains.find(c => c.chain_id === chainId) || null;
-    }
-  );
+  return derived(overviewStore, ($overviewStore) => {
+    if (!$overviewStore.data?.chains) return null;
+    return (
+      $overviewStore.data.chains.find((c) => c.chain_id === chainId) || null
+    );
+  });
 }
 
 // Helper to convert period_hours from API to period string
 export function getPeriodFromHours(hours: number | undefined): string {
-  switch(hours) {
-    case 1: return "1h";
-    case 24: return "24h";
-    case 168: return "7d";  // 7 * 24
-    case 720: return "30d"; // 30 * 24
-    default: return "24h";
+  switch (hours) {
+    case 1:
+      return "1h";
+    case 24:
+      return "24h";
+    case 168:
+      return "7d"; // 7 * 24
+    case 720:
+      return "30d"; // 30 * 24
+    default:
+      return "24h";
   }
 }

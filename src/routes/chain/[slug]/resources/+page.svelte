@@ -1,11 +1,7 @@
 <script lang="ts">
   import { page } from "$app/stores";
-  import { goto } from "$app/navigation";
-  import BookLayout from "../../../../components/book/BookLayout.svelte";
-  import ChainInfoPage from "../../../../components/book/ChainInfoPage.svelte";
-  import ChainDetailsPage from "../../../../components/book/ChainDetailsPage.svelte";
+  import ResourcesTab from "../../../../components/book/tabs/ResourcesTab.svelte";
   import SEO from "$lib/components/SEO.svelte";
-  import { getAccessibleBrandColor } from "$lib/utils/colorUtils";
   import { getContext } from "svelte";
   import type { PageData } from "./$types";
 
@@ -22,10 +18,6 @@
   
   // Use chainStatic from context, fallback to layoutData
   const chainStatic = $derived(dynamicData?.chainStatic || layoutData);
-
-  function handleClose() {
-    goto("/");
-  }
 
   // SEO metadata - optimized for search queries
   const seoTitle = $derived(() => {
@@ -59,22 +51,5 @@
   ogType="article"
 />
 
-<BookLayout
-  onClose={handleClose}
-  brandColor={getAccessibleBrandColor(chainStatic?.color || "#3b82f6")}
-  currentPath={$page.url.pathname}
->
-  {#snippet leftPage()}
-    <ChainInfoPage {chainStatic} />
-  {/snippet}
-
-  {#snippet rightPage()}
-    <ChainDetailsPage
-      {chainStatic}
-      {bookmarks}
-      activeTab="resources"
-      activeGroup="resources"
-      currentPath={$page.url.pathname}
-    />
-  {/snippet}
-</BookLayout>
+<!-- Render only the ResourcesTab content -->
+<ResourcesTab {chainStatic} {bookmarks} />
