@@ -97,11 +97,7 @@
     color: #64748b;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    font-family:
-      "Inter",
-      -apple-system,
-      BlinkMacSystemFont,
-      sans-serif;
+    font-family: var(--font-ui);
     text-transform: uppercase;
     letter-spacing: 0.4px;
     position: relative;
@@ -130,7 +126,6 @@
   .subtab-button:hover {
     background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
     border-color: #cbd5e1;
-    transform: translateY(-1px);
     box-shadow:
       0 4px 8px rgba(0, 0, 0, 0.08),
       inset 0 1px 0 rgba(255, 255, 255, 0.5);

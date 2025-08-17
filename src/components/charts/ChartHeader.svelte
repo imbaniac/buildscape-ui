@@ -27,6 +27,7 @@
   class="chart-header"
   class:active={isActive}
   class:with-logo={showLogo}
+  data-column={column}
   onclick={() => onSort(column)}
 >
   <div class="header-content">
@@ -75,12 +76,32 @@
   }
   
   .chart-header.with-logo {
-    width: 40%;
-    min-width: 200px;
+    min-width: 250px;
   }
   
   .chart-header:not(.with-logo) {
-    width: 20%;
+    min-width: 80px;
+  }
+  
+  /* Specific widths for different column types */
+  .chart-header[data-column="tvl"] {
+    min-width: 100px;
+  }
+  
+  .chart-header[data-column="tps"] {
+    min-width: 80px;
+  }
+  
+  .chart-header[data-column="transactions"] {
+    min-width: 110px;
+  }
+  
+  .chart-header[data-column="activeAddresses"] {
+    min-width: 100px;
+  }
+  
+  .chart-header[data-column="contracts"] {
+    min-width: 100px;
   }
   
   .header-content {
@@ -114,12 +135,17 @@
     }
     
     .chart-header.with-logo {
-      width: 40%;
-      min-width: 150px;
+      min-width: 200px;
     }
     
     .chart-header:not(.with-logo) {
-      width: 20%;
+      min-width: 70px;
+    }
+    
+    /* Adjust specific column widths for mobile */
+    .chart-header[data-column="transactions"],
+    .chart-header[data-column="activeAddresses"],
+    .chart-header[data-column="contracts"] {
       min-width: 80px;
     }
     
