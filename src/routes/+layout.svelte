@@ -33,6 +33,9 @@
     $page.route.id?.includes("/chain/[slug]") || false,
   );
 
+  // Determine if we're on the home page (map should be interactive)
+  const isHomePage = $derived($page.route.id === '/');
+
   // Container for Pixi app
   let pixiContainer = $state<HTMLDivElement>();
 
@@ -218,6 +221,21 @@
   // Sync island positions to mapStore whenever they change
   $effect(() => {
     mapStore.setIslandPositions(islandPositions);
+  });
+
+  // Disable map interaction on non-home pages
+  $effect(() => {
+    if (viewport) {
+      if (isHomePage) {
+        // Enable viewport interactions on home page
+        viewport.pause = false;
+        viewport.cursor = 'grab';
+      } else {
+        // Pause all viewport interactions on other pages
+        viewport.pause = true;
+        viewport.cursor = 'default';
+      }
+    }
   });
 
   // Add cleanup tracking
