@@ -10,6 +10,17 @@
           }
         ]
       }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/tim/code/buildscape/buildscape-ui/.claude/hooks/you-are-right.sh"
+          }
+        ]
+      }
     ]
   }
 }

@@ -160,12 +160,6 @@
       {/if}
     {/each}
   </div>
-
-  {#if totalActiveFilters() > 0}
-    <button class="clear-all-btn" onclick={clearAllFilters}>
-      Clear All ({totalActiveFilters()})
-    </button>
-  {/if}
 </div>
 
 <style>
@@ -332,24 +326,6 @@
     font-size: 0.85rem;
   }
 
-  .clear-all-btn {
-    padding: 0.5rem 1rem;
-    background: rgba(200, 50, 50, 0.2);
-    border: 1px solid #c83232;
-    border-radius: 6px;
-    color: #f0e6d2;
-    font-family: var(--font-ui);
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-
-  .clear-all-btn:hover {
-    background: rgba(200, 50, 50, 0.3);
-    border-color: #ff4444;
-  }
-
   /* Mobile responsiveness */
   @media (max-width: 768px) {
     .filters-container {
@@ -415,11 +391,6 @@
     .option-text {
       font-size: 0.8rem;
     }
-
-    .clear-all-btn {
-      padding: 0.4rem 0.75rem;
-      font-size: 0.75rem;
-    }
   }
 
   @media (max-width: 480px) {
@@ -439,11 +410,6 @@
     .filter-text {
       font-size: 0.65rem;
       letter-spacing: 0.02em;
-    }
-
-    .clear-all-btn {
-      padding: 0.35rem 0.6rem;
-      font-size: 0.7rem;
     }
   }
 </style>

@@ -3,11 +3,13 @@
   import ChartHeader from "./ChartHeader.svelte";
   import ChartRow from "./ChartRow.svelte";
   import ChartFilters from "./ChartFilters.svelte";
+  import { searchChains } from "$lib/utils/searchUtils";
 
   interface Chain {
     slug: string;
     name: string;
     chainId: number;
+    nativeCurrency?: string;
     type: string;
     tvl: number;
     tps: number;
@@ -41,14 +43,13 @@
   const processedChains = $derived(() => {
     let filtered = chains;
 
-    // Apply search filter
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(
-        (chain) =>
-          chain.name.toLowerCase().includes(query) ||
-          chain.chainId.toString().includes(query),
-      );
+    // Apply search filter using shared utility
+    if (searchQuery && searchQuery.length >= 3) {
+      const matchingSlugs = searchChains(chains, searchQuery);
+      filtered = filtered.filter((chain) => matchingSlugs.includes(chain.slug));
+    } else if (searchQuery) {
+      // For queries less than 3 chars, show no results
+      filtered = [];
     }
 
     // Apply filters (AND logic between categories, OR within categories)
@@ -141,10 +142,19 @@
         <span class="search-icon">🔍</span>
         <input
           type="search"
-          placeholder="Search chains..."
+          placeholder="Search by name, chain ID, or currency..."
           bind:value={searchQuery}
           class="chart-search"
         />
+        {#if searchQuery}
+          <button
+            class="clear-button"
+            onclick={() => (searchQuery = "")}
+            aria-label="Clear search"
+          >
+            ×
+          </button>
+        {/if}
       </div>
       <ChartFilters
         {activeFilters}
@@ -225,6 +235,7 @@
 
   .chart-controls {
     display: flex;
+    justify-content: space-between;
     gap: 1rem;
     padding: 1rem 1.5rem;
     background: linear-gradient(180deg, #3a4456 0%, #2c3542 100%);
@@ -256,11 +267,40 @@
     font-size: 1.2rem;
     filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
     opacity: 0.8;
+    display: flex;
+    align-items: center;
+  }
+
+  .clear-button {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #9ca3b0;
+    font-size: 20px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.15s ease;
+    padding: 0;
+    line-height: 1;
+    font-family: Arial, sans-serif;
+  }
+
+  .clear-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #f0e6d2;
   }
 
   .chart-search {
     width: 100%;
-    padding: 0.75rem 1rem 0.75rem 3rem;
+    padding: 0.75rem 2.5rem 0.75rem 3rem;
     background: rgba(0, 0, 0, 0.2);
     border: 1px solid #525e72;
     border-radius: 4px;

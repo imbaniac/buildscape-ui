@@ -219,8 +219,6 @@
     z-index: 10;
     cursor: default; /* Ensure default cursor over the entire modal */
     touch-action: pan-x pan-y; /* Allow scrolling but prevent pinch zoom */
-    -webkit-user-select: none; /* Prevent text selection on iOS */
-    user-select: none;
   }
 
   .book-backdrop {
