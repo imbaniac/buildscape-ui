@@ -8,7 +8,7 @@ import { analytics } from "$lib/analytics";
 // Enable SSR for all pages by default
 export const ssr = true;
 
-export const load: LayoutLoad = async () => {
+export const load: LayoutLoad = async ({ data }) => {
   // Only load on client side and if not already loaded
   // This is fine for the overview store as it's used for the interactive map
   // which is a client-side feature
@@ -46,5 +46,8 @@ export const load: LayoutLoad = async () => {
     }
   }
 
-  return {};
+  // Return server data (including chains) merged with any client data
+  return {
+    ...data // This preserves the chains from +layout.server.ts
+  };
 };

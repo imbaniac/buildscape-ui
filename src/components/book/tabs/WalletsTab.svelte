@@ -1,19 +1,17 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import type { WalletsByCategory } from "$lib/types";
-  import { parseFrontmatterAndContent } from "$lib/utils/markdown";
   import SkeletonLoader from "../SkeletonLoader.svelte";
 
-  // State for wallets data
-  let walletsByCategory = $state<WalletsByCategory>({});
-  let isLoading = $state(true);
-  let logoLoadingStates = $state<Record<string, boolean>>({});
+  interface Props {
+    walletsByCategory: WalletsByCategory;
+  }
 
-  // Import wallets.md
-  const walletsModule = import.meta.glob("/data/wallets.md", {
-    query: "?raw",
-    import: "default",
-  });
+  let { walletsByCategory }: Props = $props();
+
+  // State for logo loading
+  let logoLoadingStates = $state<Record<string, boolean>>({});
+  let walletsWithLogos = $state<WalletsByCategory>({ ...walletsByCategory });
 
   // Import wallet logos (lazy)
   const walletLogos = import.meta.glob("/assets/wallets/*", {
@@ -21,38 +19,6 @@
     import: "default",
   });
 
-  // Parse wallets from markdown
-  function parseWalletsSync(walletsContent: string): WalletsByCategory {
-    const lines = walletsContent.split("\n");
-    const walletsByCategory: WalletsByCategory = {};
-    let currentCategory = "";
-    let inTable = false;
-
-    for (const line of lines) {
-      if (line.startsWith("## ")) {
-        currentCategory = line.substring(3).trim();
-        walletsByCategory[currentCategory] = [];
-        inTable = false;
-      } else if (line.includes("|---")) {
-        inTable = true;
-      } else if (inTable && line.startsWith("|") && !line.includes("Name")) {
-        const parts = line
-          .split("|")
-          .map((p) => p.trim())
-          .filter((p) => p);
-        if (parts.length >= 2) {
-          const walletName = parts[0];
-          walletsByCategory[currentCategory].push({
-            name: walletName,
-            url: parts[1],
-            logo: undefined, // Will be loaded async
-          });
-        }
-      }
-    }
-
-    return walletsByCategory;
-  }
 
   // Resolve wallet logo URL
   async function resolveWalletLogo(walletName: string): Promise<string | undefined> {
@@ -84,10 +50,10 @@
   }
 
   // Load all logos in parallel
-  async function loadAllLogos(wallets: WalletsByCategory) {
+  async function loadAllLogos() {
     const logoPromises: Promise<void>[] = [];
 
-    for (const [category, categoryWallets] of Object.entries(wallets)) {
+    for (const [category, categoryWallets] of Object.entries(walletsByCategory)) {
       for (let i = 0; i < categoryWallets.length; i++) {
         const wallet = categoryWallets[i];
         const walletKey = `${category}-${wallet.name}`;
@@ -99,7 +65,7 @@
         const logoPromise = resolveWalletLogo(wallet.name).then((logoUrl) => {
           // Update the wallet logo when loaded
           if (logoUrl) {
-            walletsByCategory[category][i].logo = logoUrl;
+            walletsWithLogos[category][i].logo = logoUrl;
           }
           // Mark as loaded
           logoLoadingStates[walletKey] = false;
@@ -113,37 +79,19 @@
     await Promise.all(logoPromises);
   }
 
-  onMount(async () => {
-    try {
-      // Load wallets.md
-      const walletsModulePath = "/data/wallets.md";
-      if (walletsModule[walletsModulePath]) {
-        const walletsRawModule = await walletsModule[walletsModulePath]();
-        const walletsRaw = walletsRawModule as string;
-        
-        // Parse wallets immediately and show them
-        walletsByCategory = parseWalletsSync(walletsRaw);
-        isLoading = false;
-        
-        // Load logos in parallel in the background
-        loadAllLogos(walletsByCategory);
-      }
-    } catch (error) {
-      console.error("Failed to load wallets:", error);
-      isLoading = false;
-    }
+  onMount(() => {
+    // Load logos in parallel in the background
+    loadAllLogos();
   });
 </script>
 
-{#if isLoading}
-  <SkeletonLoader type="wallets" />
-{:else if Object.keys(walletsByCategory).length === 0}
+{#if !walletsByCategory || Object.keys(walletsByCategory).length === 0}
   <div class="no-content">
     <p>No wallets available</p>
   </div>
 {:else}
   <div class="wallets-section">
-    {#each Object.entries(walletsByCategory) as [category, wallets]}
+    {#each Object.entries(walletsWithLogos) as [category, wallets]}
       {#if wallets.length > 0}
         <div class="wallet-category">
           <h4 class="category-title">{category}</h4>

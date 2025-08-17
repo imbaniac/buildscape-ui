@@ -1,25 +1,67 @@
 import type { RequestHandler } from './$types';
 import { parseFrontmatterAndContent } from '$lib/utils/markdown';
 
-// Import all chain markdown files
+// Import all chain markdown files at build time (same as in +layout.server.ts)
 const chainMdModules = import.meta.glob('/data/chains/*.md', {
   eager: true,
   query: '?raw',
-  import: 'default',
+  import: 'default'
 });
+
+// Import logo assets
+const logoAssets = import.meta.glob('/assets/chains/*', {
+  eager: true,
+  query: '?url',
+  import: 'default'
+});
+
+// Helper to resolve logo URL
+function resolveLogoUrl(logoFilename: string): string | undefined {
+  for (const path in logoAssets) {
+    if (path.endsWith('/' + logoFilename)) {
+      return logoAssets[path] as string;
+    }
+  }
+  return undefined;
+}
+
+// Parse all chains once (same logic as +layout.server.ts)
+const parsedChains = (() => {
+  const chains: Record<string, any> = {};
+  
+  for (const path in chainMdModules) {
+    const raw = chainMdModules[path] as string;
+    if (!raw) continue;
+    
+    const { frontmatter, content } = parseFrontmatterAndContent(raw);
+    const slug = path.split('/').pop()?.replace('.md', '');
+    if (!slug) continue;
+    
+    let logoUrl = undefined;
+    if (frontmatter.logo) {
+      logoUrl = resolveLogoUrl(frontmatter.logo);
+    }
+    
+    chains[slug] = {
+      ...frontmatter,
+      slug,
+      logoUrl,
+      description: content,
+      name: frontmatter.name || slug
+    };
+  }
+  
+  return chains;
+})();
 
 export const GET: RequestHandler = async ({ url }) => {
   const baseUrl = 'https://buildscape.org';
   
-  // Get all chains
+  // Get all chains from the pre-parsed data
   const chains: { slug: string; chainId: number; priority: number; lastMod?: string }[] = [];
   
-  for (const path in chainMdModules) {
-    const raw = chainMdModules[path] as string;
-    const { frontmatter } = parseFrontmatterAndContent(raw);
-    const slug = path.split('/').pop()?.replace('.md', '') || '';
-    
-    if (slug && frontmatter.chainId) {
+  for (const [slug, chainData] of Object.entries(parsedChains)) {
+    if (chainData.chainId) {
       // Higher priority for major chains by TVL/usage
       const majorChains = ['ethereum', 'base', 'arbitrum_one', 'optimism', 'polygon_pos', 'bnb_smart_chain'];
       const secondaryChains = ['avalanche', 'polygon_zkevm', 'scroll', 'mantle', 'linea'];
@@ -33,9 +75,9 @@ export const GET: RequestHandler = async ({ url }) => {
       
       chains.push({
         slug,
-        chainId: frontmatter.chainId,
+        chainId: chainData.chainId,
         priority,
-        lastMod: frontmatter.lastUpdated || undefined
+        lastMod: chainData.lastUpdated || undefined
       });
     }
   }
