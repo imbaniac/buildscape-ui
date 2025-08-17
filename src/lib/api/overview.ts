@@ -1,4 +1,5 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || "https://api.buildscape.org";
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL || "https://api.buildscape.org";
 
 export interface ChainOverview {
   chain_id: number;
@@ -34,12 +35,14 @@ export interface OverviewData {
   chains: ChainOverview[];
 }
 
-export async function fetchOverviewData(period: "1h" | "24h" | "7d" | "30d" = "24h"): Promise<OverviewData> {
+export async function fetchOverviewData(
+  period: "1h" | "24h" | "7d" | "30d" = "24h",
+): Promise<OverviewData> {
   const response = await fetch(`${API_BASE_URL}/overview?period=${period}`);
-  
+
   if (!response.ok) {
     throw new Error(`Failed to fetch overview data: ${response.statusText}`);
   }
-  
+
   return response.json();
 }

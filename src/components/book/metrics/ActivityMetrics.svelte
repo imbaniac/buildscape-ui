@@ -2,10 +2,11 @@
   import { formatNumber, formatNumberWithCommas } from "$lib/utils/formatters";
   import MetricCard from "./MetricCard.svelte";
   import Tooltip from "../ui/Tooltip.svelte";
+  import type { PeriodType } from "$lib/stores/userPreferencesStore";
 
   interface Props {
-    metricsSpan: "1h" | "24h" | "7d" | "30d";
-    onSpanChange: (span: "1h" | "24h" | "7d" | "30d") => void;
+    metricsSpan: PeriodType;
+    onSpanChange: (span: PeriodType) => void;
     loadingDynamic: boolean;
     chainDynamic: any;
     brandColor?: string;
@@ -19,7 +20,7 @@
     brandColor = "#3b82f6",
   }: Props = $props();
 
-  const spans: Array<"1h" | "24h" | "7d" | "30d"> = ["1h", "24h", "7d", "30d"];
+  const spans: Array<PeriodType> = ["1h", "24h", "7d", "30d"];
 
   const showSkeleton = $derived(loadingDynamic);
 
@@ -292,9 +293,5 @@
       gap: 0.625rem;
     }
 
-    .metrics-loading {
-      padding: 2rem;
-      font-size: 0.875rem;
-    }
   }
 </style>

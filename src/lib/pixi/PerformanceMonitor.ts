@@ -6,7 +6,7 @@ export class PerformanceMonitor {
   private intervalCount = 0;
   private originalRAF: typeof window.requestAnimationFrame | null = null;
   private originalSetInterval: typeof window.setInterval | null = null;
-  private activeIntervals = new Set<number>();
+  private activeIntervals = new Set<any>();
   private rafCallbacks = new Map<number, string>();
 
   constructor() {
@@ -41,25 +41,27 @@ export class PerformanceMonitor {
     };
 
     // Monitor setInterval
-    window.setInterval = (handler: TimerHandler, timeout?: number, ...args: any[]): number => {
+    window.setInterval = ((handler: TimerHandler, timeout?: number, ...args: any[]) => {
       this.intervalCount++;
       const stack = new Error().stack || '';
       const id = this.originalSetInterval!(handler, timeout, ...args);
       this.activeIntervals.add(id);
       console.log(`[PerfMonitor] New interval created (ID: ${id}):`, { timeout, stack });
       return id;
-    };
+    }) as any;
 
     // Override clearInterval to track cleanup
     const originalClearInterval = window.clearInterval.bind(window);
-    window.clearInterval = (id: number): void => {
-      if (this.activeIntervals.has(id)) {
+    window.clearInterval = ((id: any): void => {
+      if (id !== undefined && this.activeIntervals.has(id)) {
         this.intervalCount--;
         this.activeIntervals.delete(id);
         console.log(`[PerfMonitor] Interval cleared (ID: ${id})`);
       }
-      originalClearInterval(id);
-    };
+      if (id !== undefined) {
+        originalClearInterval(id);
+      }
+    }) as any;
   }
 
   /**
@@ -68,7 +70,7 @@ export class PerformanceMonitor {
   getMetrics(): {
     rafCount: number;
     intervalCount: number;
-    activeIntervals: number[];
+    activeIntervals: any[];
     rafStacks: string[];
   } {
     return {

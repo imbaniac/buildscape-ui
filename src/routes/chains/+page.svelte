@@ -56,18 +56,19 @@
     }
 
     for (const [slug, chain] of Object.entries(data.chains)) {
-      if (!chain.chainId) continue;
+      const typedChain = chain as any; // Type assertion for dynamic chain data
+      if (!typedChain.chainId) continue;
 
-      const overviewData = overviewChainMap.get(chain.chainId);
-      const tvl = overviewData?.tvl || tvlLookup.get(chain.chainId) || 0;
-      const tps = overviewData?.tps || tpsLookup.get(chain.chainId) || 0;
+      const overviewData = overviewChainMap.get(typedChain.chainId);
+      const tvl = overviewData?.tvl || tvlLookup.get(typedChain.chainId) || 0;
+      const tps = overviewData?.tps || tpsLookup.get(typedChain.chainId) || 0;
       const transactions = overviewData?.transactions || 0;
       const activeAddresses = overviewData?.active_addresses || 0;
       const contracts = overviewData?.contracts || 0;
       const blockTime = overviewData?.block_time;
 
       combined.push({
-        ...chain,
+        ...typedChain,
         slug,
         tvl,
         tps,
@@ -77,12 +78,12 @@
         blockTime,
         // Use technology data from frontmatter if available, otherwise determine from patterns
         type:
-          chain.technology?.isL2 === true
+          typedChain.technology?.isL2 === true
             ? "L2"
-            : chain.technology?.isL2 === false
+            : typedChain.technology?.isL2 === false
               ? "L1"
-              : determineChainType(chain),
-        technology: chain.technology || {},
+              : determineChainType(typedChain),
+        technology: typedChain.technology || {},
       });
     }
 

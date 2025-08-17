@@ -46,19 +46,15 @@
   );
   const overviewStoreState = $derived($overviewStore);
 
+  // State for metrics span - shared across all tabs
+  // Default to 24h, will be updated from store if different
+  let metricsSpan = $state<PeriodType>("24h");
+
   // Check if the overview data matches the requested period
   const isCorrectPeriod = $derived(
     overviewStoreState.data &&
       getPeriodFromHours(overviewStoreState.data.period_hours) === metricsSpan,
   );
-
-  // State for metrics span - shared across all tabs
-  // Initialize from overviewStore's current period if available, otherwise default
-  let initialPeriod: PeriodType = overviewStoreState.currentPeriod
-    ? (overviewStoreState.currentPeriod as PeriodType)
-    : "24h";
-
-  let metricsSpan = $state<PeriodType>(initialPeriod);
   let loadingDynamic = $state(false);
 
   // Actual loading state considering period mismatch
@@ -66,14 +62,19 @@
     overviewStoreState.isLoading || !isCorrectPeriod || !chainOverview,
   );
 
-  // Load overview data when span changes
-  let previousSpan = metricsSpan;
+  // One-time initialization from store's current period
+  let hasInitializedPeriod = false;
   $effect(() => {
-    if (metricsSpan !== previousSpan) {
-      previousSpan = metricsSpan;
-      // The smart loading in overviewStore will handle avoiding unnecessary fetches
-      overviewStore.load(metricsSpan);
+    if (!hasInitializedPeriod && overviewStoreState.currentPeriod) {
+      hasInitializedPeriod = true;
+      metricsSpan = overviewStoreState.currentPeriod as PeriodType;
     }
+  });
+
+  // Load overview data when span changes
+  $effect(() => {
+    // The smart loading in overviewStore will handle avoiding unnecessary fetches
+    overviewStore.load(metricsSpan);
   });
 
   // Tabs configuration
