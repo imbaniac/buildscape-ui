@@ -12,6 +12,7 @@
   import { analytics } from "$lib/analytics";
   import type { LayoutData } from "./$types";
   import { setContext } from "svelte";
+  import type { PeriodType } from "$lib/stores/userPreferencesStore";
 
   let { data, children }: { data: LayoutData; children: any } = $props();
 
@@ -42,7 +43,12 @@
   );
 
   // State for metrics span - shared across all tabs
-  let metricsSpan = $state<"1h" | "24h" | "7d" | "30d">("24h");
+  // Initialize from overviewStore's current period if available, otherwise default
+  let initialPeriod: PeriodType = overviewStoreState.currentPeriod 
+    ? (overviewStoreState.currentPeriod as PeriodType)
+    : "24h";
+  
+  let metricsSpan = $state<PeriodType>(initialPeriod);
   let loadingDynamic = $state(false);
   
   // Actual loading state considering period mismatch
@@ -68,7 +74,7 @@
     get metricsSpan() { return metricsSpan; },
     get chainStatus() { return chainStatus; },
     get loadingStatus() { return loadingStatus; },
-    setMetricsSpan: (span: "1h" | "24h" | "7d" | "30d") => { metricsSpan = span; }
+    setMetricsSpan: (span: PeriodType) => { metricsSpan = span; }
   });
 
   // Determine where to navigate back to based on navigation state

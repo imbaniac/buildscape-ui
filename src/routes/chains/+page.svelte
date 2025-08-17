@@ -4,16 +4,18 @@
     tvlLookupByChainId,
     tpsLookupByChainId,
   } from "$lib/stores/overviewStore";
+  import { userPreferencesStore, type PeriodType } from "$lib/stores/userPreferencesStore";
   import ChartTable from "../../components/charts/ChartTable.svelte";
   import Header from "../../components/Header.svelte";
   import SEO from "$lib/components/SEO.svelte";
   import BoatLoader from "../../components/BoatLoader.svelte";
   import type { PageData } from "./$types";
+  import { onMount } from "svelte";
 
   let { data }: { data: PageData } = $props();
 
-  // State for selected period
-  let selectedPeriod = $state<"1h" | "24h" | "7d" | "30d">("24h");
+  // State for selected period - initialized from user preferences
+  let selectedPeriod = $state<PeriodType>(userPreferencesStore.getTablePeriod());
 
   // Get dynamic data from stores
   const overviewStoreState = $derived($overviewStore);
@@ -21,10 +23,17 @@
   const tpsLookup = $derived($tpsLookupByChainId);
 
   // Handle period change
-  async function handlePeriodChange(period: "1h" | "24h" | "7d" | "30d") {
+  async function handlePeriodChange(period: PeriodType) {
     selectedPeriod = period;
+    userPreferencesStore.setTablePeriod(period); // Save to preferences
     await overviewStore.load(period);
   }
+
+  // Load data for the saved period on mount
+  onMount(() => {
+    // Load data for the user's preferred period
+    overviewStore.load(selectedPeriod);
+  });
 
   // Combine static and dynamic data
   const chainsWithMetrics = $derived(() => {
