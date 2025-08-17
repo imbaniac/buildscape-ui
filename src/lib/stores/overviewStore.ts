@@ -25,11 +25,11 @@ function createOverviewStore() {
     currentState = state;
   });
 
-  async function load() {
+  async function load(period: "1h" | "24h" | "7d" | "30d" = "24h") {
     update((state) => ({ ...state, isLoading: true, error: null }));
 
     try {
-      const data = await fetchOverviewData();
+      const data = await fetchOverviewData(period);
       set({ isLoading: false, data, error: null });
     } catch (error) {
       console.error("Error loading overview data:", error);

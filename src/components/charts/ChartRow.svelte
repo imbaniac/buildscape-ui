@@ -6,6 +6,9 @@
     type: string;
     tvl: number;
     tps: number;
+    transactions: number;
+    activeAddresses: number;
+    contracts: number;
     logoUrl?: string;
     color?: string;
     gasPrice?: number;
@@ -14,7 +17,7 @@
 
   interface Props {
     chain: Chain;
-    formatValue: (value: number, type: "tvl" | "tps" | "gas") => string;
+    formatValue: (value: number, type: "tvl" | "tps" | "gas" | "count") => string;
     onClick: () => void;
   }
 
@@ -67,6 +70,15 @@
   <td class="chain-tps">
     <span class="value-text">{formatValue(chain.tps, "tps")} TPS</span>
   </td>
+  <td class="chain-transactions">
+    <span class="value-text">{formatValue(chain.transactions, "count")}</span>
+  </td>
+  <td class="chain-addresses">
+    <span class="value-text">{formatValue(chain.activeAddresses, "count")}</span>
+  </td>
+  <td class="chain-contracts">
+    <span class="value-text">{formatValue(chain.contracts, "count")}</span>
+  </td>
   <td class="chain-type">
     <span class="type-badge {typeBadgeClass()}">{chain.type}</span>
   </td>
@@ -99,7 +111,7 @@
 
   /* Chain name column */
   .chain-name {
-    min-width: 200px;
+    min-width: 250px;
   }
 
   .name-container {
@@ -298,16 +310,37 @@
   .chain-tvl {
     text-align: right;
     color: #6b5d47;
+    min-width: 100px;
   }
 
   .chain-tps {
     text-align: right;
     color: #4a4742;
+    min-width: 80px;
+  }
+
+  .chain-transactions {
+    text-align: right;
+    color: #4a4742;
+    min-width: 110px;
+  }
+  
+  .chain-addresses {
+    text-align: right;
+    color: #4a4742;
+    min-width: 100px;
+  }
+  
+  .chain-contracts {
+    text-align: right;
+    color: #4a4742;
+    min-width: 100px;
   }
 
   /* Type column */
   .chain-type {
     text-align: right;
+    min-width: 70px;
   }
 
   /* Type badge */
@@ -377,7 +410,15 @@
     }
 
     .chain-name {
-      min-width: auto;
+      min-width: 200px;
+    }
+    
+    .chain-tvl, .chain-tps {
+      min-width: 70px;
+    }
+    
+    .chain-transactions, .chain-addresses, .chain-contracts {
+      min-width: 80px;
     }
 
     .name-container {
@@ -406,7 +447,7 @@
       font-size: 0.85rem;
     }
 
-    .chain-tvl, .chain-tps {
+    .chain-tvl, .chain-tps, .chain-transactions, .chain-addresses, .chain-contracts {
       text-align: right;
     }
 

@@ -13,6 +13,9 @@
     type: string;
     tvl: number;
     tps: number;
+    transactions: number;
+    activeAddresses: number;
+    contracts: number;
     logoUrl?: string;
     color?: string;
     gasPrice?: number;
@@ -29,15 +32,31 @@
   interface Props {
     chains: Chain[];
     isLoading?: boolean;
+    selectedPeriod?: "1h" | "24h" | "7d" | "30d";
+    onPeriodChange?: (period: "1h" | "24h" | "7d" | "30d") => void;
   }
 
-  let { chains = [], isLoading = false }: Props = $props();
+  let {
+    chains = [],
+    isLoading = false,
+    selectedPeriod: initialPeriod = "24h",
+    onPeriodChange,
+  }: Props = $props();
 
   // State
   let searchQuery = $state("");
-  let sortColumn = $state<"name" | "tvl" | "tps">("tvl");
+  let sortColumn = $state<
+    "name" | "tvl" | "tps" | "transactions" | "activeAddresses" | "contracts"
+  >("tvl");
   let sortDirection = $state<"asc" | "desc">("desc");
   let activeFilters = $state<Map<string, Set<string>>>(new Map([]));
+  let selectedPeriod = $state<"1h" | "24h" | "7d" | "30d">(initialPeriod);
+
+  // Handle period change
+  function handlePeriodChange(period: "1h" | "24h" | "7d" | "30d") {
+    selectedPeriod = period;
+    onPeriodChange?.(period);
+  }
 
   // Filtered and sorted chains
   const processedChains = $derived(() => {
@@ -115,7 +134,10 @@
   }
 
   // Format large numbers
-  function formatValue(value: number, type: "tvl" | "tps" | "gas"): string {
+  function formatValue(
+    value: number,
+    type: "tvl" | "tps" | "gas" | "count",
+  ): string {
     if (type === "tvl") {
       if (value >= 1_000_000_000) {
         return `$${(value / 1_000_000_000).toFixed(1)}B`;
@@ -129,6 +151,15 @@
       return value.toFixed(0);
     } else if (type === "gas") {
       return value ? `${value.toFixed(1)}` : "-";
+    } else if (type === "count") {
+      if (value >= 1_000_000_000) {
+        return `${(value / 1_000_000_000).toFixed(1)}B`;
+      } else if (value >= 1_000_000) {
+        return `${(value / 1_000_000).toFixed(1)}M`;
+      } else if (value >= 1_000) {
+        return `${(value / 1_000).toFixed(1)}K`;
+      }
+      return value.toFixed(0);
     }
     return value.toString();
   }
@@ -156,60 +187,90 @@
           </button>
         {/if}
       </div>
-      <ChartFilters
-        {activeFilters}
-        onFilterChange={handleFilterChange}
-        {chains}
-      />
+      <div class="controls-right">
+        <div class="period-selector">
+          {#each ["1h", "24h", "7d", "30d"] as period}
+            <button
+              class="period-btn"
+              class:active={selectedPeriod === period}
+              onclick={() => handlePeriodChange(period)}
+            >
+              {period}
+            </button>
+          {/each}
+        </div>
+        <ChartFilters
+          {activeFilters}
+          onFilterChange={handleFilterChange}
+          {chains}
+        />
+      </div>
     </div>
 
     <!-- Table -->
     <div class="table-wrapper">
-      {#if isLoading}
-        <div class="loading">Loading chain data...</div>
-      {:else}
-        <table class="chart-table">
-          <thead class="table-header">
-            <tr>
-              <ChartHeader
-                column="name"
-                label="Chain"
-                currentSort={sortColumn}
-                direction={sortDirection}
-                onSort={handleSort}
-                showLogo={true}
-              />
-              <ChartHeader
-                column="tvl"
-                label="Treasury"
-                currentSort={sortColumn}
-                direction={sortDirection}
-                onSort={handleSort}
-              />
-              <ChartHeader
-                column="tps"
-                label="Activity"
-                currentSort={sortColumn}
-                direction={sortDirection}
-                onSort={handleSort}
-              />
-              <th class="type-header">Type</th>
-            </tr>
-          </thead>
-          <tbody>
-            {#each processedChains() as chain (chain.slug)}
-              <ChartRow
-                {chain}
-                {formatValue}
-                onClick={() => handleRowClick(chain)}
-              />
-            {/each}
-          </tbody>
-        </table>
+      <table class="chart-table">
+        <thead class="table-header">
+          <tr>
+            <ChartHeader
+              column="name"
+              label="Chain"
+              currentSort={sortColumn}
+              direction={sortDirection}
+              onSort={handleSort}
+              showLogo={true}
+            />
+            <ChartHeader
+              column="tvl"
+              label="Treasury"
+              currentSort={sortColumn}
+              direction={sortDirection}
+              onSort={handleSort}
+            />
+            <ChartHeader
+              column="tps"
+              label="Activity"
+              currentSort={sortColumn}
+              direction={sortDirection}
+              onSort={handleSort}
+            />
+            <ChartHeader
+              column="transactions"
+              label="TXs"
+              currentSort={sortColumn}
+              direction={sortDirection}
+              onSort={handleSort}
+            />
+            <ChartHeader
+              column="activeAddresses"
+              label="Users"
+              currentSort={sortColumn}
+              direction={sortDirection}
+              onSort={handleSort}
+            />
+            <ChartHeader
+              column="contracts"
+              label="Contracts"
+              currentSort={sortColumn}
+              direction={sortDirection}
+              onSort={handleSort}
+            />
+            <th class="type-header">Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          {#each processedChains() as chain (chain.slug)}
+            <ChartRow
+              {chain}
+              {formatValue}
+              onClick={() => handleRowClick(chain)}
+            />
+          {/each}
+        </tbody>
+      </table>
 
-        {#if processedChains().length === 0}
-          <div class="no-results">No chains found matching your filters</div>
-        {/if}
+      {#if processedChains().length === 0}
+        <div class="no-results">No chains found matching your filters</div>
       {/if}
     </div>
   </div>
@@ -257,6 +318,46 @@
     flex: 1;
     max-width: 400px;
     position: relative;
+  }
+
+  .controls-right {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .period-selector {
+    display: flex;
+    gap: 0.25rem;
+    background: rgba(0, 0, 0, 0.15);
+    padding: 0.25rem;
+    border-radius: 4px;
+  }
+
+  .period-btn {
+    padding: 0.5rem 0.75rem;
+    background: transparent;
+    border: none;
+    color: #9ca3b0;
+    font-family: var(--font-ui);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+  }
+
+  .period-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #f0e6d2;
+  }
+
+  .period-btn.active {
+    background: rgba(255, 255, 255, 0.2);
+    color: #f0e6d2;
+    font-weight: 600;
   }
 
   .search-icon {
@@ -341,11 +442,11 @@
 
   .chart-table {
     width: 100%;
-    min-width: 600px; /* Minimum width to ensure columns don't get too cramped */
+    min-width: 900px; /* Increased minimum width for more columns */
     border-collapse: collapse;
     border-spacing: 0;
     margin-top: 0;
-    table-layout: fixed;
+    table-layout: auto; /* Changed to auto for better column sizing */
   }
 
   .table-header {
@@ -378,7 +479,7 @@
     border-bottom: 1px solid #525e72;
     position: sticky;
     top: 0;
-    width: 20%;
+    min-width: 70px;
   }
 
   .loading,
@@ -414,6 +515,17 @@
       width: 100%;
     }
 
+    .controls-right {
+      flex-direction: column;
+      width: 100%;
+      gap: 0.75rem;
+    }
+
+    .period-selector {
+      width: 100%;
+      justify-content: center;
+    }
+
     .chart-search {
       padding: 0.6rem 1rem 0.6rem 2.5rem;
       font-size: 0.95rem;
@@ -434,7 +546,7 @@
 
     .chart-table {
       font-size: 0.85rem;
-      min-width: 500px; /* Ensure table has minimum width for scrolling */
+      min-width: 800px; /* Increased minimum width for more columns */
     }
 
     /* Keep all columns visible, allow horizontal scroll */
@@ -468,7 +580,7 @@
     /* Smaller text on very small screens */
     .chart-table {
       font-size: 0.8rem;
-      min-width: 480px;
+      min-width: 750px; /* Ensure all columns are accessible with scroll */
     }
   }
 </style>

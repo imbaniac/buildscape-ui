@@ -6,6 +6,9 @@ export interface ChainOverview {
   status: string;
   tps: number;
   tvl: number;
+  transactions: number;
+  active_addresses: number;
+  contracts: number;
 }
 
 export interface OverviewData {
@@ -17,8 +20,8 @@ export interface OverviewData {
   chains: ChainOverview[];
 }
 
-export async function fetchOverviewData(): Promise<OverviewData> {
-  const response = await fetch(`${API_BASE_URL}/overview`);
+export async function fetchOverviewData(period: "1h" | "24h" | "7d" | "30d" = "24h"): Promise<OverviewData> {
+  const response = await fetch(`${API_BASE_URL}/overview?period=${period}`);
   
   if (!response.ok) {
     throw new Error(`Failed to fetch overview data: ${response.statusText}`);
