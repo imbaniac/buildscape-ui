@@ -7,6 +7,8 @@
   import PerformanceOverlay from "../components/PerformanceOverlay.svelte";
   import SEO from "$lib/components/SEO.svelte";
   import savedPositions from "$lib/positions.json";
+  import { searchChains } from "$lib/utils/searchUtils";
+  import { parseFrontmatterAndContent } from "$lib/utils/markdown";
 
   // Get map components from store
   const map = $derived($mapStore);
@@ -46,9 +48,19 @@
     for (const path in chainMdModules) {
       const raw = chainMdModules[path] as string;
       if (!raw) continue;
-      const name = path.split("/").pop()?.replace(".md", "");
-      if (!name) continue;
-      chains[name] = { name };
+      
+      const slug = path.split("/").pop()?.replace(".md", "");
+      if (!slug) continue;
+      
+      // Parse frontmatter to get all chain metadata
+      const { frontmatter } = parseFrontmatterAndContent(raw);
+      
+      chains[slug] = {
+        name: frontmatter.name || slug,
+        chainId: frontmatter.chainId,
+        nativeCurrency: frontmatter.nativeCurrency,
+        slug
+      };
     }
     return chains;
   }
@@ -69,21 +81,17 @@
     }
 
     searchDebounceTimer = setTimeout(() => {
-      const lowerQuery = query.toLowerCase().trim();
-      const matches: string[] = [];
-
-      // Search through all chains
+      // Filter chains to only those with positions
+      const chainsWithPositions: Record<string, any> = {};
       for (const [chainKey, chain] of Object.entries(staticChains)) {
-        // Only search chains that have positions
         const position = (savedPositions as any)[chainKey];
-        if (!position) continue;
-
-        // Search in chain name (case insensitive)
-        const chainName = chain.name?.toLowerCase() || chainKey.toLowerCase();
-        if (chainName.includes(lowerQuery)) {
-          matches.push(chainKey);
+        if (position) {
+          chainsWithPositions[chainKey] = chain;
         }
       }
+
+      // Use shared search utility for consistent search behavior
+      const matches = searchChains(chainsWithPositions, query);
 
       searchResults = matches;
       currentResultIndex = 0;

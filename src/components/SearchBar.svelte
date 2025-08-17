@@ -101,18 +101,7 @@
   class:active={isActive || searchQuery.length > 0}
   onpointerdown={(e) => e.stopPropagation()}
 >
-  <svg
-    class="search-icon"
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="2"
-  >
-    <circle cx="11" cy="11" r="8" />
-    <path d="m21 21-4.35-4.35" />
-  </svg>
+  <span class="search-icon">🔍</span>
 
   <input
     bind:this={inputElement}
@@ -186,7 +175,7 @@
     transition: all 0.3s ease;
     z-index: 1;
     width: 380px;
-    min-height: 44px;
+    height: 50px;
     opacity: 0.6;
   }
 
@@ -220,14 +209,14 @@
     background: transparent;
     border: none;
     outline: none;
-    font-size: 16px; /* Prevents Safari zoom on focus */
+    font-size: 1rem;
     color: #ffffff;
     min-width: 0;
-    font-family: "Lato", "Inter", sans-serif;
+    font-family: "Inter", sans-serif;
     font-weight: 400;
     -webkit-appearance: none; /* Remove iOS default styling */
     appearance: none;
-    border-radius: 0; /* Prevent iOS rounded corners */
+    border-radius: 0;
   }
 
   input:focus {
