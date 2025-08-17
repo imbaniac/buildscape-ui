@@ -35,6 +35,7 @@
     isLoading?: boolean;
     selectedPeriod?: "1h" | "24h" | "7d" | "30d";
     onPeriodChange?: (period: "1h" | "24h" | "7d" | "30d") => void;
+    tableWrapper?: HTMLDivElement;
   }
 
   let {
@@ -42,6 +43,7 @@
     isLoading = false,
     selectedPeriod: initialPeriod = "24h",
     onPeriodChange,
+    tableWrapper = $bindable(),
   }: Props = $props();
 
   // State
@@ -221,7 +223,7 @@
     </div>
 
     <!-- Table -->
-    <div class="table-wrapper">
+    <div class="table-wrapper" bind:this={tableWrapper}>
       <table class="chart-table">
         <thead class="table-header">
           <tr>

@@ -1,11 +1,8 @@
 <script lang="ts">
   import { page } from "$app/stores";
   import { goto } from "$app/navigation";
-  import BookLayout from "../../../../../components/book/BookLayout.svelte";
-  import ChainInfoPage from "../../../../../components/book/ChainInfoPage.svelte";
-  import ChainDetailsPage from "../../../../../components/book/ChainDetailsPage.svelte";
+  import DevelopmentTab from "../../../../../components/book/tabs/DevelopmentTab.svelte";
   import SEO from "$lib/components/SEO.svelte";
-  import { getAccessibleBrandColor } from "$lib/utils/colorUtils";
   import { getContext } from "svelte";
   import type { PageData } from "./$types";
 
@@ -23,10 +20,6 @@
   
   // Use chainStatic from context, fallback to layoutData
   const chainStatic = $derived(dynamicData?.chainStatic || layoutData);
-
-  function handleClose() {
-    goto("/");
-  }
 
   // Map section to readable names
   const sectionNames: Record<string, string> = {
@@ -77,32 +70,10 @@
   ogType="article"
 />
 
-<BookLayout
-  onClose={handleClose}
-  brandColor={getAccessibleBrandColor(layoutData.color || "#3b82f6")}
-  currentPath={$page.url.pathname}
->
-  {#snippet leftPage()}
-    <ChainInfoPage chainStatic={chainStatic || { 
-      name: layoutData.name,
-      chainId: layoutData.chainId,
-      logoUrl: layoutData.logoUrl,
-      color: layoutData.color,
-      technology: layoutData.technology
-    }} />
-  {/snippet}
-
-  {#snippet rightPage()}
-    <ChainDetailsPage
-      chainStatic={chainStatic || {
-        name: layoutData.name,
-        chainId: layoutData.chainId,
-        technology: layoutData.technology
-      }}
-      {bookmarks}
-      activeTab={section || "rpcs"}
-      activeGroup="development"
-      currentPath={$page.url.pathname}
-    />
-  {/snippet}
-</BookLayout>
+<!-- Render only the DevelopmentTab content -->
+<DevelopmentTab
+  {chainStatic}
+  {bookmarks}
+  activeTab={section || "rpcs"}
+  onTabChange={(tab) => goto(`/chain/${layoutData.slug}/development/${tab}`)}
+/>

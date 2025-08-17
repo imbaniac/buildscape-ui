@@ -1,37 +1,20 @@
 <script lang="ts">
   import { page } from "$app/stores";
-  import { goto } from "$app/navigation";
-  import BookLayout from "../../../components/book/BookLayout.svelte";
-  import ChainInfoPage from "../../../components/book/ChainInfoPage.svelte";
-  import ChainDetailsPage from "../../../components/book/ChainDetailsPage.svelte";
+  import OverviewTab from "../../../components/book/tabs/OverviewTab.svelte";
   import SEO from "$lib/components/SEO.svelte";
-  import { getAccessibleBrandColor } from "$lib/utils/colorUtils";
   import { getContext } from "svelte";
 
 
   // Get data from layout
   const layoutData = $derived($page.data);
-  const bookmarks = $derived(layoutData.bookmarks);
   
   // Get dynamic data from context (set by layout)
   const dynamicData = getContext<{
     chainStatic: any;
-    chainDynamic: any;
-    loadingDynamic: boolean;
-    metricsSpan: "1h" | "24h" | "7d" | "30d";
-    chainStatus: any;
-    loadingStatus: boolean;
-    setMetricsSpan: (span: "1h" | "24h" | "7d" | "30d") => void;
   }>("chainDynamicData");
 
-  // Use derived values for cleaner template access
-  const chainStatic = $derived(dynamicData.chainStatic);
-  const chainDynamic = $derived(dynamicData.chainDynamic);
-  const chainStatus = $derived(dynamicData.chainStatus);
-  const loadingDynamic = $derived(dynamicData.loadingDynamic);
-  const loadingStatus = $derived(dynamicData.loadingStatus);
-  const metricsSpan = $derived(dynamicData.metricsSpan);
-  const onSpanChange = dynamicData.setMetricsSpan;
+  // Use chainStatic from context
+  const chainStatic = $derived(dynamicData?.chainStatic || layoutData);
 
   // Different title formats based on chain characteristics
   const seoTitle = $derived(() => {
@@ -307,18 +290,6 @@
       },
     ],
   });
-
-  // Determine where to navigate back to based on navigation state
-  const backPath = $derived(
-    $page.state?.from === "/chains" ? "/chains" : 
-    $page.state?.from === "/" ? "/" :
-    "/"
-  );
-
-  function handleClose() {
-    // Navigate back to where the user came from (map or table view)
-    goto(backPath);
-  }
 </script>
 
 <SEO
@@ -331,34 +302,5 @@
   {jsonLd}
 />
 
-<BookLayout
-  onClose={handleClose}
-  brandColor={getAccessibleBrandColor(layoutData.color || "#3b82f6")}
-  currentPath={$page.url.pathname}
->
-  {#snippet leftPage()}
-    <ChainInfoPage
-      chainStatic={chainStatic || { 
-        name: layoutData.name, 
-        chainId: layoutData.chainId,
-        logoUrl: layoutData.logoUrl,
-        color: layoutData.color,
-        technology: layoutData.technology
-      }}
-    />
-  {/snippet}
-
-  {#snippet rightPage()}
-    <ChainDetailsPage
-      chainStatic={chainStatic || { 
-        name: layoutData.name,
-        chainId: layoutData.chainId,
-        technology: layoutData.technology
-      }}
-      {bookmarks}
-      activeTab="overview"
-      activeGroup="overview"
-      currentPath={$page.url.pathname}
-    />
-  {/snippet}
-</BookLayout>
+<!-- Render only the OverviewTab content -->
+<OverviewTab {chainStatic} />
