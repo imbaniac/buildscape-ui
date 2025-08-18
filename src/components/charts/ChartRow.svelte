@@ -22,10 +22,11 @@
       value: number | undefined,
       type: "tvl" | "tps" | "gas" | "count" | "blockTime",
     ) => string;
+    isLoading?: boolean;
     onClick: () => void;
   }
 
-  let { chain, formatValue, onClick }: Props = $props();
+  let { chain, formatValue, isLoading = false, onClick }: Props = $props();
 
   // Type badge styling
   const typeBadgeClass = $derived(() => {
@@ -69,23 +70,49 @@
     </div>
   </td>
   <td class="chain-tvl">
-    <span class="value-text">{formatValue(chain.tvl, "tvl")}</span>
+    {#if isLoading}
+      <span class="skeleton-metric"></span>
+    {:else}
+      <span class="value-text">{formatValue(chain.tvl, "tvl")}</span>
+    {/if}
   </td>
   <td class="chain-tps">
-    <span class="value-text">{formatValue(chain.tps, "tps")} TPS</span>
+    {#if isLoading}
+      <span class="skeleton-metric"></span>
+    {:else}
+      <span class="value-text">{formatValue(chain.tps, "tps")} TPS</span>
+    {/if}
   </td>
   <td class="chain-block-time">
-    <span class="value-text">{formatValue(chain.blockTime, "blockTime")}</span>
+    {#if isLoading}
+      <span class="skeleton-metric"></span>
+    {:else}
+      <span class="value-text">{formatValue(chain.blockTime, "blockTime")}</span
+      >
+    {/if}
   </td>
   <td class="chain-transactions">
-    <span class="value-text">{formatValue(chain.transactions, "count")}</span>
+    {#if isLoading}
+      <span class="skeleton-metric"></span>
+    {:else}
+      <span class="value-text">{formatValue(chain.transactions, "count")}</span>
+    {/if}
   </td>
   <td class="chain-addresses">
-    <span class="value-text">{formatValue(chain.activeAddresses, "count")}</span
-    >
+    {#if isLoading}
+      <span class="skeleton-metric"></span>
+    {:else}
+      <span class="value-text"
+        >{formatValue(chain.activeAddresses, "count")}</span
+      >
+    {/if}
   </td>
   <td class="chain-contracts">
-    <span class="value-text">{formatValue(chain.contracts, "count")}</span>
+    {#if isLoading}
+      <span class="skeleton-metric"></span>
+    {:else}
+      <span class="value-text">{formatValue(chain.contracts, "count")}</span>
+    {/if}
   </td>
   <td class="chain-type">
     <span class="type-badge {typeBadgeClass()}">{chain.type}</span>
@@ -517,6 +544,76 @@
 
     .logo-initial {
       font-size: 0.8rem;
+    }
+  }
+
+  /* Skeleton loader for metrics */
+  .skeleton-metric {
+    display: inline-block;
+    height: 14px;
+    min-width: 40px;
+    width: 100%;
+    max-width: 90px;
+    background: linear-gradient(
+      90deg,
+      rgba(224, 221, 216, 0.3) 0%,
+      rgba(224, 221, 216, 0.5) 50%,
+      rgba(224, 221, 216, 0.3) 100%
+    );
+    background-size: 200% 100%;
+    animation: skeleton-pulse 1.5s ease-in-out infinite;
+    border-radius: 4px;
+  }
+
+  @keyframes skeleton-pulse {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  .chain-tvl .skeleton-metric {
+    max-width: 85px;
+  }
+
+  .chain-tps .skeleton-metric {
+    max-width: 85px;
+  }
+
+  .chain-block-time .skeleton-metric {
+    max-width: 55px;
+  }
+
+  .chain-transactions .skeleton-metric,
+  .chain-addresses .skeleton-metric,
+  .chain-contracts .skeleton-metric {
+    max-width: 75px;
+  }
+
+  @media (max-width: 768px) {
+    .skeleton-metric {
+      height: 12px;
+      min-width: 35px;
+    }
+
+    .chain-tvl .skeleton-metric {
+      max-width: 70px;
+    }
+
+    .chain-tps .skeleton-metric {
+      max-width: 75px;
+    }
+
+    .chain-block-time .skeleton-metric {
+      max-width: 50px;
+    }
+
+    .chain-transactions .skeleton-metric,
+    .chain-addresses .skeleton-metric,
+    .chain-contracts .skeleton-metric {
+      max-width: 65px;
     }
   }
 </style>
