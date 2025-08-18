@@ -129,9 +129,9 @@
 </script>
 
 <SEO
-  title="Blockchain Comparison Table - All EVM Chains"
-  description="Compare all EVM blockchain networks side-by-side. View TVL, TPS, gas fees, and chain IDs in an interactive table."
-  keywords="blockchain comparison, EVM chains table, chain comparison, TVL ranking, TPS comparison"
+  title="Blockchain Comparison Table - Live Metrics & Rankings"
+  description={`Compare ${Object.keys(data.chains).length}+ blockchain networks side-by-side. Sort by TVL, TPS, gas fees, and active users. Find chain IDs, RPC endpoints, and network stats for all major blockchains.`}
+  keywords="blockchain comparison, chain comparison table, blockchain metrics, chain id lookup, tvl rankings, tps comparison, gas fees comparison, blockchain stats, network comparison, crypto chains"
   canonical="https://buildscape.org/chains"
 />
 

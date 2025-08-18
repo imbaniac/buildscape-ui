@@ -283,8 +283,8 @@
 </script>
 
 <SEO
-  title="Blockchain Explorer Map - Interactive Chains Visualization"
-  description="Explore blockchains ecosystem on an interactive map. Real-time metrics, gas fees, RPCs, and chain IDs for Ethereum, Base, Arbitrum, Polygon and more."
+  title="Buildscape - Interactive Blockchains Explorer | Visualize 50+ Chains"
+  description={`Explore ${Object.keys(data.chains).length}+ blockchains on an interactive map. Real-time metrics, gas fees, RPCs, and chain IDs for Ethereum, Base, Arbitrum, Polygon and more.`}
   keywords="blockchain explorer, EVM chains, chain id, blockchain map, RPC endpoints, gas fees, layer 2, Ethereum, Base, Arbitrum, Polygon, MetaMask, blockchain metrics, TVL, TPS"
   canonical="https://buildscape.org"
   jsonLd={faqJsonLd}

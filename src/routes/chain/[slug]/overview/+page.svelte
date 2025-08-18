@@ -132,7 +132,7 @@
   title={seoTitle()}
   description={seoDescription()}
   keywords={seoKeywords()}
-  canonical={`https://buildscape.org/chain/${layoutData.slug}/overview`}
+  canonical={`https://buildscape.org/chain/${layoutData.slug}`}
   ogImage={`https://buildscape.org/og/chain/${layoutData.slug}.png`}
   ogType="article"
 />

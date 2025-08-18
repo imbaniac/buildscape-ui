@@ -151,20 +151,12 @@
   const jsonLd = $derived({
     "@context": "https://schema.org",
     "@graph": [
-      // WebSite schema for search functionality
+      // WebSite schema
       {
         "@type": "WebSite",
         "@id": "https://buildscape.org/#website",
         name: "Buildscape",
         url: "https://buildscape.org",
-        potentialAction: {
-          "@type": "SearchAction",
-          target: {
-            "@type": "EntryPoint",
-            urlTemplate: "https://buildscape.org/search?q={search_term_string}",
-          },
-          "query-input": "required name=search_term_string",
-        },
       },
       // Organization schema for the blockchain entity
       {
