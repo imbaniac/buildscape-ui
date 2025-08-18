@@ -7,7 +7,7 @@ logo: celo.svg
 parentOrganization: Celo Foundation
 website: https://celo.org
 launchDate: 2020-04-22
-maxBlockSize: 
+maxBlockSize:
 technology:
   isL2: false
   isEVM: true
@@ -80,29 +80,29 @@ The key difference: Pay gas fees with stablecoins (cUSD, USDC, USDT) instead of 
 
 **Technical:** OP Stack rollup with EigenDA, 1-second blocks, gas abstraction for stablecoin fee payments, part of Optimism Superchain.
 
-- **Security & Data Availability**  
-  - Optimistic rollup with 7-day fraud proof window for withdrawals.  
-  - Settlement on Ethereum, data availability via EigenDA (cheaper than blobs).  
+- **Security & Data Availability**
+  - Optimistic rollup with 7-day fraud proof window for withdrawals.
+  - Settlement on Ethereum, data availability via EigenDA (cheaper than blobs).
   - No longer uses native IBFT consensus — now inherits Ethereum security.
 
-- **Infra & Execution**  
-  - Pay gas fees in cUSD, cEUR, USDC, or USDT — not just native CELO.  
-  - SocialConnect maps phone numbers to wallet addresses for easy payments.  
+- **Infra & Execution**
+  - Pay gas fees in cUSD, cEUR, USDC, or USDT — not just native CELO.
+  - SocialConnect maps phone numbers to wallet addresses for easy payments.
   - 1-second block times (improved from 5 seconds as L1).
 
-- **Performance**  
-  - Processed 700M+ transactions across 150 countries before migration.  
-  - Sub-cent transaction costs maintained post-migration.  
+- **Performance**
+  - Processed 700M+ transactions across 150 countries before migration.
+  - Sub-cent transaction costs maintained post-migration.
   - Full history preserved — no regenesis required during transition.
 
-- **Use Cases**  
+- **Use Cases**
   - **MiniPay**: Opera's wallet with 7M+ users in Africa, built on Celo
   - **Valora**: Multi-chain wallet with phone number payments, expanding to Brazil/Vietnam
   - **GoodDollar**: One of the largest UBI protocols globally
   - **Stablecoin payments**: cUSD, cEUR, cREAL for local currency transactions
 
-- **Trade-offs**  
-  - Centralized sequencer like all OP Stack chains — censorship risk.  
-  - EigenDA dependency adds trust assumption vs pure Ethereum DA.  
-  - Lost instant finality from L1 days — now has optimistic rollup delays.  
-  - Smaller DeFi ecosystem vs Arbitrum/Base — focused on payments over trading.  
+- **Trade-offs**
+  - Centralized sequencer like all OP Stack chains — censorship risk.
+  - EigenDA dependency adds trust assumption vs pure Ethereum DA.
+  - Lost instant finality from L1 days — now has optimistic rollup delays.
+  - Smaller DeFi ecosystem vs Arbitrum/Base — focused on payments over trading.

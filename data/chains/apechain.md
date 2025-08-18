@@ -33,7 +33,7 @@ testnets:
     chainId: 33111
     url: https://explorer.curtis.apechain.com
     description: ApeChain testnet for deploying and testing applications before mainnet launch.
-    faucets: 
+    faucets:
       - https://curtis.hub.caldera.xyz
     rpcs:
       - https://rpc.curtis.apechain.com
@@ -75,9 +75,9 @@ The Bored Ape ecosystem's own chain — an L3 on Arbitrum built for NFT culture 
 
 **Technical:** A purpose-built L3 on Arbitrum Orbit for the ApeCoin ecosystem (Yuga Labs, Otherside, NFT/gaming projects).
 
-- **Security**: Inherits Ethereum security via Arbitrum One → Orbit. Depends on DAC for data availability and centralized sequencer.  
-- **Token Utility**: APE as native gas, native yield for holders, gas-sponsored transactions for smooth onboarding.  
-- **Infra**: Runs as an Orbit chain with 250ms block time, but real throughput and latency depend on sequencer performance and app-level congestion.  
+- **Security**: Inherits Ethereum security via Arbitrum One → Orbit. Depends on DAC for data availability and centralized sequencer.
+- **Token Utility**: APE as native gas, native yield for holders, gas-sponsored transactions for smooth onboarding.
+- **Infra**: Runs as an Orbit chain with 250ms block time, but real throughput and latency depend on sequencer performance and app-level congestion.
 - **Ecosystem**:
   - **Otherside**: Yuga's metaverse with 2,197-player record-breaking gaming sessions
   - **Dookey Dash Unclogged**: Toilet-themed arcade runner (yes, really)
@@ -88,8 +88,8 @@ The Bored Ape ecosystem's own chain — an L3 on Arbitrum built for NFT culture 
   - **NFT gaming**: Otherside metaverse, ODK for Unreal Engine NFT integration
   - **Meme token launches**: Ape Express for quick token deployment
   - **APE staking**: Native yield without smart contract risks
-- **Governance**: Controlled by a multisig with ApeCoin DAO-selected Security Council (no onchain upgrade delay).  
-- **Trade-offs**:  
-  - Centralized trust assumptions (sequencer, DAC, multisig upgrades)  
-  - Ecosystem is niche and tied closely to Yuga IP  
-  - L3 setup adds another dependency layer (on Arbitrum infra)  
+- **Governance**: Controlled by a multisig with ApeCoin DAO-selected Security Council (no onchain upgrade delay).
+- **Trade-offs**:
+  - Centralized trust assumptions (sequencer, DAC, multisig upgrades)
+  - Ecosystem is niche and tied closely to Yuga IP
+  - L3 setup adds another dependency layer (on Arbitrum infra)

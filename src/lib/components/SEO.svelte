@@ -67,6 +67,8 @@
 
   <!-- JSON-LD Structured Data -->
   {#if jsonLd}
-    {@html `<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>`}
+    <script type="application/ld+json">
+      {@html JSON.stringify(jsonLd)}
+    </script>
   {/if}
 </svelte:head>

@@ -4,21 +4,24 @@
   }
 
   let { percentage }: Props = $props();
-  
+
   // Ensure percentage is a valid number
   const safePercentage = $derived(Math.max(0, Math.min(100, percentage || 0)));
-  
+
   const utilizationColor = $derived(
-    safePercentage <= 50 ? '#10b981' :
-    safePercentage <= 75 ? '#f59e0b' :
-    safePercentage <= 90 ? '#f97316' :
-    '#ef4444'
+    safePercentage <= 50
+      ? "#10b981"
+      : safePercentage <= 75
+        ? "#f59e0b"
+        : safePercentage <= 90
+          ? "#f97316"
+          : "#ef4444",
   );
 </script>
 
 <div class="utilization-container">
   <div class="utilization-bar">
-    <div 
+    <div
       class="utilization-fill"
       style="width: {safePercentage}%; background-color: {utilizationColor};"
     ></div>
@@ -33,7 +36,7 @@
     gap: 0.5rem;
     width: 100%;
   }
-  
+
   .utilization-bar {
     flex: 1;
     height: 12px;
@@ -42,17 +45,19 @@
     overflow: hidden;
     position: relative;
   }
-  
+
   .utilization-fill {
     position: absolute;
     top: 0;
     left: 0;
     height: 100%;
     min-width: 2px;
-    transition: width 0.3s ease, background-color 0.3s ease;
+    transition:
+      width 0.3s ease,
+      background-color 0.3s ease;
     border-radius: 6px;
   }
-  
+
   .utilization-text {
     font-size: 0.875rem;
     font-weight: 600;

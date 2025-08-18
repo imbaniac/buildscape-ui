@@ -50,7 +50,6 @@ rpc:
   - https://rpc.mychain.org
   - wss://ws.mychain.org
 ---
-
 Description of the chain in markdown format...
 ```
 

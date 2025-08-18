@@ -148,29 +148,29 @@ The key difference: Custom VM architecture enables native features impossible on
 
 **Technical:** Type-4 zkEVM with custom VM, native account abstraction, part of Elastic Chain ecosystem, ZK proofs with no fraud windows.
 
-- **Security & Data Availability**  
-  - ZK validity proofs guarantee state correctness — no 7-day fraud windows.  
-  - Posts calldata to Ethereum via EIP-4844 blobs.  
+- **Security & Data Availability**
+  - ZK validity proofs guarantee state correctness — no 7-day fraud windows.
+  - Posts calldata to Ethereum via EIP-4844 blobs.
   - Full Ethereum settlement with no off-chain data dependencies.
 
-- **Infra & Execution**  
-  - Custom zkSync VM optimized for proof generation, not EVM bytecode.  
-  - LLVM compiler translates Solidity/Vyper to zkVM bytecode.  
+- **Infra & Execution**
+  - Custom zkSync VM optimized for proof generation, not EVM bytecode.
+  - LLVM compiler translates Solidity/Vyper to zkVM bytecode.
   - Native account abstraction — every account is a smart wallet by default.
 
-- **Performance**  
-  - 1.8 second block times with instant perceived finality.  
-  - Proof costs under $0.0001 with Boojum upgrade.  
+- **Performance**
+  - 1.8 second block times with instant perceived finality.
+  - Proof costs under $0.0001 with Boojum upgrade.
   - Theoretical 100,000 TPS capability, currently handles peaks over 100 TPS.
 
-- **Use Cases**  
+- **Use Cases**
   - **DeFi liquidity hub**: SyncSwap (40% of TVL), Mute.io, Maverick Protocol
   - **Institutional presence**: Deutsche Bank, UBS, Sygnum Bank deployed
   - **Cross-chain apps**: SpaceFi connecting Cosmos and Ethereum L2s
   - **Consumer-facing apps**: Leveraging native AA for Web2-like onboarding
 
-- **Trade-offs**  
-  - Type-4 means code changes needed — not drop-in compatible like Arbitrum.  
-  - Centralized sequencer pending ChonkyBFT decentralization roadmap.  
-  - Smaller ecosystem vs Arbitrum/Optimism — fewer tools and integrations.  
+- **Trade-offs**
+  - Type-4 means code changes needed — not drop-in compatible like Arbitrum.
+  - Centralized sequencer pending ChonkyBFT decentralization roadmap.
+  - Smaller ecosystem vs Arbitrum/Optimism — fewer tools and integrations.
   - Custom VM means debugging is different from standard EVM development.

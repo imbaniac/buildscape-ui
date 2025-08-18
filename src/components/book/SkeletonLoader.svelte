@@ -1,14 +1,14 @@
 <script lang="ts">
   interface Props {
-    type?: 'metrics' | 'wallets' | 'details';
+    type?: "metrics" | "wallets" | "details";
     class?: string;
   }
 
-  let { type = 'details', class: className = '' }: Props = $props();
+  let { type = "details", class: className = "" }: Props = $props();
 </script>
 
 <div class="skeleton-loader {type} {className}">
-  {#if type === 'metrics'}
+  {#if type === "metrics"}
     <div class="skeleton-metrics">
       <div class="skeleton-chart">
         <div class="skeleton-line" style="width: 100%; height: 200px;"></div>
@@ -18,13 +18,16 @@
         <div class="skeleton-line" style="width: 40%;"></div>
       </div>
     </div>
-  {:else if type === 'wallets'}
+  {:else if type === "wallets"}
     <div class="skeleton-wallets">
-      {#each Array(3) as _}
+      {#each Array(3) as _, i (i)}
         <div class="skeleton-wallet-category">
-          <div class="skeleton-line" style="width: 120px; height: 24px; margin-bottom: 12px;"></div>
+          <div
+            class="skeleton-line"
+            style="width: 120px; height: 24px; margin-bottom: 12px;"
+          ></div>
           <div class="skeleton-wallet-grid">
-            {#each Array(4) as _}
+            {#each Array(4) as _, j (j)}
               <div class="skeleton-wallet-item">
                 <div class="skeleton-circle"></div>
                 <div class="skeleton-line" style="width: 80px;"></div>
@@ -36,7 +39,10 @@
     </div>
   {:else}
     <div class="skeleton-details">
-      <div class="skeleton-line" style="width: 80%; height: 24px; margin-bottom: 16px;"></div>
+      <div
+        class="skeleton-line"
+        style="width: 80%; height: 24px; margin-bottom: 16px;"
+      ></div>
       <div class="skeleton-line" style="width: 100%;"></div>
       <div class="skeleton-line" style="width: 100%;"></div>
       <div class="skeleton-line" style="width: 75%;"></div>
@@ -100,7 +106,8 @@
   }
 
   @keyframes pulse {
-    0%, 100% {
+    0%,
+    100% {
       opacity: 1;
     }
     50% {

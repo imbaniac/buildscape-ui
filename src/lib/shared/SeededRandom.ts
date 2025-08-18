@@ -7,10 +7,10 @@ export class SeededRandom {
 
   constructor(seed: string | number) {
     // Convert string seed to number if needed
-    if (typeof seed === 'string') {
+    if (typeof seed === "string") {
       this.seed = 0;
       for (let i = 0; i < seed.length; i++) {
-        this.seed = ((this.seed << 5) - this.seed) + seed.charCodeAt(i);
+        this.seed = (this.seed << 5) - this.seed + seed.charCodeAt(i);
         this.seed = this.seed & this.seed; // Convert to 32-bit integer
       }
     } else {
@@ -26,7 +26,7 @@ export class SeededRandom {
     const a = 1664525;
     const c = 1013904223;
     const m = Math.pow(2, 32);
-    
+
     this.seed = (a * this.seed + c) % m;
     return this.seed / m;
   }

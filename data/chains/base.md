@@ -161,11 +161,11 @@ tools:
 
 An Ethereum L2 built by Coinbase using the Optimism OP Stack, focused on mainstream scalability and deep integration with Coinbase products.
 
-- **Security**: Inherits Ethereum security via optimistic fraud proofs. Centralized sequencer operated by Coinbase. 7-day challenge period for withdrawals.  
-- **Performance**: Cheaper than Ethereum (~10–100x depending on calldata usage). Real TPS ~20–30. Limited by L1 calldata throughput.  
-- **Ecosystem**: Rapidly growing due to Coinbase support. Used for onchain identity (Base Passport), consumer apps, DeFi, and developer tools.  
-- **Governance**: Coinbase controls upgrades and sequencing. No on-chain upgrade delay or decentralized verifier set yet.  
-- **Trade-offs**:  
-  - Sequencer and upgrade path fully centralized  
-  - Tied closely to Coinbase infra and roadmap  
-  - No native decentralization yet for data availability or challenge verification  
+- **Security**: Inherits Ethereum security via optimistic fraud proofs. Centralized sequencer operated by Coinbase. 7-day challenge period for withdrawals.
+- **Performance**: Cheaper than Ethereum (~10–100x depending on calldata usage). Real TPS ~20–30. Limited by L1 calldata throughput.
+- **Ecosystem**: Rapidly growing due to Coinbase support. Used for onchain identity (Base Passport), consumer apps, DeFi, and developer tools.
+- **Governance**: Coinbase controls upgrades and sequencing. No on-chain upgrade delay or decentralized verifier set yet.
+- **Trade-offs**:
+  - Sequencer and upgrade path fully centralized
+  - Tied closely to Coinbase infra and roadmap
+  - No native decentralization yet for data availability or challenge verification

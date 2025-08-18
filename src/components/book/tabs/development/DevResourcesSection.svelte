@@ -35,7 +35,7 @@
       </p>
     </div>
   {:else}
-    {#each resources as item}
+    {#each resources as item (item.url)}
       <a
         href={item.url}
         target="_blank"

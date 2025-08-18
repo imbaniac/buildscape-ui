@@ -13,8 +13,8 @@
 </script>
 
 <div class="links-list">
-  {#each links as link}
-    {#if typeof link === 'string'}
+  {#each links as link (typeof link === "string" ? link : link.url)}
+    {#if typeof link === "string"}
       <a href={link} target="_blank" class="link-item">
         <span class="link-icon">{icon}</span>
         <span>{link}</span>

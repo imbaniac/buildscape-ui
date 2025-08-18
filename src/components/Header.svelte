@@ -20,14 +20,6 @@
   function formatCurrency(num: number) {
     return "$" + formatNumber(num);
   }
-
-  function toggleView() {
-    if (isTableView) {
-      goto("/");
-    } else {
-      goto("/chains");
-    }
-  }
 </script>
 
 <header class="header-container">
@@ -169,21 +161,21 @@
     margin-top: 2px;
     white-space: nowrap;
   }
-  
+
   /* Show/hide text based on screen size */
   .mobile-text {
     display: none;
   }
-  
+
   .desktop-text {
     display: inline;
   }
-  
+
   @media (max-width: 640px) {
     .mobile-text {
       display: inline;
     }
-    
+
     .desktop-text {
       display: none;
     }

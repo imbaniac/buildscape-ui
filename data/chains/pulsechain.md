@@ -76,29 +76,29 @@ The key difference: Complete Ethereum state duplication at genesis meant everyon
 
 **Technical:** Proof-of-Stake fork with 33 validators, 10-second blocks, no L2 scaling or Ethereum security connection.
 
-- **Security & Data Availability**  
-  - Proof-of-Staked-Authority with ~33 validators controlling the network.  
-  - Validators are permissioned, not openly elected like Ethereum.  
+- **Security & Data Availability**
+  - Proof-of-Staked-Authority with ~33 validators controlling the network.
+  - Validators are permissioned, not openly elected like Ethereum.
   - No fraud proofs, validity proofs, or Ethereum anchoring — standalone security model.
 
-- **Infra & Execution**  
-  - Full Ethereum state fork — copied all ETH balances, ERC-20s, NFTs at May 2023 genesis.  
-  - Standard EVM execution without rollup tech or blob data availability.  
+- **Infra & Execution**
+  - Full Ethereum state fork — copied all ETH balances, ERC-20s, NFTs at May 2023 genesis.
+  - Standard EVM execution without rollup tech or blob data availability.
   - Most copied assets (stablecoins, wrapped tokens) have no backing or bridge connectivity.
 
-- **Performance**  
-  - 10-second block times vs Ethereum's 12 seconds.  
-  - Low fees primarily due to minimal usage, not technical innovation.  
+- **Performance**
+  - 10-second block times vs Ethereum's 12 seconds.
+  - Low fees primarily due to minimal usage, not technical innovation.
   - Lacks modern scaling: no rollups, blobs, or sharding technology.
 
-- **Use Cases**  
+- **Use Cases**
   - **PulseX DEX**: Main app with majority of chain's activity and liquidity
   - **HEX ecosystem**: Richard Heart's token projects concentrated here
   - **Copied DeFi forks**: Non-functional copies of Ethereum protocols without maintenance
   - **Speculative trading**: Low-liquidity tokens within the Heart ecosystem
 
-- **Trade-offs**  
-  - Extreme centralization: 33 validators vs thousands on Ethereum or legitimate L2s.  
-  - No major exchange listings — trading limited to native DEXs.  
-  - Copied assets misleading: USDC/USDT copies have no backing or redemption.  
+- **Trade-offs**
+  - Extreme centralization: 33 validators vs thousands on Ethereum or legitimate L2s.
+  - No major exchange listings — trading limited to native DEXs.
+  - Copied assets misleading: USDC/USDT copies have no backing or redemption.
   - SEC investigation history and founder controversies affect credibility.

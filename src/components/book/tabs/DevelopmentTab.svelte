@@ -31,7 +31,7 @@
     class="subtabs"
     style="--brand-color: {brandColor}; --accessible-color: {accessibleColor}"
   >
-    {#each developmentTab?.fields || [] as field}
+    {#each developmentTab?.fields || [] as field (field.field)}
       <button
         class="subtab-button"
         class:active={activeTab === field.field ||

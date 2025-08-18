@@ -72,29 +72,29 @@ The key difference: Every transaction earns FXTL points that will likely convert
 
 **Technical:** OP Stack rollup without fraud proofs, FRAX as gas token, Flox reward system distributing FXTL points.
 
-- **Security & Data Availability**  
-  - No fraud proofs — requires trusting Frax team won't steal or make errors.  
-  - Data stored off-chain (IPFS/AWS) to reduce costs.  
+- **Security & Data Availability**
+  - No fraud proofs — requires trusting Frax team won't steal or make errors.
+  - Data stored off-chain (IPFS/AWS) to reduce costs.
   - 3/5 multisig can change anything instantly.
 
-- **Infra & Execution**  
-  - Built on OP Stack, compatible with Ethereum apps.  
-  - Gas paid in FRAX stablecoin (pegged to $1).  
+- **Infra & Execution**
+  - Built on OP Stack, compatible with Ethereum apps.
+  - Gas paid in FRAX stablecoin (pegged to $1).
   - State posted to Ethereum hourly.
 
-- **Performance**  
-  - Very cheap transactions (under penny).  
-  - Normal speed for this type of chain.  
+- **Performance**
+  - Very cheap transactions (under penny).
+  - Normal speed for this type of chain.
   - ~200 TPS capacity.
 
-- **Use Cases**  
+- **Use Cases**
   - **Reward farming**: Earn FXTL points just by using any app on the chain
   - **FRAX ecosystem**: Lending, swapping, and other FRAX protocol features
   - **Stable gas costs**: Gas in FRAX means predictable dollar costs
   - **Incentivized apps**: Projects can multiply user rewards
 
-- **Trade-offs**  
-  - Must trust Frax team completely — no technical safeguards.  
-  - FXTL points have uncertain value and conversion timeline.  
-  - Less established than Arbitrum/Optimism/Base.  
-  - Data storage depends on external services working.  
+- **Trade-offs**
+  - Must trust Frax team completely — no technical safeguards.
+  - FXTL points have uncertain value and conversion timeline.
+  - Less established than Arbitrum/Optimism/Base.
+  - Data storage depends on external services working.

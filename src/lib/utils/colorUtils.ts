@@ -85,12 +85,3 @@ function getLuminance(color: string): number {
 
   return (0.299 * r + 0.587 * g + 0.114 * b) / 255;
 }
-
-/**
- * Get contrast ratio between two colors (WCAG formula)
- */
-export function getContrastRatio(color1: string, color2: string): number {
-  // This is a simplified version - full implementation would parse colors properly
-  // For now, we rely on CSS color-mix() for accessibility
-  return 0;
-}

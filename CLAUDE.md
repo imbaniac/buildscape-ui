@@ -86,7 +86,7 @@ This is a SvelteKit application that visualizes EVM-compatible blockchain networ
 ### Styling System
 
 - **CSS Variables**: Design tokens defined in `app.css` for fonts and theming
-- **Font System**: 
+- **Font System**:
   - Display: 'Cinzel' (headers, medieval feel)
   - Body: 'Crimson Text' (readable serif)
   - UI: 'Alegreya Sans' (interface elements)
@@ -108,14 +108,13 @@ This is a SvelteKit application that visualizes EVM-compatible blockchain networ
 2. Add chain logo to `/assets/chains/[chainname].svg` (ensure you have rights to use the logo)
 3. Dynamic data will be loaded automatically based on the `chainId` in frontmatter
 
-
 # Claude Code Guidelines
 
 ## Implementation Best Practices
 
-### 0 — Purpose  
+### 0 — Purpose
 
-These rules ensure maintainability, safety, and developer velocity. 
+These rules ensure maintainability, safety, and developer velocity.
 **MUST** rules are enforced by CI; **SHOULD** rules are strongly recommended.
 
 ---
@@ -123,7 +122,7 @@ These rules ensure maintainability, safety, and developer velocity.
 ### 1 — Before Coding
 
 - **BP-1 (MUST)** Ask the user clarifying questions.
-- **BP-2 (SHOULD)** Draft and confirm an approach for complex work.  
+- **BP-2 (SHOULD)** Draft and confirm an approach for complex work.
 - **BP-3 (SHOULD)** If ≥ 2 approaches exist, list clear pros and cons.
 
 ---
@@ -131,8 +130,8 @@ These rules ensure maintainability, safety, and developer velocity.
 ### 2 — While Coding
 
 - **C-1 (MUST)** Follow TDD: scaffold stub -> write failing test -> implement.
-- **C-2 (MUST)** Name functions with existing domain vocabulary for consistency.  
-- **C-3 (SHOULD NOT)** Introduce classes when small testable functions suffice.  
+- **C-2 (MUST)** Name functions with existing domain vocabulary for consistency.
+- **C-3 (SHOULD NOT)** Introduce classes when small testable functions suffice.
 - **C-4 (SHOULD)** Prefer simple, composable, testable functions.
 - **C-5 (SHOULD NOT)** Extract a new function unless it will be reused elsewhere, is the only way to unit-test otherwise untestable logic, or drastically improves readability of an opaque block.
 
@@ -142,11 +141,12 @@ These rules ensure maintainability, safety, and developer velocity.
 
 - **T-1 (MUST)** For a simple function, colocate unit tests in same directory as source file.
 - **T-2 (MUST)** ALWAYS separate pure-logic unit tests from DB-touching integration tests.
-- **T-3 (SHOULD)** Prefer integration tests over heavy mocking.  
+- **T-3 (SHOULD)** Prefer integration tests over heavy mocking.
 - **T-4 (SHOULD)** Unit-test complex algorithms thoroughly.
 - **T-5 (SHOULD)** Test the entire structure in one assertion if possible
+
   ```ts
-  expect(result).toBe([value]) // Good
+  expect(result).toBe([value]); // Good
 
   expect(result).toHaveLength(1); // Bad
   expect(result[0]).toBe(value); // Bad
@@ -168,9 +168,10 @@ When evaluating whether a function you implemented is good or not, use this chec
 8. Brainstorm 3 better function names and see if the current name is the best, consistent with rest of codebase.
 
 IMPORTANT: you SHOULD NOT refactor out a separate function unless there is a compelling need, such as:
-  - the refactored function is used in more than one place
-  - the refactored function is easily unit testable while the original function is not AND you can't test it any other way
-  - the original function is extremely hard to follow and you resort to putting comments everywhere just to explain it
+
+- the refactored function is used in more than one place
+- the refactored function is easily unit testable while the original function is not AND you can't test it any other way
+- the original function is extremely hard to follow and you resort to putting comments everywhere just to explain it
 
 ## Writing Tests Best Practices
 
@@ -182,6 +183,7 @@ When evaluating whether a test you've implemented is good or not, use this check
 4. SHOULD compare results to independent, pre-computed expectations or to properties of the domain, never to the function’s output re-used as the oracle.
 5. SHOULD follow the same lint, type-safety, and style rules as prod code (prettier, ESLint, strict types).
 6. SHOULD express invariants or axioms (e.g., commutativity, idempotence, round-trip) rather than single hard-coded cases whenever practical. Use `fast-check` library e.g.
+
 ```
 import fc from 'fast-check';
 import { describe, expect, test } from 'vitest';
@@ -222,7 +224,9 @@ Your code SHOULD ALWAYS follow these best practices.
 ```
 
 ### QPLAN
+
 When I type "qplan", this means:
+
 ```
 Analyze similar parts of the codebase and determine whether your plan:
 - is consistent with rest of codebase
@@ -275,13 +279,12 @@ Perform this analysis for every MAJOR test you added or edited (skip minor chang
 1. CLAUDE.md checklist Writing Tests Best Practices.
 ```
 
-
 ### QUX
 
 When I type "qux", this means:
 
 ```
-Imagine you are a human UX tester of the feature you implemented. 
+Imagine you are a human UX tester of the feature you implemented.
 Output a comprehensive list of scenarios you would test, sorted by highest priority.
 ```
 
@@ -299,11 +302,10 @@ Follow this checklist for writing your commit message:
 <type>[optional scope]: <description>
 [optional body]
 [optional footer(s)]
-- commit SHOULD contain the following structural elements to communicate intent: 
+- commit SHOULD contain the following structural elements to communicate intent:
 fix: a commit of the type fix patches a bug in your codebase (this correlates with PATCH in Semantic Versioning).
 feat: a commit of the type feat introduces a new feature to the codebase (this correlates with MINOR in Semantic Versioning).
 BREAKING CHANGE: a commit that has a footer BREAKING CHANGE:, or appends a ! after the type/scope, introduces a breaking API change (correlating with MAJOR in Semantic Versioning). A BREAKING CHANGE can be part of commits of any type.
 types other than fix: and feat: are allowed, for example @commitlint/config-conventional (based on the Angular convention) recommends build:, chore:, ci:, docs:, style:, refactor:, perf:, test:, and others.
 footers other than BREAKING CHANGE: <description> may be provided and follow a convention similar to git trailer format.
 ```
-

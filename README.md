@@ -10,11 +10,11 @@ Buildscape UI presents EVM-compatible blockchains as explorable islands in an in
 
 This project uses a dual-license approach:
 
-| Path      | Content                         | License                    |
-|-----------|---------------------------------|----------------------------|
-| /src      | TypeScript/Svelte frontend      | MIT                        |
-| /data     | Chain profile markdown files    | CC BY-SA 4.0               |
-| /assets   | Chain & wallet logos            | Third-party trademarks ⚠️   |
+| Path    | Content                      | License                   |
+| ------- | ---------------------------- | ------------------------- |
+| /src    | TypeScript/Svelte frontend   | MIT                       |
+| /data   | Chain profile markdown files | CC BY-SA 4.0              |
+| /assets | Chain & wallet logos         | Third-party trademarks ⚠️ |
 
 See [LICENSE](LICENSE), [LICENSE_DATA](LICENSE_DATA), and [LICENSE_ASSETS](LICENSE_ASSETS) for details.
 

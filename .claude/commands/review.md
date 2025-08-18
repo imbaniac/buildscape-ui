@@ -18,6 +18,7 @@ Use this severity classification for ALL findings:
 ### 2. Analysis Scope
 
 For Rust:
+
 - Ownership and borrowing violations (lifetime errors, unnecessary clones, dangling references)
 - Concurrency issues (data races via `unsafe`, improper use of `Arc<Mutex>`/`RwLock`, deadlocks, starvation)
 - Unsafe code usage and other memory-safety violations
@@ -37,33 +38,39 @@ Create a structured review plan using this template:
 # Code Review Plan - [Project/PR Name]
 
 ## Executive Summary
+
 - Total Issues Found: [X Critical, Y Major, Z Minor, W Suggestions]
 - Overall Risk Assessment: [Critical/High/Medium/Low]
 - Estimated Fix Time: [X hours]
 
 ## Critical Issues 🔴
+
 ### Issue #1: [Issue Title]
+
 - **File**: `path/to/file.rs` (lines X-Y)
 - **Description**: [Detailed explanation of the issue]
 - **Impact**: [What could go wrong if not fixed]
 - **Root Cause**: [Why this happened]
-- **Fix Required**:
-  ---
+- ## **Fix Required**:
+
   // Current problematic code
 
-  // Fixed code
-  ---
+  ## // Fixed code
 
 ## Major Issues 🟡
+
 [Same format as above]
 
 ## Minor Issues 🔵
+
 [Same format as above]
 
 ## Suggestions 🟢
+
 [Same format as above]
 
 ## Fix Tracking Checklist
+
 - [ ] 🔴 [Critical Issue 1 Title] - `file.rs:45`
 - [ ] 🔴 [Critical Issue 2 Title] - `file.rs:23`
 - [ ] 🟡 [Major Issue 1 Title] - `component.rs:67`
@@ -71,10 +78,12 @@ Create a structured review plan using this template:
 - [ ] 🟢 [Suggestion 1 Title] - `api.rs:89`
 
 ## Files Modified
+
 1. `path/to/file1.rs` - [Brief description of changes needed]
 2. `path/to/file2.rs` - [Brief description of changes needed]
 
 ## Implementation Priority
+
 1. **Immediate** (Block deployment): All 🔴 Critical issues
 2. **Before Merge**: All 🟡 Major issues
 3. **Next Sprint**: 🔵 Minor issues
@@ -100,6 +109,7 @@ Create a structured review plan using this template:
 ### 6. Fix Implementation Workflow
 
 When implementing fixes:
+
 1. Start with all 🔴 Critical issues in order
 2. Update the checklist as each item is completed
 3. Add the modified files list with actual changes made
@@ -114,6 +124,7 @@ When implementing fixes:
 - Flag any architectural concerns that require team discussion
 
 ## Tracking
+
 Write this into a markdown file in the `review` folder.
 If the folder is missing, create it.
 If the file already exists, update it.

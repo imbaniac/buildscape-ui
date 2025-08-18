@@ -7,7 +7,7 @@ logo: filecoin.svg
 parentOrganization: Protocol Labs
 website: https://filecoin.io
 launchDate: 2020-10-15
-maxBlockSize: 
+maxBlockSize:
 technology:
   isL2: false
   isEVM: true
@@ -102,30 +102,30 @@ The blockchain that actually stores data, not just pointers. While every chain c
 
 **Technical:** A Layer 1 blockchain designed for decentralized, verifiable storage. Targeted for long-term data integrity, archival apps, and trustless file hosting.
 
-- **Consensus & Finality**  
-  - Uses Expected Consensus: block producers are selected based on storage power, producing multiple blocks per epoch.  
-  - Finality reduced from ~7.5 hours to a few minutes with Fast Finality (F3) via GossiPBFT overlay.  
+- **Consensus & Finality**
+  - Uses Expected Consensus: block producers are selected based on storage power, producing multiple blocks per epoch.
+  - Finality reduced from ~7.5 hours to a few minutes with Fast Finality (F3) via GossiPBFT overlay.
 
-- **Storage Proofs & Security**  
-  - Proof-of-Replication and Proof-of-Spacetime enforce actual data storage.  
-  - Providers prove data possession every 24 hours or lose FIL collateral.  
-  - Secure against up to ~20% adversarial storage power.  
+- **Storage Proofs & Security**
+  - Proof-of-Replication and Proof-of-Spacetime enforce actual data storage.
+  - Providers prove data possession every 24 hours or lose FIL collateral.
+  - Secure against up to ~20% adversarial storage power.
 
-- **Performance & Infra**  
-  - FIL transfers confirm in ~30 seconds, storage deals seal in ~1.5 hours.  
-  - FVM launched 2023: 5,000+ contracts deployed, 3.2M+ transactions.  
-  - Supports WASM and Solidity smart contracts for storage automation.  
-  - IPC enables modular subnets with independent consensus.  
+- **Performance & Infra**
+  - FIL transfers confirm in ~30 seconds, storage deals seal in ~1.5 hours.
+  - FVM launched 2023: 5,000+ contracts deployed, 3.2M+ transactions.
+  - Supports WASM and Solidity smart contracts for storage automation.
+  - IPC enables modular subnets with independent consensus.
 
-- **Use Cases**  
+- **Use Cases**
   - **Storage marketplace**: 1,300 PiB stored across 38M active deals, providers prove data possession daily
   - **FVM DeFi**: GLIF ($144M), stFIL staking, USDFC FIL-backed stablecoin
   - **DataDAOs**: Automated storage deals, perpetual storage via smart contracts
   - **AI/ML data**: Aethir, KiteAI using for verifiable training data storage
-  - **Cross-chain storage**: Axelar integration lets 32 chains pay for Filecoin storage  
+  - **Cross-chain storage**: Axelar integration lets 32 chains pay for Filecoin storage
 
-- **Trade-offs**  
-  - Finality in minutes, not seconds  
-  - Storage onboarding is slow and hardware-intensive  
-  - Smart contract ecosystem is early and lacks mature infra  
-  - Consensus is probabilistic, introducing timing variability  
+- **Trade-offs**
+  - Finality in minutes, not seconds
+  - Storage onboarding is slow and hardware-intensive
+  - Smart contract ecosystem is early and lacks mature infra
+  - Consensus is probabilistic, introducing timing variability

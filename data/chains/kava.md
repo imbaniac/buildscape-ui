@@ -88,31 +88,31 @@ A Cosmos chain with EVM tacked on, trying to be the bridge between both ecosyste
 
 **Technical:** Cosmos SDK chain with an EVM module, marketed as "co-chains" but it's really just both runtimes in one validator set.
 
-- **Security & Data Availability**  
+- **Security & Data Availability**
   - Standard Tendermint consensus with ~100 validators
   - 6-second finality like any Cosmos chain
   - IBC enabled for Cosmos ecosystem
   - Native USDT and wBTC (though limited liquidity)
 
-- **Infra & Execution**  
+- **Infra & Execution**
   - Runs both Cosmos SDK modules and EVM in parallel
   - "Translator Module" is just internal message passing between runtimes
   - Standard EVM tooling works (MetaMask, etc.)
   - Recently added AI chatbot for transactions (basically a wrapper)
 
-- **Performance**  
+- **Performance**
   - Block times ~6 seconds, few hundred TPS max
   - Cheap fees (<$0.001) because barely anyone uses it
   - Current TVL ~$77M despite years of incentives
   - Most activity is farming the incentive program
 
-- **Use Cases**  
+- **Use Cases**
   - **Incentive farming**: Top protocols split 1M KAVA/month based on TVL
   - **Cross-chain experiments**: If you need both IBC and EVM access
   - **Testing ground**: Low activity means predictable performance
   - Main apps: Kinetix (DEX), Mare Finance (lending) — mostly farming rewards
 
-- **Trade-offs**  
+- **Trade-offs**
   - Ghost chain problem — lots of incentives, little organic activity
   - "DeAI" pivot is just adding chatbots, not real innovation
   - Been around since 2019 but never gained real traction

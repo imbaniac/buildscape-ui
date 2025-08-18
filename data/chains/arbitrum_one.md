@@ -46,7 +46,7 @@ testnets:
     chainId: 421614
     url: https://sepolia.arbiscan.io
     description: Arbitrum's Sepolia testnet for deploying and testing applications on the Arbitrum Layer 2 network.
-    faucets: 
+    faucets:
       - https://www.alchemy.com/faucets/arbitrum-sepolia
       - https://faucets.chain.link/arbitrum-sepolia
       - https://faucet.quicknode.com/arbitrum
@@ -186,29 +186,29 @@ The key difference: Arbitrum's interactive fraud proofs isolate disputed computa
 
 **Technical:** Optimistic rollup with interactive multi-round fraud proofs, Nitro stack with AVM, Stylus WASM support, and Orbit chain deployment framework.
 
-- **Security & Data Availability**  
-  - Uses interactive multi-round fraud proofs that isolate disputed computation steps for efficiency.  
-  - BoLD protocol (2024) prevents delay attacks with execution history commitments.  
+- **Security & Data Availability**
+  - Uses interactive multi-round fraud proofs that isolate disputed computation steps for efficiency.
+  - BoLD protocol (2024) prevents delay attacks with execution history commitments.
   - Posts compressed calldata to Ethereum; inherits L1 security with 7-day challenge window.
 
-- **Infra & Execution**  
-  - Nitro stack with custom Arbitrum Virtual Machine (AVM) supporting all EVM languages.  
-  - Stylus enables WASM contracts in Rust/C++, reducing compute costs by ~10x.  
+- **Infra & Execution**
+  - Nitro stack with custom Arbitrum Virtual Machine (AVM) supporting all EVM languages.
+  - Stylus enables WASM contracts in Rust/C++, reducing compute costs by ~10x.
   - Orbit framework lets projects deploy custom L3s on Arbitrum (30+ chains live).
 
-- **Performance**  
-  - ~10-50x cheaper than Ethereum L1, more expensive than Nova's sub-penny fees.  
-  - Handles highest gas throughput in Ethereum ecosystem via Orbit chains.  
+- **Performance**
+  - ~10-50x cheaper than Ethereum L1, more expensive than Nova's sub-penny fees.
+  - Handles highest gas throughput in Ethereum ecosystem via Orbit chains.
   - Calldata compression and batching optimize costs.
 
-- **Use Cases**  
+- **Use Cases**
   - **DeFi giants**: GMX ($671M TVL), Radiant Capital (largest lending), Camelot DEX (native, $75M TVL)
   - **Orbit L3s**: Xai (gaming), Proof of Play Apex/Boss, Degen Chain, Sanko, 30+ chains live
   - **Stylus apps**: Renegade, Fairblock, Crypto Valley Exchange using WASM for compute optimization
   - **Native protocols**: Arbitrum-first projects leveraging deep liquidity and ecosystem
 
-- **Trade-offs**  
-  - Centralized sequencer operated by Offchain Labs — censorship risk.  
-  - 7-day withdrawal delay for fraud proof window.  
-  - Verifier whitelist still active — not fully permissionless.  
-  - Ecosystem fragmentation as projects move to Orbit L3s.  
+- **Trade-offs**
+  - Centralized sequencer operated by Offchain Labs — censorship risk.
+  - 7-day withdrawal delay for fraud proof window.
+  - Verifier whitelist still active — not fully permissionless.
+  - Ecosystem fragmentation as projects move to Orbit L3s.

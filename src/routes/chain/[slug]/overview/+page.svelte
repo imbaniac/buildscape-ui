@@ -4,14 +4,14 @@
   import SEO from "$lib/components/SEO.svelte";
   import { getContext } from "svelte";
 
-  // Get data from layout  
+  // Get data from layout
   const layoutData = $derived($page.data);
-  
+
   // Get dynamic data from context (set by layout)
   const dynamicData = getContext<{
     chainStatic: any;
   }>("chainDynamicData");
-  
+
   // Use chainStatic from context, fallback to layoutData
   const chainStatic = $derived(dynamicData?.chainStatic || layoutData);
 

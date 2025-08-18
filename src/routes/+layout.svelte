@@ -33,7 +33,7 @@
   );
 
   // Determine if we're on the home page (map should be interactive)
-  const isHomePage = $derived($page.route.id === '/');
+  const isHomePage = $derived($page.route.id === "/");
 
   // Container for Pixi app
   let pixiContainer = $state<HTMLDivElement>();
@@ -183,11 +183,11 @@
       if (isHomePage) {
         // Enable viewport interactions on home page
         viewport.pause = false;
-        viewport.cursor = 'grab';
+        viewport.cursor = "grab";
       } else {
         // Pause all viewport interactions on other pages
         viewport.pause = true;
-        viewport.cursor = 'default';
+        viewport.cursor = "default";
       }
     }
   });
@@ -235,6 +235,7 @@
       app.ticker.maxFPS = 60;
 
       // Add canvas to container
+      // eslint-disable-next-line svelte/no-dom-manipulating
       pixiContainer.appendChild(app.canvas);
 
       // Initialize WebGL debugger (only when explicitly enabled via ?debug=webgl)

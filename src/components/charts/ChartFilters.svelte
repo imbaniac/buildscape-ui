@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { SvelteSet } from "svelte/reactivity";
+
   interface Props {
     activeFilters: Map<string, Set<string>>;
     onFilterChange: (category: string, values: Set<string>) => void;
@@ -42,7 +44,7 @@
   ];
 
   function toggleDropdown(filterId: string) {
-    const newOpenDropdowns = new Set(openDropdowns);
+    const newOpenDropdowns = new SvelteSet(openDropdowns);
     if (newOpenDropdowns.has(filterId)) {
       newOpenDropdowns.delete(filterId);
     } else {
@@ -54,8 +56,8 @@
   }
 
   function toggleFilter(category: string, value: string) {
-    const currentValues = activeFilters.get(category) || new Set();
-    const newValues = new Set(currentValues);
+    const currentValues = activeFilters.get(category) || new SvelteSet();
+    const newValues = new SvelteSet(currentValues);
 
     if (newValues.has(value)) {
       newValues.delete(value);
@@ -67,23 +69,8 @@
   }
 
   function clearFilters(category: string) {
-    onFilterChange(category, new Set());
+    onFilterChange(category, new SvelteSet());
   }
-
-  function clearAllFilters() {
-    filterConfigs.forEach((config) => {
-      onFilterChange(config.id, new Set());
-    });
-  }
-
-  // Count active filters
-  const totalActiveFilters = $derived(() => {
-    let count = 0;
-    activeFilters.forEach((values) => {
-      count += values.size;
-    });
-    return count;
-  });
 
   // Close dropdowns when clicking outside
   function handleClickOutside(event: MouseEvent) {
@@ -105,7 +92,7 @@
   <span class="filter-label">Filter:</span>
 
   <div class="filter-dropdowns">
-    {#each filterConfigs as config}
+    {#each filterConfigs as config (config.id)}
       {@const allOptions = filterOptions()}
       {@const options = allOptions[config.id as keyof typeof allOptions] || []}
       {@const activeValues = activeFilters.get(config.id) || new Set()}
@@ -144,7 +131,7 @@
               </div>
 
               <div class="dropdown-options">
-                {#each options as option}
+                {#each options as option (option)}
                   <label class="dropdown-option">
                     <input
                       type="checkbox"

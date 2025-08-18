@@ -135,7 +135,7 @@ rpcs:
     url: https://optimism.croswap.com/rpc
     type: public
 sourceCode:
-  - name: Optimism Node 
+  - name: Optimism Node
     url: https://github.com/ethereum-optimism/optimism
     description: Main repository for Optimism protocol implementation
   - name: Github Organization
@@ -162,29 +162,29 @@ The key difference: Optimism's open-source OP Stack enables other chains to join
 
 **Technical:** Optimistic rollup with 7-day fraud proof window, modular OP Stack architecture, and governance-driven public goods funding via RetroPGF.
 
-- **Security & Data Availability**  
-  - Optimistic rollup: transactions execute off-chain, posted to Ethereum with ~7-day fraud proof window.  
-  - Fault proof system is active — state transitions can be challenged by any participant.  
+- **Security & Data Availability**
+  - Optimistic rollup: transactions execute off-chain, posted to Ethereum with ~7-day fraud proof window.
+  - Fault proof system is active — state transitions can be challenged by any participant.
   - Posts full calldata to Ethereum using blob transactions (EIP-4844), no external DA layer.
 
-- **Infra & Execution**  
-  - Uses op-geth and op-node stack with ~2s block times.  
-  - Modular OP Stack architecture enables other chains to deploy compatible L2s.  
+- **Infra & Execution**
+  - Uses op-geth and op-node stack with ~2s block times.
+  - Modular OP Stack architecture enables other chains to deploy compatible L2s.
   - Sequencer is centralized; proposer and validator decentralization planned.
 
-- **Performance**  
-  - Handles significant daily volume with established DeFi ecosystem.  
-  - Withdrawal finality requires 7-day challenge period.  
+- **Performance**
+  - Handles significant daily volume with established DeFi ecosystem.
+  - Withdrawal finality requires 7-day challenge period.
   - Cost and throughput tied to Ethereum blob pricing and L1 congestion.
 
-- **Use Cases**  
+- **Use Cases**
   - **DeFi powerhouses**: Velodrome (native DEX, $130M+ TVL), Synthetix ($274M TVL), Aave V3 ($161M TVL)
   - **Superchain builders**: Base (Coinbase), Mode, Frax launching on OP Stack
   - **Public goods projects**: 643+ projects funded via RetroPGF, including dev tools and governance infra
   - **Cross-chain apps**: Projects leveraging Superchain interoperability
 
-- **Trade-offs**  
-  - Sequencer centralization persists — censorship risk at the inclusion level.  
-  - 7-day withdrawal delay vs instant finality of zkEVMs.  
-  - Fault proofs rely on honest challengers — subject to liveness assumptions.  
+- **Trade-offs**
+  - Sequencer centralization persists — censorship risk at the inclusion level.
+  - 7-day withdrawal delay vs instant finality of zkEVMs.
+  - Fault proofs rely on honest challengers — subject to liveness assumptions.
   - Superchain vision still developing — cross-chain communication limited.

@@ -7,12 +7,12 @@ export type AnalyticsEvent = {
     chain_id: number;
     duration_seconds: number;
   };
-  
+
   // Search with no results - valuable for understanding missing chains
   search_no_results: {
     query: string;
   };
-  
+
   // Search that led to navigation - shows successful discovery
   search_converted: {
     query: string;
@@ -25,7 +25,9 @@ class Analytics {
 
   init() {
     this.enabled =
-      browser && typeof window !== "undefined" && window.posthog?.__loaded === true;
+      browser &&
+      typeof window !== "undefined" &&
+      window.posthog?.__loaded === true;
   }
 
   track<T extends keyof AnalyticsEvent>(

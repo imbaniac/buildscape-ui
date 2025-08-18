@@ -1,7 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
-  import { page } from "$app/stores";
   import { mapStore } from "$lib/stores/mapStore";
   import Header from "../components/Header.svelte";
   import SearchBar from "../components/SearchBar.svelte";
@@ -38,7 +37,6 @@
 
   // Get parsed chains from page data for search
   const { data } = $props();
-  const staticChains = $derived(data.chains || {});
 
   // Search implementation
   function performSearch(query: string) {

@@ -18,9 +18,7 @@ export const CHAIN_TABS: BookmarkTab[] = [
   {
     name: "Explorers",
     id: "explorers",
-    fields: [
-      { field: "blockscanners", label: "Block Explorers", icon: "🔍" },
-    ],
+    fields: [{ field: "blockscanners", label: "Block Explorers", icon: "🔍" }],
   },
   {
     name: "Dev",

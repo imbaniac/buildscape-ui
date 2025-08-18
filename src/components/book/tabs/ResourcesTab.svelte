@@ -1,22 +1,24 @@
 <script lang="ts">
-  import type { BookmarkTab, BookmarkField } from '$lib/types';
-  
+  import type { BookmarkTab } from "$lib/types";
+
   interface Props {
     chainStatic: any;
     bookmarks: BookmarkTab[];
   }
 
   let { chainStatic, bookmarks }: Props = $props();
-  
-  const resourcesTab = $derived(bookmarks.find((g: BookmarkTab) => g.id === 'resources'));
-  
+
+  const resourcesTab = $derived(
+    bookmarks.find((g: BookmarkTab) => g.id === "resources"),
+  );
+
   // Get display name from URL or use provided name
   function getDisplayName(link: any): string {
-    if (!link) return '';
-    if (typeof link === 'string') {
+    if (!link) return "";
+    if (typeof link === "string") {
       try {
         const url = new URL(link);
-        const domain = url.hostname.replace('www.', '');
+        const domain = url.hostname.replace("www.", "");
         return domain;
       } catch {
         return link;
@@ -24,16 +26,16 @@
     }
     return link.name || link.url;
   }
-  
+
   // Get URL from link
   function getUrl(link: any): string {
-    if (!link) return '';
-    return typeof link === 'string' ? link : link.url;
+    if (!link) return "";
+    return typeof link === "string" ? link : link.url;
   }
 </script>
 
 <div class="resources-modern">
-  {#each resourcesTab?.fields || [] as field}
+  {#each resourcesTab?.fields || [] as field (field.field)}
     {#if chainStatic[field.field]?.length > 0}
       <div class="resource-section">
         <h4 class="section-title">
@@ -41,19 +43,23 @@
           {field.label}
         </h4>
         <div class="resource-list">
-          {#each chainStatic[field.field] || [] as link}
+          {#each chainStatic[field.field] || [] as link (getUrl(link))}
             {#if link}
               {@const url = getUrl(link)}
               {@const name = getDisplayName(link)}
-              <a 
-                href={url} 
-                target="_blank" 
-                class="resource-item"
-              >
+              <a href={url} target="_blank" class="resource-item">
                 <span class="resource-name">{name}</span>
-                <svg class="resource-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M7 17L17 7"/>
-                  <path d="M7 7h10v10"/>
+                <svg
+                  class="resource-arrow"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M7 17L17 7" />
+                  <path d="M7 7h10v10" />
                 </svg>
               </a>
             {/if}
@@ -71,13 +77,13 @@
     flex-direction: column;
     gap: 2rem;
   }
-  
+
   .resource-section {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
   }
-  
+
   .section-title {
     display: flex;
     align-items: center;
@@ -86,20 +92,21 @@
     font-weight: 600;
     color: #1e293b;
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+    font-family:
+      -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
   }
-  
+
   .section-icon {
     font-size: 1rem;
   }
-  
+
   /* Resource List */
   .resource-list {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
   }
-  
+
   .resource-item {
     display: flex;
     align-items: center;
@@ -113,31 +120,32 @@
     color: inherit;
     transition: all 0.15s ease;
   }
-  
+
   .resource-item:hover {
     background: #f8fafc;
     border-color: #cbd5e1;
     transform: translateX(2px);
   }
-  
+
   .resource-name {
     font-size: 0.875rem;
     font-weight: 500;
     color: #1e293b;
-    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+    font-family:
+      -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
   }
-  
+
   .resource-arrow {
     color: #cbd5e1;
     transition: all 0.15s ease;
     flex-shrink: 0;
   }
-  
+
   .resource-item:hover .resource-arrow {
     color: #64748b;
     transform: translate(1px, -1px);
   }
-  
+
   /* Responsive */
   @media (max-width: 640px) {
     .resources-modern {
@@ -164,7 +172,7 @@
       padding: 0.75rem;
       gap: 0.75rem;
     }
-    
+
     .resource-name {
       font-size: 0.8125rem;
     }

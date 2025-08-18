@@ -108,35 +108,35 @@ Binance's centralized but cheap EVM chain — where retail traders go for memeco
 
 **Technical:** An EVM-compatible chain using Proof-of-Staked-Authority (PoSA), built for high-throughput applications with fast finality.
 
-- **Consensus & Security**  
-  - PoSA combines delegated staking with authority-based validator rotation  
-  - 21 active validators, elected by BNB stake, produce blocks with ~3s time  
-  - Finality typically achieved in ~6 seconds (2 blocks)  
-  - Slashing applies for double-signing and liveness failures  
-  - Validator set is permissioned—centralization risk is significant  
+- **Consensus & Security**
+  - PoSA combines delegated staking with authority-based validator rotation
+  - 21 active validators, elected by BNB stake, produce blocks with ~3s time
+  - Finality typically achieved in ~6 seconds (2 blocks)
+  - Slashing applies for double-signing and liveness failures
+  - Validator set is permissioned—centralization risk is significant
 
-- **Performance & Fees**  
+- **Performance & Fees**
   - Real-world throughput ~100–200 TPS (enough for current demand)
   - Fees stay at pennies even during memecoin frenzies
-  - Pascal hard fork added EIP-7702 wallet support, MEV protection  
+  - Pascal hard fork added EIP-7702 wallet support, MEV protection
 
-- **Infra & Architecture**  
-  - C-Chain handles EVM smart contracts  
-  - Tightly integrated with Binance ecosystem (wallets, bridges, exchange)  
-  - Supports opBNB (an L2 on OP Stack) and subnets as part of multi-chain strategy  
-  - Rust client and zk-rollup integrations are on the roadmap  
+- **Infra & Architecture**
+  - C-Chain handles EVM smart contracts
+  - Tightly integrated with Binance ecosystem (wallets, bridges, exchange)
+  - Supports opBNB (an L2 on OP Stack) and subnets as part of multi-chain strategy
+  - Rust client and zk-rollup integrations are on the roadmap
 
-- **Governance**  
-  - On-chain proposal system tied to validator and delegator voting  
-  - Upgrades controlled by validator set, without enforced timelocks  
+- **Governance**
+  - On-chain proposal system tied to validator and delegator voting
+  - Upgrades controlled by validator set, without enforced timelocks
 
-- **Use Cases**  
+- **Use Cases**
   - **PancakeSwap dominance**: 91.8% of all DEX activity, often beats Uniswap volume
   - **Memecoin central**: GraFun, Four.Meme launchpads, Binance listings pipeline
   - **Retail DeFi**: Venus Finance, yield farms with actual volume
   - **Binance integration**: Direct CEX bridge, easy fiat on/off
 
-- **Trade-offs**  
-  - Limited validator set → lower decentralization and higher censorship risk  
-  - Close ties to Binance create centralized control concerns  
-  - Infrastructure complexity increases with subnets, opBNB, and modular roadmap  
+- **Trade-offs**
+  - Limited validator set → lower decentralization and higher censorship risk
+  - Close ties to Binance create centralized control concerns
+  - Infrastructure complexity increases with subnets, opBNB, and modular roadmap

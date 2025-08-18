@@ -1,11 +1,4 @@
-import {
-  Application,
-  Container,
-  Graphics,
-  Rectangle,
-  Sprite,
-  Texture,
-} from "pixi.js";
+import { Application, Container, Graphics, Rectangle, Sprite } from "pixi.js";
 import type { Viewport } from "pixi-viewport";
 import { goto } from "$app/navigation";
 import PixiIslandRenderer from "./PixiIslandRenderer";
@@ -55,7 +48,10 @@ export default class PixiMapRenderer {
     // Initialize island renderer and atlas manager
     this.islandRenderer = new PixiIslandRenderer();
     this.islandRenderer.setRenderer(app.renderer);
-    this.atlasManager = new IslandAtlasManager(app.renderer, this.islandRenderer);
+    this.atlasManager = new IslandAtlasManager(
+      app.renderer,
+      this.islandRenderer,
+    );
 
     // Create containers
     this.oceanContainer = new Container();
@@ -168,7 +164,9 @@ export default class PixiMapRenderer {
   private async createIslandFromAtlas(island: Island): Promise<void> {
     const sprite = this.atlasManager.createIslandSprite(island);
     if (!sprite) {
-      console.warn(`[PixiMapRenderer] Failed to create sprite for ${island.slug}`);
+      console.warn(
+        `[PixiMapRenderer] Failed to create sprite for ${island.slug}`,
+      );
       return;
     }
 
@@ -177,7 +175,7 @@ export default class PixiMapRenderer {
     container.x = island.x;
     container.y = island.y;
     container.zIndex = island.y;
-    
+
     // Center the sprite in the container
     sprite.x = 0;
     sprite.y = 0;
@@ -363,7 +361,6 @@ export default class PixiMapRenderer {
     // Update container opacity for search results
     this.islandContainers.forEach((container, slug) => {
       const isSearchResult = this.searchResults.has(slug);
-      const isCurrent = slug === this.currentSearchResult;
 
       // Fade out non-matching islands
       container.alpha =

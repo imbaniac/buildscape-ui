@@ -1,37 +1,37 @@
-import type { LayoutServerLoad } from './$types';
-import { parseFrontmatterAndContent } from '$lib/utils/markdown';
-import type { WalletsByCategory } from '$lib/types';
+import type { LayoutServerLoad } from "./$types";
+import { parseFrontmatterAndContent } from "$lib/utils/markdown";
+import type { WalletsByCategory } from "$lib/types";
 
 // Import all markdown files at build time
-const chainMdModules = import.meta.glob('/data/chains/*.md', {
+const chainMdModules = import.meta.glob("/data/chains/*.md", {
   eager: true,
-  query: '?raw',
-  import: 'default'
+  query: "?raw",
+  import: "default",
 });
 
-const walletsModule = import.meta.glob('/data/wallets.md', {
+const walletsModule = import.meta.glob("/data/wallets.md", {
   eager: true,
-  query: '?raw',
-  import: 'default'
+  query: "?raw",
+  import: "default",
 });
 
-const evmCommonModule = import.meta.glob('/data/evm-common.md', {
+const evmCommonModule = import.meta.glob("/data/evm-common.md", {
   eager: true,
-  query: '?raw',
-  import: 'default'
+  query: "?raw",
+  import: "default",
 });
 
 // Import logo assets
-const logoAssets = import.meta.glob('/assets/chains/*', {
+const logoAssets = import.meta.glob("/assets/chains/*", {
   eager: true,
-  query: '?url',
-  import: 'default'
+  query: "?url",
+  import: "default",
 });
 
 // Helper to resolve logo URL
 function resolveLogoUrl(logoFilename: string): string | undefined {
   for (const path in logoAssets) {
-    if (path.endsWith('/' + logoFilename)) {
+    if (path.endsWith("/" + logoFilename)) {
       return logoAssets[path] as string;
     }
   }
@@ -41,52 +41,52 @@ function resolveLogoUrl(logoFilename: string): string | undefined {
 // Parse all chains once on server startup
 const parsedChains = (() => {
   const chains: Record<string, any> = {};
-  
+
   for (const path in chainMdModules) {
     const raw = chainMdModules[path] as string;
     if (!raw) continue;
-    
+
     const { frontmatter, content } = parseFrontmatterAndContent(raw);
-    const slug = path.split('/').pop()?.replace('.md', '');
+    const slug = path.split("/").pop()?.replace(".md", "");
     if (!slug) continue;
-    
+
     let logoUrl = undefined;
     if (frontmatter.logo) {
       logoUrl = resolveLogoUrl(frontmatter.logo);
     }
-    
+
     chains[slug] = {
       ...frontmatter,
       slug,
       logoUrl,
       description: content,
-      name: frontmatter.name || slug
+      name: frontmatter.name || slug,
     };
   }
-  
+
   return chains;
 })();
 
 // Parse wallets once on server startup
 const parsedWallets = (() => {
-  const walletsRaw = walletsModule['/data/wallets.md'] as string;
+  const walletsRaw = walletsModule["/data/wallets.md"] as string;
   if (!walletsRaw) return {};
-  
-  const lines = walletsRaw.split('\n');
+
+  const lines = walletsRaw.split("\n");
   const walletsByCategory: WalletsByCategory = {};
-  let currentCategory = '';
+  let currentCategory = "";
   let inTable = false;
-  
+
   for (const line of lines) {
-    if (line.startsWith('## ')) {
+    if (line.startsWith("## ")) {
       currentCategory = line.substring(3).trim();
       walletsByCategory[currentCategory] = [];
       inTable = false;
-    } else if (line.includes('|---')) {
+    } else if (line.includes("|---")) {
       inTable = true;
-    } else if (inTable && line.startsWith('|') && !line.includes('Name')) {
+    } else if (inTable && line.startsWith("|") && !line.includes("Name")) {
       const parts = line
-        .split('|')
+        .split("|")
         .map((p) => p.trim())
         .filter((p) => p);
       if (parts.length >= 2) {
@@ -99,15 +99,15 @@ const parsedWallets = (() => {
       }
     }
   }
-  
+
   return walletsByCategory;
 })();
 
 // Parse EVM common data once on server startup
 const parsedEvmCommon = (() => {
-  const evmCommonRaw = evmCommonModule['/data/evm-common.md'] as string;
+  const evmCommonRaw = evmCommonModule["/data/evm-common.md"] as string;
   if (!evmCommonRaw) return null;
-  
+
   const { frontmatter } = parseFrontmatterAndContent(evmCommonRaw);
   return frontmatter;
 })();
@@ -118,6 +118,6 @@ export const load: LayoutServerLoad = async () => {
   return {
     chains: parsedChains,
     wallets: parsedWallets,
-    evmCommon: parsedEvmCommon
+    evmCommon: parsedEvmCommon,
   };
 };

@@ -1,5 +1,4 @@
 import { browser } from "$app/environment";
-import { env } from "$env/dynamic/public";
 import { overviewStore } from "$lib/stores/overviewStore";
 import type { LayoutLoad } from "./$types";
 import posthog from "posthog-js";
@@ -21,7 +20,7 @@ export const load: LayoutLoad = async ({ data }) => {
     }
 
     // Only initialize PostHog if API key is provided and not in development
-    const posthogApiKey = env.PUBLIC_POSTHOG_API_KEY;
+    const posthogApiKey = import.meta.env.PUBLIC_POSTHOG_API_KEY;
     const isDevelopment = import.meta.env.DEV;
 
     if (posthogApiKey && !posthog.__loaded && !isDevelopment) {
@@ -48,6 +47,6 @@ export const load: LayoutLoad = async ({ data }) => {
 
   // Return server data (including chains) merged with any client data
   return {
-    ...data // This preserves the chains from +layout.server.ts
+    ...data, // This preserves the chains from +layout.server.ts
   };
 };

@@ -90,27 +90,27 @@ ConsenSys's zkEVM with built-in MetaMask integration — the corporate answer to
 
 **Technical:** A fully EVM-equivalent ZK-rollup developed by ConsenSys, focused on Ethereum compatibility and zk-proven execution.
 
-- **Security & Data Availability**  
-  - Validity proofs verify all EVM operations before finalization.  
-  - Uses Ethereum calldata for DA — no custom DA layer or fallback.  
+- **Security & Data Availability**
+  - Validity proofs verify all EVM operations before finalization.
+  - Uses Ethereum calldata for DA — no custom DA layer or fallback.
   - Settlement and availability fully rely on Ethereum L1.
 
-- **Infra & Execution**  
-  - Supports advanced RPCs like `eth_sendBundle` for MEV mitigation.  
+- **Infra & Execution**
+  - Supports advanced RPCs like `eth_sendBundle` for MEV mitigation.
   - Open-state tooling enables permissionless access to sequencer state.
 
-- **Performance**  
-  - Block times ~2s; proof generation is near real-time.  
-  - Scales with prover capacity; fees remain low unless L1 gas spikes.  
+- **Performance**
+  - Block times ~2s; proof generation is near real-time.
+  - Scales with prover capacity; fees remain low unless L1 gas spikes.
   - No known artificial throughput caps — performance depends on Ethereum calldata limits.
 
-- **Use Cases**  
+- **Use Cases**
   - **MetaMask integration**: Default network option, Portfolio dApp for cross-chain swaps
   - **Enterprise connections**: Backed by Mastercard, Visa, JPMorgan relationships
   - **ConsenSys stack**: Native Truffle, Infura, Diligence integration
   - **Growing DeFi**: Etherex DEX, Surge Program with LXP rewards
 
-- **Trade-offs**  
+- **Trade-offs**
   - ConsenSys controls everything — sequencer, upgrades, prover (open-sourcing "planned" for 2025)
   - Corporate chain — some crypto natives distrust ConsenSys's centralized approach
   - Stage 0 maturity — far from decentralized despite zkEVM claims

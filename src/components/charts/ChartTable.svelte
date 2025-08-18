@@ -31,6 +31,7 @@
   }
 
   import type { PeriodType } from "$lib/stores/userPreferencesStore";
+  import { SvelteMap } from "svelte/reactivity";
 
   interface Props {
     chains: Chain[];
@@ -42,7 +43,6 @@
 
   let {
     chains = [],
-    isLoading = false,
     selectedPeriod: initialPeriod = "24h",
     onPeriodChange,
     tableWrapper = $bindable(),
@@ -135,7 +135,7 @@
   }
 
   function handleFilterChange(category: string, values: Set<string>) {
-    const newFilters = new Map(activeFilters);
+    const newFilters = new SvelteMap(activeFilters);
     if (values.size > 0) {
       newFilters.set(category, values);
     } else {
@@ -211,7 +211,7 @@
       </div>
       <div class="controls-right">
         <div class="period-selector">
-          {#each (["1h", "24h", "7d", "30d"] as const) as period}
+          {#each ["1h", "24h", "7d", "30d"] as const as period (period)}
             <button
               class="period-btn"
               class:active={selectedPeriod === period}

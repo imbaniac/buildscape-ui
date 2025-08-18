@@ -1,22 +1,28 @@
 <script lang="ts">
-  import { onMount, onDestroy } from 'svelte';
-  import { sseConnection, chainsData, lastUpdate, dataMode } from '$lib/stores/sse';
-  import { connectSSE, disconnectSSE } from '$lib/stores/sse';
+  import { onMount, onDestroy } from "svelte";
+  import {
+    sseConnection,
+    chainsData,
+    lastUpdate,
+    dataMode,
+  } from "$lib/stores/sse";
 
   // Debug state
-  let events = $state<Array<{
-    timestamp: Date;
-    type: string;
-    data: any;
-    raw?: string;
-  }>>([]);
-  
+  let events = $state<
+    Array<{
+      timestamp: Date;
+      type: string;
+      data: any;
+      raw?: string;
+    }>
+  >([]);
+
   let stats = $state({
     totalEvents: 0,
     eventsPerMinute: 0,
     lastEventTime: null as Date | null,
     connectionUptime: 0,
-    dataUpdateFrequency: [] as number[]
+    dataUpdateFrequency: [] as number[],
   });
 
   let eventSource = $state<EventSource | null>(null);
@@ -25,21 +31,25 @@
 
   function addEvent(type: string, data: any, raw?: string) {
     const now = new Date();
-    events = [{
-      timestamp: now,
-      type,
-      data,
-      raw
-    }, ...events.slice(0, 99)]; // Keep last 100 events
-    
+    events = [
+      {
+        timestamp: now,
+        type,
+        data,
+        raw,
+      },
+      ...events.slice(0, 99),
+    ]; // Keep last 100 events
+
     stats.totalEvents++;
     stats.lastEventTime = now;
-    
+
     // Calculate update frequency
     if (stats.dataUpdateFrequency.length > 0) {
-      const lastTime = stats.dataUpdateFrequency[stats.dataUpdateFrequency.length - 1];
-      const delta = now.getTime() - lastTime;
-      stats.dataUpdateFrequency = [...stats.dataUpdateFrequency.slice(-9), now.getTime()];
+      stats.dataUpdateFrequency = [
+        ...stats.dataUpdateFrequency.slice(-9),
+        now.getTime(),
+      ];
     } else {
       stats.dataUpdateFrequency = [now.getTime()];
     }
@@ -47,55 +57,58 @@
 
   function calculateEventsPerMinute() {
     const oneMinuteAgo = Date.now() - 60000;
-    const recentEvents = events.filter(e => e.timestamp.getTime() > oneMinuteAgo);
+    const recentEvents = events.filter(
+      (e) => e.timestamp.getTime() > oneMinuteAgo,
+    );
     stats.eventsPerMinute = recentEvents.length;
   }
 
   function getAverageUpdateInterval() {
-    if (stats.dataUpdateFrequency.length < 2) return 'N/A';
-    
+    if (stats.dataUpdateFrequency.length < 2) return "N/A";
+
     let totalDelta = 0;
     for (let i = 1; i < stats.dataUpdateFrequency.length; i++) {
-      totalDelta += stats.dataUpdateFrequency[i] - stats.dataUpdateFrequency[i - 1];
+      totalDelta +=
+        stats.dataUpdateFrequency[i] - stats.dataUpdateFrequency[i - 1];
     }
-    
+
     const avgMs = totalDelta / (stats.dataUpdateFrequency.length - 1);
-    return (avgMs / 1000).toFixed(1) + 's';
+    return (avgMs / 1000).toFixed(1) + "s";
   }
 
   function connectDirectSSE() {
     // Direct connection for debugging
-    const url = 'https://api.buildscape.org/events';
-    
+    const url = "https://api.buildscape.org/events";
+
     eventSource = new EventSource(url);
-    
+
     eventSource.onopen = () => {
-      addEvent('connection', { status: 'connected' });
+      addEvent("connection", { status: "connected" });
     };
-    
+
     eventSource.onerror = (error) => {
-      addEvent('error', { 
-        message: 'Connection error',
+      addEvent("error", {
+        message: "Connection error",
         readyState: eventSource?.readyState,
-        error: error
+        error: error,
       });
     };
-    
-    eventSource.addEventListener('update', (event) => {
-      addEvent('update', JSON.parse(event.data), event.data);
+
+    eventSource.addEventListener("update", (event) => {
+      addEvent("update", JSON.parse(event.data), event.data);
     });
-    
+
     // Listen for any other event types
-    eventSource.addEventListener('message', (event) => {
-      addEvent('message', event.data, event.data);
+    eventSource.addEventListener("message", (event) => {
+      addEvent("message", event.data, event.data);
     });
-    
-    eventSource.addEventListener('ping', (event) => {
-      addEvent('ping', event.data);
+
+    eventSource.addEventListener("ping", (event) => {
+      addEvent("ping", event.data);
     });
-    
-    eventSource.addEventListener('keep-alive', (event) => {
-      addEvent('keep-alive', event.data);
+
+    eventSource.addEventListener("keep-alive", (event) => {
+      addEvent("keep-alive", event.data);
     });
   }
 
@@ -103,7 +116,7 @@
     if (eventSource) {
       eventSource.close();
       eventSource = null;
-      addEvent('connection', { status: 'disconnected' });
+      addEvent("connection", { status: "disconnected" });
     }
   }
 
@@ -132,14 +145,16 @@
   }
 
   // Get chain by ID for focused debugging
-  let selectedChainId = $state('');
-  
-  const selectedChainData = $derived($chainsData.find(c => c.chainId.toString() === selectedChainId));
+  let selectedChainId = $state("");
+
+  const selectedChainData = $derived(
+    $chainsData.find((c) => c.chainId.toString() === selectedChainId),
+  );
 </script>
 
 <div class="debug-container">
   <h1>SSE Debug Panel</h1>
-  
+
   <!-- Connection Controls -->
   <div class="section">
     <h2>Connection Controls</h2>
@@ -150,15 +165,19 @@
       <button onclick={disconnectDirectSSE} disabled={eventSource === null}>
         Disconnect
       </button>
-      <button onclick={clearEvents}>
-        Clear Events
-      </button>
+      <button onclick={clearEvents}> Clear Events </button>
     </div>
-    
+
     <div class="status">
-      <span>Direct Connection: <strong>{eventSource ? 'Connected' : 'Disconnected'}</strong></span>
+      <span
+        >Direct Connection: <strong
+          >{eventSource ? "Connected" : "Disconnected"}</strong
+        ></span
+      >
       <span>Store Connection: <strong>{$sseConnection}</strong></span>
-      <span>Ready State: <strong>{eventSource?.readyState ?? 'N/A'}</strong></span>
+      <span
+        >Ready State: <strong>{eventSource?.readyState ?? "N/A"}</strong></span
+      >
     </div>
   </div>
 
@@ -184,11 +203,15 @@
       </div>
       <div class="stat">
         <span>Last Update</span>
-        <value>{$lastUpdate ? new Date($lastUpdate).toLocaleTimeString() : 'Never'}</value>
+        <value
+          >{$lastUpdate
+            ? new Date($lastUpdate).toLocaleTimeString()
+            : "Never"}</value
+        >
       </div>
       <div class="stat">
         <span>Data Mode</span>
-        <value>{$dataMode || 'Unknown'}</value>
+        <value>{$dataMode || "Unknown"}</value>
       </div>
     </div>
   </div>
@@ -199,24 +222,30 @@
     <div class="chain-selector">
       <select bind:value={selectedChainId}>
         <option value="">Select a chain to monitor</option>
-        {#each $chainsData as chain}
-          <option value={chain.chainId.toString()}>{chain.name} ({chain.chainId})</option>
+        {#each $chainsData as chain (chain.chainId)}
+          <option value={chain.chainId.toString()}
+            >{chain.name} ({chain.chainId})</option
+          >
         {/each}
       </select>
     </div>
-    
+
     <!-- Debug info -->
     <div class="debug-info">
-      <small>Selected ID: {selectedChainId || 'none'} | Type: {typeof selectedChainId}</small>
+      <small
+        >Selected ID: {selectedChainId || "none"} | Type: {typeof selectedChainId}</small
+      >
     </div>
-    
+
     {#if selectedChainData}
       <div class="chain-details">
         <h3>{selectedChainData.name}</h3>
         <div class="chain-grid">
           <div class="detail">
             <span>Status</span>
-            <value class="status-{selectedChainData.status}">{selectedChainData.status}</value>
+            <value class="status-{selectedChainData.status}"
+              >{selectedChainData.status}</value
+            >
           </div>
           <div class="detail">
             <span>Current Block</span>
@@ -239,7 +268,7 @@
             <value>{selectedChainData.gasPrice} gwei</value>
           </div>
         </div>
-        
+
         <details>
           <summary>Full Data</summary>
           <pre>{formatJSON(selectedChainData)}</pre>
@@ -250,17 +279,19 @@
         <p>No data found for chain ID: {selectedChainId}</p>
       </div>
     {/if}
-    
+
     <!-- Show all chains summary -->
     <details style="margin-top: 1rem;">
       <summary>All Chains Data ({$chainsData.length} chains)</summary>
       <div class="all-chains-grid">
-        {#each $chainsData as chain}
+        {#each $chainsData as chain (chain.chainId)}
           <div class="chain-summary">
             <strong>{chain.name} ({chain.chainId})</strong>
             <div>Block: {chain.currentBlock.toLocaleString()}</div>
             <div>TPS: {chain.tps.toFixed(2)}</div>
-            <div>Status: <span class="status-{chain.status}">{chain.status}</span></div>
+            <div>
+              Status: <span class="status-{chain.status}">{chain.status}</span>
+            </div>
           </div>
         {/each}
       </div>
@@ -271,10 +302,12 @@
   <div class="section">
     <h2>Event Log</h2>
     <div class="event-log">
-      {#each events as event}
+      {#each events as event (event.timestamp.getTime())}
         <div class="event event-{event.type}">
           <div class="event-header">
-            <span class="event-time">{event.timestamp.toLocaleTimeString()}.{event.timestamp.getMilliseconds()}</span>
+            <span class="event-time"
+              >{event.timestamp.toLocaleTimeString()}.{event.timestamp.getMilliseconds()}</span
+            >
             <span class="event-type">{event.type}</span>
           </div>
           {#if event.raw}
@@ -415,16 +448,23 @@
     margin-bottom: 1rem;
   }
 
-
   .detail value {
     display: block;
     font-weight: bold;
   }
 
-  .status-live { color: #28a745; }
-  .status-syncing { color: #ffc107; }
-  .status-error { color: #dc3545; }
-  .status-stopped { color: #6c757d; }
+  .status-live {
+    color: #28a745;
+  }
+  .status-syncing {
+    color: #ffc107;
+  }
+  .status-error {
+    color: #dc3545;
+  }
+  .status-stopped {
+    color: #6c757d;
+  }
 
   .event-log {
     max-height: 600px;

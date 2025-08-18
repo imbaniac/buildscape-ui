@@ -65,19 +65,6 @@
     }
   }
 
-  // Prevent pinch/zoom gestures from propagating to the viewport
-  function handleGestureStart(e: Event) {
-    e.preventDefault();
-  }
-
-  function handleGestureChange(e: Event) {
-    e.preventDefault();
-  }
-
-  function handleGestureEnd(e: Event) {
-    e.preventDefault();
-  }
-
   // Prevent wheel zoom when modal is open
   function handleWheel(e: WheelEvent) {
     // Only prevent if it's a pinch gesture (ctrl/cmd + wheel)
