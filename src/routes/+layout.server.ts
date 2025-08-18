@@ -1,6 +1,7 @@
-import type { LayoutServerLoad } from "./$types";
-import { parseFrontmatterAndContent } from "$lib/utils/markdown";
 import type { WalletsByCategory } from "$lib/types";
+import { parseFrontmatterAndContent } from "$lib/utils/markdown";
+
+import type { LayoutServerLoad } from "./$types";
 
 // Import all markdown files at build time
 const chainMdModules = import.meta.glob("/data/chains/*.md", {

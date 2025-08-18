@@ -1,4 +1,5 @@
-import { writable, derived } from "svelte/store";
+import { derived, writable } from "svelte/store";
+
 import { chainsData } from "./sse";
 
 // Debug flag - only log in development

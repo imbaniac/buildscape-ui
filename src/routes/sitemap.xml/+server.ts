@@ -1,5 +1,6 @@
-import type { RequestHandler } from "./$types";
 import { parseFrontmatterAndContent } from "$lib/utils/markdown";
+
+import type { RequestHandler } from "./$types";
 
 // Import all chain markdown files at build time (same as in +layout.server.ts)
 const chainMdModules = import.meta.glob("/data/chains/*.md", {

@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
+
   import type { WalletsByCategory } from "$lib/types";
 
   interface Props {

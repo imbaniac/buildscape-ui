@@ -1,6 +1,8 @@
 import { error, redirect } from "@sveltejs/kit";
-import type { LayoutLoad } from "./$types";
+
 import { CHAIN_TABS } from "$lib/constants/tabs";
+
+import type { LayoutLoad } from "./$types";
 
 function mergeEvmTools(
   chainStatic: any,

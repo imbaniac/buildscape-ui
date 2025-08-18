@@ -1,13 +1,16 @@
 <script lang="ts">
   import { onMount } from "svelte";
+
   import { goto } from "$app/navigation";
-  import { mapStore } from "$lib/stores/mapStore";
-  import Header from "../components/Header.svelte";
-  import SearchBar from "../components/SearchBar.svelte";
-  import PerformanceOverlay from "../components/PerformanceOverlay.svelte";
+
   import SEO from "$lib/components/SEO.svelte";
   import savedPositions from "$lib/positions.json";
+  import { mapStore } from "$lib/stores/mapStore";
   import { searchChains } from "$lib/utils/searchUtils";
+
+  import Header from "../components/Header.svelte";
+  import PerformanceOverlay from "../components/PerformanceOverlay.svelte";
+  import SearchBar from "../components/SearchBar.svelte";
 
   // Get map components from store
   const map = $derived($mapStore);

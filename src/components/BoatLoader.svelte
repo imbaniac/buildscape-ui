@@ -1,6 +1,7 @@
 <script lang="ts">
-  import boatUrl from "$lib/assets/boat.svg?url";
   import { fade } from "svelte/transition";
+
+  import boatUrl from "$lib/assets/boat.svg?url";
 </script>
 
 <div class="boat-loader" transition:fade={{ duration: 500 }}>

@@ -1,8 +1,11 @@
 <script lang="ts">
-  import { page } from "$app/stores";
-  import WalletsTab from "../../../../components/book/tabs/WalletsTab.svelte";
-  import SEO from "$lib/components/SEO.svelte";
   import { getContext } from "svelte";
+
+  import { page } from "$app/stores";
+
+  import SEO from "$lib/components/SEO.svelte";
+
+  import WalletsTab from "../../../../components/book/tabs/WalletsTab.svelte";
 
   // Get data from layout
   const layoutData = $derived($page.data);

@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Tooltip from "../ui/Tooltip.svelte";
   import SkeletonLoader from "../ui/SkeletonLoader.svelte";
+  import Tooltip from "../ui/Tooltip.svelte";
 
   interface Props {
     label: string;

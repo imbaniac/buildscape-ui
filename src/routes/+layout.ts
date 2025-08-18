@@ -1,8 +1,11 @@
-import { browser } from "$app/environment";
-import { overviewStore } from "$lib/stores/overviewStore";
-import type { LayoutLoad } from "./$types";
 import posthog from "posthog-js";
+
+import { browser } from "$app/environment";
+
 import { analytics } from "$lib/analytics";
+import { overviewStore } from "$lib/stores/overviewStore";
+
+import type { LayoutLoad } from "./$types";
 
 // Enable SSR for all pages by default
 export const ssr = true;

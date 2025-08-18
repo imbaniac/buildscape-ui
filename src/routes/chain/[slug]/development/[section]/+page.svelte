@@ -1,9 +1,12 @@
 <script lang="ts">
-  import { page } from "$app/stores";
-  import { goto } from "$app/navigation";
-  import DevelopmentTab from "../../../../../components/book/tabs/DevelopmentTab.svelte";
-  import SEO from "$lib/components/SEO.svelte";
   import { getContext } from "svelte";
+
+  import { goto } from "$app/navigation";
+  import { page } from "$app/stores";
+
+  import SEO from "$lib/components/SEO.svelte";
+
+  import DevelopmentTab from "../../../../../components/book/tabs/DevelopmentTab.svelte";
 
   // Get data from layout
   const layoutData = $derived($page.data);

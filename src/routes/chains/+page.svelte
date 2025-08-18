@@ -1,21 +1,24 @@
 <script lang="ts">
-  import {
-    overviewStore,
-    tvlLookupByChainId,
-    tpsLookupByChainId,
-  } from "$lib/stores/overviewStore";
-  import {
-    userPreferencesStore,
-    type PeriodType,
-  } from "$lib/stores/userPreferencesStore";
-  import ChartTable from "../../components/charts/ChartTable.svelte";
-  import Header from "../../components/Header.svelte";
-  import SEO from "$lib/components/SEO.svelte";
-  import BoatLoader from "../../components/BoatLoader.svelte";
-  import type { PageData } from "./$types";
   import { onMount } from "svelte";
   import { SvelteMap } from "svelte/reactivity";
+
   import type { ChainOverview } from "$lib/api/overview";
+  import SEO from "$lib/components/SEO.svelte";
+  import {
+    overviewStore,
+    tpsLookupByChainId,
+    tvlLookupByChainId,
+  } from "$lib/stores/overviewStore";
+  import {
+    type PeriodType,
+    userPreferencesStore,
+  } from "$lib/stores/userPreferencesStore";
+
+  import BoatLoader from "../../components/BoatLoader.svelte";
+  import ChartTable from "../../components/charts/ChartTable.svelte";
+  import Header from "../../components/Header.svelte";
+
+  import type { PageData } from "./$types";
 
   let { data }: { data: PageData } = $props();
 

@@ -1,5 +1,6 @@
 <script lang="ts">
   import { marked } from "marked";
+
   import { getAccessibleBrandColor } from "$lib/utils/colorUtils";
 
   interface Props {

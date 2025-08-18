@@ -1,25 +1,29 @@
 <script lang="ts">
+  import { onDestroy, onMount } from "svelte";
+  import { setContext } from "svelte";
+
+  import { afterNavigate, goto } from "$app/navigation";
   import { page } from "$app/stores";
-  import { goto, afterNavigate } from "$app/navigation";
-  import { onMount, onDestroy } from "svelte";
-  import { sseConnection } from "$lib/stores/sse";
+
+  import { analytics } from "$lib/analytics";
   import {
     getChainData,
     initializeChainDataFeed,
   } from "$lib/stores/chainDataStore";
   import {
-    overviewStore,
     getChainById,
     getPeriodFromHours,
+    overviewStore,
   } from "$lib/stores/overviewStore";
-  import { analytics } from "$lib/analytics";
-  import type { LayoutData } from "./$types";
-  import { setContext } from "svelte";
+  import { sseConnection } from "$lib/stores/sse";
   import type { PeriodType } from "$lib/stores/userPreferencesStore";
+  import { getAccessibleBrandColor } from "$lib/utils/colorUtils";
+
   import BookLayout from "../../../components/book/BookLayout.svelte";
   import ChainInfoPage from "../../../components/book/ChainInfoPage.svelte";
   import TabButton from "../../../components/book/ui/TabButton.svelte";
-  import { getAccessibleBrandColor } from "$lib/utils/colorUtils";
+
+  import type { LayoutData } from "./$types";
 
   let { data, children }: { data: LayoutData; children: any } = $props();
 
