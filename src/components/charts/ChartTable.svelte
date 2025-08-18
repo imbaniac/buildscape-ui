@@ -46,6 +46,7 @@
 
   let {
     chains = [],
+    isLoading = false,
     selectedPeriod: initialPeriod = "24h",
     onPeriodChange,
     tableWrapper = $bindable(),
@@ -295,13 +296,14 @@
             <ChartRow
               {chain}
               {formatValue}
+              {isLoading}
               onClick={() => handleRowClick(chain)}
             />
           {/each}
         </tbody>
       </table>
 
-      {#if processedChains().length === 0}
+      {#if !isLoading && processedChains().length === 0}
         <div class="no-results">No chains found matching your filters</div>
       {/if}
     </div>
