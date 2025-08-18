@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from "$app/stores";
-  import { goto } from "$app/navigation";
+  import { goto, afterNavigate } from "$app/navigation";
   import { onMount, onDestroy } from "svelte";
   import { sseConnection } from "$lib/stores/sse";
   import {
@@ -26,6 +26,10 @@
 
   // Track view duration
   let viewStartTime: number;
+
+  // Track navigation source for smart close behavior
+  let previousUrl: URL | null = null;
+  let navigationState: { from?: string } | null = null;
 
   // Get data directly from layout
   const chainStatic = $derived(data.chainStatic);
@@ -164,7 +168,21 @@
   });
 
   function handleClose() {
-    history.back();
+    // Smart navigation with snapshot preservation
+    
+    // If we navigated here from within the app, use history.back()
+    // This preserves snapshots (e.g., scroll position in table view)
+    if (previousUrl && previousUrl.origin === window.location.origin) {
+      history.back();
+    }
+    // For direct links/bookmarks, use goto() as fallback
+    else if (navigationState?.from) {
+      goto(navigationState.from);
+    }
+    // Default fallback to home (map view)
+    else {
+      goto('/');
+    }
   }
 
   function handleKeydown(event: KeyboardEvent) {
@@ -173,17 +191,28 @@
     }
   }
 
+  // Track navigation to capture where user came from
+  afterNavigate((navigation) => {
+    // Store the previous URL if it exists and is from the same origin
+    if (navigation.from?.url) {
+      previousUrl = navigation.from.url;
+    }
+  });
+
   onMount(() => {
     // Track view start time
     viewStartTime = Date.now();
+
+    // Check if there's navigation state (from goto calls with state)
+    // This is passed when navigating from map or table views
+    if (typeof window !== 'undefined' && window.history.state) {
+      navigationState = window.history.state.state || null;
+    }
 
     // Initialize chain data feed for this specific chain
     if (data.chainId) {
       initializeChainDataFeed(data.chainId.toString());
     }
-
-    // Load overview data only if needed (smart loading handles staleness check)
-    overviewStore.load(metricsSpan);
 
     window.addEventListener("keydown", handleKeydown);
 
