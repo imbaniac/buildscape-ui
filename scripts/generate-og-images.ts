@@ -2,7 +2,7 @@
 import satori from "satori";
 import { Resvg } from "@resvg/resvg-js";
 import { readFile, writeFile, mkdir } from "fs/promises";
-import { join, dirname } from "path";
+import { join } from "path";
 import YAML from "yaml";
 
 // Configuration
@@ -15,7 +15,7 @@ const CINZEL_FONT_PATH = "./scripts/Cinzel-SemiBold.ttf";
 async function ensureDir(path: string) {
   try {
     await mkdir(path, { recursive: true });
-  } catch (e) {
+  } catch {
     // Directory might already exist
   }
 }
@@ -52,7 +52,7 @@ async function generateMapOG(interFont: ArrayBuffer, cinzelFont: ArrayBuffer) {
   try {
     const logoContent = await readFile("./static/favicon.svg", "utf-8");
     logoData = `data:image/svg+xml;base64,${Buffer.from(logoContent).toString("base64")}`;
-  } catch (e) {
+  } catch {
     console.log("Could not load favicon.svg");
   }
 
@@ -72,7 +72,7 @@ async function generateMapOG(interFont: ArrayBuffer, cinzelFont: ArrayBuffer) {
         total_active_addresses: data.total_active_addresses,
       };
     }
-  } catch (e) {
+  } catch {
     console.log("Using default metrics");
   }
 
@@ -564,7 +564,7 @@ async function generateChainOG(chain: any, metrics: any, font: ArrayBuffer) {
         tps: Math.round(data.tps || 0),
       };
     }
-  } catch (e) {
+  } catch {
     console.log(`Failed to fetch metrics for ${slug}, using defaults`);
   }
 
@@ -593,13 +593,13 @@ async function generateChainOG(chain: any, metrics: any, font: ArrayBuffer) {
     logoData = `data:image/svg+xml;base64,${Buffer.from(logoContent).toString(
       "base64",
     )}`;
-  } catch (e) {
+  } catch {
     // Try PNG fallback
     try {
       const logoPngPath = join("./assets/chains", `${logoSlug}.png`);
       const logoPngContent = await readFile(logoPngPath);
       logoData = `data:image/png;base64,${logoPngContent.toString("base64")}`;
-    } catch (e2) {
+    } catch {
       console.log(`No logo found for ${slug} (tried ${logoSlug})`);
     }
   }
@@ -1068,18 +1068,20 @@ async function generateAllOGImages() {
   // Load fonts
   let interFont: ArrayBuffer;
   let cinzelFont: ArrayBuffer;
-  
+
   try {
-    interFont = await readFile(INTER_FONT_PATH);
+    const interBuffer = await readFile(INTER_FONT_PATH);
+    interFont = interBuffer as unknown as ArrayBuffer;
   } catch (e) {
-    console.error("Inter font file not found at", INTER_FONT_PATH);
+    console.error("Inter font file not found at", INTER_FONT_PATH, e);
     process.exit(1);
   }
-  
+
   try {
-    cinzelFont = await readFile(CINZEL_FONT_PATH);
+    const cinzelBuffer = await readFile(CINZEL_FONT_PATH);
+    cinzelFont = cinzelBuffer as unknown as ArrayBuffer;
   } catch (e) {
-    console.error("Cinzel font file not found at", CINZEL_FONT_PATH);
+    console.error("Cinzel font file not found at", CINZEL_FONT_PATH, e);
     process.exit(1);
   }
 

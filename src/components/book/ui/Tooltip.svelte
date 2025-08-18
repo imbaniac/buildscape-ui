@@ -1,49 +1,48 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  
+  import { onMount } from "svelte";
+
   interface Props {
     text: string;
-    children?: import('svelte').Snippet;
+    children?: import("svelte").Snippet;
   }
 
   let { text, children }: Props = $props();
-  
+
   let isVisible = $state(false);
   let isClickedOpen = $state(false);
   let tooltipWrapper: HTMLElement;
   let portalTarget: HTMLDivElement | null = null;
   let tooltipInstance: HTMLDivElement | null = null;
   let position = $state({ x: 0, y: 0 });
-  
+
   function updatePosition() {
     if (!tooltipWrapper) return;
-    
+
     const rect = tooltipWrapper.getBoundingClientRect();
-    const padding = 20;
     const gap = 12; // Gap between tooltip and element
-    
+
     // Calculate initial center position
     let x = rect.left + rect.width / 2;
     let y = rect.top - gap; // Start just above the element
-    
+
     position = { x, y };
   }
-  
+
   function showTooltip() {
     if (!portalTarget) return;
-    
+
     // Hide any existing tooltip first
     if (tooltipInstance) {
       hideTooltip();
     }
-    
+
     isVisible = true;
     updatePosition();
-    
+
     // Create a div for the tooltip content
-    const tooltipDiv = document.createElement('div');
-    const tooltipContent = document.createElement('div');
-    tooltipContent.className = 'svelte-tooltip-portal';
+    const tooltipDiv = document.createElement("div");
+    const tooltipContent = document.createElement("div");
+    tooltipContent.className = "svelte-tooltip-portal";
     tooltipContent.style.cssText = `
       position: fixed;
       left: ${position.x}px;
@@ -65,12 +64,12 @@
       text-align: left;
       animation: tooltipFadeIn 0.2s ease-out;
     `;
-    
+
     // Add text content safely
     tooltipContent.textContent = text;
-    
+
     // Add arrow
-    const arrow = document.createElement('div');
+    const arrow = document.createElement("div");
     arrow.style.cssText = `
       position: absolute;
       top: 100%;
@@ -84,19 +83,19 @@
     `;
     tooltipContent.appendChild(arrow);
     tooltipDiv.appendChild(tooltipContent);
-    
+
     // Add to portal
     portalTarget.appendChild(tooltipDiv);
-    
+
     // Get actual dimensions and adjust if needed
     const tooltipRect = tooltipContent.getBoundingClientRect();
     const viewportPadding = 20;
-    
+
     // Calculate the actual center based on real tooltip width
     const actualHalfWidth = tooltipRect.width / 2;
     const leftEdge = position.x - actualHalfWidth;
     const rightEdge = position.x + actualHalfWidth;
-    
+
     if (leftEdge < viewportPadding) {
       // Tooltip overflows on left - adjust position
       const adjustment = viewportPadding - leftEdge;
@@ -106,38 +105,38 @@
       const adjustment = rightEdge - (window.innerWidth - viewportPadding);
       tooltipContent.style.left = `${position.x - adjustment}px`;
     }
-    
+
     // Check if tooltip would go above viewport
     if (tooltipRect.top < viewportPadding) {
       // Get wrapper rect again for positioning
       const wrapperRect = tooltipWrapper.getBoundingClientRect();
       // Show below instead
-      tooltipContent.style.bottom = 'auto';
+      tooltipContent.style.bottom = "auto";
       tooltipContent.style.top = `${wrapperRect.bottom + 12}px`;
       // Flip arrow
-      arrow.style.top = 'auto';
-      arrow.style.bottom = '100%';
-      arrow.style.borderTopColor = 'transparent';
-      arrow.style.borderBottomColor = '#1e293b';
-      arrow.style.borderTopWidth = '0';
-      arrow.style.borderBottomWidth = '6px';
+      arrow.style.top = "auto";
+      arrow.style.bottom = "100%";
+      arrow.style.borderTopColor = "transparent";
+      arrow.style.borderBottomColor = "#1e293b";
+      arrow.style.borderTopWidth = "0";
+      arrow.style.borderBottomWidth = "6px";
     }
-    
+
     tooltipInstance = tooltipDiv;
   }
-  
+
   function hideTooltip() {
-    if (tooltipInstance && portalTarget && portalTarget.contains(tooltipInstance)) {
-      try {
-        portalTarget.removeChild(tooltipInstance);
-      } catch (e) {
-        // Already removed
-      }
+    if (
+      tooltipInstance &&
+      portalTarget &&
+      portalTarget.contains(tooltipInstance)
+    ) {
+      portalTarget.removeChild(tooltipInstance);
       tooltipInstance = null;
     }
     isVisible = false;
   }
-  
+
   function handleClick(e?: MouseEvent) {
     if (e) {
       e.stopPropagation();
@@ -150,25 +149,29 @@
       showTooltip();
     }
   }
-  
+
   function handleClickOutside(e: MouseEvent) {
-    if (tooltipWrapper && !tooltipWrapper.contains(e.target as Node) && 
-        tooltipInstance && !tooltipInstance.contains(e.target as Node)) {
+    if (
+      tooltipWrapper &&
+      !tooltipWrapper.contains(e.target as Node) &&
+      tooltipInstance &&
+      !tooltipInstance.contains(e.target as Node)
+    ) {
       isClickedOpen = false;
       hideTooltip();
     }
   }
-  
+
   onMount(() => {
     // Create portal target
-    portalTarget = document.createElement('div');
-    portalTarget.className = 'tooltip-portal-container';
+    portalTarget = document.createElement("div");
+    portalTarget.className = "tooltip-portal-container";
     document.body.appendChild(portalTarget);
-    
+
     // Add global styles for animation
-    if (!document.getElementById('tooltip-portal-styles')) {
-      const style = document.createElement('style');
-      style.id = 'tooltip-portal-styles';
+    if (!document.getElementById("tooltip-portal-styles")) {
+      const style = document.createElement("style");
+      style.id = "tooltip-portal-styles";
       style.textContent = `
         @keyframes tooltipFadeIn {
           from {
@@ -183,7 +186,7 @@
       `;
       document.head.appendChild(style);
     }
-    
+
     return () => {
       hideTooltip();
       if (portalTarget && portalTarget.parentNode) {
@@ -191,48 +194,46 @@
       }
     };
   });
-  
+
   // Effect for click outside handling
   $effect(() => {
     if (isClickedOpen) {
       // Small timeout to prevent immediate closing
       const timer = setTimeout(() => {
-        document.addEventListener('click', handleClickOutside);
+        document.addEventListener("click", handleClickOutside);
       }, 10);
-      
+
       return () => {
         clearTimeout(timer);
-        document.removeEventListener('click', handleClickOutside);
+        document.removeEventListener("click", handleClickOutside);
       };
     }
   });
-  
+
   // Effect for position updates on scroll/resize
   $effect(() => {
     if (isVisible) {
       const handlePositionUpdate = () => {
         updatePosition();
         if (tooltipInstance) {
-          const tooltipContent = tooltipInstance.firstElementChild as HTMLElement;
+          const tooltipContent =
+            tooltipInstance.firstElementChild as HTMLElement;
           if (tooltipContent) {
-            // Recalculate position
-            const rect = tooltipWrapper.getBoundingClientRect();
-            const tooltipRect = tooltipContent.getBoundingClientRect();
             const padding = 20;
-            
+
             // Update base position
             tooltipContent.style.left = `${position.x}px`;
             tooltipContent.style.bottom = `${window.innerHeight - position.y}px`;
-            
+
             // Force layout
-            tooltipContent.offsetWidth;
-            
+            void tooltipContent.offsetWidth;
+
             // Recalculate with actual dimensions
             const newTooltipRect = tooltipContent.getBoundingClientRect();
             const actualHalfWidth = newTooltipRect.width / 2;
             const leftEdge = position.x - actualHalfWidth;
             const rightEdge = position.x + actualHalfWidth;
-            
+
             if (leftEdge < padding) {
               const adjustment = padding - leftEdge;
               tooltipContent.style.left = `${position.x + adjustment}px`;
@@ -243,25 +244,25 @@
           }
         }
       };
-      
-      window.addEventListener('scroll', handlePositionUpdate, true);
-      window.addEventListener('resize', handlePositionUpdate);
-      
+
+      window.addEventListener("scroll", handlePositionUpdate, true);
+      window.addEventListener("resize", handlePositionUpdate);
+
       return () => {
-        window.removeEventListener('scroll', handlePositionUpdate, true);
-        window.removeEventListener('resize', handlePositionUpdate);
+        window.removeEventListener("scroll", handlePositionUpdate, true);
+        window.removeEventListener("resize", handlePositionUpdate);
       };
     }
   });
 </script>
 
-<span 
+<span
   class="tooltip-wrapper"
   role="button"
   tabindex="0"
   onclick={handleClick}
   onkeydown={(e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
+    if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
       handleClick();
     }

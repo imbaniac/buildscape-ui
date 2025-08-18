@@ -3,27 +3,31 @@
     column: string;
     label: string;
     currentSort: string;
-    direction: 'asc' | 'desc';
+    direction: "asc" | "desc";
     onSort: (column: any) => void;
     showLogo?: boolean;
   }
-  
-  let { 
-    column, 
-    label, 
-    currentSort, 
-    direction, 
+
+  let {
+    column,
+    label,
+    currentSort,
+    direction,
     onSort,
-    showLogo = false
+    showLogo = false,
   }: Props = $props();
-  
+
   const isActive = $derived(currentSort === column);
   const arrowRotation = $derived(
-    isActive ? (direction === 'asc' ? 'rotate(0deg)' : 'rotate(180deg)') : 'rotate(90deg)'
+    isActive
+      ? direction === "asc"
+        ? "rotate(0deg)"
+        : "rotate(180deg)"
+      : "rotate(90deg)",
   );
 </script>
 
-<th 
+<th
   class="chart-header"
   class:active={isActive}
   class:with-logo={showLogo}
@@ -32,12 +36,7 @@
 >
   <div class="header-content">
     <span class="header-label">{label}</span>
-    <span 
-      class="sort-arrow"
-      style="transform: {arrowRotation}"
-    >
-      ▲
-    </span>
+    <span class="sort-arrow" style="transform: {arrowRotation}"> ▲ </span>
   </div>
 </th>
 
@@ -59,73 +58,73 @@
     border-right: 1px solid rgba(82, 94, 114, 0.5);
     border-bottom: 1px solid #525e72;
   }
-  
+
   .chart-header:last-child {
     border-right: none;
   }
-  
+
   .chart-header:hover {
     background: linear-gradient(135deg, #525e72, #424d5f);
     z-index: 11;
   }
-  
+
   .chart-header.active {
     background: linear-gradient(135deg, #5a6678, #4a5568);
     color: #ffffff;
     z-index: 11;
   }
-  
+
   .chart-header.with-logo {
     min-width: 250px;
   }
-  
+
   .chart-header:not(.with-logo) {
     min-width: 80px;
   }
-  
+
   /* Specific widths for different column types */
   .chart-header[data-column="tvl"] {
     min-width: 100px;
   }
-  
+
   .chart-header[data-column="tps"] {
     min-width: 80px;
   }
-  
+
   .chart-header[data-column="transactions"] {
     min-width: 110px;
   }
-  
+
   .chart-header[data-column="activeAddresses"] {
     min-width: 100px;
   }
-  
+
   .chart-header[data-column="contracts"] {
     min-width: 100px;
   }
-  
+
   .header-content {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 0.5rem;
   }
-  
+
   .header-label {
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
-  
+
   .sort-arrow {
     font-size: 0.7rem;
     opacity: 0.6;
     transition: all 0.3s ease;
   }
-  
+
   .chart-header.active .sort-arrow {
     opacity: 0.9;
   }
-  
+
   /* Mobile adjustments */
   @media (max-width: 768px) {
     .chart-header {
@@ -133,37 +132,37 @@
       font-size: 0.75rem;
       border-right: none;
     }
-    
+
     .chart-header.with-logo {
       min-width: 200px;
     }
-    
+
     .chart-header:not(.with-logo) {
       min-width: 70px;
     }
-    
+
     /* Adjust specific column widths for mobile */
     .chart-header[data-column="transactions"],
     .chart-header[data-column="activeAddresses"],
     .chart-header[data-column="contracts"] {
       min-width: 80px;
     }
-    
+
     .header-label {
       letter-spacing: 0.02em;
     }
-    
+
     .sort-arrow {
       font-size: 0.6rem;
     }
   }
-  
+
   @media (max-width: 480px) {
     .chart-header {
       padding: 0.5rem 0.35rem;
       font-size: 0.7rem;
     }
-    
+
     .header-label {
       letter-spacing: 0;
     }

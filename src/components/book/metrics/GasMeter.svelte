@@ -1,20 +1,23 @@
 <script lang="ts">
-  import Tooltip from '../ui/Tooltip.svelte';
-  
+  import Tooltip from "../ui/Tooltip.svelte";
+
   interface Props {
     gasPrice: number;
     fullGasPrice?: number;
   }
 
   let { gasPrice, fullGasPrice }: Props = $props();
-  
+
   const gasLevel = $derived(
-    gasPrice <= 10 ? { level: 'low', color: '#10b981', label: 'Low' } :
-    gasPrice <= 30 ? { level: 'medium', color: '#f59e0b', label: 'Medium' } :
-    gasPrice <= 50 ? { level: 'high', color: '#f97316', label: 'High' } :
-    { level: 'very-high', color: '#ef4444', label: 'Very High' }
+    gasPrice <= 10
+      ? { level: "low", color: "#10b981", label: "Low" }
+      : gasPrice <= 30
+        ? { level: "medium", color: "#f59e0b", label: "Medium" }
+        : gasPrice <= 50
+          ? { level: "high", color: "#f97316", label: "High" }
+          : { level: "very-high", color: "#ef4444", label: "Very High" },
   );
-  
+
   // Convert gas price to angle (0-180 degrees)
   const meterAngle = $derived(Math.min((gasPrice / 100) * 180, 180));
 </script>
@@ -62,23 +65,25 @@
     align-items: center;
     width: 100%;
   }
-  
+
   .gas-meter {
     position: relative;
     width: 100%;
     max-width: 90px;
     height: 45px;
   }
-  
+
   .meter-svg {
     width: 100%;
     height: 100%;
   }
-  
+
   .meter-fill-path {
-    transition: stroke-dasharray 0.3s ease, stroke 0.3s ease;
+    transition:
+      stroke-dasharray 0.3s ease,
+      stroke 0.3s ease;
   }
-  
+
   .gas-value-container {
     position: absolute;
     bottom: -5px;
@@ -86,29 +91,29 @@
     transform: translateX(-50%);
     text-align: center;
   }
-  
+
   .gas-value {
     font-size: 0.875rem;
     font-weight: 600;
     color: #1e293b;
   }
-  
+
   .gas-unit {
     font-size: 0.5625rem;
     color: #64748b;
     margin-left: 1px;
   }
-  
+
   @media (max-width: 640px) {
     .gas-meter {
       max-width: 80px;
       height: 40px;
     }
-    
+
     .gas-value {
       font-size: 0.75rem;
     }
-    
+
     .gas-unit {
       font-size: 0.5rem;
     }

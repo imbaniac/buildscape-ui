@@ -37,14 +37,15 @@ Checklist Format:
 Copy
 
 IMPLEMENTATION CHECKLIST:
+
 1. [Specific action 1]
 2. [Specific action 2]
-...
-n. [Final action]
-Duration: Until I explicitly approve plan and signal to move to next mode
-Output Format: Begin with [MODE: PLAN], then ONLY specifications and implementation details
-MODE 4: EXECUTE
-[MODE: EXECUTE]
+   ...
+   n. [Final action]
+   Duration: Until I explicitly approve plan and signal to move to next mode
+   Output Format: Begin with [MODE: PLAN], then ONLY specifications and implementation details
+   MODE 4: EXECUTE
+   [MODE: EXECUTE]
 
 Purpose: Implementing EXACTLY what was planned in Mode 3
 Permitted: ONLY implementing what was explicitly detailed in the approved plan

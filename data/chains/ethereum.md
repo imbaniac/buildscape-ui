@@ -200,8 +200,8 @@ The chain that matters. While "Ethereum killers" come and go, Ethereum remains t
 
 **Technical:** The original smart contract chain and backbone of web3, now optimized as a settlement layer for L2s.
 
-- **Security**: Most decentralized L1 with thousands of validators, battle-tested since 2015.  
-- **Ecosystem**: Largest by far — all major DeFi, most developers, deepest liquidity.  
+- **Security**: Most decentralized L1 with thousands of validators, battle-tested since 2015.
+- **Ecosystem**: Largest by far — all major DeFi, most developers, deepest liquidity.
 - **Performance**: ~15 TPS on L1, but L2s handle volume. EIP-4844 blobs reduced L2 costs by 90%+.
 - **Use Cases**:
   - **DeFi headquarters**: Uniswap, Aave, MakerDAO, Curve — the originals with deepest liquidity
@@ -209,7 +209,7 @@ The chain that matters. While "Ethereum killers" come and go, Ethereum remains t
   - **Staking economy**: 30M+ ETH staked, Lido alone manages $34B+
   - **NFT bluechips**: CryptoPunks, BAYC, Art Blocks — provenance matters
   - **Institutional entry**: ETH ETFs, regulated custody, enterprise deployments
-- **Trade-offs**:  
+- **Trade-offs**:
   - Gas fees still high for complex operations ($5-50+ during congestion)
   - Slow by design — 12-second blocks, conservative upgrades
-  - Not for micropayments or high-frequency trading (use L2s)  
+  - Not for micropayments or high-frequency trading (use L2s)

@@ -67,29 +67,29 @@ The key difference: This is an Ethereum L2 Validium with ZK proofs, while origin
 
 **Technical:** ZK Validium on ZK Stack with off-chain data availability, zkCRO (liquid staked CRO) as gas token, native account abstraction.
 
-- **Security & Data Availability**  
-  - ZK proofs posted to Ethereum, but transaction data kept off-chain (Validium).  
-  - Exit safety depends entirely on sequencer — if it fails, funds stuck.  
+- **Security & Data Availability**
+  - ZK proofs posted to Ethereum, but transaction data kept off-chain (Validium).
+  - Exit safety depends entirely on sequencer — if it fails, funds stuck.
   - Emergency governance can bypass upgrade delays.
 
-- **Infra & Execution**  
-  - Built on ZKsync's ZK Stack with native account abstraction.  
-  - zkCRO gas token earns CRO staking yield while used for fees.  
+- **Infra & Execution**
+  - Built on ZKsync's ZK Stack with native account abstraction.
+  - zkCRO gas token earns CRO staking yield while used for fees.
   - Part of ZK Stack ecosystem enabling bridges to other ZK chains.
 
-- **Performance**  
-  - Very low fees due to off-chain data storage.  
-  - Claims >100 TPS but real performance untested.  
+- **Performance**
+  - Very low fees due to off-chain data storage.
+  - Claims >100 TPS but real performance untested.
   - Alpha mainnet since August 2024.
 
-- **Use Cases**  
+- **Use Cases**
   - **DeFi apps**: Fulcrom Finance (derivatives), VVS Finance, H2 Finance
   - **Crypto.com integration**: Natural bridge for exchange users
   - **Yield farming**: zkCRO "triple yield" opportunities
   - **Pioneer program**: 5M+ ZK tokens in rewards pool
 
-- **Trade-offs**  
-  - Validium = major centralization risk — sequencer controls your exit.  
-  - Very early (alpha) with limited battle-testing.  
-  - Success tied to Crypto.com ecosystem relevance.  
-  - Yield-bearing gas adds protocol complexity and financial risk.  
+- **Trade-offs**
+  - Validium = major centralization risk — sequencer controls your exit.
+  - Very early (alpha) with limited battle-testing.
+  - Success tied to Crypto.com ecosystem relevance.
+  - Yield-bearing gas adds protocol complexity and financial risk.

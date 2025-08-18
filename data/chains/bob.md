@@ -78,29 +78,29 @@ An L2 that brings Bitcoin into Ethereum DeFi while being secured by both chains 
 
 **Technical:** OP Stack rollup with Babylon BTC staking for finality, BitVM bridges in development, member of Optimism Superchain.
 
-- **Security & Data Availability**  
-  - OP rollup with standard 7-day fraud proof window on Ethereum.  
-  - Bitcoin finality via Babylon — BTC stakers validate BOB state with slashing.  
+- **Security & Data Availability**
+  - OP rollup with standard 7-day fraud proof window on Ethereum.
+  - Bitcoin finality via Babylon — BTC stakers validate BOB state with slashing.
   - ZK proofs being added for cryptographic state validity (Phase 2).
 
-- **Infra & Execution**  
-  - Bitcoin light client enables reading BTC state directly in contracts.  
-  - BitVM bridge on testnet — trust-minimized BTC transfers without wrapping.  
+- **Infra & Execution**
+  - Bitcoin light client enables reading BTC state directly in contracts.
+  - BitVM bridge on testnet — trust-minimized BTC transfers without wrapping.
   - Supports all major BTC LSTs (Babylon, Solv, Bedrock, PumpBTC).
 
-- **Performance**  
-  - Standard OP Stack performance with 2-second blocks.  
-  - Bitcoin finality adds 10-60 minute confirmation for maximum security.  
+- **Performance**
+  - Standard OP Stack performance with 2-second blocks.
+  - Bitcoin finality adds 10-60 minute confirmation for maximum security.
   - Network fees contribute to BTC staking rewards, creating sustainable economics.
 
-- **Use Cases**  
+- **Use Cases**
   - **BTC liquid staking hub**: Native integration with Babylon LST ecosystem
   - **Bitcoin DeFi**: Major protocols deployed for BTC-native yield
   - **Cross-chain infrastructure**: Part of both Superchain and Bitcoin networks
   - **Institutional BTC**: Secure Bitcoin yield without leaving the ecosystem
 
-- **Trade-offs**  
-  - Dual finality more complex than single-chain L2s.  
-  - BitVM bridge still on testnet — wrapped tokens dominate for now.  
-  - Centralized sequencer like all OP Stack chains.  
-  - Higher complexity for developers navigating two security models. 
+- **Trade-offs**
+  - Dual finality more complex than single-chain L2s.
+  - BitVM bridge still on testnet — wrapped tokens dominate for now.
+  - Centralized sequencer like all OP Stack chains.
+  - Higher complexity for developers navigating two security models.

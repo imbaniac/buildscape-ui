@@ -7,7 +7,7 @@ logo: hemi.svg
 parentOrganization: Hemi Labs
 website: https://hemi.xyz
 launchDate: 2024-01-01
-maxBlockSize: 
+maxBlockSize:
 technology:
   isL2: true
   isEVM: true
@@ -50,29 +50,29 @@ The key difference: hVM (Hemi Virtual Machine) wraps an entire Bitcoin node insi
 
 **Technical:** Modular L2 with Proof-of-Proof consensus anchoring to Bitcoin, hVM for Bitcoin state access, Tunnels for trustless asset transfer.
 
-- **Security & Data Availability**  
-  - Proof-of-Proof (PoP) consensus posts "keystones" to Bitcoin for superfinality.  
-  - PoS sequencer for fast blocks, Bitcoin anchoring for long-term security.  
+- **Security & Data Availability**
+  - Proof-of-Proof (PoP) consensus posts "keystones" to Bitcoin for superfinality.
+  - PoS sequencer for fast blocks, Bitcoin anchoring for long-term security.
   - Not a rollup — no fraud/validity proofs, relies on Bitcoin anchoring and honest majority.
 
-- **Infra & Execution**  
-  - hVM: Full indexed Bitcoin node inside EVM — read blocks, UTXOs, transactions directly.  
-  - Bitcoin Kit (hBK) provides granular Bitcoin state access to smart contracts.  
+- **Infra & Execution**
+  - hVM: Full indexed Bitcoin node inside EVM — read blocks, UTXOs, transactions directly.
+  - Bitcoin Kit (hBK) provides granular Bitcoin state access to smart contracts.
   - Automatic callbacks triggered by Bitcoin events — no oracles needed.
 
-- **Performance**  
-  - Soft finality in seconds via sequencer.  
-  - Superfinality after Bitcoin confirmation (10-60 minutes).  
+- **Performance**
+  - Soft finality in seconds via sequencer.
+  - Superfinality after Bitcoin confirmation (10-60 minutes).
   - Tunnels provide withdrawal proofs in 40 minutes — faster than optimistic rollups.
 
-- **Use Cases**  
+- **Use Cases**
   - **DeFi ecosystem**: Sushi, DODO, Izumi (DEXs), LayerBank, ZeroLend (lending)
   - **Bitcoin native apps**: Native BTC staking with self-custody, Bitcoin MEV marketplaces
   - **Cross-chain infrastructure**: LayerZero, Pyth, RedStone oracles integrated
   - **Institutional products**: Pendle, Swell, Symbiotic yield strategies on Bitcoin
 
-- **Trade-offs**  
-  - Not a true rollup — less security than fraud/ZK proof systems.  
-  - Centralized sequencer during bootstrap phase.  
-  - Newer ecosystem vs established Bitcoin L2s like Rootstock.  
-  - PoP finality slower than instant rollup confirmations.  
+- **Trade-offs**
+  - Not a true rollup — less security than fraud/ZK proof systems.
+  - Centralized sequencer during bootstrap phase.
+  - Newer ecosystem vs established Bitcoin L2s like Rootstock.
+  - PoP finality slower than instant rollup confirmations.

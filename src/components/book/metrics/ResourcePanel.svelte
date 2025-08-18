@@ -46,20 +46,6 @@
     return { text: "CRITICAL", color: "#ef4444", class: "critical" };
   });
 
-  // Create segments for the health bar (10 segments)
-  const segments = $derived(() => {
-    const filled = Math.floor(safeUtilization / 10);
-    const partial = safeUtilization % 10 > 0 ? 1 : 0;
-    const empty = 10 - filled - partial;
-
-    return {
-      filled,
-      partial,
-      empty,
-      partialOpacity: (safeUtilization % 10) / 10,
-    };
-  });
-
   // Get status color and label
   function getStatusInfo(status: string) {
     switch (status) {

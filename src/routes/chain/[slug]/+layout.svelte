@@ -6,7 +6,6 @@
   import {
     getChainData,
     initializeChainDataFeed,
-    cleanupChainDataFeed,
   } from "$lib/stores/chainDataStore";
   import {
     overviewStore,
@@ -59,7 +58,6 @@
     overviewStoreState.data &&
       getPeriodFromHours(overviewStoreState.data.period_hours) === metricsSpan,
   );
-  let loadingDynamic = $state(false);
 
   // Actual loading state considering period mismatch
   const actualLoadingDynamic = $derived(
@@ -107,7 +105,7 @@
     if (path.endsWith("/wallets") || path.includes("/wallets/"))
       return "wallets";
     // Base chain path (e.g., /chain/ethereum) should show overview as active
-    if (path.match(/^\/chain\/[^\/]+$/)) return "overview";
+    if (path.match(/^\/chain\/[^/]+$/)) return "overview";
     // Default to overview
     return "overview";
   });
@@ -169,7 +167,7 @@
 
   function handleClose() {
     // Smart navigation with snapshot preservation
-    
+
     // If we navigated here from within the app, use history.back()
     // This preserves snapshots (e.g., scroll position in table view)
     if (previousUrl && previousUrl.origin === window.location.origin) {
@@ -181,7 +179,7 @@
     }
     // Default fallback to home (map view)
     else {
-      goto('/');
+      goto("/");
     }
   }
 
@@ -205,7 +203,7 @@
 
     // Check if there's navigation state (from goto calls with state)
     // This is passed when navigating from map or table views
-    if (typeof window !== 'undefined' && window.history.state) {
+    if (typeof window !== "undefined" && window.history.state) {
       navigationState = window.history.state.state || null;
     }
 
@@ -230,11 +228,6 @@
         chain_id: data.chainId || 0,
         duration_seconds: duration,
       });
-    }
-
-    // Clean up polling for this specific chain
-    if (data.chainId) {
-      cleanupChainDataFeed(data.chainId.toString());
     }
   });
 </script>
@@ -273,7 +266,7 @@
       <!-- Tabs Header inside the book -->
       {#if data.bookmarks}
         <div class="tabs-header" bind:this={tabsHeader}>
-          {#each data.bookmarks as group}
+          {#each data.bookmarks as group (group.id)}
             {#if group.id !== "wallets" || chainStatic?.technology?.isEVM}
               <TabButton
                 active={activeTab === group.id}

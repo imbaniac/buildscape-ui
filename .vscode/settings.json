@@ -2,21 +2,21 @@
   // Use the workspace TypeScript version instead of VS Code's built-in version
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
-  
+
   // Svelte language server settings
   "svelte.enable-ts-plugin": true,
   "svelte.plugin.svelte.compilerWarnings": {
     "css-unused-selector": "ignore"
   },
-  
+
   // Ensure Svelte files are treated as TypeScript
   "files.associations": {
     "*.svelte": "svelte"
   },
-  
+
   // Enable experimental features for better Svelte 5 support
   "svelte.plugin.svelte.note-new-transformation": false,
-  
+
   // Format on save for consistency
   "editor.formatOnSave": true,
   "[svelte]": {

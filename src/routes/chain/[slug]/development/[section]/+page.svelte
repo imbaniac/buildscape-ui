@@ -4,9 +4,6 @@
   import DevelopmentTab from "../../../../../components/book/tabs/DevelopmentTab.svelte";
   import SEO from "$lib/components/SEO.svelte";
   import { getContext } from "svelte";
-  import type { PageData } from "./$types";
-
-  let { data }: { data: PageData } = $props();
 
   // Get data from layout
   const layoutData = $derived($page.data);
@@ -20,14 +17,6 @@
 
   // Use chainStatic from context, fallback to layoutData
   const chainStatic = $derived(dynamicData?.chainStatic || layoutData);
-
-  // Map section to readable names
-  const sectionNames: Record<string, string> = {
-    rpcs: "RPC Endpoints",
-    testnets: "Testnets",
-    sdks: "SDKs & Libraries",
-    tools: "Development Tools",
-  };
 
   // SEO metadata - optimized for search queries
   const seoTitle = $derived(() => {

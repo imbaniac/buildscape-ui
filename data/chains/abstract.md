@@ -7,7 +7,7 @@ logo: abstract.svg
 parentOrganization: Abstract Foundation
 website: https://abs.xyz
 launchDate: 2024-01-01
-maxBlockSize: 
+maxBlockSize:
 technology:
   isL2: true
   isEVM: true
@@ -66,29 +66,29 @@ The key difference: Created by the NFT team that sold plushies at Target — bet
 
 **Technical:** ZK rollup using zkSync's ZK Stack, EigenDA for data availability, native account abstraction with passkey/email wallets.
 
-- **Security & Data Availability**  
-  - ZK rollup inheriting Ethereum security via validity proofs.  
-  - Uses EigenDA for data availability instead of Ethereum.  
+- **Security & Data Availability**
+  - ZK rollup inheriting Ethereum security via validity proofs.
+  - Uses EigenDA for data availability instead of Ethereum.
   - Account abstraction built-in with social recovery options.
 
-- **Infra & Execution**  
-  - Built on zkSync's ZK Stack framework.  
-  - Abstract Global Wallet (AGW) with email/passkey login.  
+- **Infra & Execution**
+  - Built on zkSync's ZK Stack framework.
+  - Abstract Global Wallet (AGW) with email/passkey login.
   - Gas can be paid in any token or sponsored by apps.
 
-- **Performance**  
-  - Standard ZK rollup performance characteristics.  
-  - Focus on consumer UX over raw throughput.  
+- **Performance**
+  - Standard ZK rollup performance characteristics.
+  - Focus on consumer UX over raw throughput.
   - Early stage with limited stress testing.
 
-- **Use Cases**  
+- **Use Cases**
   - **The Portal**: App store/streaming platform hybrid claiming 600K MAU (unverified)
   - **Consumer apps**: 100+ apps at launch, mostly simple games and social
   - **Pudgy ecosystem**: PENGU token integration, NFT utilities
   - **Target market**: Non-crypto users via simplified onboarding
 
-- **Trade-offs**  
-  - Brand-new chain with unproven tech stack at scale.  
-  - Relies entirely on zkSync and EigenDA infrastructure.  
-  - Success tied to Pudgy Penguins brand relevance.  
-  - Consumer blockchain thesis unproven — previous attempts failed.  
+- **Trade-offs**
+  - Brand-new chain with unproven tech stack at scale.
+  - Relies entirely on zkSync and EigenDA infrastructure.
+  - Success tied to Pudgy Penguins brand relevance.
+  - Consumer blockchain thesis unproven — previous attempts failed.

@@ -18,7 +18,7 @@ export interface SearchableChain {
  */
 export function searchChains<T extends SearchableChain>(
   chains: Record<string, T> | T[],
-  query: string
+  query: string,
 ): string[] {
   if (!query || query.length < 3) {
     return [];
@@ -29,7 +29,9 @@ export function searchChains<T extends SearchableChain>(
 
   // Handle both Record and Array formats
   const entries = Array.isArray(chains)
-    ? chains.map((chain, index) => [chain.slug || index.toString(), chain] as const)
+    ? chains.map(
+        (chain, index) => [chain.slug || index.toString(), chain] as const,
+      )
     : Object.entries(chains);
 
   for (const [key, chain] of entries) {
@@ -73,15 +75,15 @@ export function searchChains<T extends SearchableChain>(
  */
 export function debounce<T extends (...args: any[]) => void>(
   fn: T,
-  delay: number
+  delay: number,
 ): (...args: Parameters<T>) => void {
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
-  
+
   return (...args: Parameters<T>) => {
     if (timeoutId) {
       clearTimeout(timeoutId);
     }
-    
+
     timeoutId = setTimeout(() => {
       fn(...args);
     }, delay);

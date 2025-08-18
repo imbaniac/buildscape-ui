@@ -14,6 +14,8 @@
   import BoatLoader from "../../components/BoatLoader.svelte";
   import type { PageData } from "./$types";
   import { onMount } from "svelte";
+  import { SvelteMap } from "svelte/reactivity";
+  import type { ChainOverview } from "$lib/api/overview";
 
   let { data }: { data: PageData } = $props();
 
@@ -48,7 +50,7 @@
     const combined = [];
 
     // Create a map of chain data from overview for quick lookup
-    const overviewChainMap = new Map();
+    const overviewChainMap = new SvelteMap<number, ChainOverview>();
     if (overviewStoreState.data?.chains) {
       for (const chainData of overviewStoreState.data.chains) {
         overviewChainMap.set(chainData.chain_id, chainData);

@@ -51,10 +51,7 @@
 
   const dataRangeText = $derived(
     chainDynamic
-      ? formatDateRange(
-          chainDynamic.data_start,
-          chainDynamic.data_end,
-        )
+      ? formatDateRange(chainDynamic.data_start, chainDynamic.data_end)
       : "",
   );
 </script>
@@ -82,7 +79,7 @@
       {/if}
     </h3>
     <div class="metrics-tabs">
-      {#each spans as span}
+      {#each spans as span (span)}
         <button
           class="metric-tab"
           class:active={metricsSpan === span}
@@ -292,6 +289,5 @@
       grid-template-columns: repeat(2, 1fr);
       gap: 0.625rem;
     }
-
   }
 </style>

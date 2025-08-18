@@ -11,6 +11,7 @@ See [LICENSE_ASSETS](../LICENSE_ASSETS) for full details.
 ## Usage Guidelines
 
 If you fork Buildscape:
+
 1. You may need to remove these logos
 2. Or obtain permission from trademark owners
 3. Or replace with your own assets

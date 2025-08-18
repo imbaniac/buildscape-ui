@@ -7,7 +7,7 @@ logo: mantle.svg
 parentOrganization: Mantle Network
 website: https://mantle.xyz
 launchDate: 2023-07-14
-maxBlockSize: 
+maxBlockSize:
 technology:
   isL2: true
   isEVM: true
@@ -87,29 +87,29 @@ The key difference: $3.9B treasury (from BitDAO merger) funding ecosystem growth
 
 **Technical:** Optimistic rollup transitioning to ZK validity rollup via OP Succinct/SP1, EigenDA for data availability, MNT token.
 
-- **Security & Data Availability**  
-  - Still optimistic rollup with 7-day withdrawal period on mainnet.  
-  - First L2 using EigenDA for data availability (80% cheaper than posting to Ethereum).  
+- **Security & Data Availability**
+  - Still optimistic rollup with 7-day withdrawal period on mainnet.
+  - First L2 using EigenDA for data availability (80% cheaper than posting to Ethereum).
   - ZK upgrade with SP1 in testnet, mainnet timeline unclear.
 
-- **Infra & Execution**  
-  - Modular architecture: separate execution, DA, and settlement layers.  
-  - Centralized sequencer (decentralization "on roadmap").  
+- **Infra & Execution**
+  - Modular architecture: separate execution, DA, and settlement layers.
+  - Centralized sequencer (decentralization "on roadmap").
   - MNT as native token, plus mETH/cmETH liquid staking derivatives.
 
-- **Performance**  
-  - Sub-cent transaction fees with EigenDA.  
-  - Standard optimistic rollup throughput currently.  
+- **Performance**
+  - Sub-cent transaction fees with EigenDA.
+  - Standard optimistic rollup throughput currently.
   - After ZK upgrade: 1-hour finality vs 7 days.
 
-- **Use Cases**  
+- **Use Cases**
   - **Treasury-backed DeFi**: $200M EcoFund investing in projects
   - **Liquid staking**: mETH ($335M+ staked), integrated yield products
   - **Stablecoin integrations**: Ethena USDe, Agora AUSD, Ondo USDy
   - **Bitcoin bridge**: fBTC for wrapped Bitcoin liquidity
 
-- **Trade-offs**  
-  - Centralized sequencer with vague decentralization timeline.  
-  - ZK upgrade not live yet — still 7-day withdrawals.  
-  - Success depends on treasury management and DAO governance.  
+- **Trade-offs**
+  - Centralized sequencer with vague decentralization timeline.
+  - ZK upgrade not live yet — still 7-day withdrawals.
+  - Success depends on treasury management and DAO governance.
   - EigenDA adds external dependency and validator assumptions.

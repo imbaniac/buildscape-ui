@@ -1,4 +1,4 @@
-import type { RequestHandler } from './$types';
+import type { RequestHandler } from "./$types";
 
 export const GET: RequestHandler = async () => {
   const robotsTxt = `# Buildscape Robots.txt
@@ -32,8 +32,8 @@ Crawl-delay: 10`;
 
   return new Response(robotsTxt.trim(), {
     headers: {
-      'Content-Type': 'text/plain',
-      'Cache-Control': 'public, max-age=86400' // Cache for 24 hours
-    }
+      "Content-Type": "text/plain",
+      "Cache-Control": "public, max-age=86400", // Cache for 24 hours
+    },
   });
 };

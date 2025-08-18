@@ -11,7 +11,7 @@ export class PerformanceMonitor {
 
   constructor() {
     // Only initialize if in browser
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       this.originalRAF = window.requestAnimationFrame.bind(window);
       this.originalSetInterval = window.setInterval.bind(window);
     }
@@ -22,15 +22,19 @@ export class PerformanceMonitor {
    */
   start(): void {
     // Only run in browser
-    if (typeof window === 'undefined' || !this.originalRAF || !this.originalSetInterval) {
-      console.warn('[PerfMonitor] Cannot start - not in browser environment');
+    if (
+      typeof window === "undefined" ||
+      !this.originalRAF ||
+      !this.originalSetInterval
+    ) {
+      console.warn("[PerfMonitor] Cannot start - not in browser environment");
       return;
     }
 
     // Monitor requestAnimationFrame
     window.requestAnimationFrame = (callback: FrameRequestCallback): number => {
       this.rafCount++;
-      const stack = new Error().stack || '';
+      const stack = new Error().stack || "";
       const id = this.originalRAF!((time) => {
         this.rafCount--;
         this.rafCallbacks.delete(id);
@@ -41,12 +45,19 @@ export class PerformanceMonitor {
     };
 
     // Monitor setInterval
-    window.setInterval = ((handler: TimerHandler, timeout?: number, ...args: any[]) => {
+    window.setInterval = ((
+      handler: TimerHandler,
+      timeout?: number,
+      ...args: any[]
+    ) => {
       this.intervalCount++;
-      const stack = new Error().stack || '';
+      const stack = new Error().stack || "";
       const id = this.originalSetInterval!(handler, timeout, ...args);
       this.activeIntervals.add(id);
-      console.log(`[PerfMonitor] New interval created (ID: ${id}):`, { timeout, stack });
+      console.log(`[PerfMonitor] New interval created (ID: ${id}):`, {
+        timeout,
+        stack,
+      });
       return id;
     }) as any;
 
@@ -86,25 +97,26 @@ export class PerformanceMonitor {
    */
   logState(): void {
     const metrics = this.getMetrics();
-    console.log('[PerfMonitor] Current state:', {
+    console.log("[PerfMonitor] Current state:", {
       activeRAFs: metrics.rafCount,
       activeIntervals: metrics.intervalCount,
       intervalIDs: metrics.activeIntervals,
     });
-    
+
     if (metrics.rafCount > 0) {
       // Parse stack traces to find the actual source
-      const sources = metrics.rafStacks.map(stack => {
-        const lines = stack.split('\n');
+      const sources = metrics.rafStacks.map((stack) => {
+        const lines = stack.split("\n");
         // Look for the first non-PerformanceMonitor line
-        const sourceLine = lines.find(line => 
-          !line.includes('PerformanceMonitor') && 
-          !line.includes('window.requestAnimationFrame') &&
-          line.includes('at ')
+        const sourceLine = lines.find(
+          (line) =>
+            !line.includes("PerformanceMonitor") &&
+            !line.includes("window.requestAnimationFrame") &&
+            line.includes("at "),
         );
-        return sourceLine ? sourceLine.trim() : 'Unknown source';
+        return sourceLine ? sourceLine.trim() : "Unknown source";
       });
-      console.log('[PerfMonitor] RAF sources:', sources);
+      console.log("[PerfMonitor] RAF sources:", sources);
     }
   }
 
@@ -112,7 +124,11 @@ export class PerformanceMonitor {
    * Stop monitoring and restore original functions
    */
   stop(): void {
-    if (typeof window !== 'undefined' && this.originalRAF && this.originalSetInterval) {
+    if (
+      typeof window !== "undefined" &&
+      this.originalRAF &&
+      this.originalSetInterval
+    ) {
       window.requestAnimationFrame = this.originalRAF;
       window.setInterval = this.originalSetInterval;
     }
@@ -120,4 +136,5 @@ export class PerformanceMonitor {
 }
 
 // Global instance - only create in browser
-export const perfMonitor = typeof window !== 'undefined' ? new PerformanceMonitor() : null;
+export const perfMonitor =
+  typeof window !== "undefined" ? new PerformanceMonitor() : null;

@@ -4,10 +4,9 @@
   import SEO from "$lib/components/SEO.svelte";
   import { getContext } from "svelte";
 
-
   // Get data from layout
   const layoutData = $derived($page.data);
-  
+
   // Get dynamic data from context (set by layout)
   const dynamicData = getContext<{
     chainStatic: any;
@@ -35,12 +34,12 @@
   // Rich, intent-driven descriptions with actual chain description when available
   const seoDescription = $derived(() => {
     const name = chainStatic?.name || layoutData.name;
-    if (!name)
-      return "Explore blockchain metrics and resources on Buildscape";
+    if (!name) return "Explore blockchain metrics and resources on Buildscape";
 
     const chainId = chainStatic?.chainId || layoutData.chainId;
     const nativeCurrency = chainStatic?.nativeCurrency || "ETH";
-    const isEVM = chainStatic?.technology?.isEVM || layoutData.technology?.isEVM;
+    const isEVM =
+      chainStatic?.technology?.isEVM || layoutData.technology?.isEVM;
     const isL2 = chainStatic?.technology?.isL2 || layoutData.technology?.isL2;
 
     // Use actual description if available and truncate to ~160 chars for SEO

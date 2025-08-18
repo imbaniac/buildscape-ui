@@ -68,31 +68,31 @@ Former JavaScript blockchain that pivoted to become an L2 focused on bringing cr
 
 **Technical:** OP Stack rollup optimized for low-cost transactions, part of the Optimism Superchain.
 
-- **Security & Data Availability**  
+- **Security & Data Availability**
   - Standard optimistic rollup with 7-day withdrawal period
   - Centralized sequencer with decentralization roadmap
   - Fault proofs implementation planned
   - Secured by Ethereum L1 via fraud proofs
 
-- **Infra & Execution**  
+- **Infra & Execution**
   - Built on OP Stack, fully EVM-compatible
   - Part of Optimism Superchain for cross-chain composability
   - Transitioned from JavaScript L1 to EVM for broader compatibility
   - Transaction fees under $0.01
 
-- **Performance**  
+- **Performance**
   - Standard L2 throughput and latency
   - Low congestion due to early-stage adoption
   - Growing through targeted incentive programs
   - African Blockchain Incubation Hub supporting local builders
 
-- **Use Cases**  
+- **Use Cases**
   - **Emerging market solutions**: Focus on real problems in Africa/Southeast Asia
   - **RWA tokenization**: Partnerships with Backed and Obligate
   - **Builder programs**: 3.65M LSK grants with 95% going directly to developers
   - **Financial inclusion**: Low fees enable microtransactions and remittances
 
-- **Trade-offs**  
+- **Trade-offs**
   - Still building ecosystem after L1-to-L2 transition
   - Emerging markets focus means different growth trajectory
   - Competing with other OP Stack chains for developers

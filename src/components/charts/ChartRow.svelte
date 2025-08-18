@@ -18,7 +18,10 @@
 
   interface Props {
     chain: Chain;
-    formatValue: (value: number | undefined, type: "tvl" | "tps" | "gas" | "count" | "blockTime") => string;
+    formatValue: (
+      value: number | undefined,
+      type: "tvl" | "tps" | "gas" | "count" | "blockTime",
+    ) => string;
     onClick: () => void;
   }
 
@@ -78,7 +81,8 @@
     <span class="value-text">{formatValue(chain.transactions, "count")}</span>
   </td>
   <td class="chain-addresses">
-    <span class="value-text">{formatValue(chain.activeAddresses, "count")}</span>
+    <span class="value-text">{formatValue(chain.activeAddresses, "count")}</span
+    >
   </td>
   <td class="chain-contracts">
     <span class="value-text">{formatValue(chain.contracts, "count")}</span>
@@ -334,13 +338,13 @@
     color: #4a4742;
     min-width: 110px;
   }
-  
+
   .chain-addresses {
     text-align: right;
     color: #4a4742;
     min-width: 100px;
   }
-  
+
   .chain-contracts {
     text-align: right;
     color: #4a4742;
@@ -422,12 +426,15 @@
     .chain-name {
       min-width: 200px;
     }
-    
-    .chain-tvl, .chain-tps {
+
+    .chain-tvl,
+    .chain-tps {
       min-width: 70px;
     }
-    
-    .chain-transactions, .chain-addresses, .chain-contracts {
+
+    .chain-transactions,
+    .chain-addresses,
+    .chain-contracts {
       min-width: 80px;
     }
 
@@ -448,7 +455,7 @@
     .name-text {
       font-size: 0.9rem;
     }
-    
+
     .chain-id-text {
       font-size: 0.7rem;
     }
@@ -457,7 +464,12 @@
       font-size: 0.85rem;
     }
 
-    .chain-tvl, .chain-tps, .chain-block-time, .chain-transactions, .chain-addresses, .chain-contracts {
+    .chain-tvl,
+    .chain-tps,
+    .chain-block-time,
+    .chain-transactions,
+    .chain-addresses,
+    .chain-contracts {
       text-align: right;
     }
 
@@ -475,7 +487,7 @@
       font-size: 0.9rem;
     }
   }
-  
+
   @media (max-width: 480px) {
     .chart-row td {
       padding: 0.5rem 0.35rem;
@@ -494,7 +506,7 @@
     .name-text {
       font-size: 0.85rem;
     }
-    
+
     .chain-id-text {
       font-size: 0.65rem;
     }

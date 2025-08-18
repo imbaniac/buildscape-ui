@@ -93,32 +93,31 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-
 The DAO infrastructure chain where gas costs a fraction of a penny and Gnosis Safe was born. First stable-dollar blockchain (xDAI as gas), now the only chain with built-in MEV protection via Shutter Protocol's encrypted mempool. If you're building DAO tools or need predictable costs over performance, this is your home.
 
 **Best for:** DAO tooling, multisigs, governance systems, treasury management, apps needing stable $0.001 tx costs.
 
 **Technical:** An Ethereum sidechain with full EVM compatibility, Proof-of-Stake consensus, and low gas costs. Prioritizes accessibility and stability over throughput or trust-minimization.
 
-- **Consensus & Finality**  
-  - Beacon-style PoS with ~100k validators (4% run Shutter nodes for MEV protection).  
-  - ~5s block times, finality after ~6.5 minutes.  
+- **Consensus & Finality**
+  - Beacon-style PoS with ~100k validators (4% run Shutter nodes for MEV protection).
+  - ~5s block times, finality after ~6.5 minutes.
   - Not a rollup — pure sidechain with no Ethereum security guarantees.
 
-- **Performance**  
-  - ~5 TPS typical, peaks around 80 TPS.  
-  - Finality slower than L2s.  
+- **Performance**
+  - ~5 TPS typical, peaks around 80 TPS.
+  - Finality slower than L2s.
   - Gas fees consistently low (~$0.001–0.01 per tx).
 
-- **Use Cases**  
+- **Use Cases**
   - **Gnosis Safe origin**: Where the dominant multisig wallet was developed and tested
   - **DAO infrastructure**: SafeDAO, GnosisDAO treasury (150k ETH, 8M GNO managed)
   - **Shutter Protocol**: First chain with encrypted mempool preventing MEV (live July 2024)
   - **DeFi on stable gas**: Spark Protocol, Curve, SushiSwap with predictable costs
-  - **RealT tokenization**: Real estate tokens, POAP NFTs, low-value high-frequency txs  
+  - **RealT tokenization**: Real estate tokens, POAP NFTs, low-value high-frequency txs
 
-- **Trade-offs**  
-  - Finality is slow (~6 min) and not anchored to Ethereum.  
-  - Not suitable for high-frequency apps (games, DeFi protocols, real-time UX).  
-  - Validator set is large but governance is still GnosisDAO-coordinated.  
+- **Trade-offs**
+  - Finality is slow (~6 min) and not anchored to Ethereum.
+  - Not suitable for high-frequency apps (games, DeFi protocols, real-time UX).
+  - Validator set is large but governance is still GnosisDAO-coordinated.
   - No fraud/fault proofs or trustless bridge guarantees.

@@ -1,7 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import type { WalletsByCategory } from "$lib/types";
-  import SkeletonLoader from "../SkeletonLoader.svelte";
 
   interface Props {
     walletsByCategory: WalletsByCategory;
@@ -19,9 +18,10 @@
     import: "default",
   });
 
-
   // Resolve wallet logo URL
-  async function resolveWalletLogo(walletName: string): Promise<string | undefined> {
+  async function resolveWalletLogo(
+    walletName: string,
+  ): Promise<string | undefined> {
     // Normalize wallet name for matching
     let normalizedName = walletName.toLowerCase();
 
@@ -53,14 +53,16 @@
   async function loadAllLogos() {
     const logoPromises: Promise<void>[] = [];
 
-    for (const [category, categoryWallets] of Object.entries(walletsByCategory)) {
+    for (const [category, categoryWallets] of Object.entries(
+      walletsByCategory,
+    )) {
       for (let i = 0; i < categoryWallets.length; i++) {
         const wallet = categoryWallets[i];
         const walletKey = `${category}-${wallet.name}`;
-        
+
         // Mark as loading
         logoLoadingStates[walletKey] = true;
-        
+
         // Create promise for this logo
         const logoPromise = resolveWalletLogo(wallet.name).then((logoUrl) => {
           // Update the wallet logo when loaded
@@ -70,7 +72,7 @@
           // Mark as loaded
           logoLoadingStates[walletKey] = false;
         });
-        
+
         logoPromises.push(logoPromise);
       }
     }
@@ -91,16 +93,20 @@
   </div>
 {:else}
   <div class="wallets-section">
-    {#each Object.entries(walletsWithLogos) as [category, wallets]}
+    {#each Object.entries(walletsWithLogos) as [category, wallets] (category)}
       {#if wallets.length > 0}
         <div class="wallet-category">
           <h4 class="category-title">{category}</h4>
           <div class="wallets-grid">
-            {#each wallets as wallet}
+            {#each wallets as wallet (wallet.name)}
               {@const walletKey = `${category}-${wallet.name}`}
               <a href={wallet.url} target="_blank" class="wallet-item">
                 {#if wallet.logo}
-                  <img src={wallet.logo} alt={wallet.name} class="wallet-logo" />
+                  <img
+                    src={wallet.logo}
+                    alt={wallet.name}
+                    class="wallet-logo"
+                  />
                 {:else if logoLoadingStates[walletKey]}
                   <div class="wallet-logo-skeleton"></div>
                 {:else}

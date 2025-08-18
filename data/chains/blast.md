@@ -4,7 +4,7 @@ chainId: 81457
 nativeCurrency: ETH
 color: "#FCFC03"
 logo: blast.svg
-parentOrganization: 
+parentOrganization:
 website: https://blast.io
 launchDate: 2024-02-29
 maxBlockSize: 30
@@ -125,31 +125,31 @@ The L2 that pays you yield just for holding ETH and stablecoins — no staking n
 
 **Technical:** Modified OP Stack that auto-stakes bridge funds and implements rebasing token balances.
 
-- **Security & Data Availability**  
+- **Security & Data Availability**
   - Optimistic rollup but fraud proofs aren't live yet
   - Fully centralized sequencer control
   - Contracts upgradeable instantly via multisig
   - Your funds are actively at risk in external DeFi protocols
 
-- **Infra & Execution**  
+- **Infra & Execution**
   - OP Stack heavily modified for native yield
   - Bridge ETH goes into liquid staking tokens
   - Stablecoins deployed to T-Bill protocols
   - Balances automatically rebase (increase) in your wallet
 
-- **Performance**  
+- **Performance**
   - Can handle high TPS but actual usage is low
   - 2-second block times
   - Had massive TVL at launch, lost most after airdrop
   - Currently minimal organic activity
 
-- **Use Cases**  
+- **Use Cases**
   - **Passive yield**: Your ETH/USDB earn ~4-5% doing nothing
   - **Yield-first apps**: Build assuming users already earn baseline yield
   - **High-risk DeFi**: Leverage the native yield for experiments
   - **Fantasy.top**: One of the few apps with real users
 
-- **Trade-offs**  
+- **Trade-offs**
   - Your bridge funds are in DeFi protocols (can be hacked or lose value)
   - No fraud proofs means trusting sequencer completely
   - Can be upgraded instantly (rug risk)

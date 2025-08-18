@@ -80,29 +80,29 @@ The key difference: Built on Cosmos SDK with IBC bridges to Cosmos ecosystem, wh
 
 **Technical:** Cosmos SDK chain with Ethermint EVM, Tendermint consensus, ~30 permissioned validators, IBC enabled.
 
-- **Security & Data Availability**  
-  - Tendermint PoA consensus with ~30 validators selected by Crypto.com.  
-  - 5-6 second finality, not decentralized — validators are permissioned.  
+- **Security & Data Availability**
+  - Tendermint PoA consensus with ~30 validators selected by Crypto.com.
+  - 5-6 second finality, not decentralized — validators are permissioned.
   - All data on-chain (unlike zkEVM's off-chain Validium).
 
-- **Infra & Execution**  
-  - Cosmos SDK with Ethermint-based EVM module.  
-  - IBC enabled for Cosmos ecosystem bridges.  
+- **Infra & Execution**
+  - Cosmos SDK with Ethermint-based EVM module.
+  - IBC enabled for Cosmos ecosystem bridges.
   - Some EVM quirks due to Cosmos backend (WebSocket issues, event indexing).
 
-- **Performance**  
-  - Few hundred TPS real throughput.  
-  - Low stable fees ($0.01-0.10).  
+- **Performance**
+  - Few hundred TPS real throughput.
+  - Low stable fees ($0.01-0.10).
   - 5 second block times.
 
-- **Use Cases**  
+- **Use Cases**
   - **Major DeFi**: VVS Finance (largest AMM), Tectonic (lending), MM Finance
   - **Established ecosystem**: $500M+ TVL, mature protocols since 2021
   - **Cosmos connectivity**: IBC bridges to entire Cosmos ecosystem
   - **Crypto.com integration**: Direct fiat onramps from exchange
 
-- **Trade-offs**  
-  - Centralized validators controlled by Crypto.com.  
-  - Older tech stack compared to modern L2s.  
-  - Cosmos-based quirks affect some Ethereum tooling.  
+- **Trade-offs**
+  - Centralized validators controlled by Crypto.com.
+  - Older tech stack compared to modern L2s.
+  - Cosmos-based quirks affect some Ethereum tooling.
   - Not an Ethereum L2 — separate security model.

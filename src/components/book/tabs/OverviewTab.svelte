@@ -27,7 +27,7 @@
     <div>
       <p>This blockchain supports the following smart contract languages:</p>
       <div class="languages-grid">
-        {#each chainStatic.contractLanguages as lang}
+        {#each chainStatic.contractLanguages as lang (lang.name)}
           <a
             href={lang.url}
             target="_blank"

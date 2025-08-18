@@ -1,6 +1,7 @@
 # Chain Description Update Guide
 
 ## Goal
+
 Update chain descriptions to be more user-friendly while preserving technical details for builders. Cut through marketing bullshit and show what each chain REALLY offers.
 
 ## Structure for Each Chain
@@ -19,16 +20,12 @@ The key difference: [What makes this chain unique vs competitors]
 
 - **Security & Data Availability**
   [Keep existing structure but update if needed]
-  
 - **Infra & Execution**  
   [Keep existing structure but update if needed]
-  
 - **Performance**  
   [Keep existing structure but update if needed]
-  
 - **Use Cases**  
   [Update with SPECIFIC examples: real apps, protocols, use patterns]
-  
 - **Trade-offs**  
   [Keep existing structure - be honest about limitations]
 ```
@@ -45,16 +42,19 @@ The key difference: [What makes this chain unique vs competitors]
 ## Examples of Good Differentiators
 
 ### zkEVMs
+
 - **Scroll**: Prioritizes 100% Ethereum compatibility, no code changes needed
 - **zkSync Era**: Custom VM for faster proofs, requires special compiler
 - **Polygon zkEVM**: Balances compatibility and performance
 
-### Optimistic Rollups  
+### Optimistic Rollups
+
 - **Base**: Coinbase integration, fiat onramps, consumer apps focus
 - **Arbitrum**: Largest ecosystem, most mature
 - **Optimism**: Public goods funding, Superchain vision
 
 ### Special Cases
+
 - **Lisk**: Was JavaScript L1, now Optimism L2 focused on emerging markets
 - **Immutable**: Gaming-specific optimizations
 - **Mantle**: Treasury-backed, uses ETH + MNT for gas

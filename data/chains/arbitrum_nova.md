@@ -42,7 +42,7 @@ testnets:
     chainId: 421614
     url: https://sepolia.arbiscan.io
     description: Arbitrum's Sepolia testnet for deploying and testing applications on Arbitrum Nova.
-    faucets: 
+    faucets:
       - https://www.alchemy.com/faucets/arbitrum-sepolia
       - https://faucets.chain.link/arbitrum-sepolia
       - https://faucet.quicknode.com/arbitrum
@@ -190,29 +190,29 @@ The key difference: Nova uses a Data Availability Committee (Google Cloud, Reddi
 
 **Technical:** AnyTrust protocol with off-chain data availability via committee, ~250ms blocks, fallback to rollup mode if DAC fails.
 
-- **Security & Data Availability**  
-  - Uses AnyTrust protocol with Data Availability Committee (DAC) of 7 members including Google Cloud, Reddit, ConsenSys.  
-  - Requires only 2 honest DAC members to function; falls back to full rollup mode if DAC fails.  
+- **Security & Data Availability**
+  - Uses AnyTrust protocol with Data Availability Committee (DAC) of 7 members including Google Cloud, Reddit, ConsenSys.
+  - Requires only 2 honest DAC members to function; falls back to full rollup mode if DAC fails.
   - Fraud proofs same as Arbitrum One, but data stored off-chain via committee signatures.
 
-- **Infra & Execution**  
-  - Built on Arbitrum Nitro stack with WASM-based execution and Stylus support.  
-  - ~250ms block times, optimized for high-frequency, low-value transactions.  
+- **Infra & Execution**
+  - Built on Arbitrum Nitro stack with WASM-based execution and Stylus support.
+  - ~250ms block times, optimized for high-frequency, low-value transactions.
   - Centralized sequencer operated by Offchain Labs.
 
-- **Performance**  
-  - Sub-penny transaction fees (typically <$0.01), 90%+ cheaper than Arbitrum One.  
-  - Handles millions of daily transactions for social and gaming use cases.  
+- **Performance**
+  - Sub-penny transaction fees (typically <$0.01), 90%+ cheaper than Arbitrum One.
+  - Handles millions of daily transactions for social and gaming use cases.
   - Throughput depends on sequencer capacity and DAC performance.
 
-- **Use Cases**  
+- **Use Cases**
   - **Gaming ecosystems**: Treasure DAO (The Beacon, BattleFly), web3 games needing cheap on-chain actions
   - **Reddit Community Points**: MOON and BRICK tokens for r/CryptoCurrency and r/Fortnite rewards
   - **Social platforms**: High-volume token distributions, tipping systems, community rewards
   - **NFT projects**: Collections prioritizing low minting costs over DeFi integration
 
-- **Trade-offs**  
-  - DAC trust assumptions — not fully decentralized like Arbitrum One.  
-  - Limited DeFi ecosystem — most liquidity stays on Arbitrum One for security.  
-  - Centralized sequencer with potential censorship risk.  
-  - Less composable — isolated from main DeFi protocols.  
+- **Trade-offs**
+  - DAC trust assumptions — not fully decentralized like Arbitrum One.
+  - Limited DeFi ecosystem — most liquidity stays on Arbitrum One for security.
+  - Centralized sequencer with potential censorship risk.
+  - Less composable — isolated from main DeFi protocols.

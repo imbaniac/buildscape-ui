@@ -77,29 +77,29 @@ The key difference: True sidechain architecture, not a rollup — runs parallel 
 
 **Technical:** EVM sidechain with merged mining (81% of Bitcoin hashpower), federation-controlled two-way peg, 30-second blocks.
 
-- **Security & Data Availability**  
-  - Merged mining with Bitcoin — 740+ exahashes/second securing the network.  
-  - DECOR+ protocol prevents mining centralization issues.  
+- **Security & Data Availability**
+  - Merged mining with Bitcoin — 740+ exahashes/second securing the network.
+  - DECOR+ protocol prevents mining centralization issues.
   - Powpeg federation uses hardware security modules (HSMs) for bridge control.
 
-- **Infra & Execution**  
-  - Full EVM compatibility via RVM — deploy unchanged Solidity contracts.  
-  - Gas paid in RBTC (1:1 pegged to BTC).  
+- **Infra & Execution**
+  - Full EVM compatibility via RVM — deploy unchanged Solidity contracts.
+  - Gas paid in RBTC (1:1 pegged to BTC).
   - Transaction fees down 60% in 2025, making it competitive with newer L2s.
 
-- **Performance**  
-  - 300+ TPS capability (though typical usage much lower).  
-  - 30-second block times — slower than modern L2s but predictable.  
+- **Performance**
+  - 300+ TPS capability (though typical usage much lower).
+  - 30-second block times — slower than modern L2s but predictable.
   - Peg-in/out takes 24-36 hours — optimized for security over speed.
 
-- **Use Cases**  
+- **Use Cases**
   - **Sovryn**: Bitcoin-native DEX and lending protocol
   - **Money On Chain**: Dollar On Chain (DOC) — only 100% BTC-backed stablecoin
   - **150+ ecosystem partners**: Established DeFi on Bitcoin since 2018
   - **Mining revenue**: Miners earn additional rewards without extra hardware
 
-- **Trade-offs**  
-  - Federation-controlled bridge — not fully trustless like newer BitVM designs.  
-  - 30-second blocks feel slow vs sub-second modern L2s.  
-  - Smaller ecosystem than newer Bitcoin L2s despite being oldest.  
+- **Trade-offs**
+  - Federation-controlled bridge — not fully trustless like newer BitVM designs.
+  - 30-second blocks feel slow vs sub-second modern L2s.
+  - Smaller ecosystem than newer Bitcoin L2s despite being oldest.
   - Sidechain model less capital efficient than rollups.

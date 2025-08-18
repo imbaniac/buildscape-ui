@@ -162,22 +162,22 @@ The original Polygon chain that kickstarted L2 adoption — now a mature sidecha
 
 **Technical:** An EVM-compatible proof-of-stake sidechain optimized for low fees, high throughput, and broad dApp deployment.
 
-- **Consensus & Finality**  
-  - Validators stake POL (formerly MATIC) to secure the network, ~100+ active validators.  
-  - Fast block times (~2 seconds) with checkpoints to Ethereum every ~30 minutes.  
+- **Consensus & Finality**
+  - Validators stake POL (formerly MATIC) to secure the network, ~100+ active validators.
+  - Fast block times (~2 seconds) with checkpoints to Ethereum every ~30 minutes.
   - Not a rollup — security depends on validator honesty, not Ethereum proofs.
 
-- **Infra & Execution**  
+- **Infra & Execution**
   - No fraud or validity proofs; state is secured by periodic checkpoints submitted to Ethereum.
   - Runs on a hybrid system using Tendermint-based consensus and Ethereum-like execution.
 
-- **Use Cases**  
+- **Use Cases**
   - **NFT ecosystem**: OpenSea, Reddit Collectibles, major gaming NFTs
   - **DeFi**: Aave, QuickSwap, Balancer with deep liquidity
   - **Future**: Transitioning to zkEVM validium to join AggLayer with ZK security
 
-- **Trade-offs**  
-  - No rollup-grade security — lacks fraud or zk-proof guarantees.  
-  - Validator collusion is possible; exit security relies on checkpointing regularity and honesty.  
-  - Governance and upgrades are team-led — not fully decentralized.  
+- **Trade-offs**
+  - No rollup-grade security — lacks fraud or zk-proof guarantees.
+  - Validator collusion is possible; exit security relies on checkpointing regularity and honesty.
+  - Governance and upgrades are team-led — not fully decentralized.
   - DA and sequencing are not trust-minimized — no fallback if validators fail.

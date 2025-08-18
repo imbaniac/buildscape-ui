@@ -1,0 +1,16 @@
+node_modules
+.svelte-kit
+build
+dist
+.env
+.env.*
+package-lock.json
+bun.lockb
+yarn.lock
+package.json
+tsconfig.json
+commitlint.config.js
+eslint.config.js
+
+# Ignore files with specific Svelte patterns that Prettier can't handle
+src/lib/components/SEO.svelte

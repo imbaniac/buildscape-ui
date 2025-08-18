@@ -7,12 +7,18 @@
     icon?: string;
   }
 
-  let { active = false, onclick, brandColor = '#3b82f6', children, icon }: Props = $props();
+  let {
+    active = false,
+    onclick,
+    brandColor = "#3b82f6",
+    children,
+    icon,
+  }: Props = $props();
 </script>
 
-<button 
-  class="tab-button" 
-  class:active 
+<button
+  class="tab-button"
+  class:active
   {onclick}
   style="--brand-color: {brandColor}"
 >
@@ -48,7 +54,7 @@
     white-space: nowrap;
     overflow: hidden;
   }
-  
+
   .tab-content {
     position: relative;
     display: flex;
@@ -57,13 +63,13 @@
     gap: 0.5rem;
     z-index: 1;
   }
-  
+
   .tab-icon {
     font-size: 1.125rem;
     opacity: 0.7;
     transition: opacity 0.2s;
   }
-  
+
   .tab-glow {
     display: none;
   }
@@ -85,7 +91,7 @@
     color: #334155;
     background: rgba(248, 250, 252, 0.5);
   }
-  
+
   .tab-button:hover .tab-icon {
     opacity: 0.85;
   }
@@ -95,7 +101,7 @@
     font-weight: 600;
     background: transparent;
   }
-  
+
   .tab-button.active .tab-icon {
     opacity: 1;
   }

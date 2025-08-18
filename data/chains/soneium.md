@@ -6,7 +6,7 @@ color: "#F5F6F9"
 logo: soneium.svg
 parentOrganization: Sony Block Solutions Labs
 website: https://soneium.org
-launchDate: 
+launchDate:
 maxBlockSize: 30
 technology:
   type: Optimistic Rollup
@@ -70,30 +70,30 @@ The key difference: Built-in IP protection system that restricts contracts suspe
 
 **Technical:** OP Stack optimistic rollup with IP protection layer, RPC-level contract restrictions, curated application ecosystem.
 
-- **Security & Data Availability**  
-  - Optimistic rollup on OP Stack with standard 7-day withdrawal period.  
-  - Centralized sequencer operated by Sony Block Solutions Labs.  
+- **Security & Data Availability**
+  - Optimistic rollup on OP Stack with standard 7-day withdrawal period.
+  - Centralized sequencer operated by Sony Block Solutions Labs.
   - Fraud proofs limited to authorized actors, not permissionless.
 
-- **Infra & Execution**  
-  - EVM-equivalent with OP Stack and Superchain compatibility.  
-  - IP protection system flags suspected infringing contracts.  
+- **Infra & Execution**
+  - EVM-equivalent with OP Stack and Superchain compatibility.
+  - IP protection system flags suspected infringing contracts.
   - Restrictions apply at RPC level; direct L1 submission possible with delays.
 
-- **Performance**  
-  - Processes ~8 operations per second on average.  
-  - Low fees (typically <$0.001 per transaction).  
+- **Performance**
+  - Processes ~8 operations per second on average.
+  - Low fees (typically <$0.001 per transaction).
   - Batch intervals: ~9 minutes for transactions, ~2 hours for state updates.
 
-- **Use Cases**  
+- **Use Cases**
   - **Entertainment IP**: Sony Music/Pictures NFTs, anime titles like Solo Leveling
   - **Event management**: On-chain ticketing, fan engagement platforms
   - **Curated ecosystem**: Soneium Spark selected 32 apps from 1,700+ applicants
   - **Corporate Web3**: Applications requiring IP compliance and content controls
 
-- **Trade-offs**  
-  - Blocked popular meme coins on launch, freezing ~$100k in user funds.  
-  - Contract restrictions prevent permissionless deployment.  
-  - RPC-level controls make flagged contracts invisible on explorers.  
-  - 12-hour delay required to bypass restrictions via L1.  
+- **Trade-offs**
+  - Blocked popular meme coins on launch, freezing ~$100k in user funds.
+  - Contract restrictions prevent permissionless deployment.
+  - RPC-level controls make flagged contracts invisible on explorers.
+  - 12-hour delay required to bypass restrictions via L1.
   - Philosophy conflicts with crypto's permissionless ethos.

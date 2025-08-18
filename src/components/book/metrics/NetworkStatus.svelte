@@ -1,6 +1,5 @@
 <script lang="ts">
   import { formatNumberWithCommas } from "$lib/utils/formatters";
-  import Tooltip from "../ui/Tooltip.svelte";
   import SkeletonLoader from "../ui/SkeletonLoader.svelte";
   import ResourcePanel from "./ResourcePanel.svelte";
 

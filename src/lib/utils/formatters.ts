@@ -20,7 +20,7 @@ export function formatNumberWithCommas(num: number | string): string {
 
 export function formatTVL(value: number | undefined): string {
   if (!value || value === 0) return "—";
-  
+
   // For values >= $1B, show in billions
   if (value >= 1e9) {
     return `$${(value / 1e9).toFixed(1)}B`;

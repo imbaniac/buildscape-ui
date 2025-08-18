@@ -7,11 +7,13 @@ This directory contains blockchain profile data for Buildscape.
 All content in this `/data` directory is licensed under the **Creative Commons Attribution-ShareAlike 4.0 International License (CC BY-SA 4.0)**.
 
 This means you are free to:
+
 - ✅ Share — copy and redistribute the material
 - ✅ Adapt — remix, transform, and build upon the material
 - ✅ Use commercially — even for commercial purposes
 
 Under these conditions:
+
 - 📝 **Attribution** — You must credit Buildscape and contributors
 - 🔄 **ShareAlike** — Modified versions must use the same CC BY-SA 4.0 license
 
@@ -58,7 +60,6 @@ technology:
   consensus: proof-of-stake
 # ... other metadata
 ---
-
 Chain description in markdown...
 ```
 

@@ -6,8 +6,8 @@ color: "#210043"
 logo: immutable_zkevm.svg
 parentOrganization: Immutable
 website: https://www.immutable.com
-launchDate: 
-maxBlockSize: 
+launchDate:
+maxBlockSize:
 technology:
   isL2: true
   isEVM: true
@@ -64,33 +64,33 @@ L2 built specifically for games, with gas-free transactions for players and buil
 
 **Technical:** A ZK-rollup built on Polygon's CDK, focused on gaming and NFT-specific infrastructure with EVM compatibility.
 
-- **Security & Data Availability**  
-  - Uses ZK proofs for state correctness — transactions are verified before being finalized.  
-  - Data availability is off-chain and centralized; no Ethereum calldata fallback or DA guarantees.  
-  - Exit safety depends on sequencer honesty and uptime; no enforced fallback mechanisms.  
+- **Security & Data Availability**
+  - Uses ZK proofs for state correctness — transactions are verified before being finalized.
+  - Data availability is off-chain and centralized; no Ethereum calldata fallback or DA guarantees.
+  - Exit safety depends on sequencer honesty and uptime; no enforced fallback mechanisms.
 
-- **Sequencer & Governance**  
-  - Sequencer is centralized and contract upgrades are not timelocked.  
-  - Governance and upgrade control sit with the Immutable team.  
-  - IMX is used for gas and staking, but validator decentralization does not yet exist.  
+- **Sequencer & Governance**
+  - Sequencer is centralized and contract upgrades are not timelocked.
+  - Governance and upgrade control sit with the Immutable team.
+  - IMX is used for gas and staking, but validator decentralization does not yet exist.
 
-- **Performance**  
-  - High transaction throughput optimized for gaming patterns (item trades, battles, rewards).  
-  - Gas-free for players through sponsored transactions (studios pay).  
-  - Fast block times and batch proofs for responsive gameplay.  
+- **Performance**
+  - High transaction throughput optimized for gaming patterns (item trades, battles, rewards).
+  - Gas-free for players through sponsored transactions (studios pay).
+  - Fast block times and batch proofs for responsive gameplay.
 
-- **Tooling & Dev Experience**  
-  - Integrated with gaming SDKs, onchain orderbook infra, and Immutable Passport (non-custodial auth).  
-  - Contract deployment and indexing flows are streamlined for game devs.  
+- **Tooling & Dev Experience**
+  - Integrated with gaming SDKs, onchain orderbook infra, and Immutable Passport (non-custodial auth).
+  - Contract deployment and indexing flows are streamlined for game devs.
 
-- **Use Cases**  
+- **Use Cases**
   - **Major games**: Gods Unchained (migrating), Guild of Guardians, Illuvium, Space Nation
   - **Gaming infrastructure**: Immutable Passport (wallets), Orderbook (marketplace), game-specific SDKs
   - **Player features**: Gas-free transactions, simplified onboarding, cross-game asset trading
   - **Studio benefits**: Pre-built gaming stack, no blockchain expertise needed
 
-- **Trade-offs**  
-  - Centralized sequencer and DA — not trust-minimized.  
-  - Exit mechanisms depend on uptime and behavior of the Immutable-run infra.  
-  - Contract upgrades can be immediate, introducing governance and stability risk.  
-  - Ecosystem is specialized; limited general-purpose DeFi or non-gaming infrastructure. 
+- **Trade-offs**
+  - Centralized sequencer and DA — not trust-minimized.
+  - Exit mechanisms depend on uptime and behavior of the Immutable-run infra.
+  - Contract upgrades can be immediate, introducing governance and stability risk.
+  - Ecosystem is specialized; limited general-purpose DeFi or non-gaming infrastructure.

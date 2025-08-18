@@ -3,19 +3,16 @@
   import ResourcesTab from "../../../../components/book/tabs/ResourcesTab.svelte";
   import SEO from "$lib/components/SEO.svelte";
   import { getContext } from "svelte";
-  import type { PageData } from "./$types";
-
-  let { data }: { data: PageData } = $props();
 
   // Get data from layout
   const layoutData = $derived($page.data);
   const bookmarks = $derived(layoutData.bookmarks);
-  
+
   // Get dynamic data from context (set by layout)
   const dynamicData = getContext<{
     chainStatic: any;
   }>("chainDynamicData");
-  
+
   // Use chainStatic from context, fallback to layoutData
   const chainStatic = $derived(dynamicData?.chainStatic || layoutData);
 
@@ -28,16 +25,16 @@
 
   const seoDescription = $derived(() => {
     const name = chainStatic?.name || layoutData.name;
-    
+
     if (!name) return "Access blockchain resources and documentation";
-    
+
     return `${name} documentation, developer guides, and resources. Access ${name} docs, community forums, GitHub repositories, whitepapers, and technical specifications for building on ${name}.`;
   });
-  
+
   const seoKeywords = $derived(() => {
     const name = chainStatic?.name || layoutData.name;
     if (!name) return "";
-    
+
     return `${name} documentation, ${name} docs, ${name} developer guide, ${name} resources, ${name} GitHub, ${name} whitepaper, ${name} technical docs, ${name} community`;
   });
 </script>

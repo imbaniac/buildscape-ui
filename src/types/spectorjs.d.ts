@@ -1,4 +1,4 @@
-declare module 'spectorjs' {
+declare module "spectorjs" {
   export namespace SPECTOR {
     export class Spector {
       constructor();

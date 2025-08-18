@@ -6,7 +6,7 @@ color: "#14A800"
 logo: morph.svg
 parentOrganization: Morph
 website: https://morphl2.io
-launchDate: 
+launchDate:
 maxBlockSize: 30
 technology:
   type: Optimistic ZK-Rollup
@@ -72,28 +72,28 @@ The key difference: Responsive Validity Proof shortens withdrawals to 2-3 days (
 
 **Technical:** Optimistic zkEVM with RVP system, SP1 zkVM for disputes, planned decentralized sequencer.
 
-- **Security & Data Availability**  
-  - Responsive Validity Proof (RVP) — optimistic by default, ZK proofs only when challenged.  
-  - Uses Ethereum calldata for DA; 2-3 day challenge window.  
+- **Security & Data Availability**
+  - Responsive Validity Proof (RVP) — optimistic by default, ZK proofs only when challenged.
+  - Uses Ethereum calldata for DA; 2-3 day challenge window.
   - Planned decentralized sequencer with Tendermint/BLS (currently centralized).
 
-- **Infra & Execution**  
-  - Modular architecture: separate Sequencer, Rollup, and zkEVM components.  
-  - Powered by Succinct's SP1 zkVM for proof generation.  
+- **Infra & Execution**
+  - Modular architecture: separate Sequencer, Rollup, and zkEVM components.
+  - Powered by Succinct's SP1 zkVM for proof generation.
   - Standard EVM compatibility.
 
-- **Performance**  
-  - Lower costs than always-on zkEVMs.  
-  - Faster withdrawals than standard optimistic rollups.  
+- **Performance**
+  - Lower costs than always-on zkEVMs.
+  - Faster withdrawals than standard optimistic rollups.
   - Limited current throughput due to early adoption.
 
-- **Use Cases**  
+- **Use Cases**
   - **Live apps**: BulbaSwap (Uniswap fork), basic DeFi, NFT platforms
   - **Target market**: Consumer apps, though mostly theoretical so far
   - **Backing**: Bitget exchange partnership
 
-- **Trade-offs**  
-  - Very early — launched October 2024 with low activity.  
-  - Sequencer still centralized despite decentralization claims.  
-  - Complex hybrid architecture without proven benefits yet.  
+- **Trade-offs**
+  - Very early — launched October 2024 with low activity.
+  - Sequencer still centralized despite decentralization claims.
+  - Complex hybrid architecture without proven benefits yet.
   - Limited ecosystem compared to any established L2.

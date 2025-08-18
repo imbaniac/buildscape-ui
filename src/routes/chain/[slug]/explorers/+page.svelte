@@ -3,9 +3,6 @@
   import ExplorersTab from "../../../../components/book/tabs/ExplorersTab.svelte";
   import SEO from "$lib/components/SEO.svelte";
   import { getContext } from "svelte";
-  import type { PageData } from "./$types";
-
-  let { data }: { data: PageData } = $props();
 
   // Get data from layout
   const layoutData = $derived($page.data);

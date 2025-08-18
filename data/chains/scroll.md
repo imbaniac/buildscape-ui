@@ -4,10 +4,10 @@ chainId: 534352
 nativeCurrency: ETH
 color: "#edcca2"
 logo: scroll.svg
-parentOrganization: 
+parentOrganization:
 website: https://scroll.io
-launchDate: 
-maxBlockSize: 
+launchDate:
+maxBlockSize:
 technology:
   isL2: true
   isEVM: true
@@ -90,29 +90,29 @@ Ethereum but cheaper and faster, using math proofs (zero-knowledge) to guarantee
 
 **Technical:** A zkEVM rollup with bytecode-level EVM equivalence and ZK-based finality, built for compatibility with existing Ethereum contracts.
 
-- **Security & Data Availability**  
-  - Uses ZK validity proofs to confirm all state transitions before finalization.  
-  - Publishes calldata to Ethereum using EIP‑4844 blobs; no custom DA layer.  
+- **Security & Data Availability**
+  - Uses ZK validity proofs to confirm all state transitions before finalization.
+  - Publishes calldata to Ethereum using EIP‑4844 blobs; no custom DA layer.
   - Withdrawals are finalized once proofs are verified — no fraud windows.
 
-- **Infra & Execution**  
-  - Fully bytecode-equivalent — same opcodes and gas costs as Ethereum.  
-  - Centralized sequencer; decentralized proving and proposer layers are planned but not yet live.  
+- **Infra & Execution**
+  - Fully bytecode-equivalent — same opcodes and gas costs as Ethereum.
+  - Centralized sequencer; decentralized proving and proposer layers are planned but not yet live.
   - Node stack includes dedicated proving infrastructure.
 
-- **Performance**  
-  - Handles high daily tx volumes (~500k/day).  
-  - Proof submission adds latency — typically a few minutes after batch inclusion.  
+- **Performance**
+  - Handles high daily tx volumes (~500k/day).
+  - Proof submission adds latency — typically a few minutes after batch inclusion.
   - Throughput depends on prover capacity and L1 calldata constraints.
 
-- **Use Cases**  
+- **Use Cases**
   - **DeFi migrations**: Uniswap, Aave, and other majors deployed without code changes
   - **NFT platforms**: Lower minting costs while keeping OpenSea compatibility
   - **DAO tooling**: Snapshot, Gnosis Safe work identically to mainnet
   - **Developer testing**: Same behavior as Ethereum, cheaper to experiment
 
-- **Trade-offs**  
-  - Sequencer is not decentralized — risk of transaction censorship or delays.  
-  - Prover infra is heavy and may bottleneck under load.  
-  - Finality is fast, but depends on timely proof generation and posting.  
+- **Trade-offs**
+  - Sequencer is not decentralized — risk of transaction censorship or delays.
+  - Prover infra is heavy and may bottleneck under load.
+  - Finality is fast, but depends on timely proof generation and posting.
   - Ecosystem still early — infra and decentralization not yet fully mature.

@@ -1,0 +1,35 @@
+# Lefthook configuration for git hooks
+# https://github.com/evilmartians/lefthook
+
+colors: true
+no_tty: false
+
+pre-commit:
+  parallel: true
+  commands:
+    prettier:
+      glob: "*.{js,ts,jsx,tsx,svelte,css,json,md,html}"
+      run: npx prettier --check {staged_files}
+      skip:
+        - merge
+        - rebase
+
+    eslint:
+      glob: "*.{js,ts,jsx,tsx,svelte}"
+      run: npx eslint --max-warnings 100 {staged_files}
+      skip:
+        - merge
+        - rebase
+
+commit-msg:
+  commands:
+    commitlint:
+      run: npx commitlint --edit
+
+pre-push:
+  commands:
+    type-check:
+      run: bun run check
+      skip:
+        - merge
+        - rebase

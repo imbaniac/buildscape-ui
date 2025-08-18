@@ -135,29 +135,29 @@ The enterprise-friendly zkEVM balancing compatibility and performance. Unlike Sc
 
 **Technical:** A ZK-rollup using Polygon's ZK Stack with full EVM equivalence and calldata-based data availability.
 
-- **Security & Data Availability**  
-  - Validity proofs verify state correctness before finalization.  
-  - Uses Ethereum calldata for data availability; no alternative DA layer.  
+- **Security & Data Availability**
+  - Validity proofs verify state correctness before finalization.
+  - Uses Ethereum calldata for data availability; no alternative DA layer.
   - Withdrawals are fast and final once proofs are accepted — no fraud window.
 
-- **Infra & Execution**  
-  - Bytecode-level EVM equivalence — most Ethereum contracts run without changes.  
-  - Centralized sequencer; proposer decentralization planned but not yet implemented.  
+- **Infra & Execution**
+  - Bytecode-level EVM equivalence — most Ethereum contracts run without changes.
+  - Centralized sequencer; proposer decentralization planned but not yet implemented.
   - Governance is multisig-controlled and not permissionless.
 
-- **Performance & Fees**  
-  - Block inclusion in ~2s; proof generation and finalization in minutes.  
-  - Uses FFLONK prover (30% cheaper to verify than PLONK).  
+- **Performance & Fees**
+  - Block inclusion in ~2s; proof generation and finalization in minutes.
+  - Uses FFLONK prover (30% cheaper to verify than PLONK).
   - Fees track Ethereum gas prices but remain significantly lower.
 
-- **Use Cases**  
+- **Use Cases**
   - **Major DeFi**: Aave, Uniswap, QuickSwap deployed with minimal changes
   - **Enterprise adoption**: 30+ Fortune 500 companies, Walmart using CDK for private chains
   - **Fast withdrawals**: ~30 minute bridge back to L1 (vs 7 days on Optimistic rollups)
   - **CDK ecosystem**: 190+ projects building custom L2/L3 chains using Polygon's tech
 
-- **Trade-offs**  
-  - Centralized sequencer can censor or reorder transactions.  
-  - No fallback DA layer — full reliance on Ethereum calldata.  
-  - Governance and infra still maturing — not production-decentralized.  
+- **Trade-offs**
+  - Centralized sequencer can censor or reorder transactions.
+  - No fallback DA layer — full reliance on Ethereum calldata.
+  - Governance and infra still maturing — not production-decentralized.
   - Despite EVM claims, edge-case incompatibilities may still require adjustments.

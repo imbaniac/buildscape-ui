@@ -37,6 +37,7 @@ const metrics = {
 ## Automated Generation
 
 For production, you should run this script:
+
 - Daily via cron job or GitHub Actions
 - After major data updates
 - Before deployments
@@ -47,7 +48,7 @@ Example GitHub Action:
 name: Generate OG Images
 on:
   schedule:
-    - cron: '0 0 * * *' # Daily at midnight UTC
+    - cron: "0 0 * * *" # Daily at midnight UTC
   workflow_dispatch:
 
 jobs:
@@ -67,10 +68,13 @@ jobs:
 ## Customization
 
 ### Colors
+
 Chain colors are pulled from the chain's `color` and `darkColor` properties in the markdown files.
 
 ### Fonts
+
 The script uses Inter font. To change fonts, update the font file and the `fontFamily` in the styles.
 
 ### Layout
+
 Modify the element structure in `generateMapOG` and `generateChainOG` functions to change the layout.

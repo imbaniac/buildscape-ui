@@ -6,8 +6,8 @@ color: "#fe9a4d"
 logo: sonic.svg
 parentOrganization: Sonic Labs
 website: https://soniclabs.com
-launchDate: 
-maxBlockSize: 
+launchDate:
+maxBlockSize:
 technology:
   isL2: false
   isEVM: true
@@ -64,7 +64,7 @@ forums:
   - name: Discord
     url: https://discord.com/invite/soniclabs
     description: Main community support and discussion channel
-  - name: X (Twitter)  
+  - name: X (Twitter)
     url: https://x.com/soniclabs
     description: Official Sonic Labs announcements and updates
 # SDKs and tools are inherited from evm-common.md
@@ -77,29 +77,29 @@ The key difference: Developer revenue sharing model where builders earn from the
 
 **Technical:** DAG-based consensus L1 with 720ms finality, custom SonicVM for speed, FTM→S token migration at 1:1 ratio.
 
-- **Security & Data Availability**  
-  - DAG-based Lachesis consensus with asynchronous Byzantine Fault Tolerance.  
-  - Limited validator set (41 validators) — more centralized than major L1s.  
+- **Security & Data Availability**
+  - DAG-based Lachesis consensus with asynchronous Byzantine Fault Tolerance.
+  - Limited validator set (41 validators) — more centralized than major L1s.
   - No L2 rollup proofs or Ethereum anchoring — standalone L1 security model.
 
-- **Infra & Execution**  
-  - Full EVM compatibility with standard Solidity/Vyper support.  
-  - Custom SonicVM and SonicDB optimize execution and state access.  
+- **Infra & Execution**
+  - Full EVM compatibility with standard Solidity/Vyper support.
+  - Custom SonicVM and SonicDB optimize execution and state access.
   - Node sync 10x faster than Fantom Opera, RPC costs reduced by 96%.
 
-- **Performance**  
-  - Theoretical 10,000 TPS capability with 720ms finality.  
-  - Transaction costs under $0.0001 in normal conditions.  
+- **Performance**
+  - Theoretical 10,000 TPS capability with 720ms finality.
+  - Transaction costs under $0.0001 in normal conditions.
   - Actual usage varies — network handles current demand without congestion.
 
-- **Use Cases**  
+- **Use Cases**
   - **DeFi infrastructure**: Silo Finance (lending), Beethoven X/BEETS (DEX and staking), SpookySwap V3 (concentrated liquidity)
   - **Revenue-generating apps**: Fee Monetization returns 90% of gas to developers
   - **Fantom migrations**: Full compatibility for existing Fantom projects
   - **High-frequency applications**: Trading bots, gaming, real-time applications
 
-- **Trade-offs**  
-  - Small validator set (41) creates centralization risk vs thousands on Ethereum.  
-  - Standalone L1 without Ethereum security — relies entirely on validator honesty.  
-  - Smaller ecosystem despite growth — competing with established L1s and L2s.  
+- **Trade-offs**
+  - Small validator set (41) creates centralization risk vs thousands on Ethereum.
+  - Standalone L1 without Ethereum security — relies entirely on validator honesty.
+  - Smaller ecosystem despite growth — competing with established L1s and L2s.
   - Token price volatility despite technical improvements — market confidence still building.

@@ -5,7 +5,7 @@ import { CHAIN_TABS } from "$lib/constants/tabs";
 function mergeEvmTools(
   chainStatic: any,
   evmCommonData: any,
-  chainSlug: string,
+  _chainSlug: string,
 ): any {
   // If not an EVM chain, return as-is
   if (!chainStatic.technology?.isEVM) {
@@ -79,10 +79,9 @@ function mergeEvmTools(
   };
 }
 
-
 export const load: LayoutLoad = async ({ params, parent }) => {
   const { slug } = params;
-  
+
   // Get chains and evmCommon from parent layout
   const parentData = await parent();
   const chains = (parentData as any).chains || {};
@@ -102,7 +101,7 @@ export const load: LayoutLoad = async ({ params, parent }) => {
 
   // Otherwise, treat it as a slug
   const chainData = chains[slug];
-  
+
   if (!chainData) {
     throw error(404, `Chain ${slug} not found`);
   }
@@ -125,7 +124,7 @@ export const load: LayoutLoad = async ({ params, parent }) => {
     color: chainData.color || "#3b82f6",
     bookmarks: CHAIN_TABS,
     technology: chainData.technology, // Needed for wallet tab visibility
-    
+
     // Pass chainStatic directly, no streaming
     chainStatic,
   };

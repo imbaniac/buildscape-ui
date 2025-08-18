@@ -4,10 +4,10 @@ chainId: 200901
 nativeCurrency: BTC
 color: "#E46F1B"
 logo: bitlayer.svg
-parentOrganization: 
+parentOrganization:
 website: https://www.bitlayer.org
-launchDate: 
-maxBlockSize: 
+launchDate:
+maxBlockSize:
 technology:
   isL2: true
   isEVM: true
@@ -66,29 +66,29 @@ The key difference: BitVM bridge attempts trust-minimized BTC transfers using Bi
 
 **Technical:** Dual-layer architecture with PoS consensus and BitVM rollup, EVM-compatible, commits state to Bitcoin for security anchoring.
 
-- **Security & Data Availability**  
-  - BitVM fraud proofs enable challenges on Bitcoin itself — one honest participant can prevent fraud.  
-  - State roots committed to Bitcoin blockchain for permanent verification.  
+- **Security & Data Availability**
+  - BitVM fraud proofs enable challenges on Bitcoin itself — one honest participant can prevent fraud.
+  - State roots committed to Bitcoin blockchain for permanent verification.
   - Transitioning to full Bitcoin rollup (V2) for Bitcoin-equivalent security.
 
-- **Infra & Execution**  
-  - BitVM Bridge mainnet live — trust-minimized BTC as YBTC with strict 1:1 peg.  
-  - Mining pool integration (Antpool, F2Pool, SpiderPool) for real-time processing.  
+- **Infra & Execution**
+  - BitVM Bridge mainnet live — trust-minimized BTC as YBTC with strict 1:1 peg.
+  - Mining pool integration (Antpool, F2Pool, SpiderPool) for real-time processing.
   - EVM-compatible with sub-second finality in execution layer.
 
-- **Performance**  
-  - V3 roadmap: Sub-millisecond trading engine, horizontal scaling for unlimited throughput.  
-  - Fast soft finality through PoS layer, Bitcoin finality after challenge period.  
+- **Performance**
+  - V3 roadmap: Sub-millisecond trading engine, horizontal scaling for unlimited throughput.
+  - Fast soft finality through PoS layer, Bitcoin finality after challenge period.
   - CEX-level UX targeted with ultra-low costs and sub-second interactions.
 
-- **Use Cases**  
+- **Use Cases**
   - **Native BTC DeFi**: First trust-minimized BTC bridge without custodians
   - **Ecosystem scale**: 200+ dApps deployed across DeFi, gaming, infrastructure
   - **Mining integration**: Direct support from major Bitcoin mining pools
   - **Cross-chain expansion**: Integrations with Sui, Arbitrum, Base, Cardano
 
-- **Trade-offs**  
-  - BitVM still experimental — first mainnet implementation just launched.  
-  - PoS sequencer layer adds complexity vs pure Bitcoin security.  
-  - Challenge period needed for Bitcoin finality (7 days).  
-  - V2 rollup architecture not yet live — roadmap dependency.  
+- **Trade-offs**
+  - BitVM still experimental — first mainnet implementation just launched.
+  - PoS sequencer layer adds complexity vs pure Bitcoin security.
+  - Challenge period needed for Bitcoin finality (7 days).
+  - V2 rollup architecture not yet live — roadmap dependency.
