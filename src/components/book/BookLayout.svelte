@@ -55,11 +55,11 @@
     if (Math.abs(deltaX) > 50 && deltaY < 100) {
       if (deltaX > 0 && showRightPage) {
         // Swipe right - go to left page (root route)
-        goto(baseChainPath);
+        goto(baseChainPath, { replaceState: true });
       } else if (deltaX < 0 && !showRightPage) {
         // Swipe left - go to right page (overview if on root)
         if (!isSubRoute()) {
-          goto(`${baseChainPath}/overview`);
+          goto(`${baseChainPath}/overview`, { replaceState: true });
         }
       }
     }
@@ -104,7 +104,7 @@
         class:active={!showRightPage}
         onclick={() => {
           // Navigate to root route to show left page
-          goto(baseChainPath);
+          goto(baseChainPath, { replaceState: true });
         }}
         aria-label="Show info page"
       ></button>
@@ -114,7 +114,7 @@
         onclick={() => {
           // If on root, navigate to overview, otherwise stay on current route
           if (!isSubRoute()) {
-            goto(`${baseChainPath}/overview`);
+            goto(`${baseChainPath}/overview`, { replaceState: true });
           }
         }}
         aria-label="Show details page"

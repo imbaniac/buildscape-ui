@@ -168,7 +168,7 @@
       }
       return `$${value.toFixed(0)}`;
     } else if (type === "tps") {
-      return value.toFixed(0);
+      return value.toFixed(1);
     } else if (type === "gas") {
       return value ? `${value.toFixed(1)}` : "-";
     } else if (type === "blockTime") {
