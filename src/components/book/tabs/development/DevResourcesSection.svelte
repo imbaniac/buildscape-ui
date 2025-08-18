@@ -9,7 +9,7 @@
 
   interface Props {
     resources: DevResource[];
-    resourceType: 'sdks' | 'tools';
+    resourceType: "sdks" | "tools";
   }
 
   let { resources = [], resourceType }: Props = $props();
@@ -18,25 +18,55 @@
 <div class="dev-resources">
   {#if !resources || resources.length === 0}
     <div class="empty-state">
-      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
+      <svg
+        width="48"
+        height="48"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+      >
+        <path
+          d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"
+        />
       </svg>
-      <p>No {resourceType === 'sdks' ? 'SDKs' : 'tools'} available for this chain.</p>
+      <p>
+        No {resourceType === "sdks" ? "SDKs" : "tools"} available for this chain.
+      </p>
     </div>
   {:else}
     {#each resources as item}
-      <a href={item.url} target="_blank" class="dev-resource-card" class:official={item.source === 'official'}>
+      <a
+        href={item.url}
+        target="_blank"
+        class="dev-resource-card"
+        class:official={item.source === "official"}
+      >
         <div class="resource-content">
           <div class="resource-header">
             <div class="resource-name-wrapper">
               <h4 class="resource-name">{item.name}</h4>
               {#if item.type}
-                <span class="resource-type" data-type={item.type.toLowerCase().replace('/', '-').replace('.', '')}>{item.type}</span>
+                <span
+                  class="resource-type"
+                  data-type={item.type
+                    .toLowerCase()
+                    .replace("/", "-")
+                    .replace(".", "")}>{item.type}</span
+                >
               {/if}
             </div>
-            <svg class="resource-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M7 17L17 7"/>
-              <path d="M7 7h10v10"/>
+            <svg
+              class="resource-arrow"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M7 17L17 7" />
+              <path d="M7 7h10v10" />
             </svg>
           </div>
           {#if item.description}
@@ -110,7 +140,8 @@
     color: #1e293b;
     margin: 0;
     line-height: 1.2;
-    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+    font-family:
+      -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
   }
 
   .resource-desc {
@@ -118,7 +149,8 @@
     color: #64748b;
     line-height: 1.4;
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+    font-family:
+      -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -135,52 +167,52 @@
     border-radius: 4px;
     font-size: 0.6875rem;
     font-weight: 500;
-    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+    font-family: "SF Mono", "Monaco", "Inconsolata", "Fira Code", monospace;
     flex-shrink: 0;
   }
-  
+
   /* Type-specific colors - subtle variations */
   .resource-type[data-type="js-ts"] {
     background: #fffbeb;
     color: #78350f;
   }
-  
+
   .resource-type[data-type="python"] {
     background: #eff6ff;
     color: #1e40af;
   }
-  
+
   .resource-type[data-type="rust"] {
     background: #fff7ed;
     color: #7c2d12;
   }
-  
+
   .resource-type[data-type="go"] {
     background: #ecfdf5;
     color: #047857;
   }
-  
+
   .resource-type[data-type="java"] {
     background: #fdf4ff;
     color: #6b21a8;
   }
-  
+
   .resource-type[data-type="net"] {
     background: #f3f4f6;
     color: #4b5563;
   }
-  
+
   .resource-type[data-type="react"] {
     background: #ecfeff;
     color: #0e7490;
   }
-  
+
   .resource-type[data-type="free"],
   .resource-type[data-type="free-tier"] {
     background: #f0fdf4;
     color: #166534;
   }
-  
+
   .resource-type[data-type="documentation"] {
     background: #f8fafc;
     color: #64748b;
@@ -196,7 +228,7 @@
     color: #64748b;
     transform: translate(1px, -1px);
   }
-  
+
   /* Empty state */
   .empty-state {
     display: flex;
@@ -207,16 +239,17 @@
     text-align: center;
     color: #94a3b8;
   }
-  
+
   .empty-state svg {
     margin-bottom: 1rem;
     opacity: 0.3;
   }
-  
+
   .empty-state p {
     font-size: 0.9375rem;
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+    font-family:
+      -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
   }
 
   @media (max-width: 640px) {
