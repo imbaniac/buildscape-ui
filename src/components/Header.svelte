@@ -1,7 +1,8 @@
 <script lang="ts">
-  import { overviewStore } from "$lib/stores/overviewStore";
-  import { page } from "$app/stores";
   import { goto } from "$app/navigation";
+  import { page } from "$app/stores";
+
+  import { overviewStore } from "$lib/stores/overviewStore";
 
   let overviewState = $derived($overviewStore);
   let overviewData = $derived(overviewState?.data);

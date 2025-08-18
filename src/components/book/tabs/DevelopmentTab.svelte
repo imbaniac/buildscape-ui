@@ -1,10 +1,11 @@
 <script lang="ts">
-  import type { BookmarkTab, BookmarkField } from "$lib/types";
-  import RpcSection from "./development/RpcSection.svelte";
-  import TestnetsSection from "./development/TestnetsSection.svelte";
+  import type { BookmarkField, BookmarkTab } from "$lib/types";
+  import { getAccessibleBrandColor } from "$lib/utils/colorUtils";
+
   import DevResourcesSection from "./development/DevResourcesSection.svelte";
   import GenericLinksSection from "./development/GenericLinksSection.svelte";
-  import { getAccessibleBrandColor } from "$lib/utils/colorUtils";
+  import RpcSection from "./development/RpcSection.svelte";
+  import TestnetsSection from "./development/TestnetsSection.svelte";
 
   interface Props {
     chainStatic: any;

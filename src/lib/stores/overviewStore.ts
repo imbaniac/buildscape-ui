@@ -1,4 +1,5 @@
-import { writable, derived, type Readable } from "svelte/store";
+import { derived, type Readable, writable } from "svelte/store";
+
 import { fetchOverviewData, type OverviewData } from "$lib/api/overview";
 
 interface OverviewStoreState {

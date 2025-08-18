@@ -1,16 +1,18 @@
 import {
-  Container,
-  Graphics,
-  Sprite,
-  Texture,
+  Assets,
   BitmapFont,
   BitmapText,
-  Assets,
+  Container,
+  Graphics,
   type Renderer,
+  Sprite,
+  Texture,
 } from "pixi.js";
-import { SeededRandom } from "../shared/SeededRandom";
-import { assetUrls, assetRaw } from "../shared/assets";
+
 import type { Island } from "$lib/types/island";
+
+import { assetRaw, assetUrls } from "../shared/assets";
+import { SeededRandom } from "../shared/SeededRandom";
 
 interface Tile {
   x: number;

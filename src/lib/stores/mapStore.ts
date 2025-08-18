@@ -1,6 +1,7 @@
-import { writable } from "svelte/store";
 import type { Application } from "pixi.js";
 import type { Viewport } from "pixi-viewport";
+import { writable } from "svelte/store";
+
 import type PixiMapRenderer from "$lib/pixi/PixiMapRenderer";
 import type RenderManager from "$lib/pixi/RenderManager";
 

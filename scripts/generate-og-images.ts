@@ -1,8 +1,8 @@
 #!/usr/bin/env bun
-import satori from "satori";
 import { Resvg } from "@resvg/resvg-js";
-import { readFile, writeFile, mkdir } from "fs/promises";
+import { mkdir, readFile, writeFile } from "fs/promises";
 import { join } from "path";
+import satori from "satori";
 import YAML from "yaml";
 
 // Configuration

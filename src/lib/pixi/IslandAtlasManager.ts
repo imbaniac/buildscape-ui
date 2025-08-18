@@ -1,12 +1,14 @@
 import {
   Container,
   Rectangle,
+  type Renderer,
   RenderTexture,
   Sprite,
   Texture,
-  type Renderer,
 } from "pixi.js";
+
 import type { Island } from "$lib/types/island";
+
 import type PixiIslandRenderer from "./PixiIslandRenderer";
 
 interface AtlasLocation {

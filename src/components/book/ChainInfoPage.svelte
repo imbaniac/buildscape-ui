@@ -1,11 +1,13 @@
 <script lang="ts">
-  import NetworkStatus from "./metrics/NetworkStatus.svelte";
-  import ActivityMetrics from "./metrics/ActivityMetrics.svelte";
-  import Tooltip from "./ui/Tooltip.svelte";
+  import { getContext } from "svelte";
+
   import { tooltipTexts } from "$lib/tooltips";
   import { getAccessibleBrandColor } from "$lib/utils/colorUtils";
   import { formatTVL } from "$lib/utils/formatters";
-  import { getContext } from "svelte";
+
+  import ActivityMetrics from "./metrics/ActivityMetrics.svelte";
+  import NetworkStatus from "./metrics/NetworkStatus.svelte";
+  import Tooltip from "./ui/Tooltip.svelte";
 
   interface Props {
     chainStatic: any;

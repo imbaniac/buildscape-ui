@@ -1,9 +1,12 @@
 import { Application, Container, Graphics, Rectangle, Sprite } from "pixi.js";
 import type { Viewport } from "pixi-viewport";
+
 import { goto } from "$app/navigation";
-import PixiIslandRenderer from "./PixiIslandRenderer";
-import IslandAtlasManager from "./IslandAtlasManager";
+
 import type { Island } from "$lib/types/island";
+
+import IslandAtlasManager from "./IslandAtlasManager";
+import PixiIslandRenderer from "./PixiIslandRenderer";
 import type RenderManager from "./RenderManager";
 
 export default class PixiMapRenderer {

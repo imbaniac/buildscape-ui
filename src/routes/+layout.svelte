@@ -1,29 +1,33 @@
 <script lang="ts">
-  import "../app.css";
-  import { onMount, onDestroy } from "svelte";
+  import { Application, Ticker } from "pixi.js";
+  import type { Viewport as ViewportType } from "pixi-viewport";
+  // Map imports
+  import * as PixiViewport from "pixi-viewport";
+
+  import { onDestroy, onMount } from "svelte";
+
   import { browser } from "$app/environment";
   import { afterNavigate } from "$app/navigation";
   import { page } from "$app/stores";
-  import { connectSSE, disconnectSSE } from "$lib/stores/sse";
-  import SEO from "$lib/components/SEO.svelte";
-  import { analytics } from "$lib/analytics";
 
-  // Map imports
-  import * as PixiViewport from "pixi-viewport";
-  import { Application, Ticker } from "pixi.js";
+  import { analytics } from "$lib/analytics";
+  import SEO from "$lib/components/SEO.svelte";
+  import { perfMonitor } from "$lib/pixi/PerformanceMonitor";
   import PixiMapRenderer from "$lib/pixi/PixiMapRenderer";
   import RenderManager from "$lib/pixi/RenderManager";
   import { webGLDebugger } from "$lib/pixi/WebGLDebugger";
-  import { perfMonitor } from "$lib/pixi/PerformanceMonitor";
+  import savedPositions from "$lib/positions.json";
   import { mapStore } from "$lib/stores/mapStore";
   import {
     overviewStore,
-    tvlLookupByChainId,
     tpsLookupByChainId,
+    tvlLookupByChainId,
   } from "$lib/stores/overviewStore";
-  import savedPositions from "$lib/positions.json";
+  import { connectSSE, disconnectSSE } from "$lib/stores/sse";
+
   import BoatLoader from "../components/BoatLoader.svelte";
-  import type { Viewport as ViewportType } from "pixi-viewport";
+
+  import "../app.css";
 
   let { children, data } = $props();
 

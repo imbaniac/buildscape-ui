@@ -1,10 +1,11 @@
 <script lang="ts">
-  import { onMount, onDestroy } from "svelte";
+  import { onDestroy, onMount } from "svelte";
+
   import {
-    sseConnection,
     chainsData,
-    lastUpdate,
     dataMode,
+    lastUpdate,
+    sseConnection,
   } from "$lib/stores/sse";
 
   // Debug state

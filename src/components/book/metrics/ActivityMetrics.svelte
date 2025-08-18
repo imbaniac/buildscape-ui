@@ -1,8 +1,10 @@
 <script lang="ts">
-  import { formatNumber, formatNumberWithCommas } from "$lib/utils/formatters";
-  import MetricCard from "./MetricCard.svelte";
-  import Tooltip from "../ui/Tooltip.svelte";
   import type { PeriodType } from "$lib/stores/userPreferencesStore";
+  import { formatNumber, formatNumberWithCommas } from "$lib/utils/formatters";
+
+  import Tooltip from "../ui/Tooltip.svelte";
+
+  import MetricCard from "./MetricCard.svelte";
 
   interface Props {
     metricsSpan: PeriodType;

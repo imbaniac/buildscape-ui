@@ -1,6 +1,8 @@
 <script lang="ts">
   import { formatNumberWithCommas } from "$lib/utils/formatters";
+
   import SkeletonLoader from "../ui/SkeletonLoader.svelte";
+
   import ResourcePanel from "./ResourcePanel.svelte";
 
   interface Props {

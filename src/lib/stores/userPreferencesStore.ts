@@ -1,4 +1,5 @@
 import { writable } from "svelte/store";
+
 import { browser } from "$app/environment";
 
 export type PeriodType = "1h" | "24h" | "7d" | "30d";

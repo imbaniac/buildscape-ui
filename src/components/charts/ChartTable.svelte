@@ -1,9 +1,11 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
+
+  import { searchChains } from "$lib/utils/searchUtils";
+
+  import ChartFilters from "./ChartFilters.svelte";
   import ChartHeader from "./ChartHeader.svelte";
   import ChartRow from "./ChartRow.svelte";
-  import ChartFilters from "./ChartFilters.svelte";
-  import { searchChains } from "$lib/utils/searchUtils";
 
   interface Chain {
     slug: string;
@@ -30,8 +32,9 @@
     };
   }
 
-  import type { PeriodType } from "$lib/stores/userPreferencesStore";
   import { SvelteMap } from "svelte/reactivity";
+
+  import type { PeriodType } from "$lib/stores/userPreferencesStore";
 
   interface Props {
     chains: Chain[];
