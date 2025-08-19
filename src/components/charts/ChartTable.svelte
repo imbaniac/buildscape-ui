@@ -14,6 +14,7 @@
     nativeCurrency?: string;
     type: string;
     tvl: number;
+    tvlChange?: number | null;
     tps: number;
     transactions: number;
     activeAddresses: number;

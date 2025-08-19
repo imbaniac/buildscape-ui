@@ -84,7 +84,7 @@
 
   /* Specific widths for different column types */
   .chart-header[data-column="tvl"] {
-    min-width: 100px;
+    min-width: 140px;
   }
 
   .chart-header[data-column="tps"] {
@@ -142,6 +142,10 @@
     }
 
     /* Adjust specific column widths for mobile */
+    .chart-header[data-column="tvl"] {
+      min-width: 110px;
+    }
+
     .chart-header[data-column="transactions"],
     .chart-header[data-column="activeAddresses"],
     .chart-header[data-column="contracts"] {

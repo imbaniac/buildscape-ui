@@ -544,29 +544,12 @@ async function generateMapOG(interFont: ArrayBuffer, cinzelFont: ArrayBuffer) {
 async function generateChainOG(chain: any, metrics: any, font: ArrayBuffer) {
   const { name, chainId, color, technology, slug } = chain;
 
-  // Fetch real metrics from API
-  let chainMetrics = {
-    population: 0,
-    transactions: 0,
-    tps: 0,
+  // Use metrics passed from overview data
+  const chainMetrics = {
+    population: metrics.active_addresses || 0,
+    transactions: metrics.transactions || 0,
+    tps: Math.round(metrics.tps || 0),
   };
-
-  try {
-    const response = await fetch(
-      `https://api.buildscape.org/chains/${chainId}/metrics?period=24h`,
-    );
-
-    if (response.ok) {
-      const data = await response.json();
-      chainMetrics = {
-        population: data.active_addresses || 0,
-        transactions: data.transactions || 0,
-        tps: Math.round(data.tps || 0),
-      };
-    }
-  } catch {
-    console.log(`Failed to fetch metrics for ${slug}, using defaults`);
-  }
 
   // Format metrics
   const formatNumber = (num: number) => {
@@ -1085,6 +1068,33 @@ async function generateAllOGImages() {
     process.exit(1);
   }
 
+  // Fetch overview data for all chains
+  console.log("Fetching chain metrics from API...");
+  const chainMetricsMap = new Map();
+
+  try {
+    const response = await fetch(
+      "https://api.buildscape.org/overview?period=24h",
+    );
+    if (response.ok) {
+      const data = await response.json();
+      // Create lookup map by chainId
+      for (const chain of data.chains) {
+        chainMetricsMap.set(chain.chain_id, {
+          tvl_usd: chain.tvl,
+          tps: chain.tps,
+          gas_price_gwei: chain.gas_price,
+          transactions: chain.transactions,
+          active_addresses: chain.active_addresses,
+        });
+      }
+      console.log(`Loaded metrics for ${chainMetricsMap.size} chains`);
+    }
+  } catch (e) {
+    console.error("Failed to fetch overview data:", e);
+    console.log("Continuing with default values...");
+  }
+
   // Generate map OG
   await generateMapOG(interFont, cinzelFont);
 
@@ -1100,11 +1110,13 @@ async function generateAllOGImages() {
     const chain = parseFrontmatter(content);
     const slug = file.replace(".md", "");
 
-    // For now, use placeholder metrics. In production, you'd fetch real data
-    const metrics = {
-      tvl_usd: Math.random() * 10e9, // Placeholder
-      tps: Math.random() * 100, // Placeholder
-      gas_price_gwei: Math.random() * 50, // Placeholder
+    // Get real metrics from overview data or use defaults
+    const metrics = chainMetricsMap.get(chain.chainId) || {
+      tvl_usd: 0,
+      tps: 0,
+      gas_price_gwei: 0,
+      transactions: 0,
+      active_addresses: 0,
     };
 
     await generateChainOG({ ...chain, slug }, metrics, interFont);

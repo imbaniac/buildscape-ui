@@ -5,18 +5,24 @@ colors: true
 no_tty: false
 
 pre-commit:
-  parallel: true
+  parallel: false  # Run sequentially to ensure prettier runs before eslint
   commands:
     prettier:
       glob: "*.{js,ts,jsx,tsx,svelte,css,json,md,html}"
-      run: npx prettier --check {staged_files}
+      run: |
+        echo "🎨 Running Prettier..."
+        npx prettier --write {staged_files}
+        git add {staged_files}
       skip:
         - merge
         - rebase
 
     eslint:
       glob: "*.{js,ts,jsx,tsx,svelte}"
-      run: npx eslint --max-warnings 100 {staged_files}
+      run: |
+        echo "🔍 Running ESLint..."
+        npx eslint --fix --max-warnings 100 {staged_files}
+        git add {staged_files}
       skip:
         - merge
         - rebase
@@ -29,7 +35,7 @@ commit-msg:
 pre-push:
   commands:
     type-check:
-      run: bun run check
+      run: npm run check
       skip:
         - merge
         - rebase

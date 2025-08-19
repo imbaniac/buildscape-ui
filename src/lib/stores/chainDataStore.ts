@@ -20,18 +20,6 @@ interface ChainData {
   block_size_mb?: number;
   tps?: number;
 
-  // Financial metrics
-  tvl?: number;
-  tvl_usd?: number;
-
-  // Legacy/compatibility fields
-  avg_block_time?: number;
-  active_validators?: number;
-  transactions_24h?: number;
-  unique_addresses_24h?: number;
-  volume_24h_usd?: number;
-  market_cap_usd?: number;
-
   // Metadata
   timestamp?: string;
   lastUpdated: number;
@@ -45,8 +33,6 @@ interface ChainDataStore {
 
 // Store for chain data
 const chainDataStore = writable<ChainDataStore>({});
-
-// Note: Polling removed - we now use overview API + SSE for all data
 
 // Subscribe to SSE updates
 chainsData.subscribe((chains) => {
@@ -72,18 +58,6 @@ chainsData.subscribe((chains) => {
             utilization_pct: chainData.utilization,
             block_size_mb: chainData.blockSize,
             tps: chainData.tps,
-
-            // Financial metrics
-            tvl: chainData.tvl === null ? undefined : chainData.tvl,
-            tvl_usd: chainData.tvl === null ? undefined : chainData.tvl, // For compatibility
-
-            // Legacy/compatibility fields
-            avg_block_time: 0, // Not provided by SSE
-            active_validators: 0, // Not provided by SSE
-            transactions_24h: Math.round(chainData.tps * 86400), // Convert TPS to 24h transactions
-            unique_addresses_24h: 0, // Not provided by SSE
-            volume_24h_usd: 0, // Not provided by SSE
-            market_cap_usd: 0, // Not provided by SSE
 
             // Metadata
             timestamp: new Date().toISOString(),
