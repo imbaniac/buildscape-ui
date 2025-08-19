@@ -24,7 +24,6 @@ export interface ChainData {
   gasPrice: number;
   utilization: number;
   blockSize: number;
-  tvl: number | null;
   lastError: string | null;
   errorCount: number;
 }
@@ -62,7 +61,6 @@ const ChainDataSchema = z.object({
   gasPrice: z.number(),
   utilization: z.number(),
   blockSize: z.number(),
-  tvl: z.number().nullable(),
   lastError: z.string().nullable(),
   errorCount: z.number(),
 });
