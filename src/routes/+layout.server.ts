@@ -83,7 +83,7 @@ const parsedWallets = (() => {
       currentCategory = line.substring(3).trim();
       walletsByCategory[currentCategory] = [];
       inTable = false;
-    } else if (line.includes("|---")) {
+    } else if (line.includes("---") && line.includes("|")) {
       inTable = true;
     } else if (inTable && line.startsWith("|") && !line.includes("Name")) {
       const parts = line

@@ -47,7 +47,7 @@
         Official RPCs
       </h4>
       <div class="rpc-cards-grid">
-        {#each officialRpcs as rpc (rpc.url)}
+        {#each officialRpcs as rpc, i (`official-${i}-${rpc.url}`)}
           <div class="rpc-card compact official">
             <div class="rpc-content">
               <h5 class="rpc-name">{rpc.name}</h5>
@@ -98,7 +98,7 @@
         Public RPCs
       </h4>
       <div class="rpc-cards-grid">
-        {#each publicRpcs as rpc (rpc.url)}
+        {#each publicRpcs as rpc, i (`public-${i}-${rpc.url}`)}
           <div class="rpc-card compact">
             <div class="rpc-content">
               <h5 class="rpc-name">{rpc.name}</h5>
@@ -149,7 +149,7 @@
         Private RPCs <span class="section-note">(API Key Required)</span>
       </h4>
       <div class="rpc-cards-grid">
-        {#each privateRpcs as rpc (rpc.url)}
+        {#each privateRpcs as rpc, i (`private-${i}-${rpc.url}`)}
           <div class="rpc-card compact">
             <div class="rpc-content">
               <h5 class="rpc-name">{rpc.name}</h5>
