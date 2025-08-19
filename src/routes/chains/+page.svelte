@@ -72,10 +72,31 @@
       const contracts = overviewData?.contracts || 0;
       const blockTime = overviewData?.block_time;
 
+      // Get TVL change based on selected period
+      let tvlChange: number | null = null;
+      if (overviewData) {
+        switch (selectedPeriod) {
+          case "1h":
+            // Use 24h change as fallback for 1h period
+            tvlChange = overviewData.tvl_change_24h ?? null;
+            break;
+          case "24h":
+            tvlChange = overviewData.tvl_change_24h ?? null;
+            break;
+          case "7d":
+            tvlChange = overviewData.tvl_change_7d ?? null;
+            break;
+          case "30d":
+            tvlChange = overviewData.tvl_change_30d ?? null;
+            break;
+        }
+      }
+
       combined.push({
         ...typedChain,
         slug,
         tvl,
+        tvlChange,
         tps,
         transactions,
         activeAddresses,

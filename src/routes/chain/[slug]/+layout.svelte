@@ -158,6 +158,9 @@
     get chainStatus() {
       return chainStatus;
     },
+    get chainOverview() {
+      return chainOverview;
+    },
     get loadingStatus() {
       return loadingStatus;
     },

@@ -5,6 +5,7 @@
     chainId: number;
     type: string;
     tvl: number;
+    tvlChange?: number | null;
     tps: number;
     transactions: number;
     activeAddresses: number;
@@ -73,7 +74,18 @@
     {#if isLoading}
       <span class="skeleton-metric"></span>
     {:else}
-      <span class="value-text">{formatValue(chain.tvl, "tvl")}</span>
+      <div class="tvl-container">
+        <span class="value-text">{formatValue(chain.tvl, "tvl")}</span>
+        {#if chain.tvlChange !== null && chain.tvlChange !== undefined}
+          <span
+            class="tvl-change"
+            class:positive={chain.tvlChange > 0}
+            class:negative={chain.tvlChange < 0}
+          >
+            {chain.tvlChange > 0 ? "+" : ""}{chain.tvlChange.toFixed(1)}%
+          </span>
+        {/if}
+      </div>
     {/if}
   </td>
   <td class="chain-tps">
@@ -345,7 +357,34 @@
   .chain-tvl {
     text-align: right;
     color: #6b5d47;
-    min-width: 100px;
+    min-width: 140px;
+  }
+
+  .tvl-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    flex-wrap: nowrap;
+  }
+
+  .tvl-change {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 0.1rem 0.3rem;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  .tvl-change.positive {
+    color: #2d6a4f;
+    background: rgba(45, 106, 79, 0.08);
+  }
+
+  .tvl-change.negative {
+    color: #a94442;
+    background: rgba(169, 68, 66, 0.08);
   }
 
   .chain-tps {
@@ -454,9 +493,17 @@
       min-width: 200px;
     }
 
-    .chain-tvl,
+    .chain-tvl {
+      min-width: 110px;
+    }
+
     .chain-tps {
       min-width: 70px;
+    }
+
+    .tvl-change {
+      font-size: 0.75rem;
+      padding: 0.05rem 0.25rem;
     }
 
     .chain-transactions,

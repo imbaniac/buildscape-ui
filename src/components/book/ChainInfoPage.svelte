@@ -24,12 +24,14 @@
     metricsSpan: PeriodType;
     chainStatus: any;
     loadingStatus: boolean;
+    chainOverview: any;
     setMetricsSpan: (span: PeriodType) => void;
   }>("chainDynamicData");
 
   // Use derived values for cleaner template access
   const chainDynamic = $derived(dynamicData.chainDynamic);
   const chainStatus = $derived(dynamicData.chainStatus);
+  const chainOverview = $derived(dynamicData.chainOverview);
   const loadingDynamic = $derived(dynamicData.loadingDynamic);
   const loadingStatus = $derived(dynamicData.loadingStatus);
   const metricsSpan = $derived(dynamicData.metricsSpan);
@@ -286,7 +288,7 @@
 
   <div class="footnotes">
     <div class="footnote">
-      <sup>1</sup> Total Value Locked: {formatTVL(chainStatus?.tvl)}
+      <sup>1</sup> Total Value Locked: {formatTVL(chainOverview?.tvl)}
     </div>
     {#if chainStatic.launchDate}
       <div class="footnote">
