@@ -158,12 +158,18 @@ export function connectSSE(url: string = "https://api.buildscape.org/events") {
     });
 
     eventSource.onerror = (error) => {
-      if (DEBUG) console.error("SSE error:", error);
-      sseConnection.set("error");
+      // Only treat as error if connection wasn't closed intentionally
+      if (eventSource && eventSource.readyState !== EventSource.CLOSED) {
+        if (DEBUG) console.error("SSE error:", error);
+        sseConnection.set("error");
 
-      // Exponential backoff reconnection
-      scheduleReconnect();
+        // Exponential backoff reconnection
+        scheduleReconnect();
+      }
     };
+
+    // Clean disconnect on page unload
+    window.addEventListener("beforeunload", disconnectSSE);
   } catch (error) {
     if (DEBUG) console.error("Failed to create EventSource:", error);
     sseConnection.set("error");
