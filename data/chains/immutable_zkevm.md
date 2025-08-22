@@ -58,18 +58,26 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-L2 built specifically for games, with gas-free transactions for players and built-in gaming infrastructure. Unlike general-purpose chains trying to attract games, Immutable provides game-specific tools: player wallets (Passport), marketplace APIs, and SDKs that handle blockchain complexity.
+L2 built specifically for games, with gas-free transactions for players and built-in gaming infrastructure.
+
+**Key Difference:** Unlike general-purpose chains trying to attract games, Immutable provides game-specific tools: player wallets (Passport), marketplace APIs, and SDKs that handle blockchain complexity.
 
 **Best for:** Web3 games needing player-friendly UX, NFT-heavy games, studios wanting blockchain without the complexity.
 
 **Technical:** A ZK-rollup built on Polygon's CDK, focused on gaming and NFT-specific infrastructure with EVM compatibility.
+
+- **Use Cases**
+  - **Major games**: Gods Unchained (migrating), Guild of Guardians, Illuvium, Space Nation
+  - **Gaming infrastructure**: Immutable Passport (wallets), Orderbook (marketplace), game-specific SDKs
+  - **Player features**: Gas-free transactions, simplified onboarding, cross-game asset trading
+  - **Studio benefits**: Pre-built gaming stack, no blockchain expertise needed
 
 - **Security & Data Availability**
   - Uses ZK proofs for state correctness — transactions are verified before being finalized.
   - Data availability is off-chain and centralized; no Ethereum calldata fallback or DA guarantees.
   - Exit safety depends on sequencer honesty and uptime; no enforced fallback mechanisms.
 
-- **Sequencer & Governance**
+- **Governance**
   - Sequencer is centralized and contract upgrades are not timelocked.
   - Governance and upgrade control sit with the Immutable team.
   - IMX is used for gas and staking, but validator decentralization does not yet exist.
@@ -82,12 +90,6 @@ L2 built specifically for games, with gas-free transactions for players and buil
 - **Tooling & Dev Experience**
   - Integrated with gaming SDKs, onchain orderbook infra, and Immutable Passport (non-custodial auth).
   - Contract deployment and indexing flows are streamlined for game devs.
-
-- **Use Cases**
-  - **Major games**: Gods Unchained (migrating), Guild of Guardians, Illuvium, Space Nation
-  - **Gaming infrastructure**: Immutable Passport (wallets), Orderbook (marketplace), game-specific SDKs
-  - **Player features**: Gas-free transactions, simplified onboarding, cross-game asset trading
-  - **Studio benefits**: Pre-built gaming stack, no blockchain expertise needed
 
 - **Trade-offs**
   - Centralized sequencer and DA — not trust-minimized.

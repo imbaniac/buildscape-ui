@@ -148,11 +148,19 @@ sdks:
 # Additional SDKs and tools are inherited from evm-common.md
 ---
 
-Uniswap built their own blockchain to make trading cheaper and protect users from bots that profit off their trades. The key difference: when bots extract value from trades, that money goes back to liquidity providers instead of disappearing to third parties.
+Uniswap DEX built their own blockchain to make trading cheaper and protect users from bots that profit off their trades.
+
+**Key Difference:** When bots extract value from trades, that money goes back to liquidity providers instead of disappearing to third parties.
 
 **Best for:** Trading on Uniswap, providing liquidity to pools, any DeFi app that wants faster and fairer trades.
 
 **Technical:** OP Stack rollup with Flashbots TEE block builder for MEV redistribution and sub-second confirmations.
+
+- **Use Cases**
+  - **Liquidity provision**: Earn from MEV that would normally be extracted
+  - **DeFi protocols**: Euler, Morpho, and others already deployed
+  - **Fast trading apps**: Near-instant confirmation for better UX
+  - **Uniswap trading**: Lower costs and better prices due to MEV protection
 
 - **Security & Data Availability**
   - Stage 1 optimistic rollup with permissionless fault proofs
@@ -171,12 +179,6 @@ Uniswap built their own blockchain to make trading cheaper and protect users fro
   - Block times faster than most L2s at 1 second
   - Significant adoption among DeFi protocols
   - Strong liquidity depth inherited from Uniswap ecosystem
-
-- **Use Cases**
-  - **Uniswap trading**: Lower costs and better prices due to MEV protection
-  - **Liquidity provision**: Earn from MEV that would normally be extracted
-  - **DeFi protocols**: Euler, Morpho, and others already deployed
-  - **Fast trading apps**: Near-instant confirmation for better UX
 
 - **Trade-offs**
   - Primarily benefits Uniswap ecosystem participants

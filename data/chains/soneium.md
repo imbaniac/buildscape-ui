@@ -64,11 +64,18 @@ sdks:
 ---
 
 Sony's entertainment-focused L2 with IP protection that blocked meme coins on launch day, sparking community backlash.
-The key difference: Built-in IP protection system that restricts contracts suspected of infringement — blocked Sony-themed meme coins (Aibo, Toro) and froze funds, prioritizing corporate IP over permissionless deployment.
+
+**Key Difference:** Built-in IP protection system that restricts contracts suspected of infringement — blocked Sony-themed meme coins (Aibo, Toro) and froze funds, prioritizing corporate IP over permissionless deployment.
 
 **Best for:** Entertainment companies needing IP protection, Sony ecosystem partners, regulated applications requiring compliance controls.
 
 **Technical:** OP Stack optimistic rollup with IP protection layer, RPC-level contract restrictions, curated application ecosystem.
+
+- **Use Cases**
+  - **Entertainment IP**: Sony Music/Pictures NFTs, anime titles like Solo Leveling
+  - **Event management**: On-chain ticketing, fan engagement platforms
+  - **Curated ecosystem**: Soneium Spark selected 32 apps from 1,700+ applicants
+  - **Corporate Web3**: Applications requiring IP compliance and content controls
 
 - **Security & Data Availability**
   - Optimistic rollup on OP Stack with standard 7-day withdrawal period.
@@ -84,12 +91,6 @@ The key difference: Built-in IP protection system that restricts contracts suspe
   - Processes ~8 operations per second on average.
   - Low fees (typically <$0.001 per transaction).
   - Batch intervals: ~9 minutes for transactions, ~2 hours for state updates.
-
-- **Use Cases**
-  - **Entertainment IP**: Sony Music/Pictures NFTs, anime titles like Solo Leveling
-  - **Event management**: On-chain ticketing, fan engagement platforms
-  - **Curated ecosystem**: Soneium Spark selected 32 apps from 1,700+ applicants
-  - **Corporate Web3**: Applications requiring IP compliance and content controls
 
 - **Trade-offs**
   - Blocked popular meme coins on launch, freezing ~$100k in user funds.

@@ -74,11 +74,18 @@ forums:
 ---
 
 Mobile payments blockchain that migrated from L1 to become an OP Stack L2 in March 2025. Powers Africa's crypto economy with 7M+ MiniPay wallets and stablecoins you can send via phone numbers for under $0.01.
-The key difference: Pay gas fees with stablecoins (cUSD, USDC, USDT) instead of native tokens, plus SocialConnect lets you send money to phone numbers — both preserved through the L2 migration.
+
+**Key Difference:** Pay gas fees with stablecoins (cUSD, USDC, USDT) instead of native tokens, plus SocialConnect lets you send money to phone numbers — both preserved through the L2 migration.
 
 **Best for:** Mobile payment apps in emerging markets, remittance platforms, stablecoin-based commerce, developers building for users without crypto knowledge.
 
 **Technical:** OP Stack rollup with EigenDA, 1-second blocks, gas abstraction for stablecoin fee payments, part of Optimism Superchain.
+
+- **Use Cases**
+  - **MiniPay**: Opera's wallet with 7M+ users in Africa, built on Celo
+  - **Valora**: Multi-chain wallet with phone number payments, expanding to Brazil/Vietnam
+  - **GoodDollar**: One of the largest UBI protocols globally
+  - **Stablecoin payments**: cUSD, cEUR, cREAL for local currency transactions
 
 - **Security & Data Availability**
   - Optimistic rollup with 7-day fraud proof window for withdrawals.
@@ -94,12 +101,6 @@ The key difference: Pay gas fees with stablecoins (cUSD, USDC, USDT) instead of 
   - Processed 700M+ transactions across 150 countries before migration.
   - Sub-cent transaction costs maintained post-migration.
   - Full history preserved — no regenesis required during transition.
-
-- **Use Cases**
-  - **MiniPay**: Opera's wallet with 7M+ users in Africa, built on Celo
-  - **Valora**: Multi-chain wallet with phone number payments, expanding to Brazil/Vietnam
-  - **GoodDollar**: One of the largest UBI protocols globally
-  - **Stablecoin payments**: cUSD, cEUR, cREAL for local currency transactions
 
 - **Trade-offs**
   - Centralized sequencer like all OP Stack chains — censorship risk.

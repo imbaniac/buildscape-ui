@@ -70,11 +70,18 @@ forums:
 ---
 
 Ethereum's controversial "system state fork" — copied every wallet balance, NFT, and smart contract from Ethereum at launch. Created by Richard Heart, it promises cheaper fees but runs on just 33 validators instead of Ethereum's thousands.
-The key difference: Complete Ethereum state duplication at genesis meant everyone got free copies of their ETH holdings as PLS, though most copied tokens have no real value or liquidity.
+
+**Key Difference:** Complete Ethereum state duplication at genesis meant everyone got free copies of their ETH holdings as PLS, though most copied tokens have no real value or liquidity.
 
 **Best for:** Experimenting with Ethereum forks cheaply, users holding pre-fork Ethereum assets wanting free copies, Richard Heart ecosystem participants.
 
 **Technical:** Proof-of-Stake fork with 33 validators, 10-second blocks, no L2 scaling or Ethereum security connection.
+
+- **Use Cases**
+  - **PulseX DEX**: Main app with majority of chain's activity and liquidity
+  - **HEX ecosystem**: Richard Heart's token projects concentrated here
+  - **Copied DeFi forks**: Non-functional copies of Ethereum protocols without maintenance
+  - **Speculative trading**: Low-liquidity tokens within the Heart ecosystem
 
 - **Security & Data Availability**
   - Proof-of-Staked-Authority with ~33 validators controlling the network.
@@ -90,12 +97,6 @@ The key difference: Complete Ethereum state duplication at genesis meant everyon
   - 10-second block times vs Ethereum's 12 seconds.
   - Low fees primarily due to minimal usage, not technical innovation.
   - Lacks modern scaling: no rollups, blobs, or sharding technology.
-
-- **Use Cases**
-  - **PulseX DEX**: Main app with majority of chain's activity and liquidity
-  - **HEX ecosystem**: Richard Heart's token projects concentrated here
-  - **Copied DeFi forks**: Non-functional copies of Ethereum protocols without maintenance
-  - **Speculative trading**: Low-liquidity tokens within the Heart ecosystem
 
 - **Trade-offs**
   - Extreme centralization: 33 validators vs thousands on Ethereum or legitimate L2s.

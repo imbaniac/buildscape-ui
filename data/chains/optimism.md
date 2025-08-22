@@ -156,11 +156,18 @@ sdks:
 ---
 
 Ethereum rollup that pioneered the modular OP Stack, now powering multiple chains including Base. Unlike pure speed-focused competitors, Optimism emphasizes public goods funding and building an interconnected "Superchain" of compatible L2s.
-The key difference: Optimism's open-source OP Stack enables other chains to join a unified ecosystem (Base, Mode, Frax) while funding builders through RetroPGF — $3.3B allocated to reward impactful contributions.
+
+**Key Difference:** Optimism's open-source OP Stack enables other chains to join a unified ecosystem (Base, Mode, Frax) while funding builders through RetroPGF — $3.3B allocated to reward impactful contributions.
 
 **Best for:** Projects wanting to build on or launch their own L2, public goods builders seeking retroactive funding, apps needing interoperability across OP Stack chains.
 
 **Technical:** Optimistic rollup with 7-day fraud proof window, modular OP Stack architecture, and governance-driven public goods funding via RetroPGF.
+
+- **Use Cases**
+  - **DeFi powerhouses**: Velodrome (native DEX, $130M+ TVL), Synthetix ($274M TVL), Aave V3 ($161M TVL)
+  - **Superchain builders**: Base (Coinbase), Mode, Frax launching on OP Stack
+  - **Public goods projects**: 643+ projects funded via RetroPGF, including dev tools and governance infra
+  - **Cross-chain apps**: Projects leveraging Superchain interoperability
 
 - **Security & Data Availability**
   - Optimistic rollup: transactions execute off-chain, posted to Ethereum with ~7-day fraud proof window.
@@ -176,12 +183,6 @@ The key difference: Optimism's open-source OP Stack enables other chains to join
   - Handles significant daily volume with established DeFi ecosystem.
   - Withdrawal finality requires 7-day challenge period.
   - Cost and throughput tied to Ethereum blob pricing and L1 congestion.
-
-- **Use Cases**
-  - **DeFi powerhouses**: Velodrome (native DEX, $130M+ TVL), Synthetix ($274M TVL), Aave V3 ($161M TVL)
-  - **Superchain builders**: Base (Coinbase), Mode, Frax launching on OP Stack
-  - **Public goods projects**: 643+ projects funded via RetroPGF, including dev tools and governance infra
-  - **Cross-chain apps**: Projects leveraging Superchain interoperability
 
 - **Trade-offs**
   - Sequencer centralization persists — censorship risk at the inclusion level.

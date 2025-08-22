@@ -139,11 +139,19 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-The original "Ethereum killer" that pivoted to gaming and subnets. Unlike monolithic L1s, Avalanche splits functionality across three chains (X, P, C) with C-Chain for EVM. The real innovation: subnets let projects launch custom chains, but after Avalanche9000 reduced deployment costs by 99.9%, it's basically competing with L2s now.
+The original "Ethereum killer" that pivoted to gaming and subnets. Unlike monolithic L1s, Avalanche splits functionality across three chains (X, P, C) with C-Chain for EVM. Subnets let projects launch custom chains, but after Avalanche9000 reduced deployment costs by 99.9%, it's basically competing with L2s now.
+
+**Key Difference:** Subnets let you launch your own blockchain with custom gas tokens (not AVAX) — gaming chains use their own tokens for fees, avoiding the volatility of cryptocurrency prices.
 
 **Best for:** Gaming projects wanting custom chains, DeFi protocols needing 1-2 second finality, enterprise deployments (Wyoming stablecoin).
 
 **Technical:** The EVM execution layer within Avalanche's multi-chain architecture.
+
+- **Use Cases**:
+  - **Gaming subnets**: Off The Grid, Beam, Bloodloop, Maplestory, Gunzilla
+  - **DeFi**: Aave (46% of TVL), Benqi, Trader Joe with sub-second swaps
+  - **Enterprise**: Wyoming stable token (WYST), India land records (700k+ digitized)
+  - **Custom L1s**: Lamina1, QChain, TradeX launched in 2025
 
 - **Consensus**: Snowman protocol (a linearized version of Avalanche consensus). Offers fast finality (1–2 seconds) and high throughput (4,500 TPS under ideal conditions).
 - **Architecture**: One of three default chains:
@@ -153,11 +161,6 @@ The original "Ethereum killer" that pivoted to gaming and subnets. Unlike monoli
 - **Security**: Validators secure the full Primary Network (P, X, C chains) by staking AVAX. Avalanche9000 removed 2,000 AVAX requirement for subnet validators.
 - **Performance**: 1-2 second finality with Snowman consensus. Gas fees dropped 96% after Avalanche9000 upgrade.
 - **Subnets/L1s**: Custom chains with own rules — deployment costs down 99.9% (now competing with L2 pricing). 8 new L1s launched Q1 2025.
-- **Use Cases**:
-  - **Gaming subnets**: Off The Grid, Beam, Bloodloop, Maplestory, Gunzilla
-  - **DeFi**: Aave (46% of TVL), Benqi, Trader Joe with sub-second swaps
-  - **Enterprise**: Wyoming stable token (WYST), India land records (700k+ digitized)
-  - **Custom L1s**: Lamina1, QChain, TradeX launched in 2025
 - **Trade-offs**:
   - Avalanche consensus is less battle-tested and relies on probabilistic sampling assumptions
   - Multichain setup adds developer complexity and potential for tooling gaps

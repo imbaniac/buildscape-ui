@@ -59,12 +59,25 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-Pudgy Penguins' L2 built for consumer apps, using email sign-ins instead of seed phrases. Launched January 2025 with big hype but unclear substance.
-The key difference: Created by the NFT team that sold plushies at Target — betting on bringing retail consumers to crypto through simplified UX and "digital Disneyland" branding.
+Pudgy Penguins' L2 built for consumer apps, using email sign-ins instead of seed phrases. Launched January 2025 with big hype but unclear substance. Created by the NFT team that sold plushies at Target — betting on bringing retail consumers to crypto through simplified UX and "digital Disneyland" branding.
+
+**Key Difference**: Built to onboard non-crypto users by eliminating wallets entirely — you interact with blockchain using email/passkeys like normal apps.
 
 **Best for:** Consumer apps wanting Pudgy Penguins audience, projects needing sponsored gas fees, developers betting on NFT-to-mainstream crossover.
 
 **Technical:** ZK rollup using zkSync's ZK Stack, EigenDA for data availability, native account abstraction with passkey/email wallets.
+
+- **Use Cases**
+  - **The Portal**: App store/streaming platform hybrid claiming 600K MAU (unverified)
+  - **Consumer apps**: 100+ apps at launch, mostly simple games and social
+  - **Pudgy ecosystem**: PENGU token integration, NFT utilities
+  - **Target market**: Non-crypto users via simplified onboarding
+
+- **Trade-offs**
+  - Brand-new chain with unproven tech stack at scale.
+  - Relies entirely on zkSync and EigenDA infrastructure.
+  - Success tied to Pudgy Penguins brand relevance.
+  - Consumer blockchain thesis unproven — previous attempts failed.
 
 - **Security & Data Availability**
   - ZK rollup inheriting Ethereum security via validity proofs.
@@ -80,15 +93,3 @@ The key difference: Created by the NFT team that sold plushies at Target — bet
   - Standard ZK rollup performance characteristics.
   - Focus on consumer UX over raw throughput.
   - Early stage with limited stress testing.
-
-- **Use Cases**
-  - **The Portal**: App store/streaming platform hybrid claiming 600K MAU (unverified)
-  - **Consumer apps**: 100+ apps at launch, mostly simple games and social
-  - **Pudgy ecosystem**: PENGU token integration, NFT utilities
-  - **Target market**: Non-crypto users via simplified onboarding
-
-- **Trade-offs**
-  - Brand-new chain with unproven tech stack at scale.
-  - Relies entirely on zkSync and EigenDA infrastructure.
-  - Success tied to Pudgy Penguins brand relevance.
-  - Consumer blockchain thesis unproven — previous attempts failed.

@@ -66,11 +66,17 @@ tools:
 ---
 
 Optimistic rollup that only generates ZK proofs when challenged, reducing costs. Positioned for "consumer apps" but launched late 2024 with minimal traction.
-The key difference: Responsive Validity Proof shortens withdrawals to 2-3 days (vs 7 for Optimism/Arbitrum) by using ZK proofs only during disputes.
+
+**Key Difference:** The "lazy ZK" approach — runs cheap like Optimism but can summon ZK proofs instantly if challenged, theoretically giving you the best of both worlds (though barely anyone uses it yet).
 
 **Best for:** Apps needing faster withdrawals than standard optimistic rollups without paying for constant ZK proving.
 
 **Technical:** Optimistic zkEVM with RVP system, SP1 zkVM for disputes, planned decentralized sequencer.
+
+- **Use Cases**
+  - **Live apps**: BulbaSwap (Uniswap fork), basic DeFi, NFT platforms
+  - **Target market**: Consumer apps, though mostly theoretical so far
+  - **Backing**: Bitget exchange partnership
 
 - **Security & Data Availability**
   - Responsive Validity Proof (RVP) — optimistic by default, ZK proofs only when challenged.
@@ -86,11 +92,6 @@ The key difference: Responsive Validity Proof shortens withdrawals to 2-3 days (
   - Lower costs than always-on zkEVMs.
   - Faster withdrawals than standard optimistic rollups.
   - Limited current throughput due to early adoption.
-
-- **Use Cases**
-  - **Live apps**: BulbaSwap (Uniswap fork), basic DeFi, NFT platforms
-  - **Target market**: Consumer apps, though mostly theoretical so far
-  - **Backing**: Bitget exchange partnership
 
 - **Trade-offs**
   - Very early — launched October 2024 with low activity.

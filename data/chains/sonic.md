@@ -71,11 +71,18 @@ forums:
 ---
 
 Fantom reborn as Sonic — the same DAG consensus tech pushed to the limit with 10,000 TPS capability and sub-second finality. Built by Andre Cronje's team, it's an independent L1 that rewards developers with 90% of the gas fees their apps generate.
-The key difference: Developer revenue sharing model where builders earn from their app's usage, not just from token speculation — creating Web2-like sustainable business models on-chain.
+
+**Key Difference:** Developer revenue sharing model where builders earn from their app's usage, not just from token speculation — creating Web2-like sustainable business models on-chain.
 
 **Best for:** DeFi protocols wanting revenue streams, high-frequency trading apps, gaming that needs instant finality, developers migrating from Fantom.
 
 **Technical:** DAG-based consensus L1 with 720ms finality, custom SonicVM for speed, FTM→S token migration at 1:1 ratio.
+
+- **Use Cases**
+  - **DeFi infrastructure**: Silo Finance (lending), Beethoven X/BEETS (DEX and staking), SpookySwap V3 (concentrated liquidity)
+  - **Revenue-generating apps**: Fee Monetization returns 90% of gas to developers
+  - **Fantom migrations**: Full compatibility for existing Fantom projects
+  - **High-frequency applications**: Trading bots, gaming, real-time applications
 
 - **Security & Data Availability**
   - DAG-based Lachesis consensus with asynchronous Byzantine Fault Tolerance.
@@ -91,12 +98,6 @@ The key difference: Developer revenue sharing model where builders earn from the
   - Theoretical 10,000 TPS capability with 720ms finality.
   - Transaction costs under $0.0001 in normal conditions.
   - Actual usage varies — network handles current demand without congestion.
-
-- **Use Cases**
-  - **DeFi infrastructure**: Silo Finance (lending), Beethoven X/BEETS (DEX and staking), SpookySwap V3 (concentrated liquidity)
-  - **Revenue-generating apps**: Fee Monetization returns 90% of gas to developers
-  - **Fantom migrations**: Full compatibility for existing Fantom projects
-  - **High-frequency applications**: Trading bots, gaming, real-time applications
 
 - **Trade-offs**
   - Small validator set (41) creates centralization risk vs thousands on Ethereum.

@@ -104,24 +104,31 @@ forums:
 
 Binance's centralized but cheap EVM chain — where retail traders go for memecoins and yield farming. Not decentralized (21 validators controlled by Binance), but nobody cares because fees are pennies and PancakeSwap has all the liquidity. If you want "DeFi" without the high fees or decentralization theater, BSC delivers.
 
+**Key Difference:** Binance lists your token if it gets traction here — PancakeSwap success often leads to CEX listing, creating a direct path from memecoin to major exchange that doesn't exist on other chains.
+
 **Best for:** Memecoin trading, yield farming, retail DeFi, projects needing Binance ecosystem access.
 
 **Technical:** An EVM-compatible chain using Proof-of-Staked-Authority (PoSA), built for high-throughput applications with fast finality.
 
-- **Consensus & Security**
+- **Use Cases**
+  - **PancakeSwap dominance**: 91.8% of all DEX activity, often beats Uniswap volume
+  - **Memecoin central**: GraFun, Four.Meme launchpads, Binance listings pipeline
+  - **Retail DeFi**: Venus Finance, yield farms with actual volume
+  - **Binance integration**: Direct CEX bridge, easy fiat on/off
+
+- **Security**
   - PoSA combines delegated staking with authority-based validator rotation
-  - 21 active validators, elected by BNB stake, produce blocks with ~3s time
-  - Finality typically achieved in ~6 seconds (2 blocks)
+  - 21 active validators, elected by BNB stake
+  - Finality typically achieved in 2 blocks
   - Slashing applies for double-signing and liveness failures
   - Validator set is permissioned—centralization risk is significant
 
-- **Performance & Fees**
-  - Real-world throughput ~100–200 TPS (enough for current demand)
+- **Performance**
+  - Real-world throughput ~100–200 TPS
   - Fees stay at pennies even during memecoin frenzies
   - Pascal hard fork added EIP-7702 wallet support, MEV protection
 
 - **Infra & Architecture**
-  - C-Chain handles EVM smart contracts
   - Tightly integrated with Binance ecosystem (wallets, bridges, exchange)
   - Supports opBNB (an L2 on OP Stack) and subnets as part of multi-chain strategy
   - Rust client and zk-rollup integrations are on the roadmap
@@ -129,12 +136,6 @@ Binance's centralized but cheap EVM chain — where retail traders go for memeco
 - **Governance**
   - On-chain proposal system tied to validator and delegator voting
   - Upgrades controlled by validator set, without enforced timelocks
-
-- **Use Cases**
-  - **PancakeSwap dominance**: 91.8% of all DEX activity, often beats Uniswap volume
-  - **Memecoin central**: GraFun, Four.Meme launchpads, Binance listings pipeline
-  - **Retail DeFi**: Venus Finance, yield farms with actual volume
-  - **Binance integration**: Direct CEX bridge, easy fiat on/off
 
 - **Trade-offs**
   - Limited validator set → lower decentralization and higher censorship risk

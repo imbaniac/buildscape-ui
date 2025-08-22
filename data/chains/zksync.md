@@ -142,11 +142,18 @@ sdks:
 ---
 
 The hub of zkSync's Elastic Chain ecosystem — a Type-4 zkEVM that trades perfect Ethereum compatibility for faster proofs and native account abstraction. Every wallet is a smart account with Face ID login, no seed phrases needed.
-The key difference: Custom VM architecture enables native features impossible on other L2s — account abstraction at protocol level, paymasters for gasless transactions, and sub-penny proof costs that other zkEVMs can't match.
+
+**Key Difference:** Custom VM architecture enables native features impossible on other L2s — account abstraction at protocol level, paymasters for gasless transactions, and sub-penny proof costs.
 
 **Best for:** Apps needing smart wallets with social logins, DeFi protocols wanting institutional adoption, developers building consumer apps requiring seamless UX.
 
 **Technical:** Type-4 zkEVM with custom VM, native account abstraction, part of Elastic Chain ecosystem, ZK proofs with no fraud windows.
+
+- **Use Cases**
+  - **DeFi liquidity hub**: SyncSwap (40% of TVL), Mute.io, Maverick Protocol
+  - **Institutional presence**: Deutsche Bank, UBS, Sygnum Bank deployed
+  - **Cross-chain apps**: SpaceFi connecting Cosmos and Ethereum L2s
+  - **Consumer-facing apps**: Leveraging native AA for Web2-like onboarding
 
 - **Security & Data Availability**
   - ZK validity proofs guarantee state correctness — no 7-day fraud windows.
@@ -162,12 +169,6 @@ The key difference: Custom VM architecture enables native features impossible on
   - 1.8 second block times with instant perceived finality.
   - Proof costs under $0.0001 with Boojum upgrade.
   - Theoretical 100,000 TPS capability, currently handles peaks over 100 TPS.
-
-- **Use Cases**
-  - **DeFi liquidity hub**: SyncSwap (40% of TVL), Mute.io, Maverick Protocol
-  - **Institutional presence**: Deutsche Bank, UBS, Sygnum Bank deployed
-  - **Cross-chain apps**: SpaceFi connecting Cosmos and Ethereum L2s
-  - **Consumer-facing apps**: Leveraging native AA for Web2-like onboarding
 
 - **Trade-offs**
   - Type-4 means code changes needed — not drop-in compatible like Arbitrum.

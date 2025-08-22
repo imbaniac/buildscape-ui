@@ -84,11 +84,19 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-Ethereum but cheaper and faster, using math proofs (zero-knowledge) to guarantee security. The key difference: Scroll prioritizes being identical to Ethereum — your existing code works without changes, unlike competitors that modified things for speed.
+Ethereum but cheaper and faster, using math proofs (zero-knowledge) to guarantee security.
+
+**Key Difference:** Scroll prioritizes being identical to Ethereum — your existing code works without changes, unlike competitors that modified things for speed.
 
 **Best for:** Moving existing Ethereum projects without modifications, DeFi apps that need Ethereum's exact behavior.
 
 **Technical:** A zkEVM rollup with bytecode-level EVM equivalence and ZK-based finality, built for compatibility with existing Ethereum contracts.
+
+- **Use Cases**
+  - **DeFi migrations**: Uniswap, Aave, and other majors deployed without code changes
+  - **NFT platforms**: Lower minting costs while keeping OpenSea compatibility
+  - **DAO tooling**: Snapshot, Gnosis Safe work identically to mainnet
+  - **Developer testing**: Same behavior as Ethereum, cheaper to experiment
 
 - **Security & Data Availability**
   - Uses ZK validity proofs to confirm all state transitions before finalization.
@@ -104,12 +112,6 @@ Ethereum but cheaper and faster, using math proofs (zero-knowledge) to guarantee
   - Handles high daily tx volumes (~500k/day).
   - Proof submission adds latency — typically a few minutes after batch inclusion.
   - Throughput depends on prover capacity and L1 calldata constraints.
-
-- **Use Cases**
-  - **DeFi migrations**: Uniswap, Aave, and other majors deployed without code changes
-  - **NFT platforms**: Lower minting costs while keeping OpenSea compatibility
-  - **DAO tooling**: Snapshot, Gnosis Safe work identically to mainnet
-  - **Developer testing**: Same behavior as Ethereum, cheaper to experiment
 
 - **Trade-offs**
   - Sequencer is not decentralized — risk of transaction censorship or delays.

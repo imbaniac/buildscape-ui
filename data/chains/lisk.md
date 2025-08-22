@@ -62,11 +62,19 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-Former JavaScript blockchain that pivoted to become an L2 focused on bringing crypto to emerging markets. The key difference: While other L2s fight for Silicon Valley users, Lisk targets Africa and Southeast Asia where low fees actually matter for daily use.
+Former JavaScript blockchain that pivoted to become an L2 focused on bringing crypto to emerging markets.
+
+**Key Difference:** While other L2s fight for Silicon Valley users, Lisk targets Africa and Southeast Asia where low fees actually matter for daily use.
 
 **Best for:** Building for emerging markets, RWA tokenization projects, developers needing grants and support.
 
 **Technical:** OP Stack rollup optimized for low-cost transactions, part of the Optimism Superchain.
+
+- **Use Cases**
+  - **Emerging market solutions**: Focus on real problems in Africa/Southeast Asia
+  - **RWA tokenization**: Partnerships with Backed and Obligate
+  - **Builder programs**: 3.65M LSK grants with 95% going directly to developers
+  - **Financial inclusion**: Low fees enable microtransactions and remittances
 
 - **Security & Data Availability**
   - Standard optimistic rollup with 7-day withdrawal period
@@ -85,12 +93,6 @@ Former JavaScript blockchain that pivoted to become an L2 focused on bringing cr
   - Low congestion due to early-stage adoption
   - Growing through targeted incentive programs
   - African Blockchain Incubation Hub supporting local builders
-
-- **Use Cases**
-  - **Emerging market solutions**: Focus on real problems in Africa/Southeast Asia
-  - **RWA tokenization**: Partnerships with Backed and Obligate
-  - **Builder programs**: 3.65M LSK grants with 95% going directly to developers
-  - **Financial inclusion**: Low fees enable microtransactions and remittances
 
 - **Trade-offs**
   - Still building ecosystem after L1-to-L2 transition

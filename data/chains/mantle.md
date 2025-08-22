@@ -81,11 +81,18 @@ forums:
 ---
 
 BitDAO's L2 with a massive treasury backing its ecosystem. Still an optimistic rollup but testing ZK upgrade for 1-hour withdrawals.
-The key difference: $3.9B treasury (from BitDAO merger) funding ecosystem growth, plus first L2 using EigenDA for cheaper data storage and SP1 zkVM on testnet.
+
+**Key Difference:** $3.9B treasury (from BitDAO merger) funding ecosystem growth, plus first L2 using EigenDA for cheaper data storage and SP1 zkVM on testnet.
 
 **Best for:** Projects wanting treasury-backed grants/incentives, DeFi needing deep liquidity pools, apps betting on the ZK transition.
 
 **Technical:** Optimistic rollup transitioning to ZK validity rollup via OP Succinct/SP1, EigenDA for data availability, MNT token.
+
+- **Use Cases**
+  - **Treasury-backed DeFi**: $200M EcoFund investing in projects
+  - **Liquid staking**: mETH ($335M+ staked), integrated yield products
+  - **Stablecoin integrations**: Ethena USDe, Agora AUSD, Ondo USDy
+  - **Bitcoin bridge**: fBTC for wrapped Bitcoin liquidity
 
 - **Security & Data Availability**
   - Still optimistic rollup with 7-day withdrawal period on mainnet.
@@ -101,12 +108,6 @@ The key difference: $3.9B treasury (from BitDAO merger) funding ecosystem growth
   - Sub-cent transaction fees with EigenDA.
   - Standard optimistic rollup throughput currently.
   - After ZK upgrade: 1-hour finality vs 7 days.
-
-- **Use Cases**
-  - **Treasury-backed DeFi**: $200M EcoFund investing in projects
-  - **Liquid staking**: mETH ($335M+ staked), integrated yield products
-  - **Stablecoin integrations**: Ethena USDe, Agora AUSD, Ondo USDy
-  - **Bitcoin bridge**: fBTC for wrapped Bitcoin liquidity
 
 - **Trade-offs**
   - Centralized sequencer with vague decentralization timeline.

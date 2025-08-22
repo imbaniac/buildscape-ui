@@ -65,11 +65,19 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-The NFT meme chain that became a serious L1 with a novel twist: your staked assets keep earning DeFi yields. The key difference: Proof-of-Liquidity means validators must provide actual liquidity to earn rewards, not just lock tokens — creating the first chain where security literally equals liquidity.
+The NFT meme chain that became a serious L1 with a novel twist: your staked assets keep earning DeFi yields.
+
+**Key Difference:** Uses Proof-of-Liquidity, meaning validators must provide actual liquidity to earn rewards, not just lock tokens — creating the first chain where security literally equals liquidity.
 
 **Best for:** Liquidity mining maximalists, DeFi protocols wanting built-in rewards, projects needing cultural momentum.
 
 **Technical:** An EVM-identical L1 using Proof-of-Liquidity consensus with a tri-token system (BERA/BGT/HONEY) built on Cosmos SDK.
+
+- **Use Cases**
+  - **Native DeFi suite**: BEX (DEX with gas rebates), BEND (lending), BERP (20x leverage perps)
+  - **Liquidity wars**: Kodiak, Infrared competing for BGT bribes and rewards
+  - **Meme culture**: Originated from Bong Bears NFT, "Ooga Booga" community
+  - **Cross-chain liquidity**: BeraHub manages BGT rewards across protocols
 
 - **Security & Data Availability**
   - Proof-of-Liquidity: validators stake LP tokens instead of native tokens
@@ -88,12 +96,6 @@ The NFT meme chain that became a serious L1 with a novel twist: your staked asse
   - Sub-3 second block times with instant finality
   - Gas costs comparable to other Cosmos chains
   - Hit $3B TVL within weeks of mainnet launch
-
-- **Use Cases**
-  - **Native DeFi suite**: BEX (DEX with gas rebates), BEND (lending), BERP (20x leverage perps)
-  - **Liquidity wars**: Kodiak, Infrared competing for BGT bribes and rewards
-  - **Meme culture**: Originated from Bong Bears NFT, "Ooga Booga" community
-  - **Cross-chain liquidity**: BeraHub manages BGT rewards across protocols
 
 - **Trade-offs**
   - PoL is experimental — economic security depends on sustained DeFi activity

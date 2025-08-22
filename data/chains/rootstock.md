@@ -71,11 +71,17 @@ forums:
 ---
 
 The original Bitcoin sidechain from 2018 — run Ethereum smart contracts secured by Bitcoin miners. Gets its security from 81% of Bitcoin's hashpower through merged mining, where miners earn both BTC and RBTC rewards simultaneously.
-The key difference: True sidechain architecture, not a rollup — runs parallel to Bitcoin with its own consensus. Bitcoin miners validate blocks but can't steal funds thanks to hardware-secured federation controlling the bridge.
+
+**Key Difference:** True sidechain architecture, not a rollup — runs parallel to Bitcoin with its own consensus. Bitcoin miners validate blocks but can't steal funds thanks to hardware-secured federation controlling the bridge.
 
 **Best for:** Bitcoin purists wanting EVM without leaving Bitcoin security, projects needing stable proven infrastructure, DeFi protocols wanting BTC collateral without wrapped tokens.
 
 **Technical:** EVM sidechain with merged mining (81% of Bitcoin hashpower), federation-controlled two-way peg, 30-second blocks.
+
+- **Use Cases**
+  - **Sovryn**: Bitcoin-native DEX and lending protocol
+  - **Money On Chain**: Dollar On Chain (DOC) — 100% BTC-backed stablecoin
+  - **Mining revenue**: Miners earn additional rewards without extra hardware
 
 - **Security & Data Availability**
   - Merged mining with Bitcoin — 740+ exahashes/second securing the network.
@@ -91,12 +97,6 @@ The key difference: True sidechain architecture, not a rollup — runs parallel 
   - 300+ TPS capability (though typical usage much lower).
   - 30-second block times — slower than modern L2s but predictable.
   - Peg-in/out takes 24-36 hours — optimized for security over speed.
-
-- **Use Cases**
-  - **Sovryn**: Bitcoin-native DEX and lending protocol
-  - **Money On Chain**: Dollar On Chain (DOC) — only 100% BTC-backed stablecoin
-  - **150+ ecosystem partners**: Established DeFi on Bitcoin since 2018
-  - **Mining revenue**: Miners earn additional rewards without extra hardware
 
 - **Trade-offs**
   - Federation-controlled bridge — not fully trustless like newer BitVM designs.

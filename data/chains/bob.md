@@ -72,11 +72,19 @@ sdks:
 tools:
 ---
 
-An L2 that brings Bitcoin into Ethereum DeFi while being secured by both chains — Bitcoin holders stake their BTC to validate the network and earn yield. The key difference: Unlike wrapped BTC on other chains, here your Bitcoin actively secures the network through Babylon staking, and if validators misbehave, their actual BTC gets slashed on Bitcoin itself.
+An L2 that brings Bitcoin into Ethereum DeFi while being secured by both chains — Bitcoin holders stake their BTC to validate the network and earn yield.
+
+**Key Difference:** Unlike wrapped BTC on other chains, here your Bitcoin actively secures the network through Babylon staking, and if validators misbehave, their actual BTC gets slashed on Bitcoin itself.
 
 **Best for:** Bitcoin DeFi needing EVM compatibility, BTC liquid staking protocols, cross-chain apps wanting both Ethereum composability and Bitcoin security.
 
 **Technical:** OP Stack rollup with Babylon BTC staking for finality, BitVM bridges in development, member of Optimism Superchain.
+
+- **Use Cases**
+  - **BTC liquid staking hub**: Native integration with Babylon LST ecosystem
+  - **Bitcoin DeFi**: Major protocols deployed for BTC-native yield
+  - **Cross-chain infrastructure**: Part of both Superchain and Bitcoin networks
+  - **Institutional BTC**: Secure Bitcoin yield without leaving the ecosystem
 
 - **Security & Data Availability**
   - OP rollup with standard 7-day fraud proof window on Ethereum.
@@ -92,12 +100,6 @@ An L2 that brings Bitcoin into Ethereum DeFi while being secured by both chains 
   - Standard OP Stack performance with 2-second blocks.
   - Bitcoin finality adds 10-60 minute confirmation for maximum security.
   - Network fees contribute to BTC staking rewards, creating sustainable economics.
-
-- **Use Cases**
-  - **BTC liquid staking hub**: Native integration with Babylon LST ecosystem
-  - **Bitcoin DeFi**: Major protocols deployed for BTC-native yield
-  - **Cross-chain infrastructure**: Part of both Superchain and Bitcoin networks
-  - **Institutional BTC**: Secure Bitcoin yield without leaving the ecosystem
 
 - **Trade-offs**
   - Dual finality more complex than single-chain L2s.
