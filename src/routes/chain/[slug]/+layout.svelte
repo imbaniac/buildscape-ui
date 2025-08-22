@@ -80,7 +80,10 @@
   // Load overview data when span changes
   $effect(() => {
     // The smart loading in overviewStore will handle avoiding unnecessary fetches
-    overviewStore.load(metricsSpan);
+    const currentState = overviewStore.getState();
+    if (currentState.currentPeriod !== metricsSpan && !currentState.isLoading) {
+      overviewStore.load(metricsSpan);
+    }
   });
 
   // Tabs configuration

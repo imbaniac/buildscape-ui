@@ -14,3 +14,7 @@ eslint.config.js
 
 # Ignore files with specific Svelte patterns that Prettier can't handle
 src/lib/components/SEO.svelte
+.code
+.code/**
+.claude
+.claude/**

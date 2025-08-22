@@ -44,8 +44,15 @@
 
   // Load data for the saved period on mount
   onMount(() => {
+    const currentState = overviewStore.getState();
+
     // Load data for the user's preferred period
-    overviewStore.load(selectedPeriod);
+    if (
+      currentState.currentPeriod !== selectedPeriod &&
+      !currentState.isLoading
+    ) {
+      overviewStore.load(selectedPeriod);
+    }
   });
 
   // Combine static and dynamic data
