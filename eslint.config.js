@@ -155,6 +155,8 @@ export default [
   {
     ignores: [
       "node_modules/",
+      ".code/",
+      ".claude/",
       ".svelte-kit/",
       "build/",
       "dist/",

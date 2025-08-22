@@ -5,7 +5,7 @@ colors: true
 no_tty: false
 
 pre-commit:
-  parallel: false  # Run sequentially to ensure prettier runs before eslint
+  parallel: false # Run sequentially to ensure prettier runs before eslint
   commands:
     prettier:
       glob: "*.{js,ts,jsx,tsx,svelte,css,json,md,html}"
