@@ -2,7 +2,7 @@
   import { onDestroy, onMount } from "svelte";
   import { setContext } from "svelte";
 
-  import { afterNavigate, goto } from "$app/navigation";
+  import { afterNavigate, goto, preloadCode } from "$app/navigation";
   import { page } from "$app/stores";
 
   import { analytics } from "$lib/analytics";
@@ -218,6 +218,23 @@
     if (data.chainId) {
       initializeChainDataFeed(data.chainId.toString());
     }
+
+    // Eagerly preload all tab routes to prevent FOUC
+    const basePath = `/chain/${data.slug}`;
+    const tabRoutes = [
+      `${basePath}/overview`,
+      `${basePath}/resources`,
+      `${basePath}/explorers`,
+      `${basePath}/development/rpcs`,
+      `${basePath}/wallets`,
+    ];
+
+    // Preload all tab code/CSS immediately
+    tabRoutes.forEach((route) => {
+      preloadCode(route).catch(() => {
+        // Ignore errors for routes that might not exist
+      });
+    });
 
     window.addEventListener("keydown", handleKeydown);
 

@@ -18,6 +18,9 @@ const config = {
       handleHttpError: "warn",
       entries: ["*", "/sitemap.xml"], // Prerender all pages including sitemap
     },
+
+    // Inline small CSS files to reduce network requests and prevent FOUC
+    inlineStyleThreshold: 10000, // Inline CSS files smaller than 10KB
   },
 };
 
