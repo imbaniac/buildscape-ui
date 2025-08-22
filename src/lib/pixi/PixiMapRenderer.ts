@@ -1,7 +1,7 @@
 import { Application, Container, Graphics, Rectangle, Sprite } from "pixi.js";
 import type { Viewport } from "pixi-viewport";
 
-import { goto } from "$app/navigation";
+import { goto, preloadCode } from "$app/navigation";
 
 import type { Island } from "$lib/types/island";
 
@@ -217,6 +217,10 @@ export default class PixiMapRenderer {
     // Add hover events
     container.on("pointerover", () => {
       this.setHoveredIsland(island);
+      // Preload the chain page code on hover to prevent FOUC
+      preloadCode(`/chain/${island.slug}`).catch(() => {
+        // Ignore errors, preloading is optional
+      });
     });
 
     container.on("pointerout", () => {
