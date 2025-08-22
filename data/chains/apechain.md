@@ -71,9 +71,18 @@ tools:
 
 The Bored Ape ecosystem's own chain — an L3 on Arbitrum built for NFT culture and gaming. Unlike general chains, ApeChain is unapologetically niche: APE as gas, native yield for holders, and deep integration with Yuga Labs' metaverse (Otherside). If you're not in the BAYC universe, this isn't for you.
 
+**Key Difference:** APE tokens automatically generate yield just by holding them in your wallet — no staking
+contracts or lockups needed.
+
 **Best for:** Yuga ecosystem projects, APE token holders, Otherside metaverse, NFT-first gaming, meme token experiments.
 
 **Technical:** A purpose-built L3 on Arbitrum Orbit for the ApeCoin ecosystem (Yuga Labs, Otherside, NFT/gaming projects).
+
+- **Use Cases**:
+  - **BAYC/MAYC holders**: Native yield on APE, exclusive games, metaverse access
+  - **NFT gaming**: Otherside metaverse, ODK for Unreal Engine NFT integration
+  - **Meme token launches**: Ape Express for quick token deployment
+  - **APE staking**: Native yield without smart contract risks
 
 - **Security**: Inherits Ethereum security via Arbitrum One → Orbit. Depends on DAC for data availability and centralized sequencer.
 - **Token Utility**: APE as native gas, native yield for holders, gas-sponsored transactions for smooth onboarding.
@@ -83,11 +92,6 @@ The Bored Ape ecosystem's own chain — an L3 on Arbitrum built for NFT culture 
   - **Dookey Dash Unclogged**: Toilet-themed arcade runner (yes, really)
   - **Top Trader**: Satirical trading game turning speculation into sport
   - **Ape Express**: Meme token creation toolkit for the APE community
-- **Use Cases**:
-  - **BAYC/MAYC holders**: Native yield on APE, exclusive games, metaverse access
-  - **NFT gaming**: Otherside metaverse, ODK for Unreal Engine NFT integration
-  - **Meme token launches**: Ape Express for quick token deployment
-  - **APE staking**: Native yield without smart contract risks
 - **Governance**: Controlled by a multisig with ApeCoin DAO-selected Security Council (no onchain upgrade delay).
 - **Trade-offs**:
   - Centralized trust assumptions (sequencer, DAC, multisig upgrades)

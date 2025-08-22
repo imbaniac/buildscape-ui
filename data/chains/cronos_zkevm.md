@@ -61,11 +61,18 @@ forums:
 ---
 
 Crypto.com's new Ethereum L2 using ZK tech, launched 2024 as the "v2" to original Cronos. Keeps data off-chain to save costs.
-The key difference: This is an Ethereum L2 Validium with ZK proofs, while original Cronos is a Cosmos chain. Cheaper but riskier than Cronos v1, with yield-bearing zkCRO gas.
+
+**Key Difference:** Your gas fees earn staking rewards — zkCRO automatically generates yield while sitting in your wallet, so even failed transactions contribute to your returns instead of just burning money.
 
 **Best for:** Crypto.com users wanting cheaper transactions, DeFi apps needing sponsored gas, yield farmers chasing zkCRO rewards.
 
 **Technical:** ZK Validium on ZK Stack with off-chain data availability, zkCRO (liquid staked CRO) as gas token, native account abstraction.
+
+- **Use Cases**
+  - **DeFi apps**: Fulcrom Finance (derivatives), VVS Finance, H2 Finance
+  - **Crypto.com integration**: Natural bridge for exchange users
+  - **Yield farming**: zkCRO "triple yield" opportunities
+  - **Pioneer program**: 5M+ ZK tokens in rewards pool
 
 - **Security & Data Availability**
   - ZK proofs posted to Ethereum, but transaction data kept off-chain (Validium).
@@ -81,12 +88,6 @@ The key difference: This is an Ethereum L2 Validium with ZK proofs, while origin
   - Very low fees due to off-chain data storage.
   - Claims >100 TPS but real performance untested.
   - Alpha mainnet since August 2024.
-
-- **Use Cases**
-  - **DeFi apps**: Fulcrom Finance (derivatives), VVS Finance, H2 Finance
-  - **Crypto.com integration**: Natural bridge for exchange users
-  - **Yield farming**: zkCRO "triple yield" opportunities
-  - **Pioneer program**: 5M+ ZK tokens in rewards pool
 
 - **Trade-offs**
   - Validium = major centralization risk — sequencer controls your exit.

@@ -73,12 +73,19 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-Crypto.com's original EVM chain built on Cosmos, not Ethereum. The mature chain with established DeFi but older tech.
-The key difference: Built on Cosmos SDK with IBC bridges to Cosmos ecosystem, while Cronos zkEVM is their new Ethereum L2 with ZK tech. Think of this as v1, zkEVM as v2.
+Crypto.com's original EVM chain built on Cosmos, not Ethereum. The mature chain with established DeFi but older tech. Think of this as v1, zkEVM as v2.
+
+**Key Difference:** Direct integration with Crypto.com's card and app — spend DeFi yields on your Visa card, or stake CRO from the app directly on-chain without external wallets.
 
 **Best for:** DeFi users wanting established protocols, Cosmos ecosystem connectivity via IBC, projects needing proven infrastructure.
 
 **Technical:** Cosmos SDK chain with Ethermint EVM, Tendermint consensus, ~30 permissioned validators, IBC enabled.
+
+- **Use Cases**
+  - **Major DeFi**: VVS Finance (largest AMM), Tectonic (lending), MM Finance
+  - **Established ecosystem**: $500M+ TVL, mature protocols since 2021
+  - **Cosmos connectivity**: IBC bridges to entire Cosmos ecosystem
+  - **Crypto.com integration**: Direct fiat onramps from exchange
 
 - **Security & Data Availability**
   - Tendermint PoA consensus with ~30 validators selected by Crypto.com.
@@ -94,12 +101,6 @@ The key difference: Built on Cosmos SDK with IBC bridges to Cosmos ecosystem, wh
   - Few hundred TPS real throughput.
   - Low stable fees ($0.01-0.10).
   - 5 second block times.
-
-- **Use Cases**
-  - **Major DeFi**: VVS Finance (largest AMM), Tectonic (lending), MM Finance
-  - **Established ecosystem**: $500M+ TVL, mature protocols since 2021
-  - **Cosmos connectivity**: IBC bridges to entire Cosmos ecosystem
-  - **Crypto.com integration**: Direct fiat onramps from exchange
 
 - **Trade-offs**
   - Centralized validators controlled by Crypto.com.

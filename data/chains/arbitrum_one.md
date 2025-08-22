@@ -179,12 +179,19 @@ tools:
     description: Full-stack development platform with RPCs, APIs, and contract analytics for scaling on Arbitrum One.
 ---
 
-Ethereum's largest L2 by ecosystem, using interactive multi-round fraud proofs and powering dozens of Orbit L3s. While competitors build monolithic chains, Arbitrum enables anyone to launch custom chains using their battle-tested stack.
-The key difference: Arbitrum's interactive fraud proofs isolate disputed computations for efficiency, plus Stylus enables WASM smart contracts in Rust/C++ alongside Solidity — cutting compute costs by 10x for intensive apps.
+Ethereum's largest L2 by ecosystem, using interactive multi-round fraud proofs and powering dozens of Orbit L3s. While competitors build monolithic chains, Arbitrum enables anyone to launch custom chains using their stack.
+
+**Key Difference**: Lets developers write smart contracts in Rust/C++ (not just Solidity) through Stylus, making compute-heavy apps 10x cheaper to run — opening doors for on-chain games and simulations that were too expensive before.
 
 **Best for:** DeFi protocols needing deep liquidity, compute-heavy applications using Stylus, projects wanting to launch their own Orbit L3 chain.
 
 **Technical:** Optimistic rollup with interactive multi-round fraud proofs, Nitro stack with AVM, Stylus WASM support, and Orbit chain deployment framework.
+
+- **Use Cases**
+  - **DeFi giants**: GMX ($671M TVL), Radiant Capital (largest lending), Camelot DEX (native, $75M TVL)
+  - **Orbit L3s**: Xai (gaming), Proof of Play Apex/Boss, Degen Chain, Sanko, 30+ chains live
+  - **Stylus apps**: Renegade, Fairblock, Crypto Valley Exchange using WASM for compute optimization
+  - **Native protocols**: Arbitrum-first projects leveraging deep liquidity and ecosystem
 
 - **Security & Data Availability**
   - Uses interactive multi-round fraud proofs that isolate disputed computation steps for efficiency.
@@ -200,12 +207,6 @@ The key difference: Arbitrum's interactive fraud proofs isolate disputed computa
   - ~10-50x cheaper than Ethereum L1, more expensive than Nova's sub-penny fees.
   - Handles highest gas throughput in Ethereum ecosystem via Orbit chains.
   - Calldata compression and batching optimize costs.
-
-- **Use Cases**
-  - **DeFi giants**: GMX ($671M TVL), Radiant Capital (largest lending), Camelot DEX (native, $75M TVL)
-  - **Orbit L3s**: Xai (gaming), Proof of Play Apex/Boss, Degen Chain, Sanko, 30+ chains live
-  - **Stylus apps**: Renegade, Fairblock, Crypto Valley Exchange using WASM for compute optimization
-  - **Native protocols**: Arbitrum-first projects leveraging deep liquidity and ecosystem
 
 - **Trade-offs**
   - Centralized sequencer operated by Offchain Labs — censorship risk.

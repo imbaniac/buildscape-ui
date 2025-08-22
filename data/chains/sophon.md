@@ -55,11 +55,18 @@ forums:
 ---
 
 zkSync's entertainment chain backed by $500M from node sales — built for games, AI apps, and social platforms that need millions of cheap transactions. Uses Validium architecture trading Ethereum data availability for sub-cent costs.
-The key difference: Apps can sponsor all user gas fees via paymasters, letting mainstream users interact without ever buying crypto or understanding blockchain — pure Web2 experience on Web3 rails.
+
+**Key Difference:** Apps can sponsor all user gas fees via paymasters, letting mainstream users interact without ever buying crypto or understanding blockchain — pure Web2 experience on Web3 rails.
 
 **Best for:** Mobile games needing free transactions, AI apps requiring cheap compute verification, social platforms with high-frequency interactions, entertainment dapps targeting non-crypto users.
 
 **Technical:** zkSync Stack Validium with Avail DA, native account abstraction, paymasters for gasless UX, part of Elastic Chain ecosystem.
+
+- **Use Cases**
+  - **Gaming partners**: Beam ecosystem games, Mirai Labs (27M+ wallets onboarded)
+  - **AI infrastructure**: Aethir GPU marketplace (100K+ compute hours), $40M Tactical Compute initiative
+  - **Entertainment apps**: OPEN Ticketing (7M+ tickets across 24K events)
+  - **Social platforms**: Zentry ecosystem, high-frequency social interactions
 
 - **Security & Data Availability**
   - ZK validity proofs verify all state transitions before finalization.
@@ -75,12 +82,6 @@ The key difference: Apps can sponsor all user gas fees via paymasters, letting m
   - Sub-cent transaction costs — optimized for gaming microtransactions.
   - Instant perceived finality for users, ZK proofs settle to Ethereum hourly.
   - Scales to millions of transactions without Ethereum data costs.
-
-- **Use Cases**
-  - **Gaming partners**: Beam ecosystem games, Mirai Labs (27M+ wallets onboarded)
-  - **AI infrastructure**: Aethir GPU marketplace (100K+ compute hours), $40M Tactical Compute initiative
-  - **Entertainment apps**: OPEN Ticketing (7M+ tickets across 24K events)
-  - **Social platforms**: Zentry ecosystem, high-frequency social interactions
 
 - **Trade-offs**
   - Validium model trades Ethereum data availability for cost — Avail dependency risk.

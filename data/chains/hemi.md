@@ -44,11 +44,18 @@ forums: []
 ---
 
 Bitcoin L2 with a full Bitcoin node running inside the EVM — smart contracts can read Bitcoin blocks, UTXOs, and transactions directly. Founded by early Bitcoin developer Jeff Garzik who worked with Satoshi, launched March 2025 with $440M TVL.
-The key difference: hVM (Hemi Virtual Machine) wraps an entire Bitcoin node inside an EVM, enabling native Bitcoin programmability without bridges or wrapped tokens — your contracts can trigger on Bitcoin events automatically.
+
+**Key Difference:** hVM (Hemi Virtual Machine) wraps an entire Bitcoin node inside an EVM, enabling native Bitcoin programmability without bridges or wrapped tokens — your contracts can trigger on Bitcoin events automatically.
 
 **Best for:** Bitcoin DeFi protocols, native BTC staking without wrapping, cross-chain apps needing real Bitcoin state, developers wanting Bitcoin security with EVM tools.
 
 **Technical:** Modular L2 with Proof-of-Proof consensus anchoring to Bitcoin, hVM for Bitcoin state access, Tunnels for trustless asset transfer.
+
+- **Use Cases**
+  - **DeFi ecosystem**: Sushi, DODO, Izumi (DEXs), LayerBank, ZeroLend (lending)
+  - **Bitcoin native apps**: Native BTC staking with self-custody, Bitcoin MEV marketplaces
+  - **Cross-chain infrastructure**: LayerZero, Pyth, RedStone oracles integrated
+  - **Institutional products**: Pendle, Swell, Symbiotic yield strategies on Bitcoin
 
 - **Security & Data Availability**
   - Proof-of-Proof (PoP) consensus posts "keystones" to Bitcoin for superfinality.
@@ -64,12 +71,6 @@ The key difference: hVM (Hemi Virtual Machine) wraps an entire Bitcoin node insi
   - Soft finality in seconds via sequencer.
   - Superfinality after Bitcoin confirmation (10-60 minutes).
   - Tunnels provide withdrawal proofs in 40 minutes — faster than optimistic rollups.
-
-- **Use Cases**
-  - **DeFi ecosystem**: Sushi, DODO, Izumi (DEXs), LayerBank, ZeroLend (lending)
-  - **Bitcoin native apps**: Native BTC staking with self-custody, Bitcoin MEV marketplaces
-  - **Cross-chain infrastructure**: LayerZero, Pyth, RedStone oracles integrated
-  - **Institutional products**: Pendle, Swell, Symbiotic yield strategies on Bitcoin
 
 - **Trade-offs**
   - Not a true rollup — less security than fraud/ZK proof systems.

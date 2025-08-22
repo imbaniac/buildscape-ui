@@ -98,9 +98,18 @@ forums:
 
 The blockchain that actually stores data, not just pointers. While every chain claims "decentralized storage," Filecoin enforces it cryptographically — storage providers must prove they hold your data every 24 hours or lose collateral. Now with FVM smart contracts, it's becoming DeFi for data storage.
 
+**Key Difference:** The only blockchain where storage is the consensus mechanism — miners earn FIL by proving they store real data, not by solving useless puzzles, making it the first useful proof-of-work.
+
 **Best for:** Permanent storage deals, DataDAOs, archival systems, AI training data, NFT metadata that won't disappear.
 
 **Technical:** A Layer 1 blockchain designed for decentralized, verifiable storage. Targeted for long-term data integrity, archival apps, and trustless file hosting.
+
+- **Use Cases**
+  - **Storage marketplace**: 1,300 PiB stored across 38M active deals, providers prove data possession daily
+  - **FVM DeFi**: GLIF ($144M), stFIL staking, USDFC FIL-backed stablecoin
+  - **DataDAOs**: Automated storage deals, perpetual storage via smart contracts
+  - **AI/ML data**: Aethir, KiteAI using for verifiable training data storage
+  - **Cross-chain storage**: Axelar integration lets 32 chains pay for Filecoin storage
 
 - **Consensus & Finality**
   - Uses Expected Consensus: block producers are selected based on storage power, producing multiple blocks per epoch.
@@ -116,13 +125,6 @@ The blockchain that actually stores data, not just pointers. While every chain c
   - FVM launched 2023: 5,000+ contracts deployed, 3.2M+ transactions.
   - Supports WASM and Solidity smart contracts for storage automation.
   - IPC enables modular subnets with independent consensus.
-
-- **Use Cases**
-  - **Storage marketplace**: 1,300 PiB stored across 38M active deals, providers prove data possession daily
-  - **FVM DeFi**: GLIF ($144M), stFIL staking, USDFC FIL-backed stablecoin
-  - **DataDAOs**: Automated storage deals, perpetual storage via smart contracts
-  - **AI/ML data**: Aethir, KiteAI using for verifiable training data storage
-  - **Cross-chain storage**: Axelar integration lets 32 chains pay for Filecoin storage
 
 - **Trade-offs**
   - Finality in minutes, not seconds

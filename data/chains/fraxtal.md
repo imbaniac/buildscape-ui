@@ -65,12 +65,19 @@ sdks:
 tools:
 ---
 
-A blockchain by the FRAX stablecoin team where users automatically earn rewards just for making transactions. Like airline miles but for crypto activity.
-The key difference: Every transaction earns FXTL points that will likely convert to tokens. Trade-off: less secure than major L2s — the Frax team controls everything with no safety checks.
+A blockchain by the FRAX stablecoin team where users automatically earn rewards just for making transactions. Like airline miles but for crypto activity. Less secure than major L2s — the Frax team controls everything with no safety checks.
+
+**Key Difference:** Every transaction earns FXTL points that will likely convert to tokens.
 
 **Best for:** Users who want rewards for normal DeFi activity, FRAX stablecoin holders, apps that want to incentivize usage.
 
 **Technical:** OP Stack rollup without fraud proofs, FRAX as gas token, Flox reward system distributing FXTL points.
+
+- **Use Cases**
+  - **Reward farming**: Earn FXTL points just by using any app on the chain
+  - **FRAX ecosystem**: Lending, swapping, and other FRAX protocol features
+  - **Stable gas costs**: Gas in FRAX means predictable dollar costs
+  - **Incentivized apps**: Projects can multiply user rewards
 
 - **Security & Data Availability**
   - No fraud proofs — requires trusting Frax team won't steal or make errors.
@@ -86,12 +93,6 @@ The key difference: Every transaction earns FXTL points that will likely convert
   - Very cheap transactions (under penny).
   - Normal speed for this type of chain.
   - ~200 TPS capacity.
-
-- **Use Cases**
-  - **Reward farming**: Earn FXTL points just by using any app on the chain
-  - **FRAX ecosystem**: Lending, swapping, and other FRAX protocol features
-  - **Stable gas costs**: Gas in FRAX means predictable dollar costs
-  - **Incentivized apps**: Projects can multiply user rewards
 
 - **Trade-offs**
   - Must trust Frax team completely — no technical safeguards.

@@ -59,12 +59,19 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-Bitcoin L2 built around BitVM — a way to lock BTC on Bitcoin and use it on an EVM chain without custodians. Currently the #2 Bitcoin L2 by TVL, though still using experimental technology that just hit mainnet in July 2025.
-The key difference: BitVM bridge attempts trust-minimized BTC transfers using Bitcoin's script language for fraud proofs. Unlike wrapped tokens, aims to lock BTC on Bitcoin itself, but the mechanism is new and largely unproven at scale.
+Bitcoin L2 built around BitVM — a way to lock BTC on Bitcoin and use it on an EVM chain without custodians. One of largest L2s by TVL, though still using experimental technology that just hit mainnet in July 2025.
+
+**Key Difference:** BitVM bridge attempts trust-minimized BTC transfers using Bitcoin's script language for fraud proofs. Unlike wrapped tokens, aims to lock BTC on Bitcoin itself, but the mechanism is new and largely unproven at scale.
 
 **Best for:** BTC holders wanting native yield without wrapping, DeFi protocols needing trust-minimized BTC, developers building high-performance Bitcoin apps.
 
 **Technical:** Dual-layer architecture with PoS consensus and BitVM rollup, EVM-compatible, commits state to Bitcoin for security anchoring.
+
+- **Use Cases**
+  - **Native BTC DeFi**: First trust-minimized BTC bridge without custodians
+  - **Ecosystem scale**: 200+ dApps deployed across DeFi, gaming, infrastructure
+  - **Mining integration**: Direct support from major Bitcoin mining pools
+  - **Cross-chain expansion**: Integrations with Sui, Arbitrum, Base, Cardano
 
 - **Security & Data Availability**
   - BitVM fraud proofs enable challenges on Bitcoin itself — one honest participant can prevent fraud.
@@ -80,12 +87,6 @@ The key difference: BitVM bridge attempts trust-minimized BTC transfers using Bi
   - V3 roadmap: Sub-millisecond trading engine, horizontal scaling for unlimited throughput.
   - Fast soft finality through PoS layer, Bitcoin finality after challenge period.
   - CEX-level UX targeted with ultra-low costs and sub-second interactions.
-
-- **Use Cases**
-  - **Native BTC DeFi**: First trust-minimized BTC bridge without custodians
-  - **Ecosystem scale**: 200+ dApps deployed across DeFi, gaming, infrastructure
-  - **Mining integration**: Direct support from major Bitcoin mining pools
-  - **Cross-chain expansion**: Integrations with Sui, Arbitrum, Base, Cardano
 
 - **Trade-offs**
   - BitVM still experimental — first mainnet implementation just launched.

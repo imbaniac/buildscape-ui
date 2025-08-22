@@ -161,6 +161,18 @@ tools:
 
 An Ethereum L2 built by Coinbase using the Optimism OP Stack, focused on mainstream scalability and deep integration with Coinbase products.
 
+**Key Difference:** Coinbase runs your transactions — they control the sequencer, collect the fees, and can onboard users directly from the exchange. It's the L2 where you can go from buying crypto to using dApps without leaving the Coinbase ecosystem.
+
+**Best for:** Consumer apps needing fiat onramps, projects targeting Coinbase's 100M+ users, builders who want corporate backing over decentralization.
+
+**Techincal:** Optimistic rollup using OP Stack and Bedrock, member of Optimism Superchain.
+
+- **Use Cases**:
+  - **Onchain identity**: Base Passport for mainstream user identity
+  - **Consumer apps**: Mainstream-focused applications with simplified onboarding
+  - **DeFi**: Growing ecosystem with Coinbase integration benefits
+  - **Developer tools**: Enhanced tooling with Coinbase infrastructure support
+
 - **Security**: Inherits Ethereum security via optimistic fraud proofs. Centralized sequencer operated by Coinbase. 7-day challenge period for withdrawals.
 - **Performance**: Cheaper than Ethereum (~10–100x depending on calldata usage). Real TPS ~20–30. Limited by L1 calldata throughput.
 - **Ecosystem**: Rapidly growing due to Coinbase support. Used for onchain identity (Base Passport), consumer apps, DeFi, and developer tools.

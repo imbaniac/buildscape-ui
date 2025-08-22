@@ -184,11 +184,18 @@ tools:
 ---
 
 Arbitrum's ultra-cheap chain for gaming and social apps, trading maximum security for sub-penny transactions. While Arbitrum One protects DeFi billions, Nova powers millions of microtransactions for games and social platforms.
-The key difference: Nova uses a Data Availability Committee (Google Cloud, Reddit, ConsenSys) instead of posting all data to Ethereum, achieving 90%+ lower fees than Arbitrum One — perfect for in-game actions and social rewards.
+
+**Key Difference**: Nova uses a Data Availability Committee (Google Cloud, Reddit, ConsenSys) instead of posting all data to Ethereum, achieving 90%+ lower fees than Arbitrum One — perfect for in-game actions and social rewards.
 
 **Best for:** Web3 games with frequent transactions, social platforms with token rewards, NFT collections prioritizing cheap minting over DeFi composability.
 
 **Technical:** AnyTrust protocol with off-chain data availability via committee, ~250ms blocks, fallback to rollup mode if DAC fails.
+
+- **Use Cases**
+  - **Gaming ecosystems**: Treasure DAO (The Beacon, BattleFly), web3 games needing cheap on-chain actions
+  - **Reddit Community Points**: MOON and BRICK tokens for r/CryptoCurrency and r/Fortnite rewards
+  - **Social platforms**: High-volume token distributions, tipping systems, community rewards
+  - **NFT projects**: Collections prioritizing low minting costs over DeFi integration
 
 - **Security & Data Availability**
   - Uses AnyTrust protocol with Data Availability Committee (DAC) of 7 members including Google Cloud, Reddit, ConsenSys.
@@ -204,12 +211,6 @@ The key difference: Nova uses a Data Availability Committee (Google Cloud, Reddi
   - Sub-penny transaction fees (typically <$0.01), 90%+ cheaper than Arbitrum One.
   - Handles millions of daily transactions for social and gaming use cases.
   - Throughput depends on sequencer capacity and DAC performance.
-
-- **Use Cases**
-  - **Gaming ecosystems**: Treasure DAO (The Beacon, BattleFly), web3 games needing cheap on-chain actions
-  - **Reddit Community Points**: MOON and BRICK tokens for r/CryptoCurrency and r/Fortnite rewards
-  - **Social platforms**: High-volume token distributions, tipping systems, community rewards
-  - **NFT projects**: Collections prioritizing low minting costs over DeFi integration
 
 - **Trade-offs**
   - DAC trust assumptions — not fully decentralized like Arbitrum One.

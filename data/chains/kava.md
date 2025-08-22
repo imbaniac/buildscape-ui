@@ -82,11 +82,19 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-A Cosmos chain with EVM tacked on, trying to be the bridge between both ecosystems but mostly empty. The key difference: They pay you in KAVA tokens to deploy there — if you're in the top 100 protocols by TVL, you get monthly rewards.
+A Cosmos chain with EVM tacked on, trying to be the bridge between both ecosystems but mostly empty.
+
+**Key Difference:** They pay you in KAVA tokens to deploy there — if you're in the top 100 protocols by TVL, you get monthly rewards.
 
 **Best for:** Builders who want incentive tokens, projects needing both IBC and EVM but don't mind low activity.
 
 **Technical:** Cosmos SDK chain with an EVM module, marketed as "co-chains" but it's really just both runtimes in one validator set.
+
+- **Use Cases**
+  - **Incentive farming**: Top protocols split 1M KAVA/month based on TVL
+  - **Cross-chain experiments**: If you need both IBC and EVM access
+  - **Testing ground**: Low activity means predictable performance
+  - **Main apps**: Kinetix (DEX), Mare Finance (lending) — mostly farming rewards
 
 - **Security & Data Availability**
   - Standard Tendermint consensus with ~100 validators
@@ -105,12 +113,6 @@ A Cosmos chain with EVM tacked on, trying to be the bridge between both ecosyste
   - Cheap fees (<$0.001) because barely anyone uses it
   - Current TVL ~$77M despite years of incentives
   - Most activity is farming the incentive program
-
-- **Use Cases**
-  - **Incentive farming**: Top protocols split 1M KAVA/month based on TVL
-  - **Cross-chain experiments**: If you need both IBC and EVM access
-  - **Testing ground**: Low activity means predictable performance
-  - Main apps: Kinetix (DEX), Mare Finance (lending) — mostly farming rewards
 
 - **Trade-offs**
   - Ghost chain problem — lots of incentives, little organic activity

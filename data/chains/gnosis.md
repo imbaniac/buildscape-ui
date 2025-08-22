@@ -93,11 +93,20 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-The DAO infrastructure chain where gas costs a fraction of a penny and Gnosis Safe was born. First stable-dollar blockchain (xDAI as gas), now the only chain with built-in MEV protection via Shutter Protocol's encrypted mempool. If you're building DAO tools or need predictable costs over performance, this is your home.
+The DAO infrastructure chain where gas costs a fraction of a penny and Gnosis Safe was born. First stable-dollar blockchain (xDAI as gas). If you're building DAO tools or need predictable costs over performance, this is your home.
+
+**Key Difference:** The only chain with encrypted transactions by default (Shutter Protocol) — front-running and MEV are impossible because nobody can see transaction contents until after they're ordered, making it the fairest DEX environment.
 
 **Best for:** DAO tooling, multisigs, governance systems, treasury management, apps needing stable $0.001 tx costs.
 
 **Technical:** An Ethereum sidechain with full EVM compatibility, Proof-of-Stake consensus, and low gas costs. Prioritizes accessibility and stability over throughput or trust-minimization.
+
+- **Use Cases**
+  - **Gnosis Safe origin**: Where the dominant multisig wallet was developed and tested
+  - **DAO infrastructure**: SafeDAO, GnosisDAO treasury (150k ETH, 8M GNO managed)
+  - **Shutter Protocol**: First chain with encrypted mempool preventing MEV (live July 2024)
+  - **DeFi on stable gas**: Spark Protocol, Curve, SushiSwap with predictable costs
+  - **RealT tokenization**: Real estate tokens, POAP NFTs, low-value high-frequency txs
 
 - **Consensus & Finality**
   - Beacon-style PoS with ~100k validators (4% run Shutter nodes for MEV protection).
@@ -108,13 +117,6 @@ The DAO infrastructure chain where gas costs a fraction of a penny and Gnosis Sa
   - ~5 TPS typical, peaks around 80 TPS.
   - Finality slower than L2s.
   - Gas fees consistently low (~$0.001–0.01 per tx).
-
-- **Use Cases**
-  - **Gnosis Safe origin**: Where the dominant multisig wallet was developed and tested
-  - **DAO infrastructure**: SafeDAO, GnosisDAO treasury (150k ETH, 8M GNO managed)
-  - **Shutter Protocol**: First chain with encrypted mempool preventing MEV (live July 2024)
-  - **DeFi on stable gas**: Spark Protocol, Curve, SushiSwap with predictable costs
-  - **RealT tokenization**: Real estate tokens, POAP NFTs, low-value high-frequency txs
 
 - **Trade-offs**
   - Finality is slow (~6 min) and not anchored to Ethereum.

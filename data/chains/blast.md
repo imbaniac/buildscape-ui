@@ -119,11 +119,19 @@ sdks:
 tools:
 ---
 
-The L2 that pays you yield just for holding ETH and stablecoins — no staking needed, your balance just grows. The key difference: Your bridge deposits get invested in DeFi protocols behind the scenes, but this means extra risk beyond typical L2s, and the chain saw massive user decline after airdrop incentives ended.
+The L2 that pays you yield just for holding ETH and stablecoins — no staking needed, your balance just grows.
+
+**Key Difference:** Your bridge deposits get invested in DeFi protocols behind the scenes, but this means extra risk beyond typical L2s, and the chain saw massive user decline after airdrop incentives ended.
 
 **Best for:** Users wanting automatic yield on idle funds, yield-focused DeFi experiments, risk-tolerant builders.
 
 **Technical:** Modified OP Stack that auto-stakes bridge funds and implements rebasing token balances.
+
+- **Use Cases**
+  - **Passive yield**: Your ETH/USDB earn ~4-5% doing nothing
+  - **Yield-first apps**: Build assuming users already earn baseline yield
+  - **High-risk DeFi**: Leverage the native yield for experiments
+  - **Fantasy.top**: One of the few apps with real users
 
 - **Security & Data Availability**
   - Optimistic rollup but fraud proofs aren't live yet
@@ -142,12 +150,6 @@ The L2 that pays you yield just for holding ETH and stablecoins — no staking n
   - 2-second block times
   - Had massive TVL at launch, lost most after airdrop
   - Currently minimal organic activity
-
-- **Use Cases**
-  - **Passive yield**: Your ETH/USDB earn ~4-5% doing nothing
-  - **Yield-first apps**: Build assuming users already earn baseline yield
-  - **High-risk DeFi**: Leverage the native yield for experiments
-  - **Fantasy.top**: One of the few apps with real users
 
 - **Trade-offs**
   - Your bridge funds are in DeFi protocols (can be hacked or lose value)

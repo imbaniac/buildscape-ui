@@ -131,9 +131,17 @@ sdks:
 
 The enterprise-friendly zkEVM balancing compatibility and performance. Unlike Scroll's pure bytecode focus or zkSync's custom VM, Polygon zkEVM uses a custom assembly language (zkASM) that achieves near-perfect EVM equivalence while enabling proof generation in minutes, not hours.
 
+**Key Difference:** Withdrawals to Ethereum in 30 minutes instead of 7 days — the only major zkEVM where you can exit quickly without waiting a week, crucial for institutional users who can't lock funds.
+
 **Best for:** Enterprise deployments, existing DeFi protocols wanting ZK security, projects needing fast withdrawals to L1.
 
 **Technical:** A ZK-rollup using Polygon's ZK Stack with full EVM equivalence and calldata-based data availability.
+
+- **Use Cases**
+  - **Major DeFi**: Aave, Uniswap, QuickSwap deployed with minimal changes
+  - **Enterprise adoption**: 30+ Fortune 500 companies, Walmart using CDK for private chains
+  - **Fast withdrawals**: ~30 minute bridge back to L1 (vs 7 days on Optimistic rollups)
+  - **CDK ecosystem**: 190+ projects building custom L2/L3 chains using Polygon's tech
 
 - **Security & Data Availability**
   - Validity proofs verify state correctness before finalization.
@@ -145,16 +153,10 @@ The enterprise-friendly zkEVM balancing compatibility and performance. Unlike Sc
   - Centralized sequencer; proposer decentralization planned but not yet implemented.
   - Governance is multisig-controlled and not permissionless.
 
-- **Performance & Fees**
+- **Performance**
   - Block inclusion in ~2s; proof generation and finalization in minutes.
   - Uses FFLONK prover (30% cheaper to verify than PLONK).
   - Fees track Ethereum gas prices but remain significantly lower.
-
-- **Use Cases**
-  - **Major DeFi**: Aave, Uniswap, QuickSwap deployed with minimal changes
-  - **Enterprise adoption**: 30+ Fortune 500 companies, Walmart using CDK for private chains
-  - **Fast withdrawals**: ~30 minute bridge back to L1 (vs 7 days on Optimistic rollups)
-  - **CDK ecosystem**: 190+ projects building custom L2/L3 chains using Polygon's tech
 
 - **Trade-offs**
   - Centralized sequencer can censor or reorder transactions.

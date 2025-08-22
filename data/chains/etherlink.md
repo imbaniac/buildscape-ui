@@ -58,11 +58,18 @@ forums:
 ---
 
 The only EVM rollup on Tezos, using XTZ for gas. Cheap and fast but isolated from mainstream EVM liquidity.
-The key difference: Built directly into Tezos protocol ("enshrined") rather than external, with fraud proofs settled by Tezos validators instead of Ethereum.
+
+**Key Difference:** Built directly into Tezos protocol ("enshrined") rather than external, with fraud proofs settled by Tezos validators instead of Ethereum.
 
 **Best for:** Projects already in Tezos ecosystem wanting EVM compatibility, apps needing sub-cent transaction costs.
 
 **Technical:** Smart Rollup on Tezos with fraud proofs, XTZ as native token, sub-second confirmations with 16-second finality.
+
+- **Use Cases**
+  - **DeFi**: IguanaDEX (concentrated liquidity DEX), SuperLend (lending), Curve deployment
+  - **Gaming**: BattleRise, Bit Hotel, UPvsDOWN, Degeneratives
+  - **Incentives**: Apple Farm program boosted TVL from low millions to peak near $50M
+  - **Bridges**: LayerZero and Stargate for cross-chain connectivity
 
 - **Security & Data Availability**
   - Settles on Tezos L1 using fraud proofs and commitment publishing.
@@ -78,12 +85,6 @@ The key difference: Built directly into Tezos protocol ("enshrined") rather than
   - Sub-second soft confirmations.
   - Very low fees (sub-cent transactions).
   - Calypso upgrade improved contract processing speed significantly.
-
-- **Use Cases**
-  - **DeFi**: IguanaDEX (concentrated liquidity DEX), SuperLend (lending), Curve deployment
-  - **Gaming**: BattleRise, Bit Hotel, UPvsDOWN, Degeneratives
-  - **Incentives**: Apple Farm program boosted TVL from low millions to peak near $50M
-  - **Bridges**: LayerZero and Stargate for cross-chain connectivity
 
 - **Trade-offs**
   - Isolated from Ethereum L2 ecosystem — bridges required for ETH assets.

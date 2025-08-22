@@ -79,11 +79,18 @@ forums:
 ---
 
 A zkEVM that lets Ethereum validators sequence your transactions directly — no middleman sequencer collecting fees or deciding transaction order. Every Ethereum validator can propose Taiko blocks, making censorship nearly impossible.
-The key difference: "Based rollup" design where Ethereum L1 handles sequencing, making it the most decentralized L2 architecture. Preconfirmations solve the UX problem with 2-second transaction times.
+
+**Key Difference:** L2 that can't be shut down — since Ethereum itself sequences transactions, it keeps running as long as Ethereum exists, unlike other L2s that fail when their sequencer goes offline.
 
 **Best for:** Projects requiring unstoppable operation, DeFi protocols avoiding sequencer risk, developers wanting exact Ethereum behavior without modifications.
 
 **Technical:** Type-1 zkEVM with based sequencing, permissionless proving, preconfirmations for fast UX, no separate consensus layer.
+
+- **Use Cases**
+  - **DeFi infrastructure**: Ritsu DEX with Rhythm AMM, Meridian Lend, Avalon Finance
+  - **Bitcoin on Ethereum**: SolvBTC bringing native Bitcoin liquidity to L2
+  - **Censorship-resistant apps**: Leverage based sequencing for unstoppable operation
+  - **Gaming and high-frequency trading**: Preconfirmations enable responsive UX
 
 - **Security & Data Availability**
   - Every block validated via ZK proofs; no fraud windows or optimistic fallback.
@@ -99,12 +106,6 @@ The key difference: "Based rollup" design where Ethereum L1 handles sequencing, 
   - Preconfirmations provide ~2 second transaction acknowledgment.
   - Final settlement follows Ethereum L1 cadence for maximum security.
   - No artificial TPS cap, constrained by Ethereum blob space and proof generation.
-
-- **Use Cases**
-  - **DeFi infrastructure**: Ritsu DEX with Rhythm AMM, Meridian Lend, Avalon Finance
-  - **Bitcoin on Ethereum**: SolvBTC bringing native Bitcoin liquidity to L2
-  - **Censorship-resistant apps**: Leverage based sequencing for unstoppable operation
-  - **Gaming and high-frequency trading**: Preconfirmations enable responsive UX
 
 - **Trade-offs**
   - Smaller ecosystem vs established L2s — less liquidity and fewer integrations.
