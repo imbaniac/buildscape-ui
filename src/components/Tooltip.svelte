@@ -257,30 +257,6 @@
     pointer-events: none;
   }
 
-  .tooltip-arrow-top {
-    transform: rotate(45deg);
-    border-top: none;
-    border-left: none;
-  }
-
-  .tooltip-arrow-bottom {
-    transform: rotate(45deg);
-    border-bottom: none;
-    border-right: none;
-  }
-
-  .tooltip-arrow-left {
-    transform: rotate(45deg);
-    border-left: none;
-    border-bottom: none;
-  }
-
-  .tooltip-arrow-right {
-    transform: rotate(45deg);
-    border-right: none;
-    border-top: none;
-  }
-
   @media (max-width: 480px) {
     .tooltip {
       max-width: calc(100vw - 40px);
