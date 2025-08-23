@@ -8,6 +8,8 @@
     shift,
   } from "@floating-ui/dom";
 
+  import { browser } from "$app/environment";
+
   import type { TooltipContent } from "$lib/tooltips";
 
   interface Props {
@@ -75,6 +77,9 @@
 
   // Set up positioning when anchor or visibility changes
   $effect(() => {
+    // Only run positioning in browser
+    if (!browser) return;
+
     if (anchor && tooltipEl) {
       if (visible) {
         // Reset positioned state when becoming visible
@@ -104,41 +109,43 @@
   });
 </script>
 
-<!-- Always render but control visibility -->
-<div
-  bind:this={tooltipEl}
-  class="tooltip"
-  class:visible={visible && isPositioned}
-  role="tooltip"
-  aria-hidden={!visible}
-  onmouseenter={onMouseEnter}
-  onmouseleave={onMouseLeave}
->
-  <div class="tooltip-header">
-    <div class="tooltip-icon">📜</div>
-    <div class="tooltip-title">Knowledge</div>
-  </div>
-
-  <div class="tooltip-content">
-    <p>{content.text}</p>
-  </div>
-
-  {#if content.link}
-    <div class="tooltip-footer">
-      <a
-        href={content.link}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="tooltip-link"
-      >
-        <span class="link-icon">🔗</span>
-        {content.linkText || "Learn more"}
-      </a>
+<!-- Only render in browser to prevent SSR issues -->
+{#if browser}
+  <div
+    bind:this={tooltipEl}
+    class="tooltip"
+    class:visible={visible && isPositioned}
+    role="tooltip"
+    aria-hidden={!visible}
+    onmouseenter={onMouseEnter}
+    onmouseleave={onMouseLeave}
+  >
+    <div class="tooltip-header">
+      <div class="tooltip-icon">📜</div>
+      <div class="tooltip-title">Knowledge</div>
     </div>
-  {/if}
 
-  <div bind:this={arrowEl} class="tooltip-arrow"></div>
-</div>
+    <div class="tooltip-content">
+      <p>{content.text}</p>
+    </div>
+
+    {#if content.link}
+      <div class="tooltip-footer">
+        <a
+          href={content.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="tooltip-link"
+        >
+          <span class="link-icon">🔗</span>
+          {content.linkText || "Learn more"}
+        </a>
+      </div>
+    {/if}
+
+    <div bind:this={arrowEl} class="tooltip-arrow"></div>
+  </div>
+{/if}
 
 <style>
   .tooltip {

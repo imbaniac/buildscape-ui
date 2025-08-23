@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { browser } from "$app/environment";
+
   import { glossary } from "$lib/tooltips";
 
   import Tooltip from "./Tooltip.svelte";
@@ -22,7 +24,7 @@
     glossary[term] || glossary[termKey] || glossary[term.toLowerCase()];
 
   function handleMouseEnter() {
-    if (!content || !anchorElement) return;
+    if (!content || !anchorElement || !browser) return;
 
     clearTimeout(closeTimeout);
     hoverTimeout = window.setTimeout(() => {
@@ -31,6 +33,8 @@
   }
 
   function handleMouseLeave() {
+    if (!browser) return;
+
     clearTimeout(hoverTimeout);
     // Add a small delay before closing to allow moving to tooltip
     closeTimeout = window.setTimeout(() => {
@@ -41,11 +45,15 @@
   }
 
   function handleTooltipMouseEnter() {
+    if (!browser) return;
+
     clearTimeout(closeTimeout);
     isHoveringTooltip = true;
   }
 
   function handleTooltipMouseLeave() {
+    if (!browser) return;
+
     isHoveringTooltip = false;
     // Small delay to allow moving back to term
     closeTimeout = window.setTimeout(() => {
@@ -70,13 +78,15 @@
     {/if}
   </span>
 
-  <Tooltip
-    {content}
-    anchor={anchorElement}
-    visible={showTooltip}
-    onMouseEnter={handleTooltipMouseEnter}
-    onMouseLeave={handleTooltipMouseLeave}
-  />
+  {#if browser}
+    <Tooltip
+      {content}
+      anchor={anchorElement}
+      visible={showTooltip}
+      onMouseEnter={handleTooltipMouseEnter}
+      onMouseLeave={handleTooltipMouseLeave}
+    />
+  {/if}
 {:else if children}
   {@render children()}
 {:else}

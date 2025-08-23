@@ -1,6 +1,8 @@
 <script lang="ts">
   import { marked } from "marked";
 
+  import { browser } from "$app/environment";
+
   import { processGlossaryTerms } from "$lib/processGlossaryTerms";
   import { glossary } from "$lib/tooltips";
 
@@ -30,7 +32,7 @@
 
   function handleTermMouseEnter(e: MouseEvent, term: string) {
     // The term already comes from data-term attribute which is the correct key
-    if (!glossary[term]) return;
+    if (!glossary[term] || !browser) return;
 
     const target = e.currentTarget as HTMLElement;
     if (!target) return;
@@ -46,6 +48,8 @@
   }
 
   function handleTermMouseLeave() {
+    if (!browser) return;
+
     clearTimeout(hoverTimeout);
     // Add a small delay before closing to allow moving to tooltip
     closeTimeout = window.setTimeout(() => {
@@ -56,11 +60,15 @@
   }
 
   function handleTooltipMouseEnter() {
+    if (!browser) return;
+
     clearTimeout(closeTimeout);
     isHoveringTooltip = true;
   }
 
   function handleTooltipMouseLeave() {
+    if (!browser) return;
+
     isHoveringTooltip = false;
     // Small delay to allow moving back to term
     closeTimeout = window.setTimeout(() => {
@@ -70,6 +78,9 @@
 
   // Add event listeners to glossary terms after content updates
   $effect(() => {
+    // Only run in browser environment
+    if (!browser) return;
+
     // Wait for DOM update
     setTimeout(() => {
       const terms = document.querySelectorAll(".glossary-term");
@@ -98,6 +109,8 @@
     return () => {
       clearTimeout(hoverTimeout);
       clearTimeout(closeTimeout);
+      if (!browser) return;
+
       const terms = document.querySelectorAll(".glossary-term");
       terms.forEach((term) => {
         const termEl = term as HTMLElement;
@@ -112,7 +125,7 @@
   {@html processedContent}
 </div>
 
-{#if activeTooltip && glossary[activeTooltip.term]}
+{#if browser && activeTooltip && glossary[activeTooltip.term]}
   <Tooltip
     content={glossary[activeTooltip.term]}
     anchor={activeTooltip.anchor}
