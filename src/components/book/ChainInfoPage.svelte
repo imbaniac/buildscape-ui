@@ -1,13 +1,15 @@
 <script lang="ts">
   import { getContext } from "svelte";
 
-  import { tooltipTexts } from "$lib/tooltips";
+  import { glossary } from "$lib/tooltips";
   import { getAccessibleBrandColor } from "$lib/utils/colorUtils";
   import { formatTVL } from "$lib/utils/formatters";
 
+  import GlossaryTerm from "../GlossaryTerm.svelte";
+  import Tooltip from "../Tooltip.svelte";
+
   import ActivityMetrics from "./metrics/ActivityMetrics.svelte";
   import NetworkStatus from "./metrics/NetworkStatus.svelte";
-  import Tooltip from "./ui/Tooltip.svelte";
 
   interface Props {
     chainStatic: any;
@@ -186,12 +188,12 @@
 
   <div class="tech-stamps">
     <div class="stamp-container">
-      <Tooltip
-        text={chainStatic.technology?.isL3
-          ? tooltipTexts.layer3
+      <GlossaryTerm
+        term={chainStatic.technology?.isL3
+          ? "layer3"
           : chainStatic.technology?.isL2
-            ? tooltipTexts.layer2
-            : tooltipTexts.layer1}
+            ? "layer2"
+            : "layer1"}
       >
         <span
           class="tech-stamp {chainStatic.technology?.isL3
@@ -209,63 +211,67 @@
                 : "1"}</span
           >
         </span>
-      </Tooltip>
+      </GlossaryTerm>
     </div>
     {#if chainStatic.technology?.settlementLayer}
       <div class="stamp-container">
-        <Tooltip text={tooltipTexts.settlementLayer}>
+        <GlossaryTerm term="settlementLayer">
           <span class="tech-stamp settlement">
             <span class="stamp-label">Settles on</span>
             <span class="stamp-value"
               >{chainStatic.technology.settlementLayer}</span
             >
           </span>
-        </Tooltip>
+        </GlossaryTerm>
       </div>
     {/if}
     {#if chainStatic.technology?.type}
       <div class="stamp-container">
-        <Tooltip
-          text={chainStatic.technology.type === "Optimistic Rollup"
-            ? tooltipTexts.optimisticRollup
+        <GlossaryTerm
+          term={chainStatic.technology.type === "Optimistic Rollup"
+            ? "optimisticRollup"
             : chainStatic.technology.type === "zk Rollup" ||
                 chainStatic.technology.type === "ZK Rollup"
-              ? tooltipTexts.zkRollup
+              ? "zkRollup"
               : chainStatic.technology.type === "Sidechain"
-                ? tooltipTexts.sidechain
-                : `${chainStatic.technology.type} technology`}
+                ? "sidechain"
+                : chainStatic.technology.type === "Validium"
+                  ? "validium"
+                  : chainStatic.technology.type === "Plasma"
+                    ? "plasma"
+                    : ""}
         >
           <span class="tech-stamp type">
             <span class="stamp-value">{chainStatic.technology.type}</span>
           </span>
-        </Tooltip>
+        </GlossaryTerm>
       </div>
     {/if}
     {#if chainStatic.technology?.isEVM}
       <div class="stamp-container">
-        <Tooltip text={tooltipTexts.evm}>
+        <GlossaryTerm term="evm">
           <span class="tech-stamp evm">
             <span class="stamp-value">EVM</span>
           </span>
-        </Tooltip>
+        </GlossaryTerm>
       </div>
     {/if}
     {#if chainStatic.technology?.stack}
       <div class="stamp-container">
-        <Tooltip
-          text={chainStatic.technology.stack === "OP Stack"
-            ? tooltipTexts.opStack
+        <GlossaryTerm
+          term={chainStatic.technology.stack === "OP Stack"
+            ? "opStack"
             : chainStatic.technology.stack === "Arbitrum Nitro"
-              ? tooltipTexts.arbitrumNitro
+              ? "arbitrumNitro"
               : chainStatic.technology.stack === "ZK Stack"
-                ? tooltipTexts.zkStack
-                : `${chainStatic.technology.stack} technology stack`}
+                ? "zkStack"
+                : ""}
         >
           <span class="tech-stamp stack">
             <span class="stamp-label">Stack</span>
             <span class="stamp-value">{chainStatic.technology.stack}</span>
           </span>
-        </Tooltip>
+        </GlossaryTerm>
       </div>
     {/if}
   </div>
@@ -533,7 +539,6 @@
   }
 
   .footnote sup {
-    font-size: 0.625rem;
     margin-right: 0.25rem;
     color: #94a3b8;
   }

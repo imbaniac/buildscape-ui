@@ -43,7 +43,7 @@ forums: []
 # SDKs and tools are inherited from evm-common.md
 ---
 
-Bitcoin L2 with a full Bitcoin node running inside the EVM — smart contracts can read Bitcoin blocks, UTXOs, and transactions directly. Founded by early Bitcoin developer Jeff Garzik who worked with Satoshi, launched March 2025 with $440M TVL.
+Bitcoin L2 with a full Bitcoin node running inside the EVM — smart contracts can read Bitcoin blocks, UTXOs, and transactions directly. Founded by early Bitcoin developer Jeff Garzik who worked with Satoshi.
 
 **Key Difference:** hVM (Hemi Virtual Machine) wraps an entire Bitcoin node inside an EVM, enabling native Bitcoin programmability without bridges or wrapped tokens — your contracts can trigger on Bitcoin events automatically.
 

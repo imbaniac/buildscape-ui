@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { marked } from "marked";
-
   import { getAccessibleBrandColor } from "$lib/utils/colorUtils";
+
+  import MarkdownWithGlossary from "../MarkdownWithGlossary.svelte";
 
   interface Props {
     chainStatic: any;
@@ -18,7 +18,7 @@
 >
   <h2>What is {chainStatic.name}?</h2>
   {#if chainStatic.description}
-    {@html marked.parse(chainStatic.description)}
+    <MarkdownWithGlossary content={chainStatic.description} />
   {:else}
     <p>No description available.</p>
   {/if}
@@ -101,8 +101,6 @@
 
   .prose :global(a) {
     color: var(--brand-color);
-    text-decoration: underline;
-    text-underline-offset: 2px;
     transition: color 0.2s;
   }
 

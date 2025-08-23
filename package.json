@@ -46,6 +46,7 @@
     "vite-plugin-ngrok": "^1.1.2"
   },
   "dependencies": {
+    "@floating-ui/dom": "^1.7.4",
     "gray-matter": "^4.0.3",
     "marked": "^15.0.12",
     "pixi-viewport": "^6.0.3",
