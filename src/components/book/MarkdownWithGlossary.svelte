@@ -16,7 +16,7 @@
   // Process markdown and then add glossary terms
   const processedContent = $derived.by(() => {
     const html = marked.parse(content);
-    return processGlossaryTerms(html);
+    return processGlossaryTerms(html as string);
   });
 
   // Track tooltip state
