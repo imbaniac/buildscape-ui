@@ -192,8 +192,27 @@ export default class IslandAtlasManager {
       // Render container to atlas
       this.renderer.render({ container, target: atlas });
 
-      // Clean up
+      // Clean up atlas container
       container.destroy({ children: true });
+    }
+
+    // Destroy all island containers to free GPU memory
+    // These containers have Graphics objects with massive GPU buffers
+    console.log("[IslandAtlasManager] Cleaning up island containers...");
+    islandContainers.forEach((data) => {
+      if (data.container) {
+        // Destroy the container and all its children (including Graphics)
+        data.container.destroy({
+          children: true,
+          texture: true,
+        });
+      }
+    });
+    islandContainers.clear();
+
+    // Force GPU garbage collection to free memory immediately
+    if (this.renderer.textureGC) {
+      this.renderer.textureGC.run();
     }
 
     console.log(
@@ -300,6 +319,13 @@ export default class IslandAtlasManager {
    */
   getAllAtlases(): RenderTexture[] {
     return this.atlases;
+  }
+
+  /**
+   * Get the atlas size being used
+   */
+  getAtlasSize(): number {
+    return this.atlasSize;
   }
 
   /**

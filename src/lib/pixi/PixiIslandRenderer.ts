@@ -557,11 +557,30 @@ export default class PixiIslandRenderer {
       const blob = new Blob([coloredSvg], { type: "image/svg+xml" });
       const url = URL.createObjectURL(blob);
 
-      // Create texture from blob URL using Image element
+      // Target dimensions for shield (0.35 scale of original 890x1115)
+      const targetWidth = 311;
+      const targetHeight = 390;
+
+      // Create texture from blob URL using Image element with resizing
       const texture = await new Promise<Texture>((resolve, reject) => {
         const img = new Image();
         img.onload = () => {
-          const texture = Texture.from(img);
+          // Create a canvas to resize the image
+          const canvas = document.createElement("canvas");
+          canvas.width = targetWidth;
+          canvas.height = targetHeight;
+          const ctx = canvas.getContext("2d");
+
+          if (!ctx) {
+            reject(new Error("Failed to get canvas context"));
+            return;
+          }
+
+          // Draw the image scaled down to target dimensions
+          ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+
+          // Create texture from the resized canvas
+          const texture = Texture.from(canvas);
           URL.revokeObjectURL(url);
           resolve(texture);
         };
@@ -592,10 +611,54 @@ export default class PixiIslandRenderer {
     }
 
     try {
-      // Since logos are pre-loaded, we can directly get the texture
-      const texture = Texture.from(logoUrl);
-      this.logoTextures.set(cacheKey, texture);
-      return texture;
+      // Target dimensions for logo (350 * 0.35 * 1.2 ≈ 125)
+      const targetSize = 125;
+
+      // Load the image first
+      const img = new Image();
+      img.src = logoUrl;
+
+      await new Promise((resolve, reject) => {
+        img.onload = resolve;
+        img.onerror = reject;
+      });
+
+      // Check if resizing is needed
+      if (img.width > targetSize || img.height > targetSize) {
+        // Create a canvas to resize the logo
+        const canvas = document.createElement("canvas");
+        canvas.width = targetSize;
+        canvas.height = targetSize;
+        const ctx = canvas.getContext("2d");
+
+        if (!ctx) {
+          console.error("Failed to get canvas context for logo resizing");
+          const texture = Texture.from(img);
+          this.logoTextures.set(cacheKey, texture);
+          return texture;
+        }
+
+        // Calculate aspect ratio preserving dimensions
+        const scale = Math.min(targetSize / img.width, targetSize / img.height);
+        const width = img.width * scale;
+        const height = img.height * scale;
+        const x = (targetSize - width) / 2;
+        const y = (targetSize - height) / 2;
+
+        // Draw the image scaled down with aspect ratio preserved
+        ctx.drawImage(img, x, y, width, height);
+
+        // Create texture from the resized canvas
+        const resizedTexture = Texture.from(canvas);
+
+        this.logoTextures.set(cacheKey, resizedTexture);
+        return resizedTexture;
+      } else {
+        // Logo is already small enough, use as-is
+        const texture = Texture.from(img);
+        this.logoTextures.set(cacheKey, texture);
+        return texture;
+      }
     } catch (error) {
       console.error(`Failed to get texture for chain ${chainId}:`, error);
       return null;
@@ -789,6 +852,26 @@ export default class PixiIslandRenderer {
     }
 
     return container;
+  }
+
+  /**
+   * Clear texture caches after atlas generation to free GPU memory
+   * The textures are already baked into the atlas, so we don't need them separately
+   */
+  clearTextureCaches(): void {
+    console.log(
+      `[PixiIslandRenderer] Clearing texture caches - ${this.shieldTextures.size} shields, ${this.logoTextures.size} logos`,
+    );
+
+    // Destroy all shield textures
+    this.shieldTextures.forEach((texture) => {
+      texture.destroy(true);
+    });
+    this.shieldTextures.clear();
+
+    // Note: Logo textures are managed by Assets system, so we just clear references
+    // The actual textures will be cleaned up when Assets.unload is called
+    this.logoTextures.clear();
   }
 
   /**

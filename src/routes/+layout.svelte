@@ -301,6 +301,14 @@
       // Initialize map renderer with viewport
       mapRenderer = new PixiMapRenderer(app, viewport);
 
+      // Expose memory debugging in development
+      if (import.meta.env.DEV) {
+        (window as any).debugMemory = () => mapRenderer?.reportMemoryUsage();
+        console.log(
+          "💡 Memory debugging available: Run `debugMemory()` in console",
+        );
+      }
+
       // Initialize render manager with debug mode in development
       renderManager = new RenderManager(app, import.meta.env.DEV);
       renderManager.setViewport(viewport);
