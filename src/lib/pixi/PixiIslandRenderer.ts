@@ -803,6 +803,7 @@ export default class PixiIslandRenderer {
   /**
    * Render complete island for atlas generation
    * Returns container with terrain, shield, banner, and logo
+   * Note: The returned container should be destroyed after rendering to atlas
    */
   async renderIslandForAtlas(island: Island): Promise<Container> {
     const container = new Container();
@@ -825,6 +826,7 @@ export default class PixiIslandRenderer {
       await this.addShieldAndBannerToContainer(container, island, boundsData);
     }
 
+    // Note: Graphics will be destroyed by the atlas manager after use
     return container;
   }
 
@@ -863,15 +865,28 @@ export default class PixiIslandRenderer {
       `[PixiIslandRenderer] Clearing texture caches - ${this.shieldTextures.size} shields, ${this.logoTextures.size} logos`,
     );
 
-    // Destroy all shield textures
+    // Destroy all shield textures (these were created from blob URLs)
     this.shieldTextures.forEach((texture) => {
-      texture.destroy(true);
+      if (texture && !texture.destroyed) {
+        texture.destroy(true); // Destroy texture and base texture
+      }
     });
     this.shieldTextures.clear();
 
-    // Note: Logo textures are managed by Assets system, so we just clear references
-    // The actual textures will be cleaned up when Assets.unload is called
+    // Destroy logo textures that aren't managed by Assets
+    this.logoTextures.forEach((texture) => {
+      if (texture && !texture.destroyed) {
+        // Only destroy textures we created, not ones from Assets system
+        texture.destroy(true);
+      }
+    });
     this.logoTextures.clear();
+
+    // Also clear the banner reference as it's in the atlas now
+    if (this.bannerTexture && !this.bannerTexture.destroyed) {
+      // Don't destroy banner as it's from Assets, just clear reference
+      this.bannerTexture = null;
+    }
   }
 
   /**
