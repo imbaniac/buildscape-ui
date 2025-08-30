@@ -119,40 +119,40 @@ sdks:
 tools:
 ---
 
-The L2 that pays you yield just for holding ETH and stablecoins — no staking needed, your balance just grows.
+The L2 where your balance automatically grows — ETH and stablecoins earn yield just sitting in your wallet. Also the L2 that lost most of its users after the airdrop ended.
 
-**Key Difference:** Your bridge deposits get invested in DeFi protocols behind the scenes, but this means extra risk beyond typical L2s, and the chain saw massive user decline after airdrop incentives ended.
+**Unique Position**
+Blast auto-invests all bridged assets into DeFi protocols, making yield generation the default rather than opt-in. Your ETH becomes staked ETH, your stables become T-Bills, but you just see larger balances over time. Created by the Blur NFT marketplace team who understood points-based user acquisition. The chain that proved native yield isn't enough without sustained incentives.
 
-**Best for:** Users wanting automatic yield on idle funds, yield-focused DeFi experiments, risk-tolerant builders.
+**Primary Use Cases**
 
-**Technical:** Modified OP Stack that auto-stakes bridge funds and implements rebasing token balances.
+- Passive investors wanting automatic yield on idle assets
+- DeFi protocols building on top of baseline yield assumptions
+- High-risk experiments leveraging native returns
+- Points farmers during incentive campaigns
+- Speculators betting on future airdrops or rewards
 
-- **Use Cases**
-  - **Passive yield**: Your ETH/USDB earn ~4-5% doing nothing
-  - **Yield-first apps**: Build assuming users already earn baseline yield
-  - **High-risk DeFi**: Leverage the native yield for experiments
-  - **Fantasy.top**: One of the few apps with real users
+**Ecosystem Character**
+Ghost town that was once buzzing with airdrop farmers. Fantasy.top remains one of few applications with genuine users. Community largely mercenary — arrived for points, left when rewards ended. Developers who stayed are building experimental DeFi leveraging native yield, but struggling to find users beyond yield tourists.
 
-- **Security & Data Availability**
-  - Optimistic rollup but fraud proofs aren't live yet
-  - Fully centralized sequencer control
-  - Contracts upgradeable instantly via multisig
-  - Your funds are actively at risk in external DeFi protocols
+**Trade-offs**
 
-- **Infra & Execution**
-  - OP Stack heavily modified for native yield
-  - Bridge ETH goes into liquid staking tokens
-  - Stablecoins deployed to T-Bill protocols
-  - Balances automatically rebase (increase) in your wallet
+- Your funds are actively risked in external protocols — not just bridged
+- No fraud proofs live — complete trust in centralized sequencer
+- Instant upgrades via multisig create rug pull risk
+- Lost over 80% of activity post-airdrop
+- Native yield adds smart contract risk on top of bridge risk
 
-- **Performance**
-  - Can handle high TPS but actual usage is low
-  - 2-second block times
-  - Had massive TVL at launch, lost most after airdrop
-  - Currently minimal organic activity
+## Technical Details
 
-- **Trade-offs**
-  - Your bridge funds are in DeFi protocols (can be hacked or lose value)
-  - No fraud proofs means trusting sequencer completely
-  - Can be upgraded instantly (rug risk)
-  - Lost significant adoption after incentives dried up
+**Architecture**
+Heavily modified OP Stack that automatically deploys bridged assets into yield-generating protocols. ETH converts to liquid staking tokens, stablecoins to T-Bill protocols. Implements rebasing at protocol level so balances increase without user action.
+
+**Performance**
+Standard OP Stack performance with 2-second block times and high theoretical throughput. Can handle thousands of TPS but actual usage minimal post-incentives. Had billions in TVL at peak but lost most after airdrop farming ended.
+
+**Security & Trust Model**
+Optimistic rollup architecture but fraud proofs not implemented — users must trust sequencer completely. Bridged funds exposed to additional smart contract risk through automatic DeFi deployment. Contracts upgradeable instantly via multisig with no timelock. Multiple layers of risk: bridge, sequencer, DeFi protocols, upgrade mechanism.
+
+**Control & Governance**
+Fully controlled by Blast team with no decentralization roadmap. Centralized sequencer with exclusive ordering rights. Multisig can upgrade any contract immediately. No community governance or input mechanism. Yield strategies and protocol selection decided unilaterally by team.

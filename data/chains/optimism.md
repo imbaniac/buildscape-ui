@@ -155,37 +155,40 @@ sdks:
 # Additional SDKs and tools are inherited from evm-common.md
 ---
 
-Ethereum rollup that pioneered the modular OP Stack, now powering multiple chains including Base. Unlike pure speed-focused competitors, Optimism emphasizes public goods funding and building an interconnected "Superchain" of compatible L2s.
+The idealistic L2 that open-sourced its stack for competitors to copy, now powering Base and the "Superchain" vision. More focused on funding public goods than winning the speed race.
 
-**Key Difference:** Optimism's open-source OP Stack enables other chains to join a unified ecosystem (Base, Mode, Frax) while funding builders through RetroPGF — $3.3B allocated to reward impactful contributions.
+**Unique Position**
+Optimism gave away its competitive advantage by open-sourcing the OP Stack, enabling Coinbase to launch Base and others to join a unified ecosystem. While competitors optimize for metrics, Optimism funds builders through RetroPGF — over $3B allocated to reward actual impact. The L2 that prioritizes collective success over individual dominance.
 
-**Best for:** Projects wanting to build on or launch their own L2, public goods builders seeking retroactive funding, apps needing interoperability across OP Stack chains.
+**Primary Use Cases**
 
-**Technical:** Optimistic rollup with 7-day fraud proof window, modular OP Stack architecture, and governance-driven public goods funding via RetroPGF.
+- Projects wanting to deploy on proven infrastructure with deep liquidity
+- Builders seeking retroactive funding for public goods
+- Applications needing future interoperability across OP Stack chains
+- Teams wanting to launch their own L2 using battle-tested code
+- DeFi protocols requiring established ecosystem and tooling
 
-- **Use Cases**
-  - **DeFi powerhouses**: Velodrome (native DEX, $130M+ TVL), Synthetix ($274M TVL), Aave V3 ($161M TVL)
-  - **Superchain builders**: Base (Coinbase), Mode, Frax launching on OP Stack
-  - **Public goods projects**: 643+ projects funded via RetroPGF, including dev tools and governance infra
-  - **Cross-chain apps**: Projects leveraging Superchain interoperability
+**Ecosystem Character**
+Mission-driven community that values public goods over profit maximization. Home to innovative DeFi like Velodrome and Synthetix rather than copies. Developer culture emphasizes open source contribution and positive-sum thinking. The chain where idealism meets pragmatism — funding what matters while building what works.
 
-- **Security & Data Availability**
-  - Optimistic rollup: transactions execute off-chain, posted to Ethereum with ~7-day fraud proof window.
-  - Fault proof system is active — state transitions can be challenged by any participant.
-  - Posts full calldata to Ethereum using blob transactions (EIP-4844), no external DA layer.
+**Trade-offs**
 
-- **Infra & Execution**
-  - Uses op-geth and op-node stack with ~2s block times.
-  - Modular OP Stack architecture enables other chains to deploy compatible L2s.
-  - Sequencer is centralized; proposer and validator decentralization planned.
+- Centralized sequencer remains single point of failure
+- Seven-day withdrawal delays versus instant zkEVM finality
+- Superchain interoperability still mostly theoretical
+- Lost first-mover advantage by enabling competitors
+- Governance token (OP) has limited utility beyond voting
 
-- **Performance**
-  - Handles significant daily volume with established DeFi ecosystem.
-  - Withdrawal finality requires 7-day challenge period.
-  - Cost and throughput tied to Ethereum blob pricing and L1 congestion.
+## Technical Details
 
-- **Trade-offs**
-  - Sequencer centralization persists — censorship risk at the inclusion level.
-  - 7-day withdrawal delay vs instant finality of zkEVMs.
-  - Fault proofs rely on honest challengers — subject to liveness assumptions.
-  - Superchain vision still developing — cross-chain communication limited.
+**Architecture**
+Optimistic rollup using fraud proofs with 7-day challenge window for withdrawals. Modular OP Stack enables other chains to deploy compatible L2s creating the Superchain ecosystem. Posts transaction data to Ethereum using EIP-4844 blobs.
+
+**Performance**
+Two-second block times with throughput dependent on Ethereum blob space and pricing. Handles significant DeFi volume with mature infrastructure. Costs track Ethereum congestion but remain substantially lower than L1.
+
+**Security & Trust Model**
+Inherits Ethereum security through fraud proof system allowing any participant to challenge invalid states. Requires at least one honest challenger monitoring chain. Full data availability on Ethereum ensures trustless verification. Centralized sequencer can reorder but not censor permanently due to force inclusion.
+
+**Control & Governance**
+Optimism Foundation guides development with two-house governance system — Token House (OP holders) and Citizens' House (reputation-based). Sequencer operated by Foundation with decentralization roadmap but no firm timeline. Protocol upgrades require governance approval but implementation remains centralized.

@@ -63,38 +63,40 @@ sdks:
 # Additional SDKs and tools are inherited from evm-common.md
 ---
 
-Sony's entertainment-focused L2 with IP protection that blocked meme coins on launch day, sparking community backlash.
+Sony's L2 that blocked meme coins on launch day, freezing $100k in user funds. The corporate chain where IP protection trumps permissionless deployment.
 
-**Key Difference:** Built-in IP protection system that restricts contracts suspected of infringement — blocked Sony-themed meme coins (Aibo, Toro) and froze funds, prioritizing corporate IP over permissionless deployment.
+**Unique Position**
+Soneium features built-in IP protection that automatically restricts contracts suspected of trademark infringement. Sony-themed meme coins (Aibo, Toro) were blocked and funds frozen on day one. The only L2 where corporate compliance overrides crypto principles, designed for entertainment companies rather than DeFi degens.
 
-**Best for:** Entertainment companies needing IP protection, Sony ecosystem partners, regulated applications requiring compliance controls.
+**Primary Use Cases**
 
-**Technical:** OP Stack optimistic rollup with IP protection layer, RPC-level contract restrictions, curated application ecosystem.
+- Entertainment companies deploying official IP
+- Sony Music/Pictures NFT collections
+- Regulated applications requiring compliance controls
+- On-chain ticketing and fan engagement
+- Corporate partners within Sony ecosystem
 
-- **Use Cases**
-  - **Entertainment IP**: Sony Music/Pictures NFTs, anime titles like Solo Leveling
-  - **Event management**: On-chain ticketing, fan engagement platforms
-  - **Curated ecosystem**: Soneium Spark selected 32 apps from 1,700+ applicants
-  - **Corporate Web3**: Applications requiring IP compliance and content controls
+**Ecosystem Character**
+Curated environment where Soneium Spark selected 32 apps from 1,700+ applicants. Entertainment-focused with anime titles like Solo Leveling leading adoption. Community split between Sony fans embracing controls and crypto natives opposing censorship. More corporate boardroom than crypto Twitter.
 
-- **Security & Data Availability**
-  - Optimistic rollup on OP Stack with standard 7-day withdrawal period.
-  - Centralized sequencer operated by Sony Block Solutions Labs.
-  - Fraud proofs limited to authorized actors, not permissionless.
+**Trade-offs**
 
-- **Infra & Execution**
-  - EVM-equivalent with OP Stack and Superchain compatibility.
-  - IP protection system flags suspected infringing contracts.
-  - Restrictions apply at RPC level; direct L1 submission possible with delays.
+- Blocked legitimate meme coins freezing user funds on launch
+- Contract deployment requires passing IP filters
+- RPC-level censorship makes flagged contracts invisible
+- 12-hour delay to bypass restrictions through L1
+- Philosophy fundamentally conflicts with permissionless ethos
 
-- **Performance**
-  - Processes ~8 operations per second on average.
-  - Low fees (typically <$0.001 per transaction).
-  - Batch intervals: ~9 minutes for transactions, ~2 hours for state updates.
+## Technical Details
 
-- **Trade-offs**
-  - Blocked popular meme coins on launch, freezing ~$100k in user funds.
-  - Contract restrictions prevent permissionless deployment.
-  - RPC-level controls make flagged contracts invisible on explorers.
-  - 12-hour delay required to bypass restrictions via L1.
-  - Philosophy conflicts with crypto's permissionless ethos.
+**Architecture**
+OP Stack optimistic rollup with additional IP protection layer screening deployments. EVM-equivalent base with Superchain compatibility maintained. Restrictions implemented at RPC level allowing eventual L1 bypass. Curated application layer on top of standard infrastructure.
+
+**Performance**
+Processes approximately 8 operations per second reflecting limited activity. Sub-$0.001 transaction fees due to low usage volume. Nine-minute batch intervals for transactions, two hours for state updates. Performance unchallenged due to controlled ecosystem.
+
+**Security & Trust Model**
+Standard optimistic rollup with 7-day withdrawal period to Ethereum. Centralized sequencer operated by Sony Block Solutions Labs. Fraud proofs restricted to authorized actors rather than permissionless. Additional trust in Sony's IP filtering decisions required.
+
+**Control & Governance**
+Sony Block Solutions Labs controls all aspects including sequencer and IP filters. Contract restrictions decided internally without community input. Soneium Spark curation process gatekeeps ecosystem access. No meaningful decentralization or community governance planned.

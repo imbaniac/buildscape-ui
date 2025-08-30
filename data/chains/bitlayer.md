@@ -59,37 +59,39 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-Bitcoin L2 built around BitVM — a way to lock BTC on Bitcoin and use it on an EVM chain without custodians. One of largest L2s by TVL, though still using experimental technology that just hit mainnet in July 2025.
+A Bitcoin L2 where BTC can be used in EVM without traditional wrapping, backed by major mining pools like Antpool and F2Pool. The first production test of BitVM technology.
 
-**Key Difference:** BitVM bridge attempts trust-minimized BTC transfers using Bitcoin's script language for fraud proofs. Unlike wrapped tokens, aims to lock BTC on Bitcoin itself, but the mechanism is new and largely unproven at scale.
+**Unique Position**
+Bitlayer uses BitVM to lock BTC directly on Bitcoin while enabling EVM smart contracts, eliminating traditional wrapped token risks. Only needs one honest participant to prevent bridge theft, unlike multisigs requiring majority honesty. Mining pool partnerships provide unique Bitcoin ecosystem credibility, though actual integration remains unclear. First production BitVM deployment, making this either breakthrough or cautionary tale.
 
-**Best for:** BTC holders wanting native yield without wrapping, DeFi protocols needing trust-minimized BTC, developers building high-performance Bitcoin apps.
+**Primary Use Cases**
 
-**Technical:** Dual-layer architecture with PoS consensus and BitVM rollup, EVM-compatible, commits state to Bitcoin for security anchoring.
+- BTC holders seeking yield without multisig bridge risks
+- DeFi protocols wanting native Bitcoin liquidity
+- Mining operations leveraging their BTC holdings
+- Cross-chain protocols needing trust-minimized bridges
+- Bitcoin-native applications avoiding wrapped token complexity
 
-- **Use Cases**
-  - **Native BTC DeFi**: First trust-minimized BTC bridge without custodians
-  - **Ecosystem scale**: 200+ dApps deployed across DeFi, gaming, infrastructure
-  - **Mining integration**: Direct support from major Bitcoin mining pools
-  - **Cross-chain expansion**: Integrations with Sui, Arbitrum, Base, Cardano
+**Ecosystem Character**
+Claims 200+ dApps but liquidity concentrated in a handful like Macaron DEX. Mining pool partnerships (Antpool, F2Pool, SpiderPool) provide credibility but unclear actual integration. Community split between BitVM believers and skeptics watching TVL decline. Heavily Asian-focused through mining connections.
 
-- **Security & Data Availability**
-  - BitVM fraud proofs enable challenges on Bitcoin itself — one honest participant can prevent fraud.
-  - State roots committed to Bitcoin blockchain for permanent verification.
-  - Transitioning to full Bitcoin rollup (V2) for Bitcoin-equivalent security.
+**Trade-offs**
 
-- **Infra & Execution**
-  - BitVM Bridge mainnet live — trust-minimized BTC as YBTC with strict 1:1 peg.
-  - Mining pool integration (Antpool, F2Pool, SpiderPool) for real-time processing.
-  - EVM-compatible with sub-second finality in execution layer.
+- BitVM highly experimental — first production deployment at scale
+- Dual PoS/rollup architecture adds complexity beyond pure BitVM
+- Seven-day challenge period for Bitcoin finality
+- V2 mainnet delayed to Q2 2025 showing technical challenges
 
-- **Performance**
-  - V3 roadmap: Sub-millisecond trading engine, horizontal scaling for unlimited throughput.
-  - Fast soft finality through PoS layer, Bitcoin finality after challenge period.
-  - CEX-level UX targeted with ultra-low costs and sub-second interactions.
+## Technical Details
 
-- **Trade-offs**
-  - BitVM still experimental — first mainnet implementation just launched.
-  - PoS sequencer layer adds complexity vs pure Bitcoin security.
-  - Challenge period needed for Bitcoin finality (7 days).
-  - V2 rollup architecture not yet live — roadmap dependency.
+**Architecture**
+Dual-layer system combining PoS consensus for execution with BitVM rollup for Bitcoin settlement. EVM-compatible execution layer with state commitments anchored to Bitcoin. BitVM enables fraud proofs using Bitcoin script, allowing challenges without soft fork.
+
+**Performance**
+Sub-second soft finality through PoS layer with eventual Bitcoin finality after challenge period. Targeting CEX-level performance with planned sub-millisecond trading engine. Current throughput limited but V3 roadmap promises horizontal scaling for unlimited TPS.
+
+**Security & Trust Model**
+BitVM fraud proofs allow any honest participant to prevent invalid state transitions on Bitcoin. State roots committed to Bitcoin for permanent verification and dispute resolution. However, PoS sequencer layer introduces additional trust assumptions beyond pure Bitcoin security. Bridge security depends on at least one honest challenger during dispute period.
+
+**Control & Governance**
+Mining pool partnerships provide ecosystem influence but not direct protocol control. PoS validator set controls execution layer consensus and ordering. BitVM bridge operated by designated operators with planned decentralization. Governance structure remains unclear with no formal DAO or voting mechanism announced.

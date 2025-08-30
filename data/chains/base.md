@@ -159,25 +159,40 @@ sdks:
 tools:
 ---
 
-An Ethereum L2 built by Coinbase using the Optimism OP Stack, focused on mainstream scalability and deep integration with Coinbase products.
+Coinbase's L2 where you can go from buying crypto to using dApps without leaving their ecosystem. The corporate chain that doesn't pretend to be decentralized.
 
-**Key Difference:** Coinbase runs your transactions — they control the sequencer, collect the fees, and can onboard users directly from the exchange. It's the L2 where you can go from buying crypto to using dApps without leaving the Coinbase ecosystem.
+**Unique Position**
+Base is Coinbase running blockchain infrastructure as a service — they control the sequencer, collect the fees, and can onboard users directly from their 100M+ person exchange. While other L2s chase decentralization theater, Base leverages Coinbase's regulatory clarity and fiat rails. The only L2 where your grandma might accidentally use blockchain through Coinbase Wallet.
 
-**Best for:** Consumer apps needing fiat onramps, projects targeting Coinbase's 100M+ users, builders who want corporate backing over decentralization.
+**Primary Use Cases**
 
-**Techincal:** Optimistic rollup using OP Stack and Bedrock, member of Optimism Superchain.
+- Consumer apps needing seamless fiat-to-crypto onramps
+- Projects targeting Coinbase's massive retail user base
+- Builders wanting corporate stability over decentralization
+- Social applications leveraging Base Passport identity
+- DeFi protocols seeking Coinbase listing pipeline
 
-- **Use Cases**:
-  - **Onchain identity**: Base Passport for mainstream user identity
-  - **Consumer apps**: Mainstream-focused applications with simplified onboarding
-  - **DeFi**: Growing ecosystem with Coinbase integration benefits
-  - **Developer tools**: Enhanced tooling with Coinbase infrastructure support
+**Ecosystem Character**
+Mainstream-focused ecosystem prioritizing user experience over crypto purity. Home to consumer social apps, simplified DeFi, and experiments in onchain identity. The community accepts centralization as a feature for reliability and regulatory compliance. Where Silicon Valley VCs deploy their consumer crypto bets.
 
-- **Security**: Inherits Ethereum security via optimistic fraud proofs. Centralized sequencer operated by Coinbase. 7-day challenge period for withdrawals.
-- **Performance**: Cheaper than Ethereum (~10–100x depending on calldata usage). Real TPS ~20–30. Limited by L1 calldata throughput.
-- **Ecosystem**: Rapidly growing due to Coinbase support. Used for onchain identity (Base Passport), consumer apps, DeFi, and developer tools.
-- **Governance**: Coinbase controls upgrades and sequencing. No on-chain upgrade delay or decentralized verifier set yet.
-- **Trade-offs**:
-  - Sequencer and upgrade path fully centralized
-  - Tied closely to Coinbase infra and roadmap
-  - No native decentralization yet for data availability or challenge verification
+**Trade-offs**
+
+- Completely centralized — Coinbase controls everything
+- Success tied to Coinbase's business decisions and regulatory status
+- No permissionless validation or decentralized governance
+- Higher fees than newer L2s optimizing for cost
+- Ecosystem growth dependent on Coinbase marketing and partnerships
+
+## Technical Details
+
+**Architecture**
+Optimistic rollup built on OP Stack using Bedrock architecture, part of the Optimism Superchain ecosystem. Standard 7-day fraud proof window with withdrawal delays.
+
+**Performance**
+Transaction costs 10-100x cheaper than Ethereum mainnet depending on calldata usage. Real throughput limited by L1 data availability. Consistent 2-second block times with reliable sequencer operation.
+
+**Security & Trust Model**
+Inherits Ethereum security through optimistic fraud proofs, but challenge mechanism controlled by whitelist. Centralized sequencer operated exclusively by Coinbase with no failover. Must trust Coinbase for liveness, ordering fairness, and upgrade integrity.
+
+**Control & Governance**
+Coinbase has unilateral control over protocol upgrades, sequencer operation, and fee collection. No on-chain governance or community input mechanism. Security council exists but is Coinbase-appointed. Progressive decentralization mentioned but no concrete timeline provided.

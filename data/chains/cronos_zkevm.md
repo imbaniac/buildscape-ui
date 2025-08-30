@@ -60,37 +60,40 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-Crypto.com's new Ethereum L2 using ZK tech, launched 2024 as the "v2" to original Cronos. Keeps data off-chain to save costs.
+Crypto.com's ZK L2 where gas fees earn staking rewards — even failed transactions contribute to your yield. The "v2" to original Cronos, trading security for ultra-low costs through off-chain data storage.
 
-**Key Difference:** Your gas fees earn staking rewards — zkCRO automatically generates yield while sitting in your wallet, so even failed transactions contribute to your returns instead of just burning money.
+**Unique Position**
+Your zkCRO gas token automatically generates CRO staking yields while sitting in your wallet, turning transaction fees from dead cost into productive capital. Built on ZK Stack as a Validium (off-chain data), achieving lowest possible fees at the expense of exit guarantees. The only L2 where paying for gas increases your staking position.
 
-**Best for:** Crypto.com users wanting cheaper transactions, DeFi apps needing sponsored gas, yield farmers chasing zkCRO rewards.
+**Primary Use Cases**
 
-**Technical:** ZK Validium on ZK Stack with off-chain data availability, zkCRO (liquid staked CRO) as gas token, native account abstraction.
+- Crypto.com users seeking cheaper on-chain transactions
+- DeFi protocols wanting sponsored gas for users
+- Yield farmers maximizing zkCRO "triple yield" strategies
+- Applications requiring account abstraction features
+- Projects targeting Crypto.com's retail user base
 
-- **Use Cases**
-  - **DeFi apps**: Fulcrom Finance (derivatives), VVS Finance, H2 Finance
-  - **Crypto.com integration**: Natural bridge for exchange users
-  - **Yield farming**: zkCRO "triple yield" opportunities
-  - **Pioneer program**: 5M+ ZK tokens in rewards pool
+**Ecosystem Character**
+Early-stage ecosystem bootstrapped by Pioneer Program rewards and Crypto.com integration. Community primarily consists of existing CRO holders and Crypto.com users exploring DeFi. Limited organic development with most protocols incentivized deployments. Alpha mainnet status reflects experimental nature.
 
-- **Security & Data Availability**
-  - ZK proofs posted to Ethereum, but transaction data kept off-chain (Validium).
-  - Exit safety depends entirely on sequencer — if it fails, funds stuck.
-  - Emergency governance can bypass upgrade delays.
+**Trade-offs**
 
-- **Infra & Execution**
-  - Built on ZKsync's ZK Stack with native account abstraction.
-  - zkCRO gas token earns CRO staking yield while used for fees.
-  - Part of ZK Stack ecosystem enabling bridges to other ZK chains.
+- Validium architecture means sequencer controls your exit — major centralization risk
+- Very early alpha stage with minimal battle-testing since August 2024
+- Success entirely dependent on Crypto.com's continued relevance
+- Yield-bearing gas token adds complexity and potential financial risks
+- Off-chain data storage sacrifices security guarantees for cheap fees
 
-- **Performance**
-  - Very low fees due to off-chain data storage.
-  - Claims >100 TPS but real performance untested.
-  - Alpha mainnet since August 2024.
+## Technical Details
 
-- **Trade-offs**
-  - Validium = major centralization risk — sequencer controls your exit.
-  - Very early (alpha) with limited battle-testing.
-  - Success tied to Crypto.com ecosystem relevance.
-  - Yield-bearing gas adds protocol complexity and financial risk.
+**Architecture**
+ZK Validium built on ZKsync's ZK Stack with validity proofs to Ethereum but data stored off-chain. Native account abstraction enables gasless transactions and social recovery. Part of ZK Stack ecosystem allowing interoperability with other ZK chains through shared infrastructure.
+
+**Performance**
+Ultra-low fees achieved through off-chain data availability, significantly cheaper than rollups posting to Ethereum. Claims over 100 TPS capacity though real-world performance remains unproven in alpha. Sub-second soft confirmations with periodic batch settlements to Ethereum.
+
+**Security & Trust Model**
+ZK proofs ensure computational validity on Ethereum but data availability depends entirely on centralized sequencer. Exit safety compromised — if sequencer fails or censors, users cannot force withdrawal. Emergency governance can bypass normal upgrade delays, adding additional trust assumptions.
+
+**Control & Governance**
+Crypto.com controls sequencer operations with no decentralization roadmap announced. Protocol upgrades managed through emergency governance mechanisms allowing rapid changes. zkCRO yield parameters and reward distribution controlled centrally by Crypto.com team.

@@ -229,7 +229,7 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    color: #7fb8e8;
+    color: #9ca3b0;
     text-decoration: none;
     font-size: 13px;
     transition: all 0.2s ease;
@@ -240,14 +240,14 @@
   }
 
   .tooltip-link:hover {
-    color: #a8c7e7;
-    background: rgba(127, 184, 232, 0.1);
-    text-shadow: 0 0 8px rgba(127, 184, 232, 0.3);
+    color: #c4c9d4;
+    background: rgba(156, 163, 176, 0.1);
+    text-shadow: 0 0 8px rgba(156, 163, 176, 0.3);
     text-decoration: none;
   }
 
   .tooltip-link:visited {
-    color: #7fb8e8;
+    color: #9ca3b0;
   }
 
   .link-icon {

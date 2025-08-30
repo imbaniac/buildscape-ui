@@ -70,36 +70,39 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-The original Bitcoin sidechain from 2018 — run Ethereum smart contracts secured by Bitcoin miners. Gets its security from 81% of Bitcoin's hashpower through merged mining, where miners earn both BTC and RBTC rewards simultaneously.
+The original Bitcoin sidechain from 2018, secured by 81% of Bitcoin's hashpower through merged mining. Where Bitcoin miners validate EVM contracts without running extra hardware.
 
-**Key Difference:** True sidechain architecture, not a rollup — runs parallel to Bitcoin with its own consensus. Bitcoin miners validate blocks but can't steal funds thanks to hardware-secured federation controlling the bridge.
+**Unique Position**
+Rootstock operates as a true sidechain parallel to Bitcoin, not a rollup posting proofs. Bitcoin miners earn RBTC rewards alongside BTC through merged mining, securing the network with 740+ exahashes/second. Hardware-secured federation controls the bridge, preventing miner theft while maintaining Bitcoin's security guarantees.
 
-**Best for:** Bitcoin purists wanting EVM without leaving Bitcoin security, projects needing stable proven infrastructure, DeFi protocols wanting BTC collateral without wrapped tokens.
+**Primary Use Cases**
 
-**Technical:** EVM sidechain with merged mining (81% of Bitcoin hashpower), federation-controlled two-way peg, 30-second blocks.
+- Bitcoin-native DeFi without wrapped token risks
+- Mining operations seeking additional revenue streams
+- BTC-backed stablecoins with direct collateral
+- Conservative Bitcoin holders wanting smart contracts
 
-- **Use Cases**
-  - **Sovryn**: Bitcoin-native DEX and lending protocol
-  - **Money On Chain**: Dollar On Chain (DOC) — 100% BTC-backed stablecoin
-  - **Mining revenue**: Miners earn additional rewards without extra hardware
+**Ecosystem Character**
+Bitcoin-maximalist ecosystem focused on BTC as the only real collateral. Sovryn dominates as the primary DEX and lending protocol. Community values security and proven technology over innovation speed. Smaller but dedicated user base preferring stability to hype cycles.
 
-- **Security & Data Availability**
-  - Merged mining with Bitcoin — 740+ exahashes/second securing the network.
-  - DECOR+ protocol prevents mining centralization issues.
-  - Powpeg federation uses hardware security modules (HSMs) for bridge control.
+**Trade-offs**
 
-- **Infra & Execution**
-  - Full EVM compatibility via RVM — deploy unchanged Solidity contracts.
-  - Gas paid in RBTC (1:1 pegged to BTC).
-  - Transaction fees down 60% in 2025, making it competitive with newer L2s.
+- Federation-controlled bridge less trustless than newer BitVM approaches
+- 30-second blocks feel sluggish compared to modern sub-second L2s
+- 24-36 hour peg times optimize security over convenience
+- Smaller ecosystem despite being the oldest Bitcoin sidechain
+- Sidechain architecture less capital efficient than rollups
 
-- **Performance**
-  - 300+ TPS capability (though typical usage much lower).
-  - 30-second block times — slower than modern L2s but predictable.
-  - Peg-in/out takes 24-36 hours — optimized for security over speed.
+## Technical Details
 
-- **Trade-offs**
-  - Federation-controlled bridge — not fully trustless like newer BitVM designs.
-  - 30-second blocks feel slow vs sub-second modern L2s.
-  - Smaller ecosystem than newer Bitcoin L2s despite being oldest.
-  - Sidechain model less capital efficient than rollups.
+**Architecture**
+True sidechain running parallel to Bitcoin with independent consensus through merged mining. Full EVM compatibility via RVM allowing unchanged Solidity deployment. DECOR+ protocol prevents mining centralization while maintaining security. Federation uses hardware security modules for bridge control.
+
+**Performance**
+Capable of 300+ TPS though actual usage remains lower. Thirty-second block times provide predictability at the cost of speed. Transaction fees reduced 60% in 2025 making it competitive with newer solutions. Peg operations take 24-36 hours prioritizing security over user experience.
+
+**Security & Trust Model**
+Secured by 81% of Bitcoin's hashpower through merged mining without additional hardware requirements. Powpeg federation with HSMs prevents both miner and federation member theft. DECOR+ ensures fair reward distribution preventing centralization. Security model proven since 2018 without major incidents.
+
+**Control & Governance**
+Federation members control bridge operations through multi-signature HSM setup. Protocol upgrades require both miner and federation consensus. IOV Labs provides development but cannot unilaterally change protocol. More decentralized than appearance suggests through careful mechanism design.

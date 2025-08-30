@@ -54,37 +54,40 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-zkSync's entertainment chain backed by $500M from node sales — built for games, AI apps, and social platforms that need millions of cheap transactions. Uses Validium architecture trading Ethereum data availability for sub-cent costs.
+The entertainment chain backed by $500M from node sales, where apps pay your gas fees. Built for games and AI apps needing millions of free transactions.
 
-**Key Difference:** Apps can sponsor all user gas fees via paymasters, letting mainstream users interact without ever buying crypto or understanding blockchain — pure Web2 experience on Web3 rails.
+**Unique Position**
+Sophon's paymasters let applications sponsor all user gas fees, enabling pure Web2 experiences without wallets or crypto purchases. Keeps transaction data off Ethereum to achieve sub-cent costs, though this means trusting an external system (Avail) for withdrawals. The only L2 explicitly designed for entertainment apps with 27M+ wallets already onboarded through gaming partners.
 
-**Best for:** Mobile games needing free transactions, AI apps requiring cheap compute verification, social platforms with high-frequency interactions, entertainment dapps targeting non-crypto users.
+**Primary Use Cases**
 
-**Technical:** zkSync Stack Validium with Avail DA, native account abstraction, paymasters for gasless UX, part of Elastic Chain ecosystem.
+- Mobile games requiring completely free user transactions
+- AI applications needing cheap compute verification
+- Social platforms with high-frequency interactions
+- Entertainment dapps targeting mainstream users
+- Ticketing and event management systems
 
-- **Use Cases**
-  - **Gaming partners**: Beam ecosystem games, Mirai Labs (27M+ wallets onboarded)
-  - **AI infrastructure**: Aethir GPU marketplace (100K+ compute hours), $40M Tactical Compute initiative
-  - **Entertainment apps**: OPEN Ticketing (7M+ tickets across 24K events)
-  - **Social platforms**: Zentry ecosystem, high-frequency social interactions
+**Ecosystem Character**
+Entertainment-focused ecosystem with gaming leading adoption through Beam and Mirai Labs partnerships. AI infrastructure growing through Aethir GPU marketplace and $40M Tactical Compute initiative. Community consists of game developers and entertainment companies rather than DeFi builders. Node sale participants locked until December 2025.
 
-- **Security & Data Availability**
-  - ZK validity proofs verify all state transitions before finalization.
-  - Validium model uses Avail for off-chain data availability — cheaper than rollups.
-  - No data posted to Ethereum — withdrawals depend on Avail being online.
+**Trade-offs**
 
-- **Infra & Execution**
-  - Built on zkSync's ZK Stack with native account abstraction.
-  - Paymasters enable apps to sponsor all user gas fees.
-  - Part of Elastic Chain — interoperable with zkSync Era, Abstract, and other ZK chains.
+- Validium architecture sacrifices Ethereum data availability for cost
+- Withdrawal safety depends on Avail remaining online
+- Centralized sequencer with vague decentralization timeline
+- New ecosystem with limited native applications
+- Guardian node liquidity locked limiting early trading
 
-- **Performance**
-  - Sub-cent transaction costs — optimized for gaming microtransactions.
-  - Instant perceived finality for users, ZK proofs settle to Ethereum hourly.
-  - Scales to millions of transactions without Ethereum data costs.
+## Technical Details
 
-- **Trade-offs**
-  - Validium model trades Ethereum data availability for cost — Avail dependency risk.
-  - Centralized sequencer during bootstrap phase — decentralization roadmap pending.
-  - New ecosystem — fewer native apps vs established L2s like Arbitrum.
-  - Guardian nodes locked until December 2025 — limited liquidity for early supporters.
+**Architecture**
+zkSync Stack Validium using Avail for data availability instead of Ethereum to minimize costs. Native account abstraction at protocol level enabling walletless interactions. Part of Elastic Chain ecosystem allowing interoperability with zkSync Era and other ZK Stack chains.
+
+**Performance**
+Sub-cent transaction costs optimized for gaming microtransactions and social interactions. Instant perceived finality for users with hourly ZK proof settlement to Ethereum. Scales to millions of transactions without Ethereum's data posting costs limiting throughput.
+
+**Security & Trust Model**
+ZK validity proofs ensure computational correctness before Ethereum settlement. However, Validium model means data availability depends on Avail rather than Ethereum. Withdrawal guarantees compromised if Avail goes offline or censors data. Additional trust assumptions beyond standard rollups.
+
+**Control & Governance**
+Centralized sequencer operated during bootstrap phase with decentralization roadmap undefined. Guardian nodes from $500M sale provide some stakeholder alignment but remain locked. Protocol development controlled by Sophon team with limited community input mechanisms.

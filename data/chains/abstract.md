@@ -59,37 +59,40 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-Pudgy Penguins' L2 built for consumer apps, using email sign-ins instead of seed phrases. Launched January 2025 with big hype but unclear substance. Created by the NFT team that sold plushies at Target — betting on bringing retail consumers to crypto through simplified UX and "digital Disneyland" branding.
+Pudgy Penguins' L2 betting that NFT plushies at Target translate into blockchain adoption. The Portal is their TikTok-style app store for non-crypto users.
 
-**Key Difference**: Built to onboard non-crypto users by eliminating wallets entirely — you interact with blockchain using email/passkeys like normal apps.
+**Unique Position**
+Abstract isn't targeting crypto users at all — it's for Pudgy Penguin toy buyers who don't know what a blockchain is. The Portal curates simple apps like games and social features, accessed via email login through Abstract Global Wallet. Built on zkSync's infrastructure but focused entirely on mainstream consumer onboarding rather than DeFi or technical features.
 
-**Best for:** Consumer apps wanting Pudgy Penguins audience, projects needing sponsored gas fees, developers betting on NFT-to-mainstream crossover.
+**Primary Use Cases**
 
-**Technical:** ZK rollup using zkSync's ZK Stack, EigenDA for data availability, native account abstraction with passkey/email wallets.
+- Consumer applications requiring zero crypto knowledge
+- Games and social apps needing sponsored transactions
+- Projects leveraging Pudgy Penguins' mainstream brand recognition
+- Applications requiring seamless fiat-to-crypto conversion
+- NFT utilities bridging physical merchandise to digital experiences
 
-- **Use Cases**
-  - **The Portal**: App store/streaming platform hybrid claiming 600K MAU (unverified)
-  - **Consumer apps**: 100+ apps at launch, mostly simple games and social
-  - **Pudgy ecosystem**: PENGU token integration, NFT utilities
-  - **Target market**: Non-crypto users via simplified onboarding
+**Ecosystem Character**
+Early-stage ecosystem dominated by simple consumer apps and Pudgy-affiliated projects. The Portal serves as a curated app store meets streaming platform, claiming significant non-crypto user adoption. Community skews toward NFT collectors and consumer app developers rather than DeFi builders.
 
-- **Trade-offs**
-  - Brand-new chain with unproven tech stack at scale.
-  - Relies entirely on zkSync and EigenDA infrastructure.
-  - Success tied to Pudgy Penguins brand relevance.
-  - Consumer blockchain thesis unproven — previous attempts failed.
+**Trade-offs**
 
-- **Security & Data Availability**
-  - ZK rollup inheriting Ethereum security via validity proofs.
-  - Uses EigenDA for data availability instead of Ethereum.
-  - Account abstraction built-in with social recovery options.
+- Completely unproven at scale — launched January 2025 with minimal battle-testing
+- Success entirely dependent on Pudgy Penguins staying culturally relevant
+- Built on zkSync's stack, inheriting all its limitations and dependencies
+- Uses EigenDA instead of Ethereum for data availability — additional trust assumptions
+- Consumer blockchain thesis has failed repeatedly (Flow, Immutable, etc.)
 
-- **Infra & Execution**
-  - Built on zkSync's ZK Stack framework.
-  - Abstract Global Wallet (AGW) with email/passkey login.
-  - Gas can be paid in any token or sponsored by apps.
+## Technical Details
 
-- **Performance**
-  - Standard ZK rollup performance characteristics.
-  - Focus on consumer UX over raw throughput.
-  - Early stage with limited stress testing.
+**Architecture**
+ZK rollup built on zkSync's ZK Stack, settling to Ethereum with validity proofs but using EigenDA for data availability to reduce costs. Features Abstract Global Wallet (AGW) for email/passkey authentication instead of traditional wallets.
+
+**Performance**
+Standard ZK rollup performance with focus on UX over raw throughput. Transaction costs optimized for consumer apps through sponsored gas and batching. Handles congestion through typical L2 queuing mechanisms, though untested under real load.
+
+**Security & Trust Model**
+Inherits Ethereum's security through ZK validity proofs, but data availability through EigenDA introduces additional trust assumptions. Account abstraction with AGW enables social recovery, reducing key loss risk but potentially enabling social engineering attacks. Proof generation and sequencing initially centralized.
+
+**Control & Governance**
+Abstract Foundation controls sequencer and protocol upgrades. No decentralized governance or timeline for progressive decentralization announced. The Portal curation and app approval process remains opaque, creating potential gatekeeping concerns.

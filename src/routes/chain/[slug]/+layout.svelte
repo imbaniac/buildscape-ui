@@ -331,7 +331,6 @@
     background: rgba(255, 255, 255, 0.9);
     border-radius: 9999px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(4px);
     font-size: 0.75rem;
     transition: opacity 0.2s ease;
   }

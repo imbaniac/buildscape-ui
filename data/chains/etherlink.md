@@ -57,37 +57,39 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-The only EVM rollup on Tezos, using XTZ for gas. Cheap and fast but isolated from mainstream EVM liquidity.
+The only EVM rollup on Tezos, enshrined directly in the protocol rather than built externally. Uses XTZ for gas with sub-cent fees but remains isolated from mainstream EVM liquidity.
 
-**Key Difference:** Built directly into Tezos protocol ("enshrined") rather than external, with fraud proofs settled by Tezos validators instead of Ethereum.
+**Unique Position**
+Etherlink is "enshrined" into Tezos protocol itself rather than deployed as a separate system, with fraud proofs settled by Tezos validators instead of Ethereum. The only way to access EVM on Tezos, bridging two historically separate ecosystems. XTZ as gas token provides natural integration with Tezos DeFi.
 
-**Best for:** Projects already in Tezos ecosystem wanting EVM compatibility, apps needing sub-cent transaction costs.
+**Primary Use Cases**
 
-**Technical:** Smart Rollup on Tezos with fraud proofs, XTZ as native token, sub-second confirmations with 16-second finality.
+- Tezos projects wanting EVM compatibility without leaving the ecosystem
+- Gaming applications requiring sub-cent transaction costs
+- DeFi protocols seeking alternative to congested Ethereum L2s
+- Cross-chain applications bridging Tezos and EVM worlds
+- Developers familiar with Tezos seeking broader tooling
 
-- **Use Cases**
-  - **DeFi**: IguanaDEX (concentrated liquidity DEX), SuperLend (lending), Curve deployment
-  - **Gaming**: BattleRise, Bit Hotel, UPvsDOWN, Degeneratives
-  - **Incentives**: Apple Farm program boosted TVL from low millions to peak near $50M
-  - **Bridges**: LayerZero and Stargate for cross-chain connectivity
+**Ecosystem Character**
+Small but incentivized ecosystem bootstrapped through Apple Farm rewards program. Gaming-heavy with multiple projects choosing Etherlink for cheap transactions. Community consists mainly of existing Tezos developers exploring EVM opportunities. Limited organic growth despite aggressive incentive programs.
 
-- **Security & Data Availability**
-  - Settles on Tezos L1 using fraud proofs and commitment publishing.
-  - Finality in 2 Tezos blocks (16 seconds after Quebec upgrade).
-  - Permissionless: anyone can run a node and challenge invalid state.
+**Trade-offs**
 
-- **Infra & Execution**
-  - Built with Tezos Smart Rollup framework, enshrined in protocol.
-  - Standard EVM with some RPC differences due to Tezos backend.
-  - Uses XTZ for gas instead of ETH.
+- Completely isolated from Ethereum L2 ecosystem and liquidity
+- Requires bridges for any ETH-based assets
+- Limited tooling support compared to Ethereum-based L2s
+- Smaller developer community and ecosystem
 
-- **Performance**
-  - Sub-second soft confirmations.
-  - Very low fees (sub-cent transactions).
-  - Calypso upgrade improved contract processing speed significantly.
+## Technical Details
 
-- **Trade-offs**
-  - Isolated from Ethereum L2 ecosystem — bridges required for ETH assets.
-  - Limited tooling support compared to Ethereum-based L2s.
-  - Smaller ecosystem despite incentive programs.
-  - WebSocket support limited, requiring polling for subscriptions.
+**Architecture**
+Smart Rollup framework built directly into Tezos protocol as an enshrined rollup. Standard EVM implementation with modifications for Tezos integration. Uses XTZ as native gas token rather than ETH, maintaining Tezos economic alignment.
+
+**Performance**
+Sub-second soft confirmations with 16-second finality after Quebec upgrade. Sub-cent transaction costs consistently maintained through efficient rollup design. Calypso upgrade significantly improved contract execution performance.
+
+**Security & Trust Model**
+Fraud proofs settled by Tezos L1 validators providing permissionless challenge mechanism. Anyone can run a node and contest invalid state transitions. Inherits Tezos security guarantees rather than Ethereum's, creating different trust assumptions.
+
+**Control & Governance**
+Protocol upgrades follow Tezos on-chain governance model with baker voting. Tezos Foundation provides development funding and ecosystem support. More decentralized governance than most L2s through Tezos's established processes.

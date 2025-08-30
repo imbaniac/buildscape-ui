@@ -102,42 +102,40 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-Binance's centralized but cheap EVM chain — where retail traders go for memecoins and yield farming. Not decentralized (21 validators controlled by Binance), but nobody cares because fees are pennies and PancakeSwap has all the liquidity. If you want "DeFi" without the high fees or decentralization theater, BSC delivers.
+Binance's centralized chain where retail traders chase memecoins with penny fees. 21 validators, all Binance-controlled, but that's the point — centralization means your token might get listed.
 
-**Key Difference:** Binance lists your token if it gets traction here — PancakeSwap success often leads to CEX listing, creating a direct path from memecoin to major exchange that doesn't exist on other chains.
+**Unique Position**
+BSC offers a direct pipeline from PancakeSwap success to Binance CEX listing that doesn't exist elsewhere. The only major chain where centralization is a feature, not a bug — Binance's control provides instant fiat ramps, regulatory clarity, and exchange integration. Retail traders choose cheap fees and CEX access over decentralization every time.
 
-**Best for:** Memecoin trading, yield farming, retail DeFi, projects needing Binance ecosystem access.
+**Primary Use Cases**
 
-**Technical:** An EVM-compatible chain using Proof-of-Staked-Authority (PoSA), built for high-throughput applications with fast finality.
+- Memecoin trading with minimal fees
+- Yield farming for retail traders
+- Projects seeking Binance ecosystem access
+- High-volume trading bots needing cheap execution
+- Emerging market DeFi with fiat integration needs
 
-- **Use Cases**
-  - **PancakeSwap dominance**: 91.8% of all DEX activity, often beats Uniswap volume
-  - **Memecoin central**: GraFun, Four.Meme launchpads, Binance listings pipeline
-  - **Retail DeFi**: Venus Finance, yield farms with actual volume
-  - **Binance integration**: Direct CEX bridge, easy fiat on/off
+**Ecosystem Character**
+Retail-dominated ecosystem where PancakeSwap handles over 90% of DEX activity. Memecoin launchpads like GraFun and Four.Meme drive most innovation. Community accepts centralization in exchange for Binance benefits — low fees, CEX integration, and regulatory protection through Binance's compliance infrastructure.
 
-- **Security**
-  - PoSA combines delegated staking with authority-based validator rotation
-  - 21 active validators, elected by BNB stake
-  - Finality typically achieved in 2 blocks
-  - Slashing applies for double-signing and liveness failures
-  - Validator set is permissioned—centralization risk is significant
+**Trade-offs**
 
-- **Performance**
-  - Real-world throughput ~100–200 TPS
-  - Fees stay at pennies even during memecoin frenzies
-  - Pascal hard fork added EIP-7702 wallet support, MEV protection
+- Only 21 validators, all essentially controlled by Binance
+- Censorship risk from both validators and Binance itself
+- Regulatory exposure if Binance faces enforcement actions
+- Limited innovation outside retail trading and yield farming
+- Reputation damage in "serious DeFi" circles limits institutional adoption
 
-- **Infra & Architecture**
-  - Tightly integrated with Binance ecosystem (wallets, bridges, exchange)
-  - Supports opBNB (an L2 on OP Stack) and subnets as part of multi-chain strategy
-  - Rust client and zk-rollup integrations are on the roadmap
+## Technical Details
 
-- **Governance**
-  - On-chain proposal system tied to validator and delegator voting
-  - Upgrades controlled by validator set, without enforced timelocks
+**Architecture**
+Proof-of-Staked-Authority (PoSA) consensus combining delegated staking with authority-based validator rotation. EVM-compatible with modifications for faster finality and lower fees. Supports opBNB L2 on OP Stack and planning subnet architecture for application-specific chains.
 
-- **Trade-offs**
-  - Limited validator set → lower decentralization and higher censorship risk
-  - Close ties to Binance create centralized control concerns
-  - Infrastructure complexity increases with subnets, opBNB, and modular roadmap
+**Performance**
+Handles 100-200 TPS in practice with fees remaining under $0.05 even during peak memecoin trading. Max 0.75 seconds times with typical two-block finality. Pascal hard fork added account abstraction and MEV protection, improving user experience for retail traders.
+
+**Security & Trust Model**
+Validators elected through BNB staking but require Binance approval to join the active set. Slashing mechanisms exist for double-signing and downtime but rarely enforced given validator relationships. Security depends entirely on Binance's reputation rather than cryptographic guarantees.
+
+**Control & Governance**
+On-chain governance exists but effectively controlled by validator set aligned with Binance. Protocol upgrades happen without enforced timelocks, allowing rapid changes. BNB Chain team (Binance subsidiary) drives all major development decisions with community input largely theatrical.

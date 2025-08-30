@@ -152,11 +152,7 @@
         </a>
       {/if}
       <span class="separator">•</span>
-      <button
-        class="add-wallet-btn-inline"
-        onclick={addToWallet}
-        style="--brand-color: {accessibleColor}"
-      >
+      <button class="add-wallet-btn-inline" onclick={addToWallet}>
         <svg
           width="12"
           height="12"
@@ -409,21 +405,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-image:
-      repeating-linear-gradient(
-        45deg,
-        transparent,
-        transparent 2px,
-        rgba(139, 115, 85, 0.02) 2px,
-        rgba(139, 115, 85, 0.02) 4px
-      ),
-      repeating-linear-gradient(
-        -45deg,
-        transparent,
-        transparent 2px,
-        rgba(139, 115, 85, 0.02) 2px,
-        rgba(139, 115, 85, 0.02) 4px
-      );
+
     pointer-events: none;
   }
 
@@ -515,7 +497,7 @@
   }
 
   .add-wallet-btn-inline:hover {
-    color: var(--brand-color);
+    color: #94a3b8;
   }
 
   .add-wallet-btn-inline svg {

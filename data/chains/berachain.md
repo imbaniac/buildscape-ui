@@ -65,40 +65,40 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-The NFT meme chain that became a serious L1 with a novel twist: your staked assets keep earning DeFi yields.
+The NFT meme chain that turned "Ooga Booga" into a novel consensus mechanism where your staked assets keep earning DeFi yields while securing the network.
 
-**Key Difference:** Uses Proof-of-Liquidity, meaning validators must provide actual liquidity to earn rewards, not just lock tokens — creating the first chain where security literally equals liquidity.
+**Unique Position**
+Berachain invented Proof-of-Liquidity — validators must provide actual liquidity to earn rewards, not just stake tokens. Your LP positions secure the chain while still earning trading fees. The first blockchain where security literally equals liquidity, turning validation into a DeFi strategy. Born from Bong Bears NFTs but evolved into the most culturally-driven serious L1.
 
-**Best for:** Liquidity mining maximalists, DeFi protocols wanting built-in rewards, projects needing cultural momentum.
+**Primary Use Cases**
 
-**Technical:** An EVM-identical L1 using Proof-of-Liquidity consensus with a tri-token system (BERA/BGT/HONEY) built on Cosmos SDK.
+- DeFi protocols wanting liquidity incentives built into consensus
+- Liquidity mining maximalists seeking multiple reward streams
+- Projects needing strong community culture and engagement
+- Validators who want to earn from both validation and DeFi
+- Meme projects that need actual utility beyond speculation
 
-- **Use Cases**
-  - **Native DeFi suite**: BEX (DEX with gas rebates), BEND (lending), BERP (20x leverage perps)
-  - **Liquidity wars**: Kodiak, Infrared competing for BGT bribes and rewards
-  - **Meme culture**: Originated from Bong Bears NFT, "Ooga Booga" community
-  - **Cross-chain liquidity**: BeraHub manages BGT rewards across protocols
+**Ecosystem Character**
+Unique blend of degen meme culture and sophisticated DeFi mechanics. The "Ooga Booga" community embraces absurdity while building serious infrastructure. Native DeFi suite (BEX, BEND, BERP) creates immediate utility. Liquidity wars between protocols competing for BGT emissions drive constant engagement. Hit $3B TVL within weeks — fastest L1 adoption in recent memory.
 
-- **Security & Data Availability**
-  - Proof-of-Liquidity: validators stake LP tokens instead of native tokens
-  - Staked assets remain productive in DeFi while securing the network
-  - 69 active validators with ~$38M in delegated BGT governance tokens
-  - Built on CometBFT (Tendermint) with single-slot finality
+**Trade-offs**
 
-- **Infra & Execution**
-  - 100% EVM-identical — MetaMask, Hardhat, Foundry work without modifications
-  - BeaconKit framework enables modular consensus and L2 integration
-  - Native DeFi primitives built into protocol layer (BEX, BEND, BERP)
-  - Tri-token model: BERA (gas), BGT (non-transferable governance), HONEY (stablecoin)
+- Proof-of-Liquidity is experimental — unproven long-term security model
+- Economic security depends on sustained DeFi activity and yields
+- BGT non-transferability creates complex governance dynamics
+- Tri-token system (BERA/BGT/HONEY) adds cognitive overhead
+- Success requires maintaining both meme momentum and DeFi innovation
 
-- **Performance**
-  - 1-2.5M daily transactions sustained post-launch
-  - Sub-3 second block times with instant finality
-  - Gas costs comparable to other Cosmos chains
-  - Hit $3B TVL within weeks of mainnet launch
+## Technical Details
 
-- **Trade-offs**
-  - PoL is experimental — economic security depends on sustained DeFi activity
-  - BGT governance is non-transferable, creating complex delegation dynamics
-  - Validator rewards tied to liquidity provision, not just validation
-  - Young ecosystem despite rapid growth — infrastructure still maturing
+**Architecture**
+EVM-identical L1 built on Cosmos SDK with CometBFT consensus, using novel Proof-of-Liquidity where validators stake LP tokens instead of native assets. Features tri-token model: BERA (gas), BGT (non-transferable governance), HONEY (native stablecoin).
+
+**Performance**
+Sustains 1-2.5M daily transactions with sub-3 second block times and instant finality through Tendermint. Gas costs comparable to other Cosmos chains, significantly cheaper than Ethereum. Handles high load well — maintained performance despite explosive early growth.
+
+**Security & Trust Model**
+Proof-of-Liquidity requires validators to provide liquidity that remains productive in DeFi while securing consensus. Security scales with DeFi TVL rather than token price alone. Single-slot finality through CometBFT eliminates reorganization risk. Currently 69 active validators with combined billions in secured value.
+
+**Control & Governance**
+BGT governance token is non-transferable, earned only through liquidity provision and protocol participation. BeraHub manages BGT emissions and rewards distribution across protocols. Foundation maintains significant influence over protocol development but governance increasingly community-driven through BGT voting.

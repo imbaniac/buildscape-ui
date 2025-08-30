@@ -129,37 +129,40 @@ sdks:
 # Additional SDKs and tools are inherited from evm-common.md
 ---
 
-The enterprise-friendly zkEVM balancing compatibility and performance. Unlike Scroll's pure bytecode focus or zkSync's custom VM, Polygon zkEVM uses a custom assembly language (zkASM) that achieves near-perfect EVM equivalence while enabling proof generation in minutes, not hours.
+The enterprise zkEVM chain where you can withdraw to Ethereum in 30 minutes instead of waiting a week. Built for institutions that can't lock funds in 7-day optimistic delays.
 
-**Key Difference:** Withdrawals to Ethereum in 30 minutes instead of 7 days — the only major zkEVM where you can exit quickly without waiting a week, crucial for institutional users who can't lock funds.
+**Unique Position**
+Polygon zkEVM achieves near-perfect EVM equivalence using custom zkASM assembly language, enabling proof generation in minutes rather than hours. While Scroll focuses on pure bytecode and zkSync built a custom VM, Polygon balanced compatibility with performance. The only major zkEVM with fast L1 exits — crucial for enterprises and traders who need capital efficiency.
 
-**Best for:** Enterprise deployments, existing DeFi protocols wanting ZK security, projects needing fast withdrawals to L1.
+**Primary Use Cases**
 
-**Technical:** A ZK-rollup using Polygon's ZK Stack with full EVM equivalence and calldata-based data availability.
+- Enterprise blockchain deployments requiring quick fund mobility
+- Existing DeFi protocols wanting ZK security with minimal changes
+- High-value transactions needing fast finality and L1 exits
+- Projects building custom chains using Polygon CDK
+- Institutional trading requiring rapid cross-chain settlement
 
-- **Use Cases**
-  - **Major DeFi**: Aave, Uniswap, QuickSwap deployed with minimal changes
-  - **Enterprise adoption**: 30+ Fortune 500 companies, Walmart using CDK for private chains
-  - **Fast withdrawals**: ~30 minute bridge back to L1 (vs 7 days on Optimistic rollups)
-  - **CDK ecosystem**: 190+ projects building custom L2/L3 chains using Polygon's tech
+**Ecosystem Character**
+Enterprise-focused ecosystem with major DeFi protocols deployed mostly for checkbox compliance rather than organic usage. Community consists more of Polygon Labs partners than grassroots developers. The "safe choice" for corporations entering blockchain — backed by Disney, Starbucks, and Meta partnerships.
 
-- **Security & Data Availability**
-  - Validity proofs verify state correctness before finalization.
-  - Uses Ethereum calldata for data availability; no alternative DA layer.
-  - Withdrawals are fast and final once proofs are accepted — no fraud window.
+**Trade-offs**
 
-- **Infra & Execution**
-  - Bytecode-level EVM equivalence — most Ethereum contracts run without changes.
-  - Centralized sequencer; proposer decentralization planned but not yet implemented.
-  - Governance is multisig-controlled and not permissionless.
+- Centralized sequencer with no clear decentralization timeline
+- Lower adoption than expected despite technical superiority
+- Competes with Polygon PoS for attention and resources
+- Edge-case EVM incompatibilities despite equivalence claims
+- Ecosystem fragmented across multiple Polygon products
 
-- **Performance**
-  - Block inclusion in ~2s; proof generation and finalization in minutes.
-  - Uses FFLONK prover (30% cheaper to verify than PLONK).
-  - Fees track Ethereum gas prices but remain significantly lower.
+## Technical Details
 
-- **Trade-offs**
-  - Centralized sequencer can censor or reorder transactions.
-  - No fallback DA layer — full reliance on Ethereum calldata.
-  - Governance and infra still maturing — not production-decentralized.
-  - Despite EVM claims, edge-case incompatibilities may still require adjustments.
+**Architecture**
+ZK-rollup using custom zkASM assembly for near-perfect EVM equivalence while maintaining efficient proof generation. Uses FFLONK proving system (30% cheaper than PLONK) with Ethereum calldata for data availability.
+
+**Performance**
+Two-second block times with proof generation and finalization in minutes. Withdrawals complete in approximately 30 minutes — fastest among major zkEVMs. Fees track Ethereum prices but remain significantly lower.
+
+**Security & Trust Model**
+Validity proofs ensure state correctness before finalization on Ethereum. No fraud proof delay but relies on centralized sequencer for ordering. Uses Ethereum for data availability without fallback options. Security depends on proof system soundness and sequencer honesty.
+
+**Control & Governance**
+Polygon Labs controls sequencer operation and protocol upgrades through multisig. No permissionless proposer or verifier participation. Governance remains team-controlled despite decentralization rhetoric. Part of broader Polygon ecosystem with unclear resource allocation.

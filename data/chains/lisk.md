@@ -62,40 +62,40 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-Former JavaScript blockchain that pivoted to become an L2 focused on bringing crypto to emerging markets.
+Former JavaScript blockchain that pivoted to L2, now targeting Africa and Southeast Asia where sub-cent fees enable real financial inclusion. The L2 that went where others wouldn't.
 
-**Key Difference:** While other L2s fight for Silicon Valley users, Lisk targets Africa and Southeast Asia where low fees actually matter for daily use.
+**Unique Position**
+While other L2s compete for Silicon Valley users, Lisk focuses on emerging markets where low fees genuinely matter for daily transactions. Transitioned from failed JavaScript L1 to OP Stack L2, bringing experience and treasury to underserved regions. The only L2 with dedicated African Blockchain Incubation Hub and local partnerships.
 
-**Best for:** Building for emerging markets, RWA tokenization projects, developers needing grants and support.
+**Primary Use Cases**
 
-**Technical:** OP Stack rollup optimized for low-cost transactions, part of the Optimism Superchain.
+- Financial inclusion applications for unbanked populations
+- RWA tokenization through Backed and Obligate partnerships
+- Remittance platforms requiring consistent sub-cent fees
+- Local payment solutions in Africa and Southeast Asia
+- Developers seeking grants for emerging market solutions
 
-- **Use Cases**
-  - **Emerging market solutions**: Focus on real problems in Africa/Southeast Asia
-  - **RWA tokenization**: Partnerships with Backed and Obligate
-  - **Builder programs**: 3.65M LSK grants with 95% going directly to developers
-  - **Financial inclusion**: Low fees enable microtransactions and remittances
+**Ecosystem Character**
+Mission-driven ecosystem focused on real-world utility over speculation. Builder community concentrated in target regions rather than crypto hubs. Grant program dedicates 95% of 3.65M LSK directly to developers. Early-stage but purposeful growth through local partnerships and education initiatives.
 
-- **Security & Data Availability**
-  - Standard optimistic rollup with 7-day withdrawal period
-  - Centralized sequencer with decentralization roadmap
-  - Fault proofs implementation planned
-  - Secured by Ethereum L1 via fraud proofs
+**Trade-offs**
 
-- **Infra & Execution**
-  - Built on OP Stack, fully EVM-compatible
-  - Part of Optimism Superchain for cross-chain composability
-  - Transitioned from JavaScript L1 to EVM for broader compatibility
-  - Transaction fees under $0.01
+- Still rebuilding ecosystem after complete L1-to-L2 pivot
+- Emerging market focus means slower initial growth metrics
+- Competing with established OP Stack chains for developers
+- Success depends on adoption in economically different regions
+- Limited DeFi activity compared to speculation-driven L2s
 
-- **Performance**
-  - Standard L2 throughput and latency
-  - Low congestion due to early-stage adoption
-  - Growing through targeted incentive programs
-  - African Blockchain Incubation Hub supporting local builders
+## Technical Details
 
-- **Trade-offs**
-  - Still building ecosystem after L1-to-L2 transition
-  - Emerging markets focus means different growth trajectory
-  - Competing with other OP Stack chains for developers
-  - Success depends on adoption in target regions
+**Architecture**
+OP Stack rollup providing full EVM compatibility after transitioning from custom JavaScript blockchain. Part of Optimism Superchain enabling cross-chain composability with other OP chains. Standard optimistic architecture optimized for consistent low-cost transactions.
+
+**Performance**
+Transaction fees consistently under $0.01 enabling microtransactions and daily use. Standard L2 throughput with minimal congestion due to early adoption phase. Performance metrics focused on reliability over maximum throughput for emerging market needs.
+
+**Security & Trust Model**
+Standard optimistic rollup with 7-day fraud proof window for withdrawals. Secured by Ethereum L1 through fraud proof mechanism. Centralized sequencer operated by Lisk team with decentralization roadmap. Fault proof implementation planned following OP Stack standards.
+
+**Control & Governance**
+Lisk Foundation controls sequencer and protocol development. Grant distribution managed centrally with focus on emerging market builders. Governance transition planned but prioritizing ecosystem growth first. Development decisions driven by regional adoption needs rather than token holder votes.

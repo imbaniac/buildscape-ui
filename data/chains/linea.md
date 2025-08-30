@@ -84,36 +84,40 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-ConsenSys's zkEVM with built-in MetaMask integration — the corporate answer to zkSync and Scroll. If you trust ConsenSys infrastructure, this is your zkEVM.
+The L2 built into MetaMask by default, backed by ConsenSys (the company behind MetaMask, Infura, and half of Ethereum's infrastructure). Where banks experiment with DeFi.
 
-**Key Difference:** Linea leverages ConsenSys's enterprise connections (Mastercard, JPMorgan) and direct access to MetaMask's 100M+ users.
+**Unique Position**
+Linea appears as a default network in MetaMask's 100M wallets, giving it instant distribution most L2s can't buy. ConsenSys's enterprise clients (Mastercard, Visa, JPMorgan) use it for their blockchain experiments. Comes with the entire ConsenSys toolkit built-in, though that also means ConsenSys controls everything.
 
-**Best for:** Projects wanting MetaMask distribution, enterprise DeFi, ConsenSys ecosystem tools (Truffle, Infura).
+**Primary Use Cases**
 
-**Technical:** A fully EVM-equivalent ZK-rollup developed by ConsenSys, focused on Ethereum compatibility and zk-proven execution.
+- Projects seeking MetaMask's massive user distribution
+- Enterprise DeFi requiring institutional credibility
+- Applications leveraging ConsenSys development tools
+- Cross-chain protocols using MetaMask Portfolio integration
+- MEV-sensitive applications using advanced bundle RPCs
 
-- **Use Cases**
-  - **MetaMask integration**: Default network option, Portfolio dApp for cross-chain swaps
-  - **Enterprise connections**: Backed by Mastercard, Visa, JPMorgan relationships
-  - **ConsenSys stack**: Native Truffle, Infura, Diligence integration
-  - **Growing DeFi**: Etherex DEX, Surge Program with LXP rewards
+**Ecosystem Character**
+Corporate-friendly ecosystem attracting both crypto natives and traditional finance experiments. Surge Program with LXP rewards bootstrapping early adoption. Developer community split between those embracing ConsenSys tools and those wary of centralization. More institutional than grassroots compared to other zkEVMs.
 
-- **Security & Data Availability**
-  - Validity proofs verify all EVM operations before finalization.
-  - Uses Ethereum calldata for DA — no custom DA layer or fallback.
-  - Settlement and availability fully rely on Ethereum L1.
+**Trade-offs**
 
-- **Infra & Execution**
-  - Supports advanced RPCs like `eth_sendBundle` for MEV mitigation.
-  - Open-state tooling enables permissionless access to sequencer state.
+- ConsenSys controls sequencer, prover, and upgrades entirely
+- Stage 0 maturity despite zkEVM security claims
+- Corporate reputation alienates some crypto natives
+- No clear technical differentiation from Scroll or zkSync
+- Open-sourcing promised for 2025 but not guaranteed
 
-- **Performance**
-  - Block times ~2s; proof generation is near real-time.
-  - Scales with prover capacity; fees remain low unless L1 gas spikes.
-  - No known artificial throughput caps — performance depends on Ethereum calldata limits.
+## Technical Details
 
-- **Trade-offs**
-  - ConsenSys controls everything — sequencer, upgrades, prover (open-sourcing "planned" for 2025)
-  - Corporate chain — some crypto natives distrust ConsenSys's centralized approach
-  - Stage 0 maturity — far from decentralized despite zkEVM claims
-  - Competing with Scroll/zkSync without clear technical differentiation
+**Architecture**
+Fully EVM-equivalent ZK rollup using validity proofs for all operations. Pure Ethereum data availability without custom layers or fallbacks. Advanced RPC support including eth_sendBundle for MEV protection and open-state tooling for sequencer transparency.
+
+**Performance**
+Two-second block times with near real-time proof generation. Throughput scales with prover capacity rather than artificial limits. Fees track Ethereum L1 gas prices through calldata posting. No congestion issues due to early-stage adoption.
+
+**Security & Trust Model**
+Validity proofs ensure computational integrity before Ethereum settlement. Full data availability on Ethereum L1 provides strong security guarantees. However, centralized sequencer and prover create single points of failure. No fraud proof fallback if ZK system fails.
+
+**Control & Governance**
+ConsenSys maintains complete control over all protocol components. No decentralized governance or community input mechanisms. Upgrade authority centralized with vague decentralization roadmap. Enterprise partnerships influence development priorities over community needs.

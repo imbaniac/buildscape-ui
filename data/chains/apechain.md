@@ -69,31 +69,39 @@ tools:
 # Additional SDKs and tools are inherited from evm-common.md
 ---
 
-The Bored Ape ecosystem's own chain — an L3 on Arbitrum built for NFT culture and gaming. Unlike general chains, ApeChain is unapologetically niche: APE as gas, native yield for holders, and deep integration with Yuga Labs' metaverse (Otherside). If you're not in the BAYC universe, this isn't for you.
+The Bored Ape ecosystem's own chain — an L3 on Arbitrum built for NFT culture and gaming. If you're not in the BAYC universe, this isn't for you, and that's the point.
 
-**Key Difference:** APE tokens automatically generate yield just by holding them in your wallet — no staking
-contracts or lockups needed.
+**Unique Position**
+ApeChain brings native yield to APE holders without staking contracts — tokens automatically generate yield just sitting in your wallet. While other chains chase broad adoption, ApeChain is unapologetically niche: APE as gas, deep Yuga Labs integration, and exclusive access to the Otherside metaverse. The chain where holding a jpeg gets you real utility.
 
-**Best for:** Yuga ecosystem projects, APE token holders, Otherside metaverse, NFT-first gaming, meme token experiments.
+**Primary Use Cases**
 
-**Technical:** A purpose-built L3 on Arbitrum Orbit for the ApeCoin ecosystem (Yuga Labs, Otherside, NFT/gaming projects).
+- BAYC/MAYC ecosystem participants seeking native yield and exclusive experiences
+- Otherside metaverse development and NFT gaming projects
+- Meme token experiments within the Ape community
+- ApeCoin holders looking for yield without smart contract risks
 
-- **Use Cases**:
-  - **BAYC/MAYC holders**: Native yield on APE, exclusive games, metaverse access
-  - **NFT gaming**: Otherside metaverse, ODK for Unreal Engine NFT integration
-  - **Meme token launches**: Ape Express for quick token deployment
-  - **APE staking**: Native yield without smart contract risks
+**Ecosystem Character**
+Tightly controlled playground for Yuga Labs IP and ApeCoin community. Dominated by metaverse gaming (Otherside), satirical trading games, and meme token experiments. The ecosystem embraces absurdity — where else would a toilet-themed runner game be a flagship app? Community is insular but engaged, treating chain activity as social signaling within NFT culture.
 
-- **Security**: Inherits Ethereum security via Arbitrum One → Orbit. Depends on DAC for data availability and centralized sequencer.
-- **Token Utility**: APE as native gas, native yield for holders, gas-sponsored transactions for smooth onboarding.
-- **Infra**: Runs as an Orbit chain with 250ms block time, but real throughput and latency depend on sequencer performance and app-level congestion.
-- **Ecosystem**:
-  - **Otherside**: Yuga's metaverse with 2,197-player record-breaking gaming sessions
-  - **Dookey Dash Unclogged**: Toilet-themed arcade runner (yes, really)
-  - **Top Trader**: Satirical trading game turning speculation into sport
-  - **Ape Express**: Meme token creation toolkit for the APE community
-- **Governance**: Controlled by a multisig with ApeCoin DAO-selected Security Council (no onchain upgrade delay).
-- **Trade-offs**:
-  - Centralized trust assumptions (sequencer, DAC, multisig upgrades)
-  - Ecosystem is niche and tied closely to Yuga IP
-  - L3 setup adds another dependency layer (on Arbitrum infra)
+**Trade-offs**
+
+- Completely tied to Yuga Labs ecosystem — if you're not in, you're out
+- L3 architecture adds extra dependency on Arbitrum's infrastructure
+- Centralized control via multisig, sequencer, and DAC
+- Niche appeal limits broader DeFi and developer adoption
+- Success depends entirely on BAYC/Yuga Labs cultural relevance
+
+## Technical Details
+
+**Architecture**
+L3 built on Arbitrum Orbit, settling to Arbitrum One which settles to Ethereum. Uses APE as native gas token with automatic yield generation mechanism built into the chain itself.
+
+**Performance**
+Max speed 250ms block times with standard Orbit throughput capabilities. Gas costs significantly lower than L2s due to L3 batching, though adds latency from extra settlement layer. Handles gaming workloads well but untested under heavy DeFi-style congestion.
+
+**Security & Trust Model**
+Inherits Ethereum security through two layers of settlement (Arbitrum One → Ethereum). Data availability through centralized DAC rather than on-chain posting. Centralized sequencer operated by chain operators. Trust assumptions compound through L3 architecture — you trust both Arbitrum and ApeChain operators.
+
+**Control & Governance**
+Controlled by multisig with ApeCoin DAO-selected Security Council members. No on-chain upgrade delays or permissionless challenge mechanism. Sequencer revenue and MEV controlled by operators, not DAO. Despite "DAO" branding, governance is effectively centralized with advisory input.

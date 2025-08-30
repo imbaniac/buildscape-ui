@@ -84,37 +84,40 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-Ethereum but cheaper and faster, using math proofs (zero-knowledge) to guarantee security.
+The "boring" L2 where everything works exactly like Ethereum but cheaper. No fancy features, no modified EVM, no account abstraction — just Ethereum with lower fees.
 
-**Key Difference:** Scroll prioritizes being identical to Ethereum — your existing code works without changes, unlike competitors that modified things for speed.
+**Unique Position**
+Scroll maintains perfect Ethereum compatibility (bytecode-level) while competitors like zkSync modified the EVM for extra features. This means all Ethereum tools, wallets, and contracts work unchanged but also no native account abstraction or paymasters. The safe choice for projects wanting zero surprises — if it works on Ethereum, it works on Scroll.
 
-**Best for:** Moving existing Ethereum projects without modifications, DeFi apps that need Ethereum's exact behavior.
+**Primary Use Cases**
 
-**Technical:** A zkEVM rollup with bytecode-level EVM equivalence and ZK-based finality, built for compatibility with existing Ethereum contracts.
+- Migrating complex Ethereum projects without code changes
+- DeFi protocols requiring exact Ethereum behavior
+- NFT platforms maintaining OpenSea compatibility
+- DAO tooling needing identical mainnet functionality
+- Developer testing with guaranteed Ethereum parity
 
-- **Use Cases**
-  - **DeFi migrations**: Uniswap, Aave, and other majors deployed without code changes
-  - **NFT platforms**: Lower minting costs while keeping OpenSea compatibility
-  - **DAO tooling**: Snapshot, Gnosis Safe work identically to mainnet
-  - **Developer testing**: Same behavior as Ethereum, cheaper to experiment
+**Ecosystem Character**
+Developer-focused ecosystem prioritizing reliability over innovation. Major protocols like Uniswap and Aave deployed unchanged, validating the compatibility promise. Community values technical correctness over marketing hype. Growing steadily through proven compatibility rather than incentive programs.
 
-- **Security & Data Availability**
-  - Uses ZK validity proofs to confirm all state transitions before finalization.
-  - Publishes calldata to Ethereum using EIP‑4844 blobs; no custom DA layer.
-  - Withdrawals are finalized once proofs are verified — no fraud windows.
+**Trade-offs**
 
-- **Infra & Execution**
-  - Fully bytecode-equivalent — same opcodes and gas costs as Ethereum.
-  - Centralized sequencer; decentralized proving and proposer layers are planned but not yet live.
-  - Node stack includes dedicated proving infrastructure.
+- Centralized sequencer creates censorship and liveness risks
+- Heavy prover infrastructure may bottleneck under load
+- Slower innovation due to strict Ethereum compatibility
+- Ecosystem maturity lags behind Arbitrum and Optimism
+- No unique features beyond compatibility claim
 
-- **Performance**
-  - Handles high daily tx volumes (~500k/day).
-  - Proof submission adds latency — typically a few minutes after batch inclusion.
-  - Throughput depends on prover capacity and L1 calldata constraints.
+## Technical Details
 
-- **Trade-offs**
-  - Sequencer is not decentralized — risk of transaction censorship or delays.
-  - Prover infra is heavy and may bottleneck under load.
-  - Finality is fast, but depends on timely proof generation and posting.
-  - Ecosystem still early — infra and decentralization not yet fully mature.
+**Architecture**
+zkEVM rollup with complete bytecode equivalence to Ethereum. Uses validity proofs to guarantee computational correctness before settlement. Publishes data to Ethereum via EIP-4844 blobs without custom availability layers. Proving infrastructure generates ZK proofs for all state transitions.
+
+**Performance**
+Proof generation adds minutes of latency after batch inclusion for final settlement. Throughput constrained by prover capacity and Ethereum calldata limits rather than artificial caps. Real-world performance limited by ZK proof generation speed, not network capacity.
+
+**Security & Trust Model**
+ZK validity proofs ensure all computations are correct before finalization. No fraud proof window — withdrawals final once proofs verify. Full data availability on Ethereum provides strong security guarantees. However, centralized sequencer remains single point of failure.
+
+**Control & Governance**
+Scroll team controls sequencer with vague decentralization promises. Proving and proposer decentralization planned but not implemented. Protocol upgrades managed centrally without community input. Development prioritizes technical goals over governance distribution.

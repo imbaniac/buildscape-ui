@@ -96,38 +96,40 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-The blockchain that actually stores data, not just pointers. While every chain claims "decentralized storage," Filecoin enforces it cryptographically — storage providers must prove they hold your data every 24 hours or lose collateral. Now with FVM smart contracts, it's becoming DeFi for data storage.
+The blockchain that actually stores data, not just pointers. While every chain claims "decentralized storage," Filecoin enforces it cryptographically — storage providers must prove they hold your data every 24 hours or lose collateral.
 
-**Key Difference:** The only blockchain where storage is the consensus mechanism — miners earn FIL by proving they store real data, not by solving useless puzzles, making it the first useful proof-of-work.
+**Unique Position**
+Filecoin makes storage the consensus mechanism itself — miners earn FIL by proving they store real data, not by solving useless puzzles. The first useful proof-of-work where computational resources preserve humanity's data instead of burning electricity. Now with FVM smart contracts, it's becoming DeFi for data storage — lending against stored data, automated perpetual storage deals, and storage derivatives.
 
-**Best for:** Permanent storage deals, DataDAOs, archival systems, AI training data, NFT metadata that won't disappear.
+**Primary Use Cases**
 
-**Technical:** A Layer 1 blockchain designed for decentralized, verifiable storage. Targeted for long-term data integrity, archival apps, and trustless file hosting.
+- Permanent archival systems that can't be deleted or censored
+- AI/ML training data requiring verifiable provenance
+- DataDAOs managing collective storage resources
+- NFT metadata that won't disappear when startups fail
+- Cross-chain data availability for other blockchains
 
-- **Use Cases**
-  - **Storage marketplace**: 1,300 PiB stored across 38M active deals, providers prove data possession daily
-  - **FVM DeFi**: GLIF ($144M), stFIL staking, USDFC FIL-backed stablecoin
-  - **DataDAOs**: Automated storage deals, perpetual storage via smart contracts
-  - **AI/ML data**: Aethir, KiteAI using for verifiable training data storage
-  - **Cross-chain storage**: Axelar integration lets 32 chains pay for Filecoin storage
+**Ecosystem Character**
+Dominated by storage providers running industrial operations with petabytes of capacity. Developer ecosystem split between storage infrastructure builders and FVM DeFi experimenters. Community values data permanence over financial speculation. Strong presence of archival projects, scientific data repositories, and Web3 infrastructure providers.
 
-- **Consensus & Finality**
-  - Uses Expected Consensus: block producers are selected based on storage power, producing multiple blocks per epoch.
-  - Finality reduced from ~7.5 hours to a few minutes with Fast Finality (F3) via GossiPBFT overlay.
+**Trade-offs**
 
-- **Storage Proofs & Security**
-  - Proof-of-Replication and Proof-of-Spacetime enforce actual data storage.
-  - Providers prove data possession every 24 hours or lose FIL collateral.
-  - Secure against up to ~20% adversarial storage power.
+- Storage onboarding takes hours and requires specialized hardware
+- Finality in minutes, not seconds — unsuitable for high-frequency operations
+- Smart contract ecosystem nascent compared to EVM chains
+- Consensus is probabilistic with timing variability
+- Retrieval isn't guaranteed — storage providers can go offline
 
-- **Performance & Infra**
-  - FIL transfers confirm in ~30 seconds, storage deals seal in ~1.5 hours.
-  - FVM launched 2023: 5,000+ contracts deployed, 3.2M+ transactions.
-  - Supports WASM and Solidity smart contracts for storage automation.
-  - IPC enables modular subnets with independent consensus.
+## Technical Details
 
-- **Trade-offs**
-  - Finality in minutes, not seconds
-  - Storage onboarding is slow and hardware-intensive
-  - Smart contract ecosystem is early and lacks mature infra
-  - Consensus is probabilistic, introducing timing variability
+**Architecture**
+Layer 1 using Expected Consensus where block producers are selected based on storage power. Proof-of-Replication and Proof-of-Spacetime enforce actual data storage. FVM enables WASM and Solidity smart contracts for programmable storage.
+
+**Performance**
+FIL transfers confirm in roughly 30 seconds, storage deals seal in 1-2 hours. Fast Finality (F3) reduced finality from hours to minutes using GossiPBFT overlay. Storage capacity measured in exabytes with millions of active deals.
+
+**Security & Trust Model**
+Storage providers must prove data possession every 24 hours or lose FIL collateral. Secure against up to 20% adversarial storage power. Cryptographic proofs ensure data integrity without trusting individual providers. Economic incentives align with long-term data preservation.
+
+**Control & Governance**
+Protocol Labs maintains significant influence but governance increasingly decentralized through FIP process. Storage provider community has strong voice due to hardware investments. No single entity controls data storage or retrieval.

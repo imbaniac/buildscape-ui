@@ -72,37 +72,40 @@ sdks:
 tools:
 ---
 
-An L2 that brings Bitcoin into Ethereum DeFi while being secured by both chains — Bitcoin holders stake their BTC to validate the network and earn yield.
+The L2 where Bitcoin holders stake BTC to secure the network and earn Ethereum DeFi yields. BOB brings actual Bitcoin security to EVM through Babylon staking — validators get their real BTC slashed on Bitcoin if they misbehave.
 
-**Key Difference:** Unlike wrapped BTC on other chains, here your Bitcoin actively secures the network through Babylon staking, and if validators misbehave, their actual BTC gets slashed on Bitcoin itself.
+**Unique Position**
+Unlike wrapped BTC on other chains, Bitcoin actively secures BOB through Babylon staking with on-chain slashing. The only L2 with dual finality from both Ethereum and Bitcoin, creating a unique security model. BitVM bridges (in development) will enable trust-minimized BTC transfers without traditional wrapping.
 
-**Best for:** Bitcoin DeFi needing EVM compatibility, BTC liquid staking protocols, cross-chain apps wanting both Ethereum composability and Bitcoin security.
+**Primary Use Cases**
 
-**Technical:** OP Stack rollup with Babylon BTC staking for finality, BitVM bridges in development, member of Optimism Superchain.
+- Bitcoin liquid staking protocols seeking EVM composability
+- BTC holders wanting DeFi yields without wrapping risk
+- Cross-chain applications needing both Bitcoin and Ethereum security
+- Institutional Bitcoin strategies requiring native BTC collateral
+- Bitcoin-secured synthetic assets and lending markets
 
-- **Use Cases**
-  - **BTC liquid staking hub**: Native integration with Babylon LST ecosystem
-  - **Bitcoin DeFi**: Major protocols deployed for BTC-native yield
-  - **Cross-chain infrastructure**: Part of both Superchain and Bitcoin networks
-  - **Institutional BTC**: Secure Bitcoin yield without leaving the ecosystem
+**Ecosystem Character**
+Bitcoin-first ecosystem focused on BTC yield generation rather than general DeFi. Early adopters include major BTC liquid staking protocols and Bitcoin-native teams. Community values Bitcoin security principles while leveraging Ethereum's DeFi infrastructure. Part of Optimism Superchain but culturally aligned with Bitcoin.
 
-- **Security & Data Availability**
-  - OP rollup with standard 7-day fraud proof window on Ethereum.
-  - Bitcoin finality via Babylon — BTC stakers validate BOB state with slashing.
-  - ZK proofs being added for cryptographic state validity (Phase 2).
+**Trade-offs**
 
-- **Infra & Execution**
-  - Bitcoin light client enables reading BTC state directly in contracts.
-  - BitVM bridge on testnet — trust-minimized BTC transfers without wrapping.
-  - Supports all major BTC LSTs (Babylon, Solv, Bedrock, PumpBTC).
+- Dual finality system more complex than single-chain security models
+- BitVM bridge still on testnet — currently relies on wrapped tokens
+- Centralized sequencer inherited from OP Stack architecture
+- Developer complexity from managing two different security assumptions
+- Smaller ecosystem compared to established L2s
 
-- **Performance**
-  - Standard OP Stack performance with 2-second blocks.
-  - Bitcoin finality adds 10-60 minute confirmation for maximum security.
-  - Network fees contribute to BTC staking rewards, creating sustainable economics.
+## Technical Details
 
-- **Trade-offs**
-  - Dual finality more complex than single-chain L2s.
-  - BitVM bridge still on testnet — wrapped tokens dominate for now.
-  - Centralized sequencer like all OP Stack chains.
-  - Higher complexity for developers navigating two security models.
+**Architecture**
+OP Stack rollup enhanced with Babylon BTC staking for additional finality. Bitcoin light client integrated directly into EVM enables reading Bitcoin state in smart contracts. Member of Optimism Superchain with standard fraud proof mechanics plus Bitcoin validation layer.
+
+**Performance**
+Standard OP Stack performance with two-second blocks and comparable throughput. Bitcoin finality adds 10-60 minute confirmation time for maximum security guarantees. Network fees contribute to BTC staking rewards, aligning incentives between users and validators.
+
+**Security & Trust Model**
+Dual security from Ethereum settlement (7-day fraud proofs) and Bitcoin finality through Babylon staking. BTC stakers validate BOB state transitions with slashing penalties enforced on Bitcoin itself. ZK proof integration planned for cryptographic validity without challenge periods.
+
+**Control & Governance**
+Centralized sequencer operated by BOB team following OP Stack standards. Protocol upgrades follow Optimism governance model with additional Bitcoin staker input mechanisms planned. BitVM development community-driven but implementation controlled by core team.
