@@ -45,10 +45,8 @@ We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guid
 
 ### Adding a New Chain
 
-1. Create a markdown file in `/data/chains/[chainname].md`
-2. Add chain logo to `/src/lib/assets/chains/[chainname].svg`
-3. Update island positions in the codebase
-4. Submit a pull request
+- **Quick Start**: [Submit a chain request](https://github.com/buildscape/buildscape-ui/issues/new?template=add-chain.yml)
+- **Contribute directly**: See [chain addition guide](docs/ADD_CHAIN.md)
 
 Note: Contributions to `/data` are licensed under CC BY-SA 4.0.
 

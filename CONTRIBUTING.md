@@ -29,42 +29,21 @@ git commit -s -m "Your commit message"
 
 This adds a `Signed-off-by` line to your commit, certifying that you have the right to submit the contribution.
 
-## 🏝️ Adding a New Chain
+## 🏝️ Adding or Editing Chains
 
-To add a new blockchain to Buildscape:
+We welcome contributions to add new chains or update existing ones!
 
-### 1. Create Chain Profile (`/data/chains/[chainname].md`)
+### Quick Options
 
-```yaml
----
-name: My Chain
-chainId: 12345
-logo: mychain.svg
-urls:
-  website: https://mychain.org
-  explorer: https://explorer.mychain.org
-technology:
-  isEVM: true
-  consensus: proof-of-stake
-rpc:
-  - https://rpc.mychain.org
-  - wss://ws.mychain.org
----
-Description of the chain in markdown format...
-```
+- **Add a chain**: [Submit a request](https://github.com/imbaniac/buildscape-ui/issues/new?template=add-chain.yml)
+- **Edit a chain**: [Submit an update](https://github.com/imbaniac/buildscape-ui/issues/new?template=edit-chain.yml)
+- **Contribute directly**: See our [detailed guide](docs/ADD_CHAIN.md)
 
-### 2. Add Chain Logo (`/assets/chains/[chainname].svg`)
+### Resources
 
-- SVG format preferred (PNG accepted)
-- Square aspect ratio
-- Transparent background
-- Reasonable file size
-- **Important**: Ensure you have the right to use the logo
-- Logos remain property of their respective projects
-
-### 3. Update Island Position
-
-Add your chain to the island positioning configuration in the codebase.
+- 📖 [Complete chain addition guide](docs/ADD_CHAIN.md)
+- 🤖 [AI prompt for generating chain data](prompts/generate-chain-data.md)
+- 📝 [Example chains](data/chains/) for reference
 
 ## 📝 Commit Messages
 
