@@ -93,33 +93,40 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-The DAO infrastructure chain where gas costs a fraction of a penny and Gnosis Safe was born. First stable-dollar blockchain (xDAI as gas). If you're building DAO tools or need predictable costs over performance, this is your home.
+The DAO infrastructure chain where Gnosis Safe was born and gas costs a fraction of a penny. First blockchain to use stable dollars (xDAI) as gas, making costs predictable.
 
-**Key Difference:** The only chain with encrypted transactions by default (Shutter Protocol) — front-running and MEV are impossible because nobody can see transaction contents until after they're ordered, making it the fairest DEX environment.
+**Unique Position**
+Gnosis implemented encrypted transactions by default through Shutter Protocol — transactions are encrypted until after ordering, making front-running and MEV extraction impossible. The only chain where fairness is enforced cryptographically rather than economically. Built by and for DAO infrastructure with stable, predictable costs that enable governance and coordination tools.
 
-**Best for:** DAO tooling, multisigs, governance systems, treasury management, apps needing stable $0.001 tx costs.
+**Primary Use Cases**
 
-**Technical:** An Ethereum sidechain with full EVM compatibility, Proof-of-Stake consensus, and low gas costs. Prioritizes accessibility and stability over throughput or trust-minimization.
+- DAO tooling and governance systems requiring cheap, reliable execution
+- Multisig operations and treasury management
+- Fair DEX trading without MEV extraction
+- POAP and low-value NFT distribution
+- Applications needing stable sub-cent transaction costs
 
-- **Use Cases**
-  - **Gnosis Safe origin**: Where the dominant multisig wallet was developed and tested
-  - **DAO infrastructure**: SafeDAO, GnosisDAO treasury (150k ETH, 8M GNO managed)
-  - **Shutter Protocol**: First chain with encrypted mempool preventing MEV (live July 2024)
-  - **DeFi on stable gas**: Spark Protocol, Curve, SushiSwap with predictable costs
-  - **RealT tokenization**: Real estate tokens, POAP NFTs, low-value high-frequency txs
+**Ecosystem Character**
+DAO-centric ecosystem where infrastructure trumps speculation. Home to Gnosis Safe development, DAO treasuries, and coordination tools. Community values stability and fairness over performance or growth. Real adoption in narrow but critical use cases like POAPs and DAO operations rather than broad consumer appeal.
 
-- **Consensus & Finality**
-  - Beacon-style PoS with ~100k validators (4% run Shutter nodes for MEV protection).
-  - ~5s block times, finality after ~6.5 minutes.
-  - Not a rollup — pure sidechain with no Ethereum security guarantees.
+**Trade-offs**
 
-- **Performance**
-  - ~5 TPS typical, peaks around 80 TPS.
-  - Finality slower than L2s.
-  - Gas fees consistently low (~$0.001–0.01 per tx).
+- Six-minute finality unsuitable for real-time applications
+- Pure sidechain with no Ethereum security inheritance
+- Limited throughput peaks around 80 TPS
+- Ecosystem focused on infrastructure rather than consumer apps
+- Slower innovation pace prioritizing stability
 
-- **Trade-offs**
-  - Finality is slow (~6 min) and not anchored to Ethereum.
-  - Not suitable for high-frequency apps (games, DeFi protocols, real-time UX).
-  - Validator set is large but governance is still GnosisDAO-coordinated.
-  - No fraud/fault proofs or trustless bridge guarantees.
+## Technical Details
+
+**Architecture**
+Ethereum sidechain using beacon chain PoS consensus with approximately 100,000 validators. Full EVM compatibility with xDAI as native gas token pegged to USD. Shutter Protocol encrypts transaction contents using threshold encryption until block production.
+
+**Performance**
+Typical throughput around 5 TPS with peaks up to 80 TPS during high activity. Five-second block times but six-minute finality due to consensus design. Gas costs remain stable at $0.001-0.01 regardless of network activity.
+
+**Security & Trust Model**
+Independent security model as sidechain without Ethereum guarantees. Validators stake GNO with slashing for misbehavior. Shutter Protocol prevents MEV through encryption but requires threshold of Shutter nodes (currently 4% of validators) to remain honest. Bridge security depends on validator honesty without cryptographic guarantees.
+
+**Control & Governance**
+GnosisDAO coordinates protocol development and validator operations but lacks direct control. Large validator set provides decentralization though governance remains somewhat centralized. No immediate upgrade capability but also no formal decentralization roadmap.

@@ -78,37 +78,40 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-A zkEVM that lets Ethereum validators sequence your transactions directly — no middleman sequencer collecting fees or deciding transaction order. Every Ethereum validator can propose Taiko blocks, making censorship nearly impossible.
+The L2 that can't be shut down — Ethereum itself runs it, not some company's servers. If other L2s are like hosted websites, Taiko is like BitTorrent.
 
-**Key Difference:** L2 that can't be shut down — since Ethereum itself sequences transactions, it keeps running as long as Ethereum exists, unlike other L2s that fail when their sequencer goes offline.
+**Unique Position**
+Taiko has no central operator that can censor transactions or go offline. Ethereum's own network handles everything, so Taiko keeps running as long as Ethereum exists. Perfect Ethereum compatibility means all tools and contracts work unchanged.
 
-**Best for:** Projects requiring unstoppable operation, DeFi protocols avoiding sequencer risk, developers wanting exact Ethereum behavior without modifications.
+**Primary Use Cases**
 
-**Technical:** Type-1 zkEVM with based sequencing, permissionless proving, preconfirmations for fast UX, no separate consensus layer.
+- Censorship-resistant applications requiring unstoppable operation
+- DeFi protocols avoiding centralized sequencer risk
+- Projects needing exact Ethereum behavior unchanged
+- Gaming and trading apps using preconfirmations for speed
+- Applications prioritizing decentralization over cost
 
-- **Use Cases**
-  - **DeFi infrastructure**: Ritsu DEX with Rhythm AMM, Meridian Lend, Avalon Finance
-  - **Bitcoin on Ethereum**: SolvBTC bringing native Bitcoin liquidity to L2
-  - **Censorship-resistant apps**: Leverage based sequencing for unstoppable operation
-  - **Gaming and high-frequency trading**: Preconfirmations enable responsive UX
+**Ecosystem Character**
+Decentralization-first community valuing permissionless operation over growth metrics. DeFi protocols like Ritsu and Meridian choose Taiko for sequencer resistance. Smaller ecosystem accepts trade-offs for true decentralization. Developer culture prioritizes correctness and censorship resistance over performance.
 
-- **Security & Data Availability**
-  - Every block validated via ZK proofs; no fraud windows or optimistic fallback.
-  - Based rollup design: any Ethereum validator can propose blocks, ensuring open participation.
-  - Posts calldata directly to Ethereum using blob transactions (EIP‑4844).
+**Trade-offs**
 
-- **Infra & Execution**
-  - Bytecode-equivalent with Ethereum — supports full opcode set, gas model, and state hashing.
-  - Permissionless block proposing and proving — anyone can participate.
-  - Preconfirmation system delivers fast transaction times while staying decentralized.
+- Smaller ecosystem with less liquidity than established L2s
+- Based design limits MEV extraction compared to centralized sequencers
+- Type-1 zkEVM slower to prove than optimized custom VMs
+- Proving infrastructure still evolving toward full decentralization
+- Higher costs than centralized L2s due to decentralized operation
 
-- **Performance**
-  - Preconfirmations provide ~2 second transaction acknowledgment.
-  - Final settlement follows Ethereum L1 cadence for maximum security.
-  - No artificial TPS cap, constrained by Ethereum blob space and proof generation.
+## Technical Details
 
-- **Trade-offs**
-  - Smaller ecosystem vs established L2s — less liquidity and fewer integrations.
-  - Based design limits MEV extraction opportunities compared to centralized sequencers.
-  - Type-1 zkEVM prioritizes compatibility over proof speed — slower than custom VMs.
-  - Proving infrastructure still bootstrapping toward full decentralization.
+**Architecture**
+Type-1 zkEVM with complete bytecode equivalence to Ethereum including opcodes and gas model. Based rollup design allows any Ethereum validator to propose blocks without permission. No separate consensus layer — inherits Ethereum's consensus directly. Preconfirmation system provides fast UX while maintaining decentralization.
+
+**Performance**
+Preconfirmations deliver approximately 2-second transaction acknowledgment before final settlement. Final confirmation follows Ethereum L1 cadence for maximum security. No artificial throughput limits but constrained by Ethereum blob space and proof generation capacity.
+
+**Security & Trust Model**
+Every block validated through ZK proofs with no fraud windows or optimistic assumptions. Based sequencing ensures no single entity controls transaction ordering. Posts all data to Ethereum via EIP-4844 blobs maintaining full availability. Permissionless proving allows anyone to validate state transitions.
+
+**Control & Governance**
+No centralized sequencer — Ethereum validators collectively sequence transactions. Permissionless block proposing and proving prevents gatekeeping. Taiko Labs provides development but cannot control network operation. Most decentralized L2 architecture currently operational.

@@ -82,40 +82,40 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-A Cosmos chain with EVM tacked on, trying to be the bridge between both ecosystems but mostly empty.
+A Cosmos chain with EVM bolted on, paying developers to deploy there despite minimal organic activity. The bridge between Cosmos and EVM that nobody crosses.
 
-**Key Difference:** They pay you in KAVA tokens to deploy there — if you're in the top 100 protocols by TVL, you get monthly rewards.
+**Unique Position**
+Kava runs both Cosmos SDK modules and EVM in parallel, offering IBC connectivity plus EVM compatibility in one validator set. Top 100 protocols by TVL receive monthly KAVA rewards, creating a pay-to-play ecosystem. The only chain where being empty is a feature — predictable performance for testing.
 
-**Best for:** Builders who want incentive tokens, projects needing both IBC and EVM but don't mind low activity.
+**Primary Use Cases**
 
-**Technical:** Cosmos SDK chain with an EVM module, marketed as "co-chains" but it's really just both runtimes in one validator set.
+- Farming monthly KAVA incentive rewards based on TVL
+- Projects needing both IBC and EVM access simultaneously
+- Testing ground with guaranteed low congestion
+- Cross-chain experiments between Cosmos and Ethereum
+- Developers wanting subsidized deployment costs
 
-- **Use Cases**
-  - **Incentive farming**: Top protocols split 1M KAVA/month based on TVL
-  - **Cross-chain experiments**: If you need both IBC and EVM access
-  - **Testing ground**: Low activity means predictable performance
-  - **Main apps**: Kinetix (DEX), Mare Finance (lending) — mostly farming rewards
+**Ecosystem Character**
+Incentive-driven ecosystem where most activity involves farming rewards rather than organic usage. Small community of builders extracting value from the rewards program. Recent "DeAI" pivot adds chatbot wrappers without fundamental innovation. Ghost chain atmosphere with more incentives than users.
 
-- **Security & Data Availability**
-  - Standard Tendermint consensus with ~100 validators
-  - 6-second finality like any Cosmos chain
-  - IBC enabled for Cosmos ecosystem
-  - Native USDT and wBTC (though limited liquidity)
+**Trade-offs**
 
-- **Infra & Execution**
-  - Runs both Cosmos SDK modules and EVM in parallel
-  - "Translator Module" is just internal message passing between runtimes
-  - Standard EVM tooling works (MetaMask, etc.)
-  - Recently added AI chatbot for transactions (basically a wrapper)
+- Minimal organic activity despite years of incentives
+- Success entirely dependent on KAVA token value for rewards
+- Been operational since 2019 without achieving meaningful adoption
+- "Co-chain" architecture adds complexity without clear benefits
+- AI features are superficial additions rather than core functionality
 
-- **Performance**
-  - Block times ~6 seconds, few hundred TPS max
-  - Cheap fees (<$0.001) because barely anyone uses it
-  - Current TVL ~$77M despite years of incentives
-  - Most activity is farming the incentive program
+## Technical Details
 
-- **Trade-offs**
-  - Ghost chain problem — lots of incentives, little organic activity
-  - "DeAI" pivot is just adding chatbots, not real innovation
-  - Been around since 2019 but never gained real traction
-  - Dependent on KAVA token value for incentives (down 95% from ATH)
+**Architecture**
+Cosmos SDK chain with parallel EVM module, marketed as "co-chains" but essentially both runtimes sharing one validator set. Translator Module handles message passing between Cosmos and EVM contexts. Standard EVM tooling compatibility through Ethermint integration.
+
+**Performance**
+Six-second block times with few hundred TPS maximum capacity. Sub-$0.001 fees due to minimal network usage. Predictable performance from low activity levels makes testing reliable. Current TVL around $77M mostly from incentive farming.
+
+**Security & Trust Model**
+Standard Tendermint consensus with approximately 100 validators providing reasonable decentralization. Six-second finality typical of Cosmos chains. IBC enabled for Cosmos ecosystem connectivity. Native USDT and wBTC support though with limited liquidity.
+
+**Control & Governance**
+Kava Labs controls development direction and incentive distribution. On-chain governance exists but major decisions driven by team. Validator set relatively decentralized compared to other Cosmos chains. Incentive program parameters adjusted centrally based on treasury sustainability.

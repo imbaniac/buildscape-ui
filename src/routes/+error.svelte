@@ -116,7 +116,6 @@
     transition: all 0.3s ease;
     font-weight: 500;
     letter-spacing: 0.05em;
-    backdrop-filter: blur(10px);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
 

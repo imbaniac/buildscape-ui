@@ -183,37 +183,40 @@ tools:
 # Additional SDKs and tools are inherited from evm-common.md
 ---
 
-Arbitrum's ultra-cheap chain for gaming and social apps, trading maximum security for sub-penny transactions. While Arbitrum One protects DeFi billions, Nova powers millions of microtransactions for games and social platforms.
+Arbitrum's ultra-cheap gaming chain where Reddit Community Points and Treasure DAO games trade maximum security for sub-penny transactions. The L2 that chose committee-based data availability over Ethereum posting to make in-game actions actually affordable.
 
-**Key Difference**: Nova uses a Data Availability Committee (Google Cloud, Reddit, ConsenSys) instead of posting all data to Ethereum, achieving 90%+ lower fees than Arbitrum One — perfect for in-game actions and social rewards.
+**Unique Position**
+Nova uses a Data Availability Committee instead of posting all data to Ethereum, achieving 90%+ lower fees than Arbitrum One. While One protects DeFi billions with full Ethereum security, Nova can power millions of microtransactions for games and social rewards.
 
-**Best for:** Web3 games with frequent transactions, social platforms with token rewards, NFT collections prioritizing cheap minting over DeFi composability.
+**Primary Use Cases**
 
-**Technical:** AnyTrust protocol with off-chain data availability via committee, ~250ms blocks, fallback to rollup mode if DAC fails.
+- Gaming ecosystems requiring cheap on-chain actions (Treasure DAO ecosystem)
+- Social platform token rewards (Reddit Community Points for r/CryptoCurrency and r/Fortnite)
+- NFT collections prioritizing low minting costs over DeFi composability
+- High-frequency trading bots and arbitrage strategies
+- Token distribution systems and community rewards
 
-- **Use Cases**
-  - **Gaming ecosystems**: Treasure DAO (The Beacon, BattleFly), web3 games needing cheap on-chain actions
-  - **Reddit Community Points**: MOON and BRICK tokens for r/CryptoCurrency and r/Fortnite rewards
-  - **Social platforms**: High-volume token distributions, tipping systems, community rewards
-  - **NFT projects**: Collections prioritizing low minting costs over DeFi integration
+**Ecosystem Character**
+Gaming-first ecosystem dominated by Treasure DAO's interconnected games and Reddit's community tokens. Minimal DeFi presence as serious liquidity stays on Arbitrum One for security. Community skews toward game developers and social token experimenters rather than yield farmers.
 
-- **Security & Data Availability**
-  - Uses AnyTrust protocol with Data Availability Committee (DAC) of 7 members including Google Cloud, Reddit, ConsenSys.
-  - Requires only 2 honest DAC members to function; falls back to full rollup mode if DAC fails.
-  - Fraud proofs same as Arbitrum One, but data stored off-chain via committee signatures.
+**Trade-offs**
 
-- **Infra & Execution**
-  - Built on Arbitrum Nitro stack with WASM-based execution and Stylus support.
-  - ~250ms block times, optimized for high-frequency, low-value transactions.
-  - Centralized sequencer operated by Offchain Labs.
+- Data availability through committee (Google Cloud, Reddit, ConsenSys) instead of Ethereum
+- Limited DeFi ecosystem — most protocols choose One for security guarantees
+- Centralized sequencer with theoretical censorship risk
+- Isolated from main DeFi composability on Arbitrum One
+- Trust assumptions increase with DAC vs full rollup security
 
-- **Performance**
-  - Sub-penny transaction fees (typically <$0.01), 90%+ cheaper than Arbitrum One.
-  - Handles millions of daily transactions for social and gaming use cases.
-  - Throughput depends on sequencer capacity and DAC performance.
+## Technical Details
 
-- **Trade-offs**
-  - DAC trust assumptions — not fully decentralized like Arbitrum One.
-  - Limited DeFi ecosystem — most liquidity stays on Arbitrum One for security.
-  - Centralized sequencer with potential censorship risk.
-  - Less composable — isolated from main DeFi protocols.
+**Architecture**
+Optimistic rollup using AnyTrust protocol with off-chain data availability via committee signatures. Built on Arbitrum Nitro stack with WASM execution and Stylus support for multi-language smart contracts. Falls back to full rollup mode if Data Availability Committee fails.
+
+**Performance**
+Sub-penny transaction fees consistently 10x cheaper than Arbitrum One. Block times around 250ms optimized for gaming interactions. Throughput limited by sequencer capacity rather than data posting costs, handling millions of daily transactions for social and gaming use cases.
+
+**Security & Trust Model**
+Fraud proofs identical to Arbitrum One but data stored off-chain via committee signatures. Requires only 2 of 7 DAC members to be honest for system integrity. Committee includes major infrastructure providers reducing collusion risk. Fallback to full rollup provides theoretical security guarantee if committee fails.
+
+**Control & Governance**
+Offchain Labs operates the centralized sequencer with no decentralization timeline. Protocol upgrades controlled by Arbitrum DAO same as Arbitrum One. Data Availability Committee membership controlled by Offchain Labs without community input.

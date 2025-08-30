@@ -211,12 +211,20 @@
     left: 0;
     width: 100%;
     height: 100%;
-    /* background: #314955;
-    opacity: 0.6; */
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
     z-index: 1;
     cursor: default; /* Override any inherited cursor */
+    background: rgb(5, 16, 21);
+
+    opacity: 0.5;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
 
   .book-header {
@@ -242,21 +250,6 @@
     transform: translate(-50%, -50%);
     background: color-mix(in srgb, var(--brand-color, #3b82f6) 70%, black 30%);
     z-index: 2;
-    background-image:
-      repeating-linear-gradient(
-        90deg,
-        transparent,
-        transparent 2px,
-        rgba(0, 0, 0, 0.03) 2px,
-        rgba(0, 0, 0, 0.03) 4px
-      ),
-      repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(0, 0, 0, 0.03) 2px,
-        rgba(0, 0, 0, 0.03) 4px
-      );
     border-radius: 8px 4px 4px 8px;
     box-shadow:
       0 30px 60px rgba(0, 0, 0, 0.4),
@@ -350,35 +343,6 @@
     z-index: 10;
   }
 
-  .book-page::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background:
-      linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, transparent 50%),
-      linear-gradient(225deg, rgba(255, 255, 255, 0.3) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: 1;
-    opacity: 0.5;
-  }
-
-  /* Subtle page texture */
-  .book-page::after {
-    content: "";
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    right: -50%;
-    bottom: -50%;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><circle cx="50" cy="50" r="0.5" fill="%23000" opacity="0.02"/></svg>');
-    pointer-events: none;
-    z-index: 2;
-    transform: rotate(15deg);
-  }
-
   .book-page-left {
     border-radius: 4px 0 0 4px;
     position: relative;
@@ -458,19 +422,6 @@
 
   /* Mobile/Tablet view - single page */
   @media (max-width: 1280px) {
-    .book-fullscreen {
-      background:
-        radial-gradient(
-          ellipse at center top,
-          #87ceeb 0%,
-          #6bb6d8 30%,
-          #5ca9ce 60%,
-          #4d9bc3 100%
-        ),
-        linear-gradient(to bottom, #7fc3e6 0%, #5ca9ce 100%);
-      background-blend-mode: normal;
-    }
-
     .book-header {
       display: flex; /* Show on mobile */
       height: 50px;

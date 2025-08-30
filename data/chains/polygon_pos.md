@@ -156,30 +156,40 @@ sdks:
 # Additional SDKs and tools are inherited from evm-common.md
 ---
 
-The original Polygon chain that kickstarted L2 adoption — now a mature sidechain transitioning to become a zkEVM validium. Still processes massive volume with ultra-low fees, but unlike true L2s, security depends on validators not Ethereum proofs. Planning to join AggLayer as a ZK chain.
+The sidechain that onboarded millions to "L2s" before anyone knew the difference. Reddit, Nike, and Starbucks run here because fees are predictable pennies, not volatile gas auctions.
 
-**Key Difference:** Reddit, Nike, and Starbucks chose this for NFTs because fees stay under $0.01 even during surges — the sidechain architecture trades Ethereum security for predictable costs that enterprises can budget.
+**Unique Position**
+Polygon PoS isn't an L2 — it's a sidechain that trades Ethereum security for predictable sub-cent fees enterprises can actually budget. While purists complain about validator trust assumptions, Reddit Collectibles and major brands chose practicality over perfection. Planning to transform into zkEVM validium to join the AggLayer, finally getting real security after years of promises.
 
-**Best for:** High-volume, low-value transactions, NFT minting, GameFi, apps needing sub-cent fees over maximum security.
+**Primary Use Cases**
 
-**Technical:** An EVM-compatible proof-of-stake sidechain optimized for low fees, high throughput, and broad dApp deployment.
+- High-volume, low-value transactions like gaming and NFTs
+- Enterprise deployments needing predictable cost structures
+- NFT minting and distribution at scale
+- DeFi applications prioritizing cheap fees over maximum security
+- Bridge to Polygon's future zkEVM ecosystem
 
-- **Use Cases**
-  - **NFT ecosystem**: OpenSea, Reddit Collectibles, major gaming NFTs
-  - **DeFi**: Aave, QuickSwap, Balancer with deep liquidity
-  - **Future**: Transitioning to zkEVM validium to join AggLayer with ZK security
+**Ecosystem Character**
+Mass adoption chain where regular users outnumber crypto natives. Home to mainstream NFT projects and enterprise pilots rather than DeFi innovation. Community accepts security trade-offs for usability — the chain that proved people care more about cheap fees than decentralization. Transitioning from scrappy startup to enterprise infrastructure.
 
-- **Consensus & Finality**
-  - Validators stake POL (formerly MATIC) to secure the network, ~100+ active validators.
-  - Fast block times (~2 seconds) with checkpoints to Ethereum every ~30 minutes.
-  - Not a rollup — security depends on validator honesty, not Ethereum proofs.
+**Trade-offs**
 
-- **Infra & Execution**
-  - No fraud or validity proofs; state is secured by periodic checkpoints submitted to Ethereum.
-  - Runs on a hybrid system using Tendermint-based consensus and Ethereum-like execution.
+- Sidechain, not L2 — no Ethereum security inheritance
+- Validator collusion could compromise the network
+- Checkpoints to Ethereum don't provide rollup-level guarantees
+- Team-controlled governance despite decentralization rhetoric
+- Future transition to zkEVM validium creates uncertainty
 
-- **Trade-offs**
-  - No rollup-grade security — lacks fraud or zk-proof guarantees.
-  - Validator collusion is possible; exit security relies on checkpointing regularity and honesty.
-  - Governance and upgrades are team-led — not fully decentralized.
-  - DA and sequencing are not trust-minimized — no fallback if validators fail.
+## Technical Details
+
+**Architecture**
+EVM-compatible sidechain using modified Tendermint consensus with POL staking. Checkpoints state to Ethereum periodically but doesn't inherit L1 security. Hybrid architecture combines Heimdall (consensus) and Bor (execution) layers.
+
+**Performance**
+Two-second block times with consistent sub-cent fees regardless of activity. Processes hundreds of TPS in practice with theoretical capacity much higher. Checkpoints to Ethereum every 30 minutes provide finality anchor but not security guarantees.
+
+**Security & Trust Model**
+Security depends on 100+ validators staking POL tokens with slashing for misbehavior. No cryptographic proofs — must trust 2/3 honest validator assumption. Checkpoints provide ordering but can't prevent invalid state transitions. Users trust validators won't collude to steal funds.
+
+**Control & Governance**
+Polygon Labs maintains significant control over protocol development and upgrades. Validator set appears decentralized but many run on similar infrastructure. Governance exists on paper but major decisions driven by team. Transition to zkEVM validium entirely team-orchestrated.

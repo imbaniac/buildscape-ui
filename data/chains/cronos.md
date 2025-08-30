@@ -73,37 +73,40 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-Crypto.com's original EVM chain built on Cosmos, not Ethereum. The mature chain with established DeFi but older tech. Think of this as v1, zkEVM as v2.
+Crypto.com's original Cosmos-based EVM chain where you can spend DeFi yields directly on your Visa card. The mature "v1" with established protocols, while zkEVM represents the experimental "v2".
 
-**Key Difference:** Direct integration with Crypto.com's card and app — spend DeFi yields on your Visa card, or stake CRO from the app directly on-chain without external wallets.
+**Unique Position**
+Direct integration with Crypto.com's card and app enables spending on-chain yields via Visa without manual bridging. Built on Cosmos rather than Ethereum, providing IBC connectivity to the entire Cosmos ecosystem. The only major EVM chain where your DeFi positions directly connect to traditional payment rails.
 
-**Best for:** DeFi users wanting established protocols, Cosmos ecosystem connectivity via IBC, projects needing proven infrastructure.
+**Primary Use Cases**
 
-**Technical:** Cosmos SDK chain with Ethermint EVM, Tendermint consensus, ~30 permissioned validators, IBC enabled.
+- DeFi users wanting established, battle-tested protocols
+- Projects needing Cosmos ecosystem connectivity via IBC
+- Crypto.com card holders maximizing yield strategies
+- Applications requiring proven infrastructure over cutting-edge tech
+- Cross-chain protocols bridging EVM and Cosmos worlds
 
-- **Use Cases**
-  - **Major DeFi**: VVS Finance (largest AMM), Tectonic (lending), MM Finance
-  - **Established ecosystem**: $500M+ TVL, mature protocols since 2021
-  - **Cosmos connectivity**: IBC bridges to entire Cosmos ecosystem
-  - **Crypto.com integration**: Direct fiat onramps from exchange
+**Ecosystem Character**
+Mature DeFi ecosystem dominated by VVS Finance with significant TVL since 2021 launch. Community consists primarily of Crypto.com users and CRO holders rather than crypto natives. Conservative development approach prioritizing stability over innovation. Strong retail presence but limited institutional interest.
 
-- **Security & Data Availability**
-  - Tendermint PoA consensus with ~30 validators selected by Crypto.com.
-  - 5-6 second finality, not decentralized — validators are permissioned.
-  - All data on-chain (unlike zkEVM's off-chain Validium).
+**Trade-offs**
 
-- **Infra & Execution**
-  - Cosmos SDK with Ethermint-based EVM module.
-  - IBC enabled for Cosmos ecosystem bridges.
-  - Some EVM quirks due to Cosmos backend (WebSocket issues, event indexing).
+- Only ~30 validators, all permissioned by Crypto.com
+- Cosmos-based architecture causes EVM compatibility quirks
+- Older technology stack compared to modern L2s
+- Not an Ethereum L2 — completely separate security model
+- Limited decentralization with full Crypto.com control
 
-- **Performance**
-  - Few hundred TPS real throughput.
-  - Low stable fees ($0.01-0.10).
-  - 5 second block times.
+## Technical Details
 
-- **Trade-offs**
-  - Centralized validators controlled by Crypto.com.
-  - Older tech stack compared to modern L2s.
-  - Cosmos-based quirks affect some Ethereum tooling.
-  - Not an Ethereum L2 — separate security model.
+**Architecture**
+Cosmos SDK chain with Ethermint EVM module enabling Ethereum compatibility on Tendermint consensus. IBC protocol allows native bridging to all Cosmos chains. Not an Ethereum L2 but standalone chain with independent security model.
+
+**Performance**
+Few hundred TPS real-world throughput with stable low fees regardless of network activity. Five-second block times with instant finality through Tendermint. More predictable performance than Ethereum but slower than modern L2s.
+
+**Security & Trust Model**
+Tendermint Proof-of-Authority consensus with validators selected and controlled by Crypto.com. Instant finality after single block confirmation — no probabilistic security. All data stored on-chain unlike zkEVM's Validium approach, providing better data availability guarantees.
+
+**Control & Governance**
+Crypto.com maintains complete control over validator selection and protocol upgrades. No meaningful decentralization or community governance despite on-chain voting mechanisms. Development roadmap determined entirely by Crypto.com's business priorities.

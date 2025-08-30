@@ -148,40 +148,40 @@ sdks:
 # Additional SDKs and tools are inherited from evm-common.md
 ---
 
-Uniswap DEX built their own blockchain to make trading cheaper and protect users from bots that profit off their trades.
+Uniswap exchange built their own blockchain where MEV goes to liquidity providers instead of bots. The DEX that became an L2 to protect its users from sandwich attacks.
 
-**Key Difference:** When bots extract value from trades, that money goes back to liquidity providers instead of disappearing to third parties.
+**Unique Position**
+Unichain redistributes MEV value back to liquidity providers rather than letting bots extract it. TEE-based block building creates an encrypted mempool preventing sandwich attacks. The only L2 built specifically to optimize DEX trading with sub-second blocks and fair ordering. Direct integration with Uniswap's liquidity ensures deep markets from day one.
 
-**Best for:** Trading on Uniswap, providing liquidity to pools, any DeFi app that wants faster and fairer trades.
+**Primary Use Cases**
 
-**Technical:** OP Stack rollup with Flashbots TEE block builder for MEV redistribution and sub-second confirmations.
+- Providing liquidity to earn from MEV redistribution
+- Trading with protection from sandwich attacks
+- DeFi protocols seeking fast, fair transaction ordering
+- Applications requiring sub-second block confirmations
+- Uniswap ecosystem participants maximizing returns
 
-- **Use Cases**
-  - **Liquidity provision**: Earn from MEV that would normally be extracted
-  - **DeFi protocols**: Euler, Morpho, and others already deployed
-  - **Fast trading apps**: Near-instant confirmation for better UX
-  - **Uniswap trading**: Lower costs and better prices due to MEV protection
+**Ecosystem Character**
+DeFi-native ecosystem centered around Uniswap with major protocols like Euler and Morpho joining early. Community values fairness and user protection over pure decentralization. Strong liquidity depth inherited from Uniswap creates immediate utility. More focused on solving real trading problems than technical purity.
 
-- **Security & Data Availability**
-  - Stage 1 optimistic rollup with permissionless fault proofs
-  - Standard 7-day withdrawal period for optimistic rollups
-  - Currently centralized sequencer, decentralized validation network planned
-  - TEE-based block building for transparent transaction ordering
+**Trade-offs**
 
-- **Infra & Execution**
-  - Built on OP Stack, fully EVM-compatible
-  - TEE (Trusted Execution Environment) enables encrypted mempool
-  - Priority fee ordering protects against sandwich attacks
-  - Working toward 250ms block times (Flashblocks), currently 1 second
+- Primarily benefits Uniswap ecosystem over broader DeFi
+- TEE hardware security adds trust assumptions beyond cryptography
+- Another OP Stack chain contributing to fragmentation
+- Centralized sequencer with gradual decentralization planned
+- MEV redistribution model may not work for all applications
 
-- **Performance**
-  - Comparable gas costs to other L2s
-  - Block times faster than most L2s at 1 second
-  - Significant adoption among DeFi protocols
-  - Strong liquidity depth inherited from Uniswap ecosystem
+## Technical Details
 
-- **Trade-offs**
-  - Primarily benefits Uniswap ecosystem participants
-  - Requires trust in hardware security (TEE) not just cryptography
-  - Another L2 adding to ecosystem fragmentation
-  - Still building out decentralization features
+**Architecture**
+OP Stack rollup with Flashbots TEE integration for transparent block building. Encrypted mempool prevents front-running while maintaining priority fee ordering. Stage 1 rollup with permissionless fault proofs already active. Working toward 250ms Flashblocks for near-instant trading.
+
+**Performance**
+One-second block times faster than most L2s with 250ms target upcoming. Gas costs comparable to other OP Stack chains. Significant protocol adoption driving consistent transaction volume. Liquidity depth from Uniswap ensures efficient price discovery.
+
+**Security & Trust Model**
+Standard optimistic rollup with 7-day withdrawal period for fraud proof challenges. TEE-based block building requires trust in hardware security modules. Permissionless fault proofs allow anyone to challenge invalid states. Centralized sequencer but decentralized validation network planned.
+
+**Control & Governance**
+Uniswap Labs operates centralized sequencer with decentralization roadmap. Protocol upgrades follow Uniswap governance model with UNI token holders voting. MEV redistribution parameters controlled by protocol rather than market. Development priorities align with Uniswap ecosystem needs.

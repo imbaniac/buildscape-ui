@@ -58,41 +58,40 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-L2 built specifically for games, with gas-free transactions for players and built-in gaming infrastructure.
+The L2 built specifically for games, where players never pay gas and studios get plug-and-play blockchain infrastructure. Chain that treats games as first-class citizens, not afterthoughts.
 
-**Key Difference:** Unlike general-purpose chains trying to attract games, Immutable provides game-specific tools: player wallets (Passport), marketplace APIs, and SDKs that handle blockchain complexity.
+**Unique Position**
+Immutable provides complete gaming infrastructure out of the box — Passport handles player wallets without seed phrases, Orderbook manages NFT marketplaces, and SDKs abstract blockchain complexity entirely. Studios pay gas so players never see crypto friction. Unlike general chains hoping to attract games, Immutable only does gaming.
 
-**Best for:** Web3 games needing player-friendly UX, NFT-heavy games, studios wanting blockchain without the complexity.
+**Primary Use Cases**
 
-**Technical:** A ZK-rollup built on Polygon's CDK, focused on gaming and NFT-specific infrastructure with EVM compatibility.
+- Web3 games requiring seamless player experience
+- NFT-heavy games with complex economies
+- Studios wanting blockchain benefits without blockchain headaches
+- Cross-game asset interoperability
+- Mobile games needing compliant wallet solutions
 
-- **Use Cases**
-  - **Major games**: Gods Unchained (migrating), Guild of Guardians, Illuvium, Space Nation
-  - **Gaming infrastructure**: Immutable Passport (wallets), Orderbook (marketplace), game-specific SDKs
-  - **Player features**: Gas-free transactions, simplified onboarding, cross-game asset trading
-  - **Studio benefits**: Pre-built gaming stack, no blockchain expertise needed
+**Ecosystem Character**
+Gaming-first ecosystem where major titles like Gods Unchained and Illuvium set the tone. Developer community consists of game studios rather than DeFi builders. Infrastructure decisions prioritize gameplay over decentralization. The chain where "fun" beats "trustless" every time.
 
-- **Security & Data Availability**
-  - Uses ZK proofs for state correctness — transactions are verified before being finalized.
-  - Data availability is off-chain and centralized; no Ethereum calldata fallback or DA guarantees.
-  - Exit safety depends on sequencer honesty and uptime; no enforced fallback mechanisms.
+**Trade-offs**
 
-- **Governance**
-  - Sequencer is centralized and contract upgrades are not timelocked.
-  - Governance and upgrade control sit with the Immutable team.
-  - IMX is used for gas and staking, but validator decentralization does not yet exist.
+- Completely centralized — Immutable controls sequencer and upgrades
+- Data availability off-chain with no Ethereum fallback
+- No permissionless exit if Immutable infrastructure fails
+- Limited to gaming — no meaningful DeFi ecosystem
+- IMX token has minimal utility despite gas and staking claims
 
-- **Performance**
-  - High transaction throughput optimized for gaming patterns (item trades, battles, rewards).
-  - Gas-free for players through sponsored transactions (studios pay).
-  - Fast block times and batch proofs for responsive gameplay.
+## Technical Details
 
-- **Tooling & Dev Experience**
-  - Integrated with gaming SDKs, onchain orderbook infra, and Immutable Passport (non-custodial auth).
-  - Contract deployment and indexing flows are streamlined for game devs.
+**Architecture**
+ZK-rollup built on Polygon CDK with gaming-specific modifications. Uses validity proofs for state transitions but centralized data availability. Immutable Passport provides account abstraction for seedphrase-free onboarding.
 
-- **Trade-offs**
-  - Centralized sequencer and DA — not trust-minimized.
-  - Exit mechanisms depend on uptime and behavior of the Immutable-run infra.
-  - Contract upgrades can be immediate, introducing governance and stability risk.
-  - Ecosystem is specialized; limited general-purpose DeFi or non-gaming infrastructure.
+**Performance**
+Optimized for gaming patterns — item mints, trades, battle results. High throughput for NFT operations with batched proof generation. Gas-free for players through relayer network with studios covering costs. Sub-second perceived finality for gameplay despite longer proof generation.
+
+**Security & Trust Model**
+ZK proofs ensure state transition validity but require trusting Immutable for data availability and liveness. No forced exit mechanism if sequencer censors or fails. Instant upgradability without timelock creates rug risk. Security depends entirely on Immutable's reputation and business continuity.
+
+**Control & Governance**
+Immutable team has complete control over protocol operation and upgrades. No community governance or decentralization roadmap. Sequencer revenue and MEV captured by Immutable. Contract upgrades can happen instantly without warning.

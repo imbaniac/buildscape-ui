@@ -161,8 +161,7 @@
     left: 50%;
     transform: translateX(-50%);
     background: rgba(44, 95, 124, 0.4); /* Very transparent ocean blue */
-    backdrop-filter: blur(8px) saturate(1.1);
-    -webkit-backdrop-filter: blur(8px) saturate(1.1);
+
     border: 1px solid rgba(127, 195, 230, 0.2); /* Very light ocean border */
     border-radius: 24px;
     padding: 10px 20px;

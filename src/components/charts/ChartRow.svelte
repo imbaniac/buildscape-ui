@@ -171,18 +171,6 @@
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background:
-      radial-gradient(
-        circle at 40% 40%,
-        color-mix(in srgb, var(--chain-color) 35%, #f4f0e8),
-        color-mix(in srgb, var(--chain-color) 50%, #e8e2d5)
-      ),
-      linear-gradient(
-        135deg,
-        color-mix(in srgb, var(--chain-color) 30%, rgba(184, 134, 11, 0.2)) 0%,
-        transparent 50%,
-        color-mix(in srgb, var(--chain-color) 30%, rgba(139, 69, 19, 0.2)) 100%
-      );
     padding: 2px;
     display: flex;
     align-items: center;
@@ -198,7 +186,7 @@
     position: relative;
     overflow: visible;
     transform-style: preserve-3d;
-    will-change: transform;
+    will-change: auto;
   }
 
   .chain-seal::before {
@@ -206,18 +194,6 @@
     position: absolute;
     inset: 0;
     border-radius: 50%;
-    background:
-      linear-gradient(
-        135deg,
-        rgba(255, 248, 220, 0.3) 0%,
-        transparent 40%,
-        rgba(139, 69, 19, 0.08) 100%
-      ),
-      radial-gradient(
-        circle at 50% 0%,
-        rgba(255, 248, 220, 0.2) 0%,
-        transparent 50%
-      );
     pointer-events: none;
   }
 
@@ -234,11 +210,6 @@
       color-mix(in srgb, var(--chain-color) 25%, rgba(184, 134, 11, 0.15)) 6deg
     );
     border: 2px solid color-mix(in srgb, var(--chain-color) 80%, #8b6914);
-    box-shadow:
-      inset 0 0 0 1px
-        color-mix(in srgb, var(--chain-color) 65%, rgba(139, 69, 19, 0.5)),
-      inset 0 1px 0 rgba(255, 248, 220, 0.2),
-      0 0 0 1px rgba(0, 0, 0, 0.1);
     pointer-events: none;
   }
 

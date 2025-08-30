@@ -43,37 +43,40 @@ forums: []
 # SDKs and tools are inherited from evm-common.md
 ---
 
-Bitcoin L2 with a full Bitcoin node running inside the EVM — smart contracts can read Bitcoin blocks, UTXOs, and transactions directly. Founded by early Bitcoin developer Jeff Garzik who worked with Satoshi.
+Bitcoin L2 with a full Bitcoin node running inside the EVM — smart contracts can read Bitcoin blocks and UTXOs directly. Founded by Jeff Garzik, who worked with Satoshi on early Bitcoin development.
 
-**Key Difference:** hVM (Hemi Virtual Machine) wraps an entire Bitcoin node inside an EVM, enabling native Bitcoin programmability without bridges or wrapped tokens — your contracts can trigger on Bitcoin events automatically.
+**Unique Position**
+Hemi Virtual Machine (hVM) embeds an entire indexed Bitcoin node inside the EVM, enabling smart contracts to react to Bitcoin events without oracles or bridges. Your contracts can trigger automatically when specific Bitcoin transactions occur. The only L2 where Bitcoin isn't just security but programmable data — bringing Bitcoin DeFi without wrapped tokens or custodians.
 
-**Best for:** Bitcoin DeFi protocols, native BTC staking without wrapping, cross-chain apps needing real Bitcoin state, developers wanting Bitcoin security with EVM tools.
+**Primary Use Cases**
 
-**Technical:** Modular L2 with Proof-of-Proof consensus anchoring to Bitcoin, hVM for Bitcoin state access, Tunnels for trustless asset transfer.
+- Native Bitcoin DeFi without wrapping or bridging
+- Smart contracts reacting to Bitcoin events in real-time
+- Cross-chain applications needing trustless Bitcoin state
+- Bitcoin MEV and arbitrage opportunities
+- Self-custody BTC staking and yield strategies
 
-- **Use Cases**
-  - **DeFi ecosystem**: Sushi, DODO, Izumi (DEXs), LayerBank, ZeroLend (lending)
-  - **Bitcoin native apps**: Native BTC staking with self-custody, Bitcoin MEV marketplaces
-  - **Cross-chain infrastructure**: LayerZero, Pyth, RedStone oracles integrated
-  - **Institutional products**: Pendle, Swell, Symbiotic yield strategies on Bitcoin
+**Ecosystem Character**
+Early-stage ecosystem backed by serious Bitcoin credentials (Jeff Garzik's involvement matters). Mix of Bitcoin OGs intrigued by native programmability and DeFi builders seeking Bitcoin liquidity. Major DeFi protocols (Sushi, DODO) deployed early, betting on Bitcoin-native yields. Community values Bitcoin philosophy with EVM practicality.
 
-- **Security & Data Availability**
-  - Proof-of-Proof (PoP) consensus posts "keystones" to Bitcoin for superfinality.
-  - PoS sequencer for fast blocks, Bitcoin anchoring for long-term security.
-  - Not a rollup — no fraud/validity proofs, relies on Bitcoin anchoring and honest majority.
+**Trade-offs**
 
-- **Infra & Execution**
-  - hVM: Full indexed Bitcoin node inside EVM — read blocks, UTXOs, transactions directly.
-  - Bitcoin Kit (hBK) provides granular Bitcoin state access to smart contracts.
-  - Automatic callbacks triggered by Bitcoin events — no oracles needed.
+- Not a true rollup — uses Proof-of-Proof instead of fraud/validity proofs
+- Centralized sequencer during bootstrap phase
+- Finality requires waiting for Bitcoin confirmations (10-60 minutes)
+- Newer and less proven than established Bitcoin L2s
+- Security model weaker than cryptographic proof systems
 
-- **Performance**
-  - Soft finality in seconds via sequencer.
-  - Superfinality after Bitcoin confirmation (10-60 minutes).
-  - Tunnels provide withdrawal proofs in 40 minutes — faster than optimistic rollups.
+## Technical Details
 
-- **Trade-offs**
-  - Not a true rollup — less security than fraud/ZK proof systems.
-  - Centralized sequencer during bootstrap phase.
-  - Newer ecosystem vs established Bitcoin L2s like Rootstock.
-  - PoP finality slower than instant rollup confirmations.
+**Architecture**
+Modular L2 using Proof-of-Proof (PoP) consensus that posts "keystones" to Bitcoin for finality. hVM provides full indexed Bitcoin node access within EVM environment. Tunnels enable asset transfer without traditional bridges.
+
+**Performance**
+Soft finality in seconds through PoS sequencer with superfinality after Bitcoin anchoring. Tunnel withdrawals complete in 40 minutes — faster than 7-day optimistic rollup delays. Standard EVM performance for smart contract execution.
+
+**Security & Trust Model**
+Dual-layer security with PoS for fast blocks and Bitcoin anchoring for long-term guarantees. Not a rollup — requires honest majority assumption rather than cryptographic proofs. Bitcoin provides timestamping and ordering but not full security inheritance.
+
+**Control & Governance**
+Currently centralized during bootstrap with plans for progressive decentralization. Sequencer operated by Hemi Labs with no permissionless participation yet. Governance structure not fully defined but Bitcoin-aligned philosophy suggests conservative approach.

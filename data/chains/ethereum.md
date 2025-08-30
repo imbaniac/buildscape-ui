@@ -194,25 +194,40 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-The chain that matters. While "Ethereum killers" come and go, Ethereum remains the settlement layer for crypto — where real value lives, DeFi was born, and L2s post their proofs. Post-EIP-4844, it's no longer trying to be fast or cheap; it's the neutral, credible base layer that everything else builds on.
+The chain that matters. While "Ethereum killers" come and go, Ethereum remains the settlement layer for crypto — where real value lives, DeFi was born, and L2s post their proofs.
 
-**Key Difference:** It's the only chain that matters when things go wrong.
+**Unique Position**
+Post-EIP-4844, Ethereum no longer competes on speed or cost but serves as the neutral, credible base layer everything else builds upon. The only chain with genuine decentralization, institutional adoption, and battle-tested security since 2015. When things go wrong elsewhere, Ethereum is where value flees for safety.
 
-**Best for:** Blue-chip DeFi, high-value transactions, NFT originals, being the canonical source of truth.
+**Primary Use Cases**
 
-**Technical:** The original smart contract chain and backbone of web3, now optimized as a settlement layer for L2s.
+- Blue-chip DeFi protocols requiring maximum security and liquidity
+- L2 settlement layer for rollup proof verification
+- High-value transactions where security trumps cost
+- NFT originals where provenance and permanence matter
+- Institutional deployments requiring regulatory clarity
 
-- **Use Cases**:
-  - **DeFi headquarters**: Uniswap, Aave, MakerDAO, Curve — the originals with deepest liquidity
-  - **L2 settlement**: All major L2s (Arbitrum, Optimism, Base, zkSync) post proofs here
-  - **Staking economy**: 30M+ ETH staked, Lido alone manages $34B+
-  - **NFT bluechips**: CryptoPunks, BAYC, Art Blocks — provenance matters
-  - **Institutional entry**: ETH ETFs, regulated custody, enterprise deployments
+**Ecosystem Character**
+The original and largest smart contract ecosystem where innovation happens first. Developer-centric culture values decentralization and credible neutrality over performance. Community consists of builders, researchers, and institutions rather than retail speculators. The canonical source of truth for crypto.
 
-- **Security**: Most decentralized L1 with thousands of validators, battle-tested since 2015.
-- **Ecosystem**: Largest by far — all major DeFi, most developers, deepest liquidity.
-- **Performance**: ~15 TPS on L1, but L2s handle volume. EIP-4844 blobs reduced L2 costs by 90%+.
-- **Trade-offs**:
-  - Gas fees still high for complex operations ($5-50+ during congestion)
-  - Slow by design — 12-second blocks, conservative upgrades
-  - Not for micropayments or high-frequency trading (use L2s)
+**Trade-offs**
+
+- Gas fees remain high for complex operations during congestion
+- Deliberately slow — 12-second blocks prioritize security over speed
+- Not suitable for micropayments or high-frequency trading
+- Conservative upgrade process means slow feature adoption
+- L1 usage increasingly expensive as it transitions to settlement layer
+
+## Technical Details
+
+**Architecture**
+Proof-of-Stake consensus with thousands of independent validators ensuring decentralization. EVM remains the standard all other chains copy or modify. EIP-4844 blob storage optimizes for L2 data availability rather than L1 execution.
+
+**Performance**
+L1 processes approximately 15 TPS with L2s handling scaling via rollups. Blob storage reduced L2 costs by over 90% while maintaining security guarantees. Twelve-second block times with probabilistic finality growing stronger over time.
+
+**Security & Trust Model**
+Most decentralized blockchain with over 1 million validators and no single point of control. Battle-tested since 2015 through multiple attacks and market cycles. Economic security from billions in staked ETH creates strongest crypto-economic guarantees.
+
+**Control & Governance**
+Protocol development through rough consensus among client teams and researchers. No central authority — upgrades require overwhelming community support. Ethereum Foundation provides funding but no control over protocol direction.

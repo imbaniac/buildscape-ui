@@ -141,37 +141,40 @@ sdks:
 # Additional SDKs and tools are inherited from evm-common.md
 ---
 
-The hub of zkSync's Elastic Chain ecosystem — a Type-4 zkEVM that trades perfect Ethereum compatibility for faster proofs and native account abstraction. Every wallet is a smart account with Face ID login, no seed phrases needed.
+The L2 where apps can pay your gas fees and you login with Face ID instead of seed phrases. Powers the Elastic Chain ecosystem connecting Abstract, Sophon, and dozens of other chains.
 
-**Key Difference:** Custom VM architecture enables native features impossible on other L2s — account abstraction at protocol level, paymasters for gasless transactions, and sub-penny proof costs.
+**Unique Position**
+zkSync rebuilt the EVM from scratch to enable features impossible elsewhere — every wallet is a smart account by default, apps can sponsor all user fees, and social recovery replaces seed phrases. Code needs modifications (Type-4 zkEVM) but you get native account abstraction that other L2s can only fake with workarounds. Hub of the Elastic Chain where specialized chains interconnect.
 
-**Best for:** Apps needing smart wallets with social logins, DeFi protocols wanting institutional adoption, developers building consumer apps requiring seamless UX.
+**Primary Use Cases**
 
-**Technical:** Type-4 zkEVM with custom VM, native account abstraction, part of Elastic Chain ecosystem, ZK proofs with no fraud windows.
+- Consumer apps requiring Web2-like onboarding
+- DeFi protocols seeking institutional adoption
+- Applications needing smart wallets with social recovery
+- Cross-chain protocols leveraging Elastic Chain
+- Projects prioritizing UX over perfect EVM compatibility
 
-- **Use Cases**
-  - **DeFi liquidity hub**: SyncSwap (40% of TVL), Mute.io, Maverick Protocol
-  - **Institutional presence**: Deutsche Bank, UBS, Sygnum Bank deployed
-  - **Cross-chain apps**: SpaceFi connecting Cosmos and Ethereum L2s
-  - **Consumer-facing apps**: Leveraging native AA for Web2-like onboarding
+**Ecosystem Character**
+Innovation-focused ecosystem willing to adapt code for better features. Strong DeFi presence with SyncSwap dominating liquidity. Institutional interest from Deutsche Bank, UBS, and Sygnum Bank. Developer community embraces native AA despite compatibility challenges. More experimental than conservative Ethereum culture.
 
-- **Security & Data Availability**
-  - ZK validity proofs guarantee state correctness — no 7-day fraud windows.
-  - Posts calldata to Ethereum via EIP-4844 blobs.
-  - Full Ethereum settlement with no off-chain data dependencies.
+**Trade-offs**
 
-- **Infra & Execution**
-  - Custom zkSync VM optimized for proof generation, not EVM bytecode.
-  - LLVM compiler translates Solidity/Vyper to zkVM bytecode.
-  - Native account abstraction — every account is a smart wallet by default.
+- Type-4 zkEVM requires code modifications unlike drop-in competitors
+- Custom VM creates different debugging experience
+- Centralized sequencer with perpetually delayed decentralization
+- Smaller ecosystem compared to Arbitrum and Optimism
+- Tool compatibility issues due to architectural differences
 
-- **Performance**
-  - 1.8 second block times with instant perceived finality.
-  - Proof costs under $0.0001 with Boojum upgrade.
-  - Theoretical 100,000 TPS capability, currently handles peaks over 100 TPS.
+## Technical Details
 
-- **Trade-offs**
-  - Type-4 means code changes needed — not drop-in compatible like Arbitrum.
-  - Centralized sequencer pending ChonkyBFT decentralization roadmap.
-  - Smaller ecosystem vs Arbitrum/Optimism — fewer tools and integrations.
-  - Custom VM means debugging is different from standard EVM development.
+**Architecture**
+Custom zkSync VM optimized for proof generation rather than EVM bytecode execution. LLVM compiler translates Solidity/Vyper to zkVM bytecode with some incompatibilities. Native account abstraction makes every account a smart wallet without additional contracts. Part of Elastic Chain ecosystem enabling interoperability.
+
+**Performance**
+Block times with 1 second target and instant perceived finality for users. Proof generation costs under $0.0001 after Boojum upgrade optimization. Theoretical capacity of 100,000 TPS though current peaks around 100 TPS. No fraud proof delays — withdrawals final once proofs verify.
+
+**Security & Trust Model**
+ZK validity proofs guarantee computational correctness without challenge periods. Posts all data to Ethereum via EIP-4844 blobs ensuring availability. No off-chain data dependencies maintaining Ethereum security guarantees. However, centralized sequencer creates liveness and censorship risks.
+
+**Control & Governance**
+Matter Labs controls centralized sequencer with ChonkyBFT decentralization promised. Protocol upgrades managed centrally despite governance token distribution. Elastic Chain coordination requires cross-chain governance mechanisms. Development priorities favor innovation over stability.

@@ -80,37 +80,40 @@ forums:
 # SDKs and tools are inherited from evm-common.md
 ---
 
-BitDAO's L2 with a massive treasury backing its ecosystem. Still an optimistic rollup but testing ZK upgrade for 1-hour withdrawals.
+An L2 where projects get paid to deploy through a $3.9B treasury. Uses cheap data storage (EigenDA) for sub-cent fees and liquid staking (mETH) is built into everything.
 
-**Key Difference:** $3.9B treasury (from BitDAO merger) funding ecosystem growth, plus first L2 using EigenDA for cheaper data storage and SP1 zkVM on testnet.
+**Unique Position**
+Mantle deploys its massive BitDAO treasury to bootstrap liquidity and pay developers — the $200M EcoFund means free money for builders. Uses EigenDA instead of Ethereum for data, making fees 80% cheaper than other L2s. Every major protocol integrates mETH liquid staking, turning idle ETH into yield everywhere. Planning ZK upgrade to reduce withdrawals from 7 days to 1 hour, though keeps missing deadlines.
 
-**Best for:** Projects wanting treasury-backed grants/incentives, DeFi needing deep liquidity pools, apps betting on the ZK transition.
+**Primary Use Cases**
 
-**Technical:** Optimistic rollup transitioning to ZK validity rollup via OP Succinct/SP1, EigenDA for data availability, MNT token.
+- Projects seeking treasury-backed grants and liquidity
+- Liquid staking strategies through mETH ecosystem
+- DeFi protocols needing deep, subsidized liquidity pools
+- Stablecoin integrations with institutional partners
+- Applications betting on the optimistic-to-ZK transition
 
-- **Use Cases**
-  - **Treasury-backed DeFi**: $200M EcoFund investing in projects
-  - **Liquid staking**: mETH ($335M+ staked), integrated yield products
-  - **Stablecoin integrations**: Ethena USDe, Agora AUSD, Ondo USDy
-  - **Bitcoin bridge**: fBTC for wrapped Bitcoin liquidity
+**Ecosystem Character**
+Treasury-driven ecosystem where funding availability attracts builders more than technical features. Strong liquid staking focus with mETH becoming core primitive. Community expects sustainable growth through treasury deployment rather than token emissions. Institutional partnerships (Ethena, Ondo) signal serious DeFi ambitions.
 
-- **Security & Data Availability**
-  - Still optimistic rollup with 7-day withdrawal period on mainnet.
-  - First L2 using EigenDA for data availability (80% cheaper than posting to Ethereum).
-  - ZK upgrade with SP1 in testnet, mainnet timeline unclear.
+**Trade-offs**
 
-- **Infra & Execution**
-  - Modular architecture: separate execution, DA, and settlement layers.
-  - Centralized sequencer (decentralization "on roadmap").
-  - MNT as native token, plus mETH/cmETH liquid staking derivatives.
+- Centralized sequencer with perpetually vague decentralization timeline
+- ZK upgrade still on testnet — 7-day withdrawals remain
+- Success entirely dependent on treasury management and DAO politics
+- EigenDA dependency adds external trust assumptions
+- Modular architecture increases complexity without proven benefits
 
-- **Performance**
-  - Sub-cent transaction fees with EigenDA.
-  - Standard optimistic rollup throughput currently.
-  - After ZK upgrade: 1-hour finality vs 7 days.
+## Technical Details
 
-- **Trade-offs**
-  - Centralized sequencer with vague decentralization timeline.
-  - ZK upgrade not live yet — still 7-day withdrawals.
-  - Success depends on treasury management and DAO governance.
-  - EigenDA adds external dependency and validator assumptions.
+**Architecture**
+Optimistic rollup with modular design separating execution, data availability, and settlement layers. Transitioning to ZK validity rollup using OP Succinct and SP1 zkVM for faster finality. MNT as native token with mETH/cmETH liquid staking derivatives integrated throughout.
+
+**Performance**
+Sub-cent transaction fees achieved through EigenDA's cheaper data availability. Standard optimistic rollup throughput until ZK upgrade completes. Post-upgrade promises 1-hour finality versus current 7-day withdrawal period, though mainnet timeline remains undefined.
+
+**Security & Trust Model**
+Currently standard optimistic rollup with 7-day fraud proof window. EigenDA for data availability reduces costs but adds validator trust assumptions beyond Ethereum. ZK upgrade will replace fraud proofs with validity proofs, eliminating challenge periods but requiring prover reliability.
+
+**Control & Governance**
+Mantle team controls centralized sequencer with no binding decentralization commitment. Treasury management through DAO governance, though large holders dominate decisions. Protocol upgrades controlled by team with community input through non-binding votes. EcoFund distribution decided by internal committee rather than open governance.

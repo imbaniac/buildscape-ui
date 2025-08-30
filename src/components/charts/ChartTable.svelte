@@ -193,6 +193,7 @@
 </script>
 
 <div class="chart-container">
+  <div class="map-backdrop"></div>
   <div class="table-container">
     <!-- Search and filters -->
     <div class="chart-controls">
@@ -314,10 +315,18 @@
 <style>
   .chart-container {
     width: 100%;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-
     padding-top: 90px; /* More space for header */
+  }
+  .map-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    cursor: default;
+    background: rgb(5, 16, 21);
+    opacity: 0.5;
   }
 
   .table-container {
