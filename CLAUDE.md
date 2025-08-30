@@ -102,11 +102,13 @@ This is a SvelteKit application that visualizes EVM-compatible blockchain networ
 - **Sprite-based Rendering**: Islands are sprites from atlas, not containers
 - **Zoom Limits**: Configurable min/max scale (0.05 to 3.0)
 
-### Adding New Chains
+**Documentation:**
 
-1. Create markdown file in `/data/chains/[chainname].md` with required frontmatter (including `chainId`)
-2. Add chain logo to `/assets/chains/[chainname].svg` (ensure you have rights to use the logo)
-3. Dynamic data will be loaded automatically based on the `chainId` in frontmatter
+- User guide: `/docs/ADD_CHAIN.md`
+- AI prompt: `/prompts/generate-chain-data.md`
+- Issue templates: `.github/ISSUE_TEMPLATE/add-chain.yml` and `edit-chain.yml`
+
+**Note:** Chains without positions in positions.json will be skipped during rendering
 
 IMPORTANT: We're at MVP stage, our goal is to deliver initial version in good workable condition. We should keep things easy to support and fix quickly.
 Buildscape UI is open-source, so we should have code in well structured state

@@ -1,0 +1,156 @@
+name: ✏️ Edit Chain Information
+description: Request to update or correct existing chain data
+title: "[Edit] Chain: "
+labels: ["chain-edit", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Help us keep chain information accurate and up-to-date!
+
+  - type: dropdown
+    id: chain_select
+    attributes:
+      label: Which chain needs updating?
+      description: Select the chain that needs editing
+      options:
+        - Abstract
+        - ApeChain
+        - Arbitrum Nova
+        - Arbitrum One
+        - Avalanche
+        - Base
+        - Berachain
+        - Bitlayer
+        - Blast
+        - BNB Smart Chain
+        - BOB
+        - Celo
+        - Cronos
+        - Cronos zkEVM
+        - Ethereum
+        - Etherlink
+        - Filecoin
+        - Fraxtal
+        - Gnosis
+        - Hemi
+        - Immutable zkEVM
+        - Kava
+        - Linea
+        - Lisk
+        - Mantle
+        - Morph
+        - Optimism
+        - Polygon PoS
+        - Polygon zkEVM
+        - Pulsechain
+        - Rootstock
+        - Scroll
+        - Soneium
+        - Sonic
+        - Sophon
+        - Taiko
+        - Unichain
+        - zkSync
+        - Other (specify in description)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: edit_type
+    attributes:
+      label: Type of Update
+      description: What kind of information needs updating?
+      multiple: true
+      options:
+        - Technical specifications
+        - Description/content
+        - RPC endpoints
+        - Block explorers
+        - Testnets
+        - Documentation links
+        - Logo/branding
+        - Performance metrics
+        - Security model
+        - Governance information
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: current_info
+    attributes:
+      label: Current Information
+      description: What information is currently shown that's incorrect or outdated?
+      placeholder: Copy/paste or describe the current incorrect information
+    validations:
+      required: true
+
+  - type: textarea
+    id: updated_info
+    attributes:
+      label: Updated Information
+      description: What should the correct/updated information be?
+      placeholder: Provide the accurate, updated information
+    validations:
+      required: true
+
+  - type: textarea
+    id: sources
+    attributes:
+      label: Sources
+      description: |
+        Please provide sources for the updated information
+        (Official docs, announcements, GitHub repos, etc.)
+      placeholder: |
+        - https://blog.example.com/announcement
+        - https://docs.example.org/updates
+    validations:
+      required: true
+
+  - type: textarea
+    id: reason
+    attributes:
+      label: Reason for Change
+      description: Why does this information need updating?
+      placeholder: |
+        Examples:
+        - Recent protocol upgrade changed specifications
+        - Rebrand/name change
+        - Deprecated RPCs no longer working
+        - New testnet launched
+    validations:
+      required: true
+
+  - type: dropdown
+    id: urgency
+    attributes:
+      label: Update Priority
+      description: How urgent is this update?
+      options:
+        - Critical (broken functionality)
+        - High (significantly outdated)
+        - Medium (minor inaccuracies)
+        - Low (cosmetic/optional)
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional Context
+      description: Any other relevant information about this update
+      placeholder: Optional additional details...
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Submission Checklist
+      description: Please confirm the following
+      options:
+        - label: I have verified this information from official sources
+          required: true
+        - label: The updated information is current as of 2025
+          required: true
+        - label: I have provided sources for verification
+          required: true

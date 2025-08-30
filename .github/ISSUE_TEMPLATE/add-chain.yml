@@ -1,0 +1,137 @@
+name: 🏝️ Add New Chain
+description: Request to add a new blockchain to Buildscape
+title: "[Chain] Add: "
+labels: ["chain-addition", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please provide as much information as possible.
+
+  - type: input
+    id: chain_name
+    attributes:
+      label: Chain Name
+      description: Official name of the blockchain
+      placeholder: e.g., Arbitrum One
+    validations:
+      required: true
+
+  - type: input
+    id: chain_id
+    attributes:
+      label: Chain ID
+      description: The official chain ID number
+      placeholder: e.g., 42161
+    validations:
+      required: true
+
+  - type: input
+    id: native_currency
+    attributes:
+      label: Native Currency
+      description: The native token symbol
+      placeholder: e.g., ETH
+    validations:
+      required: true
+
+  - type: input
+    id: website
+    attributes:
+      label: Official Website
+      description: Main website URL
+      placeholder: https://example.org
+    validations:
+      required: true
+
+  - type: dropdown
+    id: chain_type
+    attributes:
+      label: Chain Type
+      description: What type of blockchain is this?
+      options:
+        - L1 (Independent blockchain)
+        - L2 - Optimistic Rollup
+        - L2 - zkEVM Rollup
+        - L2 - Other Rollup
+        - Sidechain
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: parent_chain
+    attributes:
+      label: Parent/Settlement Chain
+      description: If L2 or sidechain, which chain does it settle to?
+      placeholder: e.g., Ethereum
+
+  - type: input
+    id: block_explorer
+    attributes:
+      label: Block Explorer URL
+      description: Main block explorer (e.g., Etherscan equivalent)
+      placeholder: https://explorer.example.com
+
+  - type: textarea
+    id: rpcs
+    attributes:
+      label: Public RPC Endpoints
+      description: |
+        List public RPC endpoints (one per line)
+        Format: Name - URL - Type (public/private)
+      placeholder: |
+        Ankr - https://rpc.ankr.com/example - public
+        Official - https://rpc.example.org - public
+
+  - type: input
+    id: docs_url
+    attributes:
+      label: Developer Documentation
+      description: Link to developer/technical documentation
+      placeholder: https://docs.example.org
+
+  - type: input
+    id: launch_date
+    attributes:
+      label: Launch Date
+      description: When did this chain launch? (YYYY-MM-DD)
+      placeholder: 2023-01-15
+
+  - type: textarea
+    id: logo_info
+    attributes:
+      label: Logo
+      description: |
+        Please provide EITHER:
+        1. A link to the official logo (SVG preferred)
+        2. Attach the logo file to this issue after submitting
+        3. Confirm you have rights to use this logo
+      placeholder: Link to logo or describe how you'll provide it
+
+  - type: textarea
+    id: additional_info
+    attributes:
+      label: Additional Information
+      description: |
+        Any other relevant information:
+        - Testnet details
+        - Notable projects/protocols on this chain
+        - Unique technical features
+        - Trade-offs or limitations
+      placeholder: Optional additional details...
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Submission Checklist
+      description: Please confirm the following
+      options:
+        - label: I have verified this chain is not already in Buildscape
+          required: true
+        - label: The information provided is accurate and up-to-date
+          required: true
+        - label: I have the right to use the provided logo (or it's publicly available)
+          required: false
+        - label: This is an EVM-compatible chain
+          required: false
