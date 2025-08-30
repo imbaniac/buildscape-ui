@@ -226,4 +226,80 @@ export const glossary: Record<string, TooltipContent> = {
     text: "zkEVM is an EVM-compatible environment that uses zero-knowledge proofs for scalability and privacy.",
     link: "https://ethereum.org/en/developers/docs/scaling/zk-rollups/#zk-evms",
   },
+  "merged mining": {
+    text: "Merged mining allows miners to mine multiple blockchains simultaneously using the same computational work, securing smaller chains with larger chain's hashpower.",
+  },
+  utxo: {
+    text: "UTXO (Unspent Transaction Output) - Bitcoin's way of tracking balances. Instead of accounts, coins exist as outputs from transactions that haven't been spent yet.",
+    link: "https://river.com/learn/bitcoins-utxo-model/",
+  },
+  oracles: {
+    text: "Oracles bridge real-world data to smart contracts, enabling blockchains to access off-chain information like prices, weather, or sports results.",
+  },
+  "wrapped tokens": {
+    text: "Wrapped tokens are tokens from one blockchain represented on another chain at 1:1 ratio, like WBTC (Wrapped Bitcoin) on Ethereum.",
+  },
+  "proof-of-proof": {
+    text: "Proof-of-Proof (PoP) allows smaller chains to inherit security from larger chains by embedding their block hashes, creating a cryptographic link between networks.",
+  },
+  "sandwich attack": {
+    text: "Sandwich attack is an MEV strategy where attackers place orders before and after a victim's trade to profit from price movement they cause.",
+  },
+  cosmos: {
+    text: "Cosmos is an ecosystem of interconnected blockchains using IBC (Inter-Blockchain Communication) protocol for seamless cross-chain interactions.",
+    link: "https://cosmos.network/",
+  },
+  "elastic chain": {
+    text: "Elastic chains dynamically scale their capacity based on demand, automatically adjusting resources to maintain performance during high activity.",
+  },
+  "type-1 zkevm": {
+    text: "Type 1 zkEVM: Fully Ethereum-equivalent. Perfect compatibility but slower proof generation. No changes to Ethereum.",
+    link: "https://vitalik.eth.limo/general/2022/08/04/zkevm.html",
+  },
+  "type-2 zkevm": {
+    text: "Type 2 zkEVM: EVM-equivalent. Minor modifications for faster proofs while maintaining full EVM compatibility.",
+    link: "https://vitalik.eth.limo/general/2022/08/04/zkevm.html",
+  },
+  "type-3 zkevm": {
+    text: "Type 3 zkEVM: Almost EVM-equivalent. Removes expensive operations for better performance, may break some contracts.",
+    link: "https://vitalik.eth.limo/general/2022/08/04/zkevm.html",
+  },
+  "type-4 zkevm": {
+    text: "Type 4 zkEVM: High-level language equivalent. Compiles Solidity to ZK-friendly language, fastest but different execution.",
+    link: "https://vitalik.eth.limo/general/2022/08/04/zkevm.html",
+  },
+  vm: {
+    text: "VM (Virtual Machine) - The runtime environment that executes smart contracts, like EVM for Ethereum or MoveVM for Aptos.",
+  },
+  "account abstraction": {
+    text: "Account abstraction allows smart contracts to act as wallets, enabling features like gasless transactions, social recovery, and transaction batching.",
+    link: "https://ethereum.org/en/roadmap/account-abstraction/",
+  },
+  eigenda: {
+    text: "EigenDA is a data availability solution built on EigenLayer, providing scalable and secure data storage for rollups using restaked ETH.",
+    link: "https://www.eigenlayer.xyz/eigenda",
+  },
+  avail: {
+    text: "Avail is a modular data availability layer that ensures transaction data is accessible and verifiable without executing transactions.",
+    link: "https://www.availproject.org/",
+  },
+  zk: {
+    text: "ZK (Zero-Knowledge) proofs allow verification of information without revealing the information itself, enabling privacy and scalability.",
+  },
+  agglayer: {
+    text: "AggLayer (Aggregation Layer) unifies liquidity and state across Polygon's ecosystem, enabling seamless cross-chain interactions.",
+    link: "https://polygon.technology/agglayer",
+  },
+  "stage 0": {
+    text: "Stage 0 rollup: Full training wheels. Operators can change the rollup state, upgrade without delay. Users must trust operators.",
+    link: "https://l2beat.com/scaling/summary#stage-classification",
+  },
+  "stage 1": {
+    text: "Stage 1 rollup: Limited training wheels. Fraud proof system active, Security Council can intervene, upgrade delays enforced.",
+    link: "https://l2beat.com/scaling/summary#stage-classification",
+  },
+  "stage 2": {
+    text: "Stage 2 rollup: No training wheels. Fully decentralized with permissionless fraud proofs and strict upgrade delays. Ethereum-level security.",
+    link: "https://l2beat.com/scaling/summary#stage-classification",
+  },
 };
