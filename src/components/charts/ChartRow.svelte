@@ -328,7 +328,7 @@
   .chain-tvl {
     text-align: right;
     color: #6b5d47;
-    min-width: 140px;
+    min-width: 180px;
   }
 
   .tvl-container {
