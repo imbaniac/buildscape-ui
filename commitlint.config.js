@@ -16,6 +16,7 @@ export default {
         "ci", // CI configuration changes
         "chore", // Other changes that don't modify src or test files
         "revert", // Revert a previous commit
+        "wip"
       ],
     ],
     // No scope enforcement - use any scope or no scope at all

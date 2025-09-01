@@ -4,8 +4,6 @@
   import { searchChains } from "$lib/utils/searchUtils";
 
   import ChartFilters from "./ChartFilters.svelte";
-  import ChartHeader from "./ChartHeader.svelte";
-  import ChartRow from "./ChartRow.svelte";
 
   interface Chain {
     slug: string;
@@ -232,75 +230,297 @@
       </div>
     </div>
 
-    <!-- Table -->
+    <!-- Grid Table -->
     <div class="table-wrapper" bind:this={tableWrapper}>
-      <table class="chart-table">
-        <thead class="table-header">
-          <tr>
-            <ChartHeader
-              column="name"
-              label="Chain"
-              currentSort={sortColumn}
-              direction={sortDirection}
-              onSort={handleSort}
-              showLogo={true}
-            />
-            <ChartHeader
-              column="tvl"
-              label="Treasury"
-              currentSort={sortColumn}
-              direction={sortDirection}
-              onSort={handleSort}
-            />
-            <ChartHeader
-              column="tps"
-              label="Activity"
-              currentSort={sortColumn}
-              direction={sortDirection}
-              onSort={handleSort}
-            />
-            <ChartHeader
-              column="blockTime"
-              label="SPEED"
-              currentSort={sortColumn}
-              direction={sortDirection}
-              onSort={handleSort}
-            />
-            <ChartHeader
-              column="transactions"
-              label="TXs"
-              currentSort={sortColumn}
-              direction={sortDirection}
-              onSort={handleSort}
-            />
-            <ChartHeader
-              column="activeAddresses"
-              label="Users"
-              currentSort={sortColumn}
-              direction={sortDirection}
-              onSort={handleSort}
-            />
-            <ChartHeader
-              column="contracts"
-              label="Contracts"
-              currentSort={sortColumn}
-              direction={sortDirection}
-              onSort={handleSort}
-            />
-            <th class="type-header">Type</th>
-          </tr>
-        </thead>
-        <tbody>
-          {#each processedChains() as chain (chain.slug)}
-            <ChartRow
-              {chain}
-              {formatValue}
-              {isLoading}
-              onClick={() => handleRowClick(chain)}
-            />
-          {/each}
-        </tbody>
-      </table>
+      <div class="grid-table">
+        <!-- Header Row -->
+        <div class="grid-header sticky-header sticky-corner logo-header">
+          <!-- Empty header for logo column -->
+        </div>
+        <button
+          class="grid-header sticky-header sortable"
+          class:active={sortColumn === "name"}
+          onclick={() => handleSort("name")}
+        >
+          <div class="header-content">
+            <span class="header-label">Chain</span>
+            <span
+              class="sort-arrow"
+              style="transform: {sortColumn === 'name'
+                ? sortDirection === 'asc'
+                  ? 'rotate(0deg)'
+                  : 'rotate(180deg)'
+                : 'rotate(90deg)'}"
+            >
+              ▲
+            </span>
+          </div>
+        </button>
+        <button
+          class="grid-header sticky-header sortable"
+          class:active={sortColumn === "tvl"}
+          onclick={() => handleSort("tvl")}
+        >
+          <div class="header-content">
+            <span class="header-label">Treasury</span>
+            <span
+              class="sort-arrow"
+              style="transform: {sortColumn === 'tvl'
+                ? sortDirection === 'asc'
+                  ? 'rotate(0deg)'
+                  : 'rotate(180deg)'
+                : 'rotate(90deg)'}"
+            >
+              ▲
+            </span>
+          </div>
+        </button>
+        <button
+          class="grid-header sticky-header sortable"
+          class:active={sortColumn === "tps"}
+          onclick={() => handleSort("tps")}
+        >
+          <div class="header-content">
+            <span class="header-label">Activity</span>
+            <span
+              class="sort-arrow"
+              style="transform: {sortColumn === 'tps'
+                ? sortDirection === 'asc'
+                  ? 'rotate(0deg)'
+                  : 'rotate(180deg)'
+                : 'rotate(90deg)'}"
+            >
+              ▲
+            </span>
+          </div>
+        </button>
+        <button
+          class="grid-header sticky-header sortable"
+          class:active={sortColumn === "blockTime"}
+          onclick={() => handleSort("blockTime")}
+        >
+          <div class="header-content">
+            <span class="header-label">SPEED</span>
+            <span
+              class="sort-arrow"
+              style="transform: {sortColumn === 'blockTime'
+                ? sortDirection === 'asc'
+                  ? 'rotate(0deg)'
+                  : 'rotate(180deg)'
+                : 'rotate(90deg)'}"
+            >
+              ▲
+            </span>
+          </div>
+        </button>
+        <button
+          class="grid-header sticky-header sortable"
+          class:active={sortColumn === "transactions"}
+          onclick={() => handleSort("transactions")}
+        >
+          <div class="header-content">
+            <span class="header-label">TXs</span>
+            <span
+              class="sort-arrow"
+              style="transform: {sortColumn === 'transactions'
+                ? sortDirection === 'asc'
+                  ? 'rotate(0deg)'
+                  : 'rotate(180deg)'
+                : 'rotate(90deg)'}"
+            >
+              ▲
+            </span>
+          </div>
+        </button>
+        <button
+          class="grid-header sticky-header sortable"
+          class:active={sortColumn === "activeAddresses"}
+          onclick={() => handleSort("activeAddresses")}
+        >
+          <div class="header-content">
+            <span class="header-label">Users</span>
+            <span
+              class="sort-arrow"
+              style="transform: {sortColumn === 'activeAddresses'
+                ? sortDirection === 'asc'
+                  ? 'rotate(0deg)'
+                  : 'rotate(180deg)'
+                : 'rotate(90deg)'}"
+            >
+              ▲
+            </span>
+          </div>
+        </button>
+        <button
+          class="grid-header sticky-header sortable"
+          class:active={sortColumn === "contracts"}
+          onclick={() => handleSort("contracts")}
+        >
+          <div class="header-content">
+            <span class="header-label">Contracts</span>
+            <span
+              class="sort-arrow"
+              style="transform: {sortColumn === 'contracts'
+                ? sortDirection === 'asc'
+                  ? 'rotate(0deg)'
+                  : 'rotate(180deg)'
+                : 'rotate(90deg)'}"
+            >
+              ▲
+            </span>
+          </div>
+        </button>
+        <button class="grid-header sticky-header type-header">Type</button>
+
+        <!-- Data Rows -->
+        {#each processedChains() as chain, index (chain.slug)}
+          <!-- Logo column (sticky) -->
+          <button
+            class="grid-cell sticky-column logo-cell"
+            class:alt-row={index % 2 === 1}
+            onclick={() => handleRowClick(chain)}
+          >
+            {#if chain.logoUrl}
+              <div
+                class="chain-seal"
+                style="--chain-color: {chain.color || '#7a8599'}"
+              >
+                <div class="seal-inner">
+                  <img
+                    src={chain.logoUrl}
+                    alt={chain.name}
+                    class="chain-logo"
+                  />
+                </div>
+              </div>
+            {:else}
+              <div
+                class="chain-seal placeholder"
+                style="--chain-color: {chain.color || '#7a8599'}"
+              >
+                <div class="seal-inner">
+                  <span class="logo-initial">{chain.name.charAt(0)}</span>
+                </div>
+              </div>
+            {/if}
+          </button>
+          <!-- Chain name column -->
+          <button
+            class="grid-cell chain-name-cell"
+            class:alt-row={index % 2 === 1}
+            onclick={() => handleRowClick(chain)}
+          >
+            <div class="name-wrapper">
+              <span class="name-text">{chain.name}</span>
+              <span class="chain-id-text">#{chain.chainId}</span>
+            </div>
+          </button>
+          <!-- Data cells -->
+          <button
+            class="grid-cell"
+            class:alt-row={index % 2 === 1}
+            onclick={() => handleRowClick(chain)}
+          >
+            {#if isLoading}
+              <span class="skeleton-metric"></span>
+            {:else}
+              <div class="tvl-container">
+                <span class="value-text">{formatValue(chain.tvl, "tvl")}</span>
+                {#if chain.tvlChange !== null && chain.tvlChange !== undefined}
+                  <span
+                    class="tvl-change"
+                    class:positive={chain.tvlChange > 0}
+                    class:negative={chain.tvlChange < 0}
+                  >
+                    {chain.tvlChange > 0 ? "+" : ""}{chain.tvlChange.toFixed(
+                      1,
+                    )}%
+                  </span>
+                {/if}
+              </div>
+            {/if}
+          </button>
+          <button
+            class="grid-cell"
+            class:alt-row={index % 2 === 1}
+            onclick={() => handleRowClick(chain)}
+          >
+            {#if isLoading}
+              <span class="skeleton-metric"></span>
+            {:else}
+              <span class="value-text">{formatValue(chain.tps, "tps")} TPS</span
+              >
+            {/if}
+          </button>
+          <button
+            class="grid-cell"
+            class:alt-row={index % 2 === 1}
+            onclick={() => handleRowClick(chain)}
+          >
+            {#if isLoading}
+              <span class="skeleton-metric"></span>
+            {:else}
+              <span class="value-text"
+                >{formatValue(chain.blockTime, "blockTime")}</span
+              >
+            {/if}
+          </button>
+          <button
+            class="grid-cell"
+            class:alt-row={index % 2 === 1}
+            onclick={() => handleRowClick(chain)}
+          >
+            {#if isLoading}
+              <span class="skeleton-metric"></span>
+            {:else}
+              <span class="value-text"
+                >{formatValue(chain.transactions, "count")}</span
+              >
+            {/if}
+          </button>
+          <button
+            class="grid-cell"
+            class:alt-row={index % 2 === 1}
+            onclick={() => handleRowClick(chain)}
+          >
+            {#if isLoading}
+              <span class="skeleton-metric"></span>
+            {:else}
+              <span class="value-text"
+                >{formatValue(chain.activeAddresses, "count")}</span
+              >
+            {/if}
+          </button>
+          <button
+            class="grid-cell"
+            class:alt-row={index % 2 === 1}
+            onclick={() => handleRowClick(chain)}
+          >
+            {#if isLoading}
+              <span class="skeleton-metric"></span>
+            {:else}
+              <span class="value-text"
+                >{formatValue(chain.contracts, "count")}</span
+              >
+            {/if}
+          </button>
+          <button
+            class="grid-cell"
+            class:alt-row={index % 2 === 1}
+            onclick={() => handleRowClick(chain)}
+          >
+            <span
+              class="type-badge {chain.type === 'L1'
+                ? 'badge-l1'
+                : chain.type === 'L2'
+                  ? 'badge-l2'
+                  : 'badge-default'}"
+            >
+              {chain.type}
+            </span>
+          </button>
+        {/each}
+      </div>
 
       {#if !isLoading && processedChains().length === 0}
         <div class="no-results">No chains found matching your filters</div>
@@ -313,6 +533,7 @@
   .chart-container {
     width: 100%;
     padding-top: 90px; /* More space for header */
+    cursor: default;
   }
   .map-backdrop {
     position: absolute;
@@ -481,32 +702,285 @@
       inset 0 -1px 0 rgba(0, 0, 0, 0.05);
   }
 
-  .chart-table {
+  .grid-table {
+    display: grid;
+    grid-template-columns:
+      70px 200px minmax(180px, 1.5fr) minmax(120px, 1fr) minmax(100px, 0.8fr)
+      minmax(100px, 1fr) minmax(100px, 1fr) minmax(140px, 1fr) minmax(
+        60px,
+        0.8fr
+      );
     width: 100%;
-    min-width: 900px; /* Increased minimum width for more columns */
-    border-collapse: collapse;
-    border-spacing: 0;
-    margin-top: 0;
-    table-layout: auto; /* Changed to auto for better column sizing */
+    min-width: 900px;
   }
 
-  .table-header {
+  /* Grid headers */
+  .grid-header {
+    background: linear-gradient(135deg, #4a5568, #3a4456);
+    padding: 0.75rem 1rem;
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    color: #f0e6d2;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid #525e72;
+    display: flex;
+    align-items: center;
+    border-right: 1px solid rgba(82, 94, 114, 0.5);
+    border-top: none;
+    border-left: none;
+  }
+
+  .grid-header.sortable {
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s ease;
+  }
+
+  .grid-header.sortable:hover {
+    background: linear-gradient(135deg, #526178, #3f4a5c);
+  }
+
+  .grid-header.active {
+    background: linear-gradient(135deg, #526178, #3f4a5c);
+  }
+
+  .header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 0.5rem;
+  }
+
+  .header-label {
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+  }
+
+  .sort-arrow {
+    font-size: 0.7rem;
+    opacity: 0.6;
+    transition:
+      transform 0.2s ease,
+      opacity 0.2s ease;
+  }
+
+  .grid-header.active .sort-arrow {
+    opacity: 1;
+  }
+
+  /* Sticky positioning */
+  .sticky-header {
     position: sticky;
     top: 0;
-    z-index: 5;
+    z-index: 2;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
-  .table-header tr {
-    background: linear-gradient(135deg, #4a5568, #3a4456);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  .sticky-column {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: #f8f7f5;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.05);
   }
 
-  .table-header tr th:first-child {
-    border-top-left-radius: 0;
+  .sticky-corner {
+    z-index: 3;
+    left: 0;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
   }
 
-  .table-header tr th:last-child {
-    border-top-right-radius: 0;
+  /* Grid cells */
+  .grid-cell {
+    padding: 0.75rem 1rem;
+    border: none;
+    border-bottom: 1px solid #e0dcd5;
+    background: #f8f7f5;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+  }
+
+  .grid-cell:hover {
+    background: #f0eee9;
+  }
+
+  .grid-cell.alt-row {
+    background: #f2f1ee;
+  }
+
+  .grid-cell.alt-row:hover {
+    background: #ebe9e4;
+  }
+
+  .sticky-column.alt-row {
+    background: #f2f1ee;
+  }
+
+  /* Logo cell styling */
+  .logo-cell {
+    min-width: 70px;
+    justify-content: center;
+    padding: 0.5rem;
+  }
+
+  .logo-header {
+    min-width: 0;
+  }
+
+  /* Chain name cell styling */
+  .chain-name-cell {
+    min-width: 200px;
+    justify-content: flex-start;
+  }
+
+  .chain-seal {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(
+      135deg,
+      var(--chain-color),
+      color-mix(in srgb, var(--chain-color) 70%, black)
+    );
+    box-shadow:
+      0 2px 4px rgba(0, 0, 0, 0.15),
+      inset 0 1px 2px rgba(255, 255, 255, 0.2);
+    flex-shrink: 0;
+  }
+
+  .seal-inner {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .chain-logo {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+  }
+
+  .chain-seal.placeholder .seal-inner {
+    background: rgba(255, 255, 255, 0.9);
+  }
+
+  .logo-initial {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--chain-color);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+
+  .name-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    text-align: initial;
+  }
+
+  .name-text {
+    font-family: var(--font-ui);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #3a3633;
+  }
+
+  .chain-id-text {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: #8a837a;
+    font-weight: 400;
+  }
+
+  /* Value styling */
+  .value-text {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: #3a3633;
+    font-weight: 500;
+  }
+
+  .tvl-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .tvl-change {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    padding: 0.125rem 0.375rem;
+    border-radius: 3px;
+    font-weight: 600;
+  }
+
+  .tvl-change.positive {
+    color: #2d7a2d;
+    background: rgba(45, 122, 45, 0.1);
+  }
+
+  .tvl-change.negative {
+    color: #c73030;
+    background: rgba(199, 48, 48, 0.1);
+  }
+
+  /* Type badge */
+  .type-badge {
+    display: inline-block;
+    padding: 0.25rem 0.625rem;
+    border-radius: 4px;
+    font-family: var(--font-ui);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: linear-gradient(135deg, #6b6862, #57534e);
+    color: #f0e6d2;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  .badge-l1 {
+    background: linear-gradient(135deg, #8b7355, #6d5a44);
+  }
+
+  .badge-l2 {
+    background: linear-gradient(135deg, #5a7a8b, #476472);
+  }
+
+  /* Loading skeleton */
+  .skeleton-metric {
+    display: inline-block;
+    width: 60px;
+    height: 20px;
+    background: linear-gradient(90deg, #e0dcd5 0%, #ebe8e3 50%, #e0dcd5 100%);
+    border-radius: 3px;
+    animation: shimmer 1.5s infinite;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -100px;
+    }
+    100% {
+      background-position: 100px;
+    }
   }
 
   .type-header {
@@ -515,11 +989,7 @@
     font-size: 0.85rem;
     color: #f0e6d2;
     text-align: left;
-    background: linear-gradient(135deg, #4a5568, #3a4456);
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-    border-bottom: 1px solid #525e72;
-    position: sticky;
-    top: 0;
     min-width: 70px;
   }
 
@@ -584,15 +1054,42 @@
       -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
     }
 
-    .chart-table {
+    .grid-header,
+    .grid-cell {
+      padding: 0.6rem 0.75rem;
       font-size: 0.85rem;
-      min-width: 800px; /* Increased minimum width for more columns */
     }
 
-    /* Keep all columns visible, allow horizontal scroll */
-    .type-header {
-      width: 15%;
+    .logo-cell {
       min-width: 60px;
+      padding: 0.4rem;
+    }
+
+    .chain-name-cell {
+      min-width: 160px;
+    }
+
+    .chain-seal {
+      width: 36px;
+      height: 36px;
+    }
+
+    .seal-inner {
+      width: 28px;
+      height: 28px;
+    }
+
+    .chain-logo {
+      width: 20px;
+      height: 20px;
+    }
+
+    .name-text {
+      font-size: 0.9rem;
+    }
+
+    .value-text {
+      font-size: 0.85rem;
     }
   }
 
@@ -618,9 +1115,59 @@
     }
 
     /* Smaller text on very small screens */
-    .chart-table {
+    .grid-table {
       font-size: 0.8rem;
       min-width: 750px; /* Ensure all columns are accessible with scroll */
+      grid-template-columns:
+        50px 140px minmax(140px, 1.5fr) minmax(100px, 1fr)
+        minmax(60px, 0.8fr) minmax(80px, 1fr) minmax(80px, 1fr) minmax(
+          120px,
+          1fr
+        )
+        minmax(40px, 0.6fr);
+    }
+
+    .grid-header,
+    .grid-cell {
+      padding: 0.5rem 0.6rem;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+
+    .logo-cell {
+      min-width: 50px;
+      padding: 0.3rem;
+    }
+
+    .chain-name-cell {
+      min-width: 140px;
+    }
+
+    .chain-seal {
+      width: 32px;
+      height: 32px;
+    }
+
+    .seal-inner {
+      width: 26px;
+      height: 26px;
+    }
+
+    .chain-logo {
+      width: 18px;
+      height: 18px;
+    }
+
+    .name-text {
+      font-size: 0.85rem;
+    }
+
+    .chain-id-text {
+      font-size: 0.7rem;
+    }
+
+    .value-text {
+      font-size: 0.8rem;
     }
   }
 </style>
