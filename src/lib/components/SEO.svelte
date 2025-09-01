@@ -8,18 +8,39 @@
     keywords?: string;
     noindex?: boolean;
     jsonLd?: Record<string, any>;
+    includeOrganization?: boolean;
   }
 
   let {
-    title = "Buildscape - Interactive Blockchain Map",
-    description = "Explore 50+ blockchain networks with real-time metrics. Compare TPS, gas fees, TVL, and developer resources for Ethereum, Base, Arbitrum, and more.",
+    title = "Buildscape — The blockchain ecosystem, mapped",
+    description = "Buildscape explains the purpose, technology, and use cases of each chain while providing real-time metrics for comparison. Navigate from Ethereum to emerging L2s with comprehensive guides, live data, and developer resources.",
     canonical = "",
     ogImage = "https://buildscape.org/og/map.png",
     ogType = "website",
     keywords = "",
     noindex = false,
     jsonLd,
+    includeOrganization = false,
   }: Props = $props();
+  
+  // Organization structured data for Google to use square logo
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Buildscape",
+    "url": "https://buildscape.org",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://buildscape.org/web-app-manifest-512x512.png",
+      "width": 512,
+      "height": 512
+    },
+    "sameAs": [
+      "https://github.com/imbaniac/buildscape-ui"
+    ],
+    "description": "The blockchain ecosystem, mapped. Interactive explorer and analytics platform for 50+ blockchain networks."
+  };
 </script>
 
 <svelte:head>
@@ -69,6 +90,13 @@
   {#if jsonLd}
     <script type="application/ld+json">
       {@html JSON.stringify(jsonLd)}
+    </script>
+  {/if}
+  
+  <!-- Organization Schema for Google Logo -->
+  {#if includeOrganization}
+    <script type="application/ld+json">
+      {@html JSON.stringify(organizationSchema)}
     </script>
   {/if}
 </svelte:head>
