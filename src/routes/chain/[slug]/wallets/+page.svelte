@@ -21,8 +21,8 @@
   // SEO metadata - optimized for search queries
   const seoTitle = $derived(() => {
     const name = chainStatic?.name || layoutData.name;
-    if (!name) return "Wallets | Blockchain Explorer";
-    return `${name} Wallets - Connect MetaMask & Web3 Wallets`;
+    if (!name) return "Compatible Wallets | Blockchain Wallets Directory";
+    return `${name} Compatible Wallets - Supported Web3 & Crypto Wallets`;
   });
 
   const seoDescription = $derived(() => {
@@ -30,9 +30,10 @@
     const chainId = chainStatic?.chainId || layoutData.chainId;
     const nativeCurrency = chainStatic?.nativeCurrency || "ETH";
 
-    if (!name) return "Find compatible cryptocurrency wallets";
+    if (!name)
+      return "Browse compatible cryptocurrency wallets and Web3 wallet providers. Find wallets that support your blockchain network.";
 
-    return `Connect wallets to ${name} blockchain. Add ${name} to MetaMask, Trust Wallet, and other Web3 wallets. Chain ID: ${chainId}, Native token: ${nativeCurrency}. Step-by-step wallet setup guides.`;
+    return `Complete list of wallets supporting ${name} blockchain. Browse compatible Web3, mobile, hardware, and browser extension wallets for ${name}. Chain ID: ${chainId}, Native token: ${nativeCurrency}.`;
   });
 
   const seoKeywords = $derived(() => {

@@ -29,9 +29,10 @@
     const name = chainStatic?.name || layoutData.name;
     const chainId = chainStatic?.chainId || layoutData.chainId;
 
-    if (!name) return "Browse blockchain explorers and block scanners";
+    if (!name)
+      return "Browse blockchain explorers and analytical tools. Compare block scanners, transaction trackers, and on-chain analytics platforms.";
 
-    return `Explore ${name} blockchain with block explorers. View transactions, addresses, smart contracts on ${name}. Chain ID: ${chainId}. Track blocks, verify contracts, check gas prices and network statistics.`;
+    return `Complete list of ${name} blockchain explorers and analytics tools. Compare official and alternative block explorers, transaction scanners, and on-chain analytics platforms for ${name} (Chain ID: ${chainId}).`;
   });
 
   const seoKeywords = $derived(() => {
