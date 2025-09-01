@@ -9,7 +9,6 @@ import YAML from "yaml";
 const OUTPUT_DIR = "./static/og";
 const CHAIN_DATA_DIR = "./data/chains";
 const INTER_FONT_PATH = "./scripts/Inter-Regular.ttf";
-const CINZEL_FONT_PATH = "./scripts/Cinzel-SemiBold.ttf";
 
 // Ensure output directory exists
 async function ensureDir(path: string) {
@@ -44,16 +43,16 @@ async function svgToPng(svg: string): Promise<Buffer> {
 }
 
 // Generate homepage/map OG image
-async function generateMapOG(interFont: ArrayBuffer, cinzelFont: ArrayBuffer) {
+async function generateMapOG(interFont: ArrayBuffer) {
   console.log("Generating map OG image...");
 
-  // Load favicon logo
+  // Load Buildscape logo with text
   let logoData = null;
   try {
-    const logoContent = await readFile("./static/favicon.svg", "utf-8");
+    const logoContent = await readFile("./static/bs-logo.svg", "utf-8");
     logoData = `data:image/svg+xml;base64,${Buffer.from(logoContent).toString("base64")}`;
   } catch {
-    console.log("Could not load favicon.svg");
+    console.log("Could not load bs-logo.svg");
   }
 
   // Fetch metrics from API
@@ -129,10 +128,9 @@ async function generateMapOG(interFont: ArrayBuffer, cinzelFont: ArrayBuffer) {
               alignItems: "center",
               justifyContent: "center",
               flex: "1",
-              zIndex: 1,
             },
             children: [
-              // Logo and title section
+              // Logo and subtitle section
               {
                 type: "div",
                 props: {
@@ -143,49 +141,27 @@ async function generateMapOG(interFont: ArrayBuffer, cinzelFont: ArrayBuffer) {
                     marginBottom: "60px",
                   },
                   children: [
-                    // Logo
+                    // Combined logo with Buildscape text
                     logoData && {
                       type: "div",
                       props: {
                         style: {
-                          width: "100px",
-                          height: "100px",
-                          marginBottom: "24px",
-                          background: "rgba(255, 255, 255, 0.95)",
-                          borderRadius: "20px",
+                          marginBottom: "32px",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
-                          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
                         },
                         children: {
                           type: "img",
                           props: {
                             src: logoData,
                             style: {
-                              width: "60px",
-                              height: "60px",
+                              width: "800px",
+                              height: "160px",
                               objectFit: "contain",
                             },
                           },
                         },
-                      },
-                    },
-                    // Title
-                    {
-                      type: "h1",
-                      props: {
-                        style: {
-                          fontSize: "72px",
-                          fontWeight: "600",
-                          color: "white",
-                          margin: "0 0 12px 0",
-                          textAlign: "center",
-                          letterSpacing: "6px",
-                          lineHeight: "1",
-                          fontFamily: "Cinzel",
-                        },
-                        children: "BUILDSCAPE",
                       },
                     },
                     // Subtitle
@@ -193,16 +169,14 @@ async function generateMapOG(interFont: ArrayBuffer, cinzelFont: ArrayBuffer) {
                       type: "p",
                       props: {
                         style: {
-                          fontSize: "22px",
-                          color: "#85c1e5",
+                          fontSize: "28px",
+                          color: "#aed6f1",
                           textAlign: "center",
                           margin: "0",
-                          fontWeight: "300",
-                          letterSpacing: "4px",
-                          textTransform: "uppercase",
-                          opacity: 0.9,
+                          fontWeight: "400",
+                          letterSpacing: "0.5px",
                         },
-                        children: "Sea of Chains",
+                        children: "The blockchain ecosystem, mapped",
                       },
                     },
                   ].filter(Boolean),
@@ -435,7 +409,7 @@ async function generateMapOG(interFont: ArrayBuffer, cinzelFont: ArrayBuffer) {
                     fontStyle: "italic",
                     opacity: 0.9,
                   },
-                  children: "Navigate the blockchain ecosystem",
+                  children: "Discover what makes each blockchain unique",
                 },
               },
             ],
@@ -523,12 +497,6 @@ async function generateMapOG(interFont: ArrayBuffer, cinzelFont: ArrayBuffer) {
         name: "Inter",
         data: interFont,
         weight: 400,
-        style: "normal",
-      },
-      {
-        name: "Cinzel",
-        data: cinzelFont,
-        weight: 600,
         style: "normal",
       },
     ],
@@ -635,7 +603,6 @@ async function generateChainOG(chain: any, metrics: any, font: ArrayBuffer) {
               height: "100%",
               padding: "80px",
               position: "relative",
-              zIndex: 1,
             },
             children: [
               // Left side - Logo and chain info
@@ -1050,21 +1017,12 @@ async function generateAllOGImages() {
 
   // Load fonts
   let interFont: ArrayBuffer;
-  let cinzelFont: ArrayBuffer;
 
   try {
     const interBuffer = await readFile(INTER_FONT_PATH);
     interFont = interBuffer as unknown as ArrayBuffer;
   } catch (e) {
     console.error("Inter font file not found at", INTER_FONT_PATH, e);
-    process.exit(1);
-  }
-
-  try {
-    const cinzelBuffer = await readFile(CINZEL_FONT_PATH);
-    cinzelFont = cinzelBuffer as unknown as ArrayBuffer;
-  } catch (e) {
-    console.error("Cinzel font file not found at", CINZEL_FONT_PATH, e);
     process.exit(1);
   }
 
@@ -1096,7 +1054,7 @@ async function generateAllOGImages() {
   }
 
   // Generate map OG
-  await generateMapOG(interFont, cinzelFont);
+  await generateMapOG(interFont);
 
   // Load chain data
   console.log("\nGenerating chain OG images...");
