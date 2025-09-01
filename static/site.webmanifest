@@ -1,7 +1,7 @@
 {
-  "name": "Buildscape - Interactive Blockchain Map",
+  "name": "Buildscape — The blockchain ecosystem, mapped",
   "short_name": "Buildscape",
-  "description": "Interactive map visualization of blockchains",
+  "description": "Discover what makes each blockchain unique. Navigate 50+ chains with real-time metrics and comprehensive guides.",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
