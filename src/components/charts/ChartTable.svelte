@@ -79,12 +79,9 @@
     let filtered = chains;
 
     // Apply search filter using shared utility
-    if (searchQuery && searchQuery.length >= 3) {
+    if (searchQuery && searchQuery.length > 1) {
       const matchingSlugs = searchChains(chains, searchQuery);
       filtered = filtered.filter((chain) => matchingSlugs.includes(chain.slug));
-    } else if (searchQuery) {
-      // For queries less than 3 chars, show no results
-      filtered = [];
     }
 
     // Apply filters (AND logic between categories, OR within categories)
@@ -330,7 +327,7 @@
   }
 
   .table-container {
-    max-width: 1500px;
+    max-width: 1600px;
     margin: 0 auto;
     width: 100%;
     display: flex;
@@ -348,7 +345,7 @@
     border-bottom: 1px solid #525e72;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
-    margin: 1.5rem 1.5rem 0 1.5rem;
+    margin: 1rem 1rem 0 1rem;
     box-shadow:
       0 2px 8px rgba(0, 0, 0, 0.2),
       inset 0 1px 0 rgba(255, 255, 255, 0.1);
@@ -470,7 +467,7 @@
     flex: 1;
     overflow-y: auto;
     overflow-x: auto;
-    margin: 0 1.5rem 1.5rem 1.5rem;
+    margin: 0 1rem 1rem 1rem;
     padding: 0;
     background: #f8f7f5;
     border-left: 1px solid #525e72;

@@ -20,7 +20,7 @@ export function searchChains<T extends SearchableChain>(
   chains: Record<string, T> | T[],
   query: string,
 ): string[] {
-  if (!query || query.length < 3) {
+  if (!query) {
     return [];
   }
 

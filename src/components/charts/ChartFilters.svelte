@@ -108,11 +108,13 @@
               toggleDropdown(config.id);
             }}
           >
-            <span class="filter-icon">{config.icon}</span>
-            <span class="filter-text">{config.label}</span>
-            {#if activeValues.size > 0}
-              <span class="filter-count">{activeValues.size}</span>
-            {/if}
+            <div class="filter-dropdown-content">
+              <span class="filter-icon">{config.icon}</span>
+              <span class="filter-text">{config.label}</span>
+              {#if activeValues.size > 0}
+                <span class="filter-count">{activeValues.size}</span>
+              {/if}
+            </div>
             <span class="dropdown-arrow" class:open={isOpen}>▼</span>
           </button>
 
@@ -181,7 +183,6 @@
   .filter-dropdown-btn {
     display: flex;
     align-items: center;
-    gap: 0.4rem;
     padding: 0.5rem 0.875rem;
     background: rgba(0, 0, 0, 0.15);
     border: 1px solid #525e72;
@@ -193,6 +194,8 @@
     cursor: pointer;
     transition: all 0.2s ease;
     position: relative;
+    min-width: 160px;
+    justify-content: space-between;
   }
 
   .filter-dropdown-btn:hover {
@@ -209,6 +212,11 @@
       0 2px 4px rgba(0, 0, 0, 0.2),
       inset 0 1px 0 rgba(255, 255, 255, 0.2);
   }
+  .filter-dropdown-content {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
 
   .filter-icon {
     font-size: 1rem;
@@ -222,11 +230,14 @@
 
   .filter-count {
     background: rgba(255, 255, 255, 0.2);
-    padding: 0.1rem 0.3rem;
-    border-radius: 10px;
-    font-size: 0.7rem;
-    min-width: 1.2em;
+    border-radius: 100%;
+    font-size: 0.6rem;
     text-align: center;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .dropdown-arrow {
@@ -334,6 +345,7 @@
     .filter-dropdown-btn {
       padding: 0.4rem 0.65rem;
       font-size: 0.75rem;
+      min-width: 130px;
     }
 
     .filter-icon {
