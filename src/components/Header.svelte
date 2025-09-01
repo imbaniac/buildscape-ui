@@ -42,7 +42,7 @@
           >{formatNumber(overviewData?.total_active_addresses || 0)}</span
         >
         <span class="resource-label">
-          <span class="desktop-text">Population (24h)</span>
+          <span class="desktop-text">Users (24h)</span>
           <span class="mobile-text">Users</span>
         </span>
       </div>
@@ -58,7 +58,7 @@
         >
         <span class="resource-label">
           <span class="mobile-text">TXs (24h)</span>
-          <span class="desktop-text">Transactions (24h)</span>
+          <span class="desktop-text">TXs (24h)</span>
         </span>
       </div>
     </div>
@@ -142,6 +142,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    min-width: 70px;
   }
 
   .resource-number {
@@ -342,6 +343,7 @@
     .resource-value {
       min-height: 32px;
       justify-content: center;
+      min-width: auto;
     }
 
     .resource-icon {

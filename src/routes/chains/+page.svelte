@@ -166,20 +166,16 @@
   canonical="https://buildscape.org/chains"
 />
 
-{#if !overviewStoreState.data}
-  <BoatLoader />
-{:else}
-  <div class="chains-page">
-    <Header />
-    <ChartTable
-      chains={chainsWithMetrics()}
-      isLoading={overviewStoreState.isLoading}
-      {selectedPeriod}
-      onPeriodChange={handlePeriodChange}
-      bind:tableWrapper
-    />
-  </div>
-{/if}
+<div class="chains-page">
+  <Header />
+  <ChartTable
+    chains={chainsWithMetrics()}
+    isLoading={overviewStoreState.isLoading}
+    {selectedPeriod}
+    onPeriodChange={handlePeriodChange}
+    bind:tableWrapper
+  />
+</div>
 
 <style>
   .chains-page {
