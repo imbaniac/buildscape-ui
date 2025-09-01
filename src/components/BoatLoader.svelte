@@ -1,17 +1,15 @@
 <script lang="ts">
   import { fade } from "svelte/transition";
 
-  import boatUrl from "$lib/assets/boat.svg?url";
+  import boatUrl from "/assets/boat.svg?url";
 </script>
 
 <div class="boat-loader" transition:fade={{ duration: 500 }}>
   <div class="boat-container">
     <div class="boat">
-      <img src={boatUrl} alt="Sailing boat" />
+      <img src={boatUrl} alt="" />
     </div>
   </div>
-
-  <p class="loading-text">Charting the EVM seas...</p>
 </div>
 
 <style>
@@ -31,14 +29,14 @@
 
   .boat-container {
     position: relative;
-    animation: sail 4s ease-in-out infinite;
+    animation: swim-patrol 10s ease-in-out infinite;
   }
 
   .boat {
-    width: 120px;
-    height: 120px;
-    transform-origin: center bottom;
-    animation: rock 3s ease-in-out infinite;
+    width: 220px;
+    height: 220px;
+    transform-origin: center center;
+    animation: rock 2s ease-in-out infinite;
   }
 
   .boat img {
@@ -47,40 +45,30 @@
     object-fit: contain;
   }
 
-  @keyframes sail {
+  @keyframes swim-patrol {
     0%,
     100% {
-      transform: translateX(-100px);
+      transform: translateX(-200px) scaleX(1);
+    }
+    45% {
+      transform: translateX(200px) scaleX(1);
     }
     50% {
-      transform: translateX(100px);
+      transform: translateX(200px) scaleX(-1);
+    }
+    95% {
+      transform: translateX(-200px) scaleX(-1);
     }
   }
 
   @keyframes rock {
     0%,
     100% {
-      transform: rotate(-5deg) translateY(0);
-    }
-    25% {
-      transform: rotate(3deg) translateY(-5px);
+      transform: rotate(-2deg);
     }
     50% {
-      transform: rotate(-3deg) translateY(0);
+      transform: rotate(2deg);
     }
-    75% {
-      transform: rotate(5deg) translateY(-3px);
-    }
-  }
-
-  .loading-text {
-    position: absolute;
-    bottom: 120px;
-    font-size: 1.5em;
-    font-weight: bold;
-    color: white;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    animation: pulse 2s ease-in-out infinite;
   }
 
   @keyframes pulse {
@@ -96,13 +84,8 @@
   /* Mobile adjustments */
   @media (max-width: 640px) {
     .boat {
-      width: 80px;
-      height: 80px;
-    }
-
-    .loading-text {
-      font-size: 1.2em;
-      bottom: 80px;
+      width: 160px;
+      height: 160px;
     }
   }
 </style>

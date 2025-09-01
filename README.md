@@ -54,8 +54,11 @@ Note: Contributions to `/data` are licensed under CC BY-SA 4.0.
 
 Buildscape™ is a trademark of Tymofii Reznichenko. See [NOTICE](NOTICE) for details.
 
+## 🎨 Asset Attribution
+
+- Boat loader animation: Original design from [Vexels](https://www.vexels.com/)
+
 ## 🔗 Links
 
 - [Live Site](https://buildscape.org)
-- [Documentation](https://docs.buildscape.org)
 - [GitHub](https://github.com/buildscape/buildscape-ui)
