@@ -57,14 +57,17 @@
 
   // Combine static and dynamic data
   const chainsWithMetrics = $derived(() => {
+    // If we don't have overview data yet, return empty array to show skeletons
+    if (!overviewStoreState.data?.chains) {
+      return [];
+    }
+
     const combined = [];
 
     // Create a map of chain data from overview for quick lookup
     const overviewChainMap = new SvelteMap<number, ChainOverview>();
-    if (overviewStoreState.data?.chains) {
-      for (const chainData of overviewStoreState.data.chains) {
-        overviewChainMap.set(chainData.chain_id, chainData);
-      }
+    for (const chainData of overviewStoreState.data.chains) {
+      overviewChainMap.set(chainData.chain_id, chainData);
     }
 
     for (const [slug, chain] of Object.entries(data.chains)) {
@@ -111,11 +114,15 @@
         blockTime,
         // Use technology data from frontmatter if available, otherwise determine from patterns
         type:
-          typedChain.technology?.isL2 === true
+          typedChain.technology?.layer === "L2"
             ? "L2"
-            : typedChain.technology?.isL2 === false
+            : typedChain.technology?.layer === "L1"
               ? "L1"
-              : determineChainType(typedChain),
+              : typedChain.technology?.layer === "L3"
+                ? "L3"
+                : typedChain.technology?.layer === "Sidechain"
+                  ? "Sidechain"
+                  : determineChainType(typedChain),
         technology: typedChain.technology || {},
       });
     }

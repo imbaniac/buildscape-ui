@@ -5,9 +5,15 @@
     activeFilters: Map<string, Set<string>>;
     onFilterChange: (category: string, values: Set<string>) => void;
     chains: any[];
+    isLoading?: boolean;
   }
 
-  let { activeFilters, onFilterChange, chains }: Props = $props();
+  let {
+    activeFilters,
+    onFilterChange,
+    chains,
+    isLoading = false,
+  }: Props = $props();
 
   // Track which dropdowns are open
   let openDropdowns = $state<Set<string>>(new Set());
@@ -98,14 +104,18 @@
       {@const activeValues = activeFilters.get(config.id) || new Set()}
       {@const isOpen = openDropdowns.has(config.id)}
 
-      {#if options.length > 0}
+      {#if options.length > 0 || chains.length === 0}
         <div class="filter-dropdown">
           <button
             class="filter-dropdown-btn"
             class:active={activeValues.size > 0}
+            class:disabled={isLoading}
+            disabled={isLoading}
             onclick={(e) => {
-              e.stopPropagation();
-              toggleDropdown(config.id);
+              if (!isLoading) {
+                e.stopPropagation();
+                toggleDropdown(config.id);
+              }
             }}
           >
             <div class="filter-dropdown-content">
@@ -211,6 +221,17 @@
     box-shadow:
       0 2px 4px rgba(0, 0, 0, 0.2),
       inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+
+  .filter-dropdown-btn.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .filter-dropdown-btn.disabled:hover {
+    background: rgba(0, 0, 0, 0.15);
+    border-color: #525e72;
+    color: #9ca3b0;
   }
   .filter-dropdown-content {
     display: flex;
