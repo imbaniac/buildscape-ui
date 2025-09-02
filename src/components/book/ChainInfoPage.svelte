@@ -189,7 +189,9 @@
           ? "layer3"
           : chainStatic.technology?.layer === "L2"
             ? "layer2"
-            : "layer1"}
+            : chainStatic.technology?.layer === "Sidechain"
+              ? "sidechain"
+              : "layer1"}
       >
         <span
           class="tech-stamp {chainStatic.technology?.layer === 'L3'
@@ -225,20 +227,7 @@
     {/if}
     {#if chainStatic.technology?.type}
       <div class="stamp-container">
-        <GlossaryTerm
-          term={chainStatic.technology.type === "Optimistic Rollup"
-            ? "optimisticRollup"
-            : chainStatic.technology.type === "zk Rollup" ||
-                chainStatic.technology.type === "ZK Rollup"
-              ? "zkRollup"
-              : chainStatic.technology.type === "Sidechain"
-                ? "sidechain"
-                : chainStatic.technology.type === "Validium"
-                  ? "validium"
-                  : chainStatic.technology.type === "Plasma"
-                    ? "plasma"
-                    : ""}
-        >
+        <GlossaryTerm term={chainStatic.technology.type.toLowerCase()}>
           <span class="tech-stamp type">
             <span class="stamp-value">{chainStatic.technology.type}</span>
           </span>
