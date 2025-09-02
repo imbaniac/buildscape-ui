@@ -6,11 +6,15 @@ color: "#FF433E"
 logo: kava.svg
 parentOrganization: Kava Labs
 website: https://www.kava.io
-launchDate: 2019-11-15
+launchDate: 2019-11-14
 maxBlockSize: 21
 technology:
-  isL2: false
-  isEVM: true
+  type: Proof of Stake
+  layer: L1
+  vm:
+    type: EVM
+    evmCompatible: true
+  stack: Cosmos
 contractLanguages:
   - name: Solidity
     url: https://soliditylang.org

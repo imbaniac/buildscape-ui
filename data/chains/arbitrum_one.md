@@ -10,9 +10,12 @@ launchDate: 2021-08-31
 maxBlockSize: 32
 technology:
   type: Optimistic Rollup
+  layer: L2
+  vm:
+    type: ArbitrumVM
+    evmCompatible: true
   settlementLayer: Ethereum
-  isL2: true
-  isEVM: true
+  stack: Arbitrum Nitro
 contractLanguages:
   - name: Solidity
     url: https://soliditylang.org

@@ -4,13 +4,19 @@ chainId: 5000
 nativeCurrency: MNT
 color: "#64b3ae"
 logo: mantle.svg
-parentOrganization: Mantle Network
+parentOrganization: Mantle (formerly BitDAO)
 website: https://mantle.xyz
-launchDate: 2023-07-14
-maxBlockSize:
+launchDate: 2023-07-17
+maxBlockSize: 30
 technology:
-  isL2: true
-  isEVM: true
+  type: Optimistic Rollup
+  layer: L2
+  vm:
+    type: EVM
+    evmCompatible: true
+  settlementLayer: Ethereum
+  stack: OP Stack
+  dataAvailability: EigenDA
 contractLanguages:
   - name: Solidity
     url: https://soliditylang.org

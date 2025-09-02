@@ -9,10 +9,12 @@ website: https://polygon.technology
 launchDate: 2020-05-30
 maxBlockSize: 30
 technology:
-  type: Sidechain
+  type: Proof of Stake
+  layer: Sidechain
+  vm:
+    type: EVM
+    evmCompatible: true
   settlementLayer: Ethereum
-  isL2: false
-  isEVM: true
 contractLanguages:
   - name: Solidity
     url: https://soliditylang.org

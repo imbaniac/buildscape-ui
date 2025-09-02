@@ -4,15 +4,17 @@ chainId: 60808
 nativeCurrency: ETH
 color: "#f25d00"
 logo: bob.svg
-parentOrganization: BOB
+parentOrganization: Interlay
 website: https://gobob.xyz
 launchDate: 2024-05-01
 maxBlockSize: 30
 technology:
   type: Optimistic Rollup
+  layer: L2
+  vm:
+    type: EVM
+    evmCompatible: true
   settlementLayer: Ethereum
-  isL2: true
-  isEVM: true
   stack: OP Stack
   uniqueFeatures:
     - Bitcoin DeFi integration

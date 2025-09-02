@@ -4,13 +4,16 @@ chainId: 56
 nativeCurrency: BNB
 color: "#f0b90b"
 logo: bnb.svg
-parentOrganization: BNB Chain
+parentOrganization: Binance
 website: https://www.bnbchain.org
 launchDate: 2020-09-01
 maxBlockSize: 140
 technology:
-  isL2: false
-  isEVM: true
+  type: Proof of Staked Authority
+  layer: L1
+  vm:
+    type: EVM
+    evmCompatible: true
 contractLanguages:
   - name: Solidity
     url: https://soliditylang.org

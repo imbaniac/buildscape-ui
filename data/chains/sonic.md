@@ -6,11 +6,14 @@ color: "#fe9a4d"
 logo: sonic.svg
 parentOrganization: Sonic Labs
 website: https://soniclabs.com
-launchDate:
+launchDate: 2024-12-18
 maxBlockSize:
 technology:
-  isL2: false
-  isEVM: true
+  type: Proof of Stake
+  layer: L1
+  vm:
+    type: EVM
+    evmCompatible: true
 contractLanguages:
   - name: Solidity
     url: https://soliditylang.org

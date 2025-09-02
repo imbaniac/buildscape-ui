@@ -4,16 +4,18 @@ chainId: 388
 nativeCurrency: zkCRO
 color: "#133750"
 logo: cronos_zkevm.svg
-parentOrganization: Crypto.com
+parentOrganization: Cronos Labs / Crypto.com
 website: https://cronos.org/zkevm
 launchDate: 2024-08-15
 maxBlockSize: 30
 technology:
   type: ZK Rollup
+  layer: L2
+  vm:
+    type: zkEVM
+    evmCompatible: true
   settlementLayer: Ethereum
-  isL2: true
-  isEVM: true
-  stack: ZKsync
+  stack: ZK Stack
 contractLanguages:
   - name: Solidity
     url: https://soliditylang.org

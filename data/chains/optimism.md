@@ -4,15 +4,17 @@ chainId: 10
 nativeCurrency: ETH
 color: "#FF0420"
 logo: optimism.svg
-parentOrganization: Optimism Foundation
+parentOrganization: OP Labs / Optimism Foundation
 website: https://optimism.io
 launchDate: 2021-12-16
 maxBlockSize: 30
 technology:
   type: Optimistic Rollup
+  layer: L2
+  vm:
+    type: EVM
+    evmCompatible: true
   settlementLayer: Ethereum
-  isL2: true
-  isEVM: true
   stack: OP Stack
 contractLanguages:
   - name: Solidity

@@ -557,7 +557,8 @@ async function generateChainOG(chain: any, metrics: any, font: ArrayBuffer) {
 
   const chainColor = color || "#3498db";
   const chainType =
-    technology?.type || (technology?.isEVM ? "EVM Chain" : "Blockchain");
+    technology?.type ||
+    (technology?.vm?.evmCompatible ? "EVM Chain" : "Blockchain");
 
   const element = {
     type: "div",

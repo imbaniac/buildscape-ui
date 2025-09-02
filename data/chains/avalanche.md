@@ -9,8 +9,11 @@ website: https://www.avax.network
 launchDate: 2020-09-21
 maxBlockSize: 8
 technology:
-  isL2: false
-  isEVM: true
+  type: Proof of Stake
+  layer: L1
+  vm:
+    type: AvalancheVM
+    evmCompatible: true
 contractLanguages:
   - name: Solidity
     url: https://soliditylang.org

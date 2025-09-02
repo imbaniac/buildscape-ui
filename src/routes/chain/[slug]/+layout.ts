@@ -10,7 +10,7 @@ function mergeEvmTools(
   _chainSlug: string,
 ): any {
   // If not an EVM chain, return as-is
-  if (!chainStatic.technology?.isEVM) {
+  if (!chainStatic.technology?.vm?.evmCompatible) {
     return chainStatic;
   }
 

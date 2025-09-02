@@ -6,13 +6,15 @@ color: "#F5F6F9"
 logo: soneium.svg
 parentOrganization: Sony Block Solutions Labs
 website: https://soneium.org
-launchDate:
+launchDate: 2025-01-14
 maxBlockSize: 30
 technology:
   type: Optimistic Rollup
+  layer: L2
+  vm:
+    type: EVM
+    evmCompatible: true
   settlementLayer: Ethereum
-  isL2: true
-  isEVM: true
   stack: OP Stack
 contractLanguages:
   - name: Solidity

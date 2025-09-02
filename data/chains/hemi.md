@@ -6,11 +6,17 @@ color: "#f04d06"
 logo: hemi.svg
 parentOrganization: Hemi Labs
 website: https://hemi.xyz
-launchDate: 2024-01-01
-maxBlockSize:
+launchDate: 2025-03-12
+maxBlockSize: 30
 technology:
-  isL2: true
-  isEVM: true
+  type: Modular L2
+  layer: L2
+  vm:
+    type: EVM
+    evmCompatible: true
+  settlementLayer: Bitcoin, Ethereum
+  consensus: Proof-of-Proof (PoP)
+  stack: OP Stack
 contractLanguages:
   - name: Solidity
     url: https://soliditylang.org

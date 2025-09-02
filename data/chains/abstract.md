@@ -4,13 +4,19 @@ chainId: 2741
 nativeCurrency: ETH
 color: "#36f197"
 logo: abstract.svg
-parentOrganization: Abstract Foundation
+parentOrganization: Igloo Inc. / Cube Labs
 website: https://abs.xyz
-launchDate: 2024-01-01
-maxBlockSize:
+launchDate: 2025-01-27
+maxBlockSize: 30
 technology:
-  isL2: true
-  isEVM: true
+  type: ZK Rollup
+  layer: L2
+  vm:
+    type: zkEVM
+    evmCompatible: true
+  settlementLayer: Ethereum
+  stack: ZK Stack
+  dataAvailability: EigenDA
 contractLanguages:
   - name: Solidity
     url: https://soliditylang.org

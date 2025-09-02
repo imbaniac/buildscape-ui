@@ -4,13 +4,17 @@ chainId: 200901
 nativeCurrency: BTC
 color: "#E46F1B"
 logo: bitlayer.svg
-parentOrganization:
+parentOrganization: Bitlayer Labs
 website: https://www.bitlayer.org
-launchDate:
-maxBlockSize:
+launchDate: 2024-04-01
+maxBlockSize: 30
 technology:
-  isL2: true
-  isEVM: true
+  type: BitVM Rollup
+  layer: L2
+  vm:
+    type: EVM
+    evmCompatible: true
+  settlementLayer: Bitcoin
 contractLanguages:
   - name: Solidity
     url: https://soliditylang.org
