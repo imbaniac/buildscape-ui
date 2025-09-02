@@ -8,12 +8,15 @@ parentOrganization: Offchain Labs
 website: https://arbitrum.io
 launchDate: 2022-08-09
 maxBlockSize: 32
-techStack: Arbitrum
 technology:
   type: AnyTrust
+  layer: L2
+  vm:
+    type: ArbitrumVM
+    evmCompatible: true
   settlementLayer: Ethereum
-  isL2: true
-  isEVM: true
+  stack: Arbitrum AnyTrust
+  dataAvailability: Data Availability Committee
 contractLanguages:
   - name: Solidity
     url: https://soliditylang.org

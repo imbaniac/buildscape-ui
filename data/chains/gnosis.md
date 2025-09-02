@@ -6,11 +6,15 @@ color: "#3e6957"
 logo: gnosis.svg
 parentOrganization: Gnosis
 website: https://www.gnosischain.com
-launchDate: 2021-12-01
+launchDate: 2021-12-08
 maxBlockSize: 30
 technology:
-  isL2: false
-  isEVM: true
+  type: Proof of Stake
+  layer: Sidechain
+  vm:
+    type: EVM
+    evmCompatible: true
+  settlementLayer: Ethereum
 contractLanguages:
   - name: Solidity
     url: https://soliditylang.org

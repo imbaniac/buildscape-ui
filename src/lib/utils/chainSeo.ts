@@ -33,8 +33,12 @@ export function generateSeoDescription(
   const chainId = chainStatic?.chainId || layoutData?.chainId;
   const nativeCurrency =
     chainStatic?.nativeCurrency || layoutData?.nativeCurrency || "ETH";
-  const isEVM = chainStatic?.technology?.isEVM || layoutData?.technology?.isEVM;
-  const isL2 = chainStatic?.technology?.isL2 || layoutData?.technology?.isL2;
+  const isEVM =
+    chainStatic?.technology?.vm?.evmCompatible ||
+    layoutData?.technology?.vm?.evmCompatible;
+  const isL2 =
+    chainStatic?.technology?.layer === "L2" ||
+    layoutData?.technology?.layer === "L2";
 
   // Use actual description if available and truncate to ~160 chars for SEO
   if (chainStatic?.description) {
@@ -80,8 +84,12 @@ export function generateSeoKeywords(chainStatic: any, layoutData: any): string {
   const chainId = chainStatic?.chainId || layoutData?.chainId;
   const nativeCurrency =
     chainStatic?.nativeCurrency || layoutData?.nativeCurrency || "ETH";
-  const isEVM = chainStatic?.technology?.isEVM || layoutData?.technology?.isEVM;
-  const isL2 = chainStatic?.technology?.isL2 || layoutData?.technology?.isL2;
+  const isEVM =
+    chainStatic?.technology?.vm?.evmCompatible ||
+    layoutData?.technology?.vm?.evmCompatible;
+  const isL2 =
+    chainStatic?.technology?.layer === "L2" ||
+    layoutData?.technology?.layer === "L2";
 
   const keywords = [
     // Brand/name variations
@@ -192,7 +200,7 @@ export function generateJsonLd(chainStatic: any, layoutData: any): any {
               text: `The native currency of ${name} is ${nativeCurrency}. This is the token used to pay for transaction fees on the network.`,
             },
           },
-          ...(chainStatic?.technology?.isEVM
+          ...(chainStatic?.technology?.vm?.evmCompatible
             ? [
                 {
                   "@type": "Question",
@@ -212,7 +220,7 @@ export function generateJsonLd(chainStatic: any, layoutData: any): any {
               text: `To add ${name} to MetaMask: 1) Open MetaMask and go to Settings > Networks > Add Network. 2) Enter Chain ID: ${chainId}, Currency Symbol: ${nativeCurrency}, and an RPC URL from our verified list. 3) Click Save to add the network.`,
             },
           },
-          ...(chainStatic?.technology?.isL2
+          ...(chainStatic?.technology?.layer === "L2"
             ? [
                 {
                   "@type": "Question",

@@ -6,13 +6,15 @@ color: "#0052FF"
 logo: base.svg
 parentOrganization: Coinbase
 website: https://base.org
-launchDate: 2023-07-13
+launchDate: 2023-08-09
 maxBlockSize: 30
 technology:
   type: Optimistic Rollup
+  layer: L2
+  vm:
+    type: EVM
+    evmCompatible: true
   settlementLayer: Ethereum
-  isL2: true
-  isEVM: true
   stack: OP Stack
 contractLanguages:
   - name: Solidity

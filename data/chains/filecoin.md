@@ -7,10 +7,13 @@ logo: filecoin.svg
 parentOrganization: Protocol Labs
 website: https://filecoin.io
 launchDate: 2020-10-15
-maxBlockSize:
+maxBlockSize: 30
 technology:
-  isL2: false
-  isEVM: true
+  type: Proof of Spacetime
+  layer: L1
+  vm:
+    type: FVM
+    evmCompatible: true
 contractLanguages:
   - name: Solidity
     url: https://soliditylang.org

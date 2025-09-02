@@ -9,11 +9,13 @@ website: https://linea.build
 launchDate: 2023-07-11
 maxBlockSize: 30
 technology:
-  type: zk Rollup
+  type: ZK Rollup
+  layer: L2
+  vm:
+    type: zkEVM
+    evmCompatible: true
   settlementLayer: Ethereum
-  isL2: true
-  isEVM: true
-  stack: zkEVM
+  stack: Linea zkEVM
 contractLanguages:
   - name: Solidity
     url: https://soliditylang.org

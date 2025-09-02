@@ -4,13 +4,18 @@ chainId: 42220
 nativeCurrency: CELO
 color: "#FCFF52"
 logo: celo.svg
-parentOrganization: Celo Foundation
+parentOrganization: Celo Foundation / cLabs
 website: https://celo.org
 launchDate: 2020-04-22
-maxBlockSize:
+maxBlockSize: 30
 technology:
-  isL2: false
-  isEVM: true
+  type: Optimistic Rollup
+  layer: L2
+  vm:
+    type: EVM
+    evmCompatible: true
+  settlementLayer: Ethereum
+  stack: OP Stack
 contractLanguages:
   - name: Solidity
     url: https://soliditylang.org

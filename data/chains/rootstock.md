@@ -9,8 +9,12 @@ website: https://rootstock.io
 launchDate: 2018-01-04
 maxBlockSize: 6.8
 technology:
-  isL2: false
-  isEVM: true
+  type: Proof of Work
+  layer: Sidechain
+  vm:
+    type: EVM
+    evmCompatible: true
+  settlementLayer: Bitcoin
 contractLanguages:
   - name: Solidity
     url: https://soliditylang.org

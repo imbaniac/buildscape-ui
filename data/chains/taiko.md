@@ -6,11 +6,15 @@ color: "#E81899"
 logo: taiko.svg
 parentOrganization: Taiko Labs
 website: https://taiko.xyz
-launchDate:
-maxBlockSize:
+launchDate: 2024-05-27
+maxBlockSize: 30
 technology:
-  isL2: true
-  isEVM: true
+  type: ZK Rollup
+  layer: L2
+  vm:
+    type: EVM
+    evmCompatible: true
+  settlementLayer: Ethereum
 contractLanguages:
   - name: Solidity
     url: https://soliditylang.org

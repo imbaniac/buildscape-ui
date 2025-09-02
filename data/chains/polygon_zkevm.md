@@ -10,9 +10,11 @@ launchDate: 2023-03-27
 maxBlockSize: 30
 technology:
   type: ZK Rollup
+  layer: L2
+  vm:
+    type: zkEVM
+    evmCompatible: true
   settlementLayer: Ethereum
-  isL2: true
-  isEVM: true
   stack: Polygon zkEVM
 contractLanguages:
   - name: Solidity

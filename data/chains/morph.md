@@ -6,13 +6,15 @@ color: "#14A800"
 logo: morph.svg
 parentOrganization: Morph
 website: https://morphl2.io
-launchDate:
+launchDate: 2024-10-30
 maxBlockSize: 30
 technology:
   type: Optimistic ZK-Rollup
+  layer: L2
+  vm:
+    type: EVM
+    evmCompatible: true
   settlementLayer: Ethereum
-  isL2: true
-  isEVM: true
 contractLanguages:
   - name: Solidity
     url: https://soliditylang.org

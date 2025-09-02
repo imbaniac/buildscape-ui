@@ -6,14 +6,16 @@ color: "#87672d"
 logo: lisk.svg
 parentOrganization: Lisk
 website: https://lisk.com
-launchDate: 2024-05-23
+launchDate: 2024-11-12
 maxBlockSize: 30
 technology:
-  isL2: true
-  isEVM: true
-  rollupType: "Optimistic"
-  rollupDA: "Ethereum"
-  parentChain: "Ethereum"
+  type: Optimistic Rollup
+  layer: L2
+  vm:
+    type: EVM
+    evmCompatible: true
+  settlementLayer: Ethereum
+  stack: OP Stack
 contractLanguages:
   - name: Solidity
     url: https://soliditylang.org

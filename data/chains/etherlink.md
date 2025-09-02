@@ -6,13 +6,16 @@ color: "#38FF9C"
 logo: etherlink.svg
 parentOrganization: Tezos Foundation
 website: https://etherlink.com
-launchDate: 2024-05-01
+launchDate: 2024-05-15
 maxBlockSize: 30
 technology:
-  isL2: true
-  parentChain: Tezos
-  isEVM: true
-  rollupType: Tezos Smart Rollup
+  type: Smart Rollup
+  layer: L2
+  vm:
+    type: EVM
+    evmCompatible: true
+  settlementLayer: Tezos
+  stack: Tezos Rollup
 contractLanguages:
   - name: Solidity
     url: https://soliditylang.org

@@ -4,16 +4,18 @@ chainId: 81457
 nativeCurrency: ETH
 color: "#FCFC03"
 logo: blast.svg
-parentOrganization:
+parentOrganization: Blur
 website: https://blast.io
 launchDate: 2024-02-29
 maxBlockSize: 30
 technology:
   type: Optimistic Rollup
+  layer: L2
+  vm:
+    type: EVM
+    evmCompatible: true
   settlementLayer: Ethereum
-  isL2: true
-  isEVM: true
-  stack: Custom
+  stack: OP Stack
 contractLanguages:
   - name: Solidity
     url: https://soliditylang.org

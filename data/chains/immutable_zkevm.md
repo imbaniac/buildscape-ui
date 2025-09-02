@@ -6,13 +6,15 @@ color: "#210043"
 logo: immutable_zkevm.svg
 parentOrganization: Immutable
 website: https://www.immutable.com
-launchDate:
-maxBlockSize:
+launchDate: 2024-01-30
+maxBlockSize: 30
 technology:
-  isL2: true
-  isEVM: true
   type: ZK Rollup
-  parentChain: Ethereum
+  layer: L2
+  vm:
+    type: zkEVM
+    evmCompatible: true
+  settlementLayer: Ethereum
   stack: Polygon zkEVM
 contractLanguages:
   - name: Solidity

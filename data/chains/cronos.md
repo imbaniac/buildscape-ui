@@ -9,8 +9,12 @@ website: https://cronos.org
 launchDate: 2021-11-08
 maxBlockSize: 30
 technology:
-  isL2: false
-  isEVM: true
+  type: Proof of Authority
+  layer: L1
+  vm:
+    type: EVM
+    evmCompatible: true
+  stack: Cosmos
 contractLanguages:
   - name: Solidity
     url: https://soliditylang.org

@@ -9,8 +9,11 @@ website: https://pulsechain.com/
 launchDate: 2023-05-13
 maxBlockSize: 30
 technology:
-  isL2: false
-  isEVM: true
+  type: Proof of Stake
+  layer: L1
+  vm:
+    type: EVM
+    evmCompatible: true
 contractLanguages:
   - name: Solidity
     url: https://soliditylang.org

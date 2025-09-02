@@ -294,7 +294,7 @@
       {#if data.bookmarks}
         <div class="tabs-header" bind:this={tabsHeader}>
           {#each data.bookmarks as group (group.id)}
-            {#if group.id !== "wallets" || chainStatic?.technology?.isEVM}
+            {#if group.id !== "wallets" || chainStatic?.technology?.vm?.evmCompatible}
               <TabButton
                 active={activeTab === group.id}
                 onclick={() => handleTabClick(group.id)}

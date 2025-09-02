@@ -6,13 +6,16 @@ color: "#0C18EC"
 logo: zksync.svg
 parentOrganization: Matter Labs
 website: https://zksync.io
-launchDate: 2024-03-24
+launchDate: 2023-03-24
 maxBlockSize: 128
 technology:
   type: ZK Rollup
+  layer: L2
+  vm:
+    type: EraVM
+    evmCompatible: true
   settlementLayer: Ethereum
-  isL2: true
-  isEVM: true
+  stack: ZK Stack
 contractLanguages:
   - name: Solidity
     url: https://soliditylang.org

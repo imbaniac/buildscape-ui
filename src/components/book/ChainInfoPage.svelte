@@ -185,26 +185,28 @@
   <div class="tech-stamps">
     <div class="stamp-container">
       <GlossaryTerm
-        term={chainStatic.technology?.isL3
+        term={chainStatic.technology?.layer === "L3"
           ? "layer3"
-          : chainStatic.technology?.isL2
+          : chainStatic.technology?.layer === "L2"
             ? "layer2"
             : "layer1"}
       >
         <span
-          class="tech-stamp {chainStatic.technology?.isL3
+          class="tech-stamp {chainStatic.technology?.layer === 'L3'
             ? 'l3'
-            : chainStatic.technology?.isL2
+            : chainStatic.technology?.layer === 'L2'
               ? 'l2'
               : 'l1'}"
         >
           <span class="stamp-label">Layer</span>
           <span class="stamp-value"
-            >{chainStatic.technology?.isL3
+            >{chainStatic.technology?.layer === "L3"
               ? "3"
-              : chainStatic.technology?.isL2
+              : chainStatic.technology?.layer === "L2"
                 ? "2"
-                : "1"}</span
+                : chainStatic.technology?.layer === "Sidechain"
+                  ? "Sidechain"
+                  : "1"}</span
           >
         </span>
       </GlossaryTerm>
@@ -243,7 +245,7 @@
         </GlossaryTerm>
       </div>
     {/if}
-    {#if chainStatic.technology?.isEVM}
+    {#if chainStatic.technology?.vm?.evmCompatible}
       <div class="stamp-container">
         <GlossaryTerm term="evm">
           <span class="tech-stamp evm">
@@ -370,7 +372,6 @@
     margin-bottom: 1rem;
     position: relative;
     z-index: 1;
-    /* Ensure stamps don't start at the very edge */
     justify-content: center;
   }
 
@@ -419,7 +420,7 @@
   }
 
   .stamp-value {
-    font-size: 0.875rem;
+    font-size: 0.7rem;
     font-weight: 600;
     color: #475569;
     text-transform: uppercase;

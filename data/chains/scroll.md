@@ -4,13 +4,17 @@ chainId: 534352
 nativeCurrency: ETH
 color: "#edcca2"
 logo: scroll.svg
-parentOrganization:
+parentOrganization: Scroll Tech
 website: https://scroll.io
-launchDate:
-maxBlockSize:
+launchDate: 2023-10-17
+maxBlockSize: 30
 technology:
-  isL2: true
-  isEVM: true
+  type: ZK Rollup
+  layer: L2
+  vm:
+    type: EVM
+    evmCompatible: true
+  settlementLayer: Ethereum
 contractLanguages:
   - name: Solidity
     url: https://soliditylang.org

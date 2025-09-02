@@ -4,16 +4,18 @@ color: "#0054FA"
 chainId: 33139
 nativeCurrency: APE
 logo: apechain.svg
-parentOrganization: Ape Foundation
+parentOrganization: ApeCoin DAO / Ape Foundation
 website: https://apechain.com
 launchDate: 2024-10-20
 maxBlockSize: 30
-techStack: Arbitrum Orbit
 technology:
-  type: Arbitrum Orbit
-  settlementLayer: Ethereum
-  isL3: true
-  isEVM: true
+  type: Optimistic Rollup
+  layer: L3
+  vm:
+    type: EVM
+    evmCompatible: true
+  settlementLayer: Arbitrum One
+  stack: Arbitrum Orbit
 contractLanguages:
   - name: Solidity
     url: https://soliditylang.org

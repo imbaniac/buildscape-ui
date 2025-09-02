@@ -40,12 +40,44 @@ website: https://arbitrum.io # Official website
 launchDate: 2021-08-31 # Launch date in YYYY-MM-DD format
 maxBlockSize: 30 # Block size in MB (usually 30)
 technology:
-  type: Optimistic Rollup # L1, Optimistic Rollup, zkEVM Rollup, Sidechain
-  settlementLayer: Ethereum # If L2/sidechain (omit for L1s)
-  isL2: true # true/false
-  isEVM: true # true/false
-  stack: Arbitrum Nitro # Tech stack if applicable (OP Stack, Polygon CDK, etc.)
+  type: Optimistic Rollup # Technical implementation (see types below)
+  layer: L2 # Network layer: L1, L2, L3, or Sidechain
+  vm:
+    type: ArbitrumVM # Virtual machine type (EVM, zkEVM, ArbitrumVM, etc.)
+    evmCompatible: true # Whether it supports EVM bytecode
+  settlementLayer: Ethereum # Where transactions settle (required for L2/L3/Sidechains)
+  stack: Arbitrum Nitro # Tech stack if applicable (OP Stack, ZK Stack, etc.)
 ```
+
+#### Technology Type Options
+
+**For L2s:**
+
+- `Optimistic Rollup` - Uses fraud proofs (Arbitrum, Optimism, Base)
+- `ZK Rollup` - Uses zero-knowledge proofs (zkSync, Scroll, Linea)
+- `Validium` - Off-chain data availability with ZK proofs
+- `Optimium` - Optimistic rollup with off-chain data
+- `AnyTrust` - Arbitrum's Data Availability Committee model
+
+**For L1s/Sidechains:**
+
+- `Proof of Stake` - Standard PoS consensus
+- `Proof of Authority` - Authority-based consensus
+- `DPoS` - Delegated Proof of Stake
+- `Proof of Staked Authority` - Hybrid PoS/PoA (BNB Chain)
+- Others common consensus mechanisms as needed
+
+#### VM Types
+
+Common virtual machine types:
+
+- `EVM` - Standard Ethereum Virtual Machine
+- `zkEVM` - Zero-knowledge EVM implementation
+- `ArbitrumVM` - Arbitrum's VM with WASM support
+- `AvalancheVM` - Avalanche's custom VM
+- `FVM` - Filecoin Virtual Machine
+- `BeraVM` - Berachain's EVM-compatible VM
+- Custom VM types as needed
 
 ### Required Sections
 
@@ -239,10 +271,12 @@ We provide an AI prompt to help generate properly formatted chain data:
 
 Look at these well-formatted chains:
 
-- `/data/chains/ethereum.md` - L1 example
-- `/data/chains/arbitrum_one.md` - Optimistic rollup
-- `/data/chains/polygon_zkevm.md` - zkEVM rollup
-- `/data/chains/polygon_pos.md` - Sidechain
+- `/data/chains/ethereum.md` - L1 with standard EVM
+- `/data/chains/arbitrum_one.md` - L2 Optimistic rollup with ArbitrumVM
+- `/data/chains/zksync.md` - L2 ZK rollup with custom VM (EraVM)
+- `/data/chains/polygon_pos.md` - Sidechain with EVM
+- `/data/chains/base.md` - L2 using OP Stack
+- `/data/chains/apechain.md` - L3 on Arbitrum using Arbitrum Orbit
 
 ## Validation Checklist
 

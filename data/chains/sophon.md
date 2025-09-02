@@ -4,14 +4,19 @@ chainId: 50104
 nativeCurrency: SOPH
 color: "#0096f7"
 logo: sophon.svg
-parentOrganization:
+parentOrganization: Sophon Labs
 website: https://www.sophon.xyz
-launchDate:
+launchDate: 2024-12-18
 maxBlockSize:
 technology:
-  isL2: true
-  isEVM: true
-  stack: ZKsync
+  type: Validium
+  layer: L2
+  vm:
+    type: zkEVM
+    evmCompatible: true
+  settlementLayer: Ethereum
+  stack: ZK Stack
+  dataAvailability: Avail
 contractLanguages:
   - name: Solidity
     url: https://soliditylang.org

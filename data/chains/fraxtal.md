@@ -6,13 +6,15 @@ color: "#3B82F6"
 logo: fraxtal.svg
 parentOrganization: Frax Finance
 website: https://frax.com
-launchDate: 2024-02-01
+launchDate: 2024-02-08
 maxBlockSize: 30
 technology:
   type: Optimistic Rollup
+  layer: L2
+  vm:
+    type: EVM
+    evmCompatible: true
   settlementLayer: Ethereum
-  isL2: true
-  isEVM: true
   stack: OP Stack
 contractLanguages:
   - name: Solidity

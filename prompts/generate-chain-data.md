@@ -36,11 +36,14 @@ website: [Official website URL]
 launchDate: [YYYY-MM-DD format]
 maxBlockSize: [Block size in MB, typically 30 for most chains]
 technology:
-  type: [One of: L1, Optimistic Rollup, zkEVM Rollup, Sidechain, Other]
-  settlementLayer: [If L2/sidechain: Ethereum, etc. Omit if L1]
-  isL2: [true/false]
-  isEVM: [true/false]
-  stack: [If applicable: OP Stack, Polygon CDK, Arbitrum Orbit, etc.]
+  type: [Technical implementation - see note below]
+  layer: [L1, L2, L3, or Sidechain]
+  vm:
+    type: [VM type: EVM, zkEVM, ArbitrumVM, etc.]
+    evmCompatible: [true if supports EVM bytecode, false otherwise]
+  settlementLayer: [If L2/L3/sidechain: Ethereum, Bitcoin, etc. Omit if L1]
+  stack: [If applicable: OP Stack, ZK Stack, Arbitrum Orbit, Cosmos SDK, etc.]
+  dataAvailability: [If non-standard: EigenDA, Celestia, etc.]
 contractLanguages:
   - name: Solidity
     url: https://soliditylang.org

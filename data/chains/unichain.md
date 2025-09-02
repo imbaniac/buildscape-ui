@@ -6,13 +6,15 @@ color: "#F50FB4"
 logo: unichain.svg
 parentOrganization: Uniswap Labs
 website: https://unichain.org
-launchDate: 2024-10-31
+launchDate: 2025-02-11
 maxBlockSize: 30
 technology:
   type: Optimistic Rollup
+  layer: L2
+  vm:
+    type: EVM
+    evmCompatible: true
   settlementLayer: Ethereum
-  isL2: true
-  isEVM: true
   stack: OP Stack
 contractLanguages:
   - name: Solidity

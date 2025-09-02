@@ -6,11 +6,15 @@ color: "#814625"
 logo: berachain.svg
 parentOrganization: Berachain Foundation
 website: https://www.berachain.com
-launchDate: 2025-01-16
+launchDate: 2025-02-06
 maxBlockSize: 30
 technology:
-  isL2: false
-  isEVM: true
+  type: Proof of Liquidity
+  layer: L1
+  vm:
+    type: BeraVM
+    evmCompatible: true
+  stack: BeaconKit, Cosmos
 contractLanguages:
   - name: Solidity
     url: https://soliditylang.org
