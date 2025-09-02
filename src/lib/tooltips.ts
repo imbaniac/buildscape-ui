@@ -30,6 +30,27 @@ const dataAvailabilityContent: TooltipContent = {
   text: "DA (Data Availability) ensures transaction data is accessible to all network participants for verification.",
 };
 
+const proofOfStakeContent: TooltipContent = {
+  text: "PoS (Proof of Stake) - Consensus mechanism where validators stake tokens to secure the network.",
+  link: "https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/",
+};
+
+const proofOfWorkContent: TooltipContent = {
+  text: "PoW (Proof of Work) - Consensus mechanism using computational power to validate transactions (Bitcoin mining).",
+};
+
+const proofOfLiquidityContent: TooltipContent = {
+  text: "PoL (Proof of Liquidity) - Consensus mechanism where validators must provide liquidity to decentralized markets to participate in block production.",
+};
+
+const proofOfSpacetimeContent: TooltipContent = {
+  text: "PoSt (Proof of Spacetime) - Consensus mechanism that proves data is stored over time, used in decentralized storage networks like Filecoin.",
+};
+
+const proofOfAuthorityContent: TooltipContent = {
+  text: "PoA (Proof of Authority) - Consensus mechanism where approved validators are pre-selected based on their reputation or identity to validate transactions.",
+};
+
 export const glossary: Record<string, TooltipContent> = {
   // Layer types - full names and abbreviations
   layer1: layer1Content,
@@ -101,13 +122,10 @@ export const glossary: Record<string, TooltipContent> = {
   },
 
   // Consensus and validation
-  pos: {
-    text: "PoS (Proof of Stake) - Consensus mechanism where validators stake tokens to secure the network.",
-    link: "https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/",
-  },
-  pow: {
-    text: "PoW (Proof of Work) - Consensus mechanism using computational power to validate transactions (Bitcoin mining).",
-  },
+  pos: proofOfStakeContent,
+  "proof of stake": proofOfStakeContent,
+  pow: proofOfWorkContent,
+  "proof of work": proofOfWorkContent,
   validator: {
     text: "Validators secure the network by proposing and attesting to blocks, earning rewards for honest behavior.",
   },
@@ -302,4 +320,13 @@ export const glossary: Record<string, TooltipContent> = {
     text: "Stage 2 rollup: No training wheels. Fully decentralized with permissionless fraud proofs and strict upgrade delays. Ethereum-level security.",
     link: "https://l2beat.com/scaling/summary#stage-classification",
   },
+  "modular l2": {
+    text: "Modular L2s are Layer 2 blockchains built with separable components (execution, consensus, data availability) that can be customized and swapped independently.",
+  },
+  "proof of liquidity": proofOfLiquidityContent,
+  pol: proofOfLiquidityContent,
+  "proof of spacetime": proofOfSpacetimeContent,
+  post: proofOfSpacetimeContent,
+  "proof of authority": proofOfAuthorityContent,
+  poa: proofOfAuthorityContent,
 };

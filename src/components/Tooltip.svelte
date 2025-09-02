@@ -23,24 +23,24 @@
   let { content, anchor, visible, onMouseEnter, onMouseLeave }: Props =
     $props();
 
-  let tooltipEl: HTMLDivElement;
-  let arrowEl: HTMLDivElement;
+  let tooltipEl = $state<HTMLDivElement>();
+  let arrowEl = $state<HTMLDivElement>();
   let cleanup: (() => void) | null = null;
   let isPositioned = $state(false);
 
   function updatePosition() {
-    if (!anchor || !tooltipEl) return;
+    if (!anchor || !tooltipEl || !arrowEl) return;
 
     computePosition(anchor, tooltipEl, {
       placement: "top",
       middleware: [
-        offset(10),
+        offset(24),
         flip(),
         shift({ padding: 10 }),
         arrow({ element: arrowEl }),
       ],
     }).then(({ x, y, placement, middlewareData }) => {
-      Object.assign(tooltipEl.style, {
+      Object.assign(tooltipEl!.style, {
         left: `${x}px`,
         top: `${y}px`,
       });
@@ -56,7 +56,7 @@
           left: "right",
         }[placement.split("-")[0]];
 
-        Object.assign(arrowEl.style, {
+        Object.assign(arrowEl!.style, {
           left: arrowX != null ? `${arrowX}px` : "",
           top: arrowY != null ? `${arrowY}px` : "",
           right: "",
@@ -65,7 +65,7 @@
         });
 
         // Update arrow class for styling
-        arrowEl.className = `tooltip-arrow tooltip-arrow-${placement.split("-")[0]}`;
+        arrowEl!.className = `tooltip-arrow tooltip-arrow-${placement.split("-")[0]}`;
       }
 
       // Mark as positioned after first calculation
@@ -156,7 +156,7 @@
     border-radius: 8px;
     box-shadow:
       0 0 0 1px rgba(0, 0, 0, 0.5),
-      0 8px 32px rgba(0, 0, 0, 0.8),
+      0 4px 16px rgba(0, 0, 0, 0.8),
       inset 0 1px 0 rgba(255, 255, 255, 0.1);
     color: #f0e6d2;
     font-family: var(--font-body);
