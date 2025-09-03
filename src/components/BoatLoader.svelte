@@ -10,6 +10,11 @@
       <img src={boatUrl} alt="" />
     </div>
   </div>
+  <div class="waves">
+    <div class="wave wave-1"></div>
+    <div class="wave wave-2"></div>
+    <div class="bottom"></div>
+  </div>
 </div>
 
 <style>
@@ -28,8 +33,48 @@
   }
 
   .boat-container {
-    position: relative;
-    animation: swim-patrol 10s ease-in-out infinite;
+    position: absolute;
+    bottom: 12%;
+    animation: swim-patrol 14s ease-in-out infinite;
+  }
+
+  .waves {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 30%;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .wave {
+    position: absolute;
+    width: 200%;
+    height: 40%;
+    background-repeat: repeat-x;
+    background-size: 300px 100%;
+    left: -50%;
+  }
+
+  .wave-1 {
+    bottom: 30%;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 40' preserveAspectRatio='none'%3E%3Cpath d='M0,20 Q25,5 50,20 T100,20 L100,40 L0,40 Z' fill='rgba(255,255,255,0.2)'/%3E%3C/svg%3E");
+    animation: wave-shift-1 12s linear infinite;
+  }
+
+  .wave-2 {
+    bottom: 30%;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 40' preserveAspectRatio='none'%3E%3Cpath d='M0,20 Q25,5 50,20 T100,20 L100,40 L0,40 Z' fill='rgba(255,255,255,0.15)'/%3E%3C/svg%3E");
+    animation: wave-shift-2 15s linear infinite;
+  }
+
+  .bottom {
+    background-color: rgba(255, 255, 255, 0.3);
+    position: absolute;
+    height: 30%;
+    width: 100%;
+    bottom: 0;
   }
 
   .boat {
@@ -64,10 +109,10 @@
   @keyframes rock {
     0%,
     100% {
-      transform: rotate(-2deg);
+      transform: rotate(-4deg);
     }
     50% {
-      transform: rotate(2deg);
+      transform: rotate(4deg);
     }
   }
 
@@ -81,11 +126,33 @@
     }
   }
 
+  @keyframes wave-shift-1 {
+    0% {
+      background-position-x: 0;
+    }
+    100% {
+      background-position-x: 300px;
+    }
+  }
+
+  @keyframes wave-shift-2 {
+    0% {
+      background-position-x: 0;
+    }
+    100% {
+      background-position-x: -300px;
+    }
+  }
+
   /* Mobile adjustments */
   @media (max-width: 640px) {
     .boat {
       width: 160px;
       height: 160px;
+    }
+
+    .wave {
+      background-size: 200px 100%;
     }
   }
 </style>
