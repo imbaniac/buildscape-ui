@@ -16,6 +16,7 @@
 
   import BoatLoader from "../../components/BoatLoader.svelte";
   import ChartTable from "../../components/charts/ChartTable.svelte";
+  import type { Chain } from "../../components/charts/types";
   import Header from "../../components/Header.svelte";
 
   import type { PageData } from "./$types";
@@ -62,7 +63,7 @@
       return [];
     }
 
-    const combined = [];
+    const combined: Chain[] = [];
 
     // Create a map of chain data from overview for quick lookup
     const overviewChainMap = new SvelteMap<number, ChainOverview>();
@@ -102,6 +103,14 @@
         }
       }
 
+      // Calculate transaction cost if we have gas price and native token price
+      const gasPrice = overviewData?.gas_price || 0;
+      const nativeTokenPriceUSD = overviewData?.native_token_price_usd || 0;
+      const txCost =
+        gasPrice > 0 && nativeTokenPriceUSD > 0
+          ? gasPrice * 1e-9 * 21000 * nativeTokenPriceUSD
+          : 0;
+
       combined.push({
         ...typedChain,
         slug,
@@ -112,6 +121,12 @@
         activeAddresses,
         contracts,
         blockTime,
+        gasPrice,
+        nativeTokenSymbol:
+          overviewData?.native_token_symbol || typedChain.nativeCurrency,
+        nativeTokenPriceUSD,
+        nativeTokenPriceUpdatedAt: overviewData?.native_token_price_updated_at,
+        txCost,
         // Use technology data from frontmatter if available, otherwise determine from patterns
         type:
           typedChain.technology?.layer === "L2"

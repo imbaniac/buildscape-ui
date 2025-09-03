@@ -23,6 +23,9 @@ export interface ChainOverview {
   tvl_change_24h?: number | null;
   tvl_change_7d?: number | null;
   tvl_change_30d?: number | null;
+  native_token_symbol: string;
+  native_token_price_usd: number;
+  native_token_price_updated_at: string;
 }
 
 export interface OverviewData {

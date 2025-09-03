@@ -1,6 +1,8 @@
 <script lang="ts">
   import Tooltip from "../ui/Tooltip.svelte";
 
+  import GasTooltip from "./GasTooltip.svelte";
+
   interface Props {
     gasPrice: number;
     utilization: number;
@@ -10,6 +12,8 @@
     lastBlock?: string;
     networkStatus?: string;
     brandColor?: string;
+    nativeTokenPriceUSD?: number;
+    nativeTokenPriceUpdatedAt?: string;
   }
 
   let {
@@ -21,6 +25,8 @@
     lastBlock,
     networkStatus = "live",
     brandColor = "#3b82f6",
+    nativeTokenPriceUSD,
+    nativeTokenPriceUpdatedAt,
   }: Props = $props();
 
   // Ensure values are valid
@@ -69,6 +75,50 @@
   }
 
   const statusInfo = $derived(getStatusInfo(networkStatus));
+
+  // Calculate USD cost for a standard transfer (21,000 gas)
+  const usdCost = $derived(() => {
+    if (!nativeTokenPriceUSD || nativeTokenPriceUSD <= 0) return null;
+    // gasPrice is in gwei, convert to ETH (1e-9), multiply by gas units and USD price
+    const cost = safeGasPrice * 1e-9 * 21000 * nativeTokenPriceUSD;
+    return cost;
+  });
+
+  // Format USD cost
+  const formattedUSDCost = $derived(() => {
+    const cost = usdCost();
+    if (cost === null) return null;
+
+    if (cost < 0.0001) {
+      return "<$0.0001";
+    } else if (cost < 0.01) {
+      return `$${cost.toFixed(4)}`;
+    } else if (cost < 1) {
+      return `$${cost.toFixed(2)}`;
+    } else {
+      return `$${cost.toFixed(2)}`;
+    }
+  });
+
+  // Format gwei display
+  const formattedGwei = $derived(() => {
+    if (safeGasPrice < 0.01) {
+      return "<0.01";
+    }
+    return safeGasPrice.toFixed(2);
+  });
+
+  // Format native token price
+  const formattedTokenPrice = $derived(() => {
+    if (!nativeTokenPriceUSD || nativeTokenPriceUSD <= 0) return null;
+
+    if (nativeTokenPriceUSD < 0.0001) return "<$0.0001";
+    if (nativeTokenPriceUSD < 1) return `$${nativeTokenPriceUSD.toFixed(4)}`;
+    if (nativeTokenPriceUSD < 10) return `$${nativeTokenPriceUSD.toFixed(2)}`;
+    if (nativeTokenPriceUSD < 100) return `$${nativeTokenPriceUSD.toFixed(2)}`;
+    if (nativeTokenPriceUSD < 1000) return `$${nativeTokenPriceUSD.toFixed(0)}`;
+    return `$${Math.round(nativeTokenPriceUSD).toLocaleString()}`;
+  });
 </script>
 
 <div class="resource-panel" style="--brand-color: {brandColor}">
@@ -87,10 +137,14 @@
 
   <div class="panel-body">
     <div class="resources-grid">
-      <div class="resource-item">
-        <Tooltip
-          text={`Network utilization: ${safeUtilization}% - ${pressureStatus().text} pressure`}
-        >
+      <GasTooltip
+        gasPrice={safeGasPrice}
+        nativeTokenPrice={nativeTokenPriceUSD}
+        {nativeCurrency}
+        utilization={safeUtilization}
+        pressureStatus={pressureStatus()}
+      >
+        <div class="resource-item resource-item-interactive">
           <span class="resource-icon pressure-icon {pressureStatus().class}">
             {#if pressureStatus().class === "low"}
               🟢
@@ -102,27 +156,44 @@
               🔴
             {/if}
           </span>
-        </Tooltip>
-        <div class="resource-data">
-          <span class="resource-label">GAS</span>
-          <div class="resource-value">
-            <span class="value-number">{safeGasPrice.toFixed(2)}</span>
-            <span class="value-unit">gwei</span>
-            {#if trend() === "up"}
-              <span class="trend-indicator up">↑</span>
-            {:else if trend() === "down"}
-              <span class="trend-indicator down">↓</span>
-            {/if}
+          <div class="resource-data">
+            <span class="resource-label">TX COST</span>
+            <div class="resource-value stacked">
+              {#if formattedUSDCost()}
+                <div class="primary-value-row">
+                  <span class="value-number">{formattedUSDCost()}</span>
+                  {#if trend() === "up"}
+                    <span class="trend-indicator up">↑</span>
+                  {:else if trend() === "down"}
+                    <span class="trend-indicator down">↓</span>
+                  {/if}
+                </div>
+                <span class="secondary-value">{formattedGwei()} gwei</span>
+              {:else}
+                <div class="primary-value-row">
+                  <span class="value-number">{formattedGwei()}</span>
+                  <span class="value-unit">gwei</span>
+                  {#if trend() === "up"}
+                    <span class="trend-indicator up">↑</span>
+                  {:else if trend() === "down"}
+                    <span class="trend-indicator down">↓</span>
+                  {/if}
+                </div>
+              {/if}
+            </div>
           </div>
         </div>
-      </div>
+      </GasTooltip>
 
       <div class="resource-item">
         <span class="resource-icon">🪙</span>
         <div class="resource-data">
           <span class="resource-label">CURRENCY</span>
-          <div class="resource-value">
+          <div class="resource-value stacked">
             <span class="value-number">{nativeCurrency}</span>
+            {#if formattedTokenPrice()}
+              <span class="secondary-value">{formattedTokenPrice()}</span>
+            {/if}
           </div>
         </div>
       </div>
@@ -280,6 +351,16 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   }
 
+  .resource-item-interactive {
+    cursor: help;
+  }
+
+  .resource-item-interactive:hover {
+    background: #f3f4f6;
+    border-color: #c6c9d0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+
   .resource-icon {
     font-size: 1rem;
     opacity: 0.8;
@@ -288,7 +369,6 @@
   .pressure-icon {
     filter: none;
     opacity: 1;
-    cursor: help;
   }
 
   .resource-data {
@@ -339,6 +419,26 @@
 
   .trend-indicator.down {
     color: #10b981;
+  }
+
+  .resource-value.stacked {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  .primary-value-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.125rem;
+  }
+
+  .secondary-value {
+    font-size: 0.5625rem;
+    color: #95a5a6;
+    font-weight: 500;
+    line-height: 1.2;
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
   }
 
   @media (max-width: 1280px) {

@@ -83,6 +83,12 @@
         bVal = bVal?.toString().toLowerCase() || "";
       }
 
+      // Handle txCost by using the calculated value
+      if (sortColumn === "txCost") {
+        aVal = a.txCost || 0;
+        bVal = b.txCost || 0;
+      }
+
       // Handle undefined values
       if (aVal == null && bVal == null) return 0;
       if (aVal == null) return sortDirection === "asc" ? -1 : 1;
@@ -128,6 +134,7 @@
     { id: "tvl", label: "Treasury" },
     { id: "tps", label: "Activity" },
     { id: "blockTime", label: "SPEED" },
+    { id: "txCost", label: "TX COST" },
     { id: "transactions", label: "TXs" },
     { id: "activeAddresses", label: "Users" },
     { id: "contracts", label: "Contracts" },
@@ -252,12 +259,13 @@
     display: grid;
     grid-template-columns:
       70px 200px minmax(180px, 1.5fr) minmax(120px, 1fr) minmax(100px, 0.8fr)
-      minmax(100px, 1fr) minmax(100px, 1fr) minmax(140px, 1fr) minmax(
-        60px,
-        0.8fr
-      );
+      minmax(120px, 1fr) minmax(100px, 1fr) minmax(100px, 1fr) minmax(
+        140px,
+        1fr
+      )
+      minmax(60px, 0.8fr);
     width: 100%;
-    min-width: 900px;
+    min-width: 1000px;
   }
 
   .grid-header {
@@ -358,14 +366,11 @@
 
     .grid-table {
       font-size: 0.8rem;
-      min-width: 750px;
+      min-width: 850px;
       grid-template-columns:
         50px 140px minmax(140px, 1.5fr) minmax(100px, 1fr)
-        minmax(60px, 0.8fr) minmax(80px, 1fr) minmax(80px, 1fr) minmax(
-          120px,
-          1fr
-        )
-        minmax(40px, 0.6fr);
+        minmax(60px, 0.8fr) minmax(100px, 1fr) minmax(80px, 1fr)
+        minmax(80px, 1fr) minmax(120px, 1fr) minmax(40px, 0.6fr);
     }
 
     .grid-header {

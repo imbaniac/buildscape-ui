@@ -14,6 +14,10 @@ export interface Chain {
   logoUrl?: string;
   color?: string;
   gasPrice?: number;
+  nativeTokenSymbol?: string;
+  nativeTokenPriceUSD?: number;
+  nativeTokenPriceUpdatedAt?: string;
+  txCost?: number;
   status?: string;
   technology?: {
     type?: string; // "Optimistic Rollup", "ZK Rollup", "PoS", "PoW", etc.
@@ -38,7 +42,8 @@ export type SortColumn =
   | "transactions"
   | "activeAddresses"
   | "contracts"
-  | "blockTime";
+  | "blockTime"
+  | "txCost";
 
 export type SortDirection = "asc" | "desc";
 

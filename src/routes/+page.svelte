@@ -3,6 +3,7 @@
 
   import { goto } from "$app/navigation";
 
+  import { analytics } from "$lib/analytics";
   import SEO from "$lib/components/SEO.svelte";
   import savedPositions from "$lib/positions.json";
   import { mapStore } from "$lib/stores/mapStore";
@@ -71,6 +72,13 @@
       currentResultIndex = 0;
       hasSearched = true;
 
+      // Track search with no results
+      if (matches.length === 0) {
+        analytics.track("search_no_results", {
+          query: query,
+        });
+      }
+
       // Navigate to first result if any
       if (matches.length > 0) {
         navigateToChain(matches[0]);
@@ -81,6 +89,14 @@
   function navigateToChain(chainKey: string) {
     const position = (savedPositions as any)[chainKey];
     if (!position || !viewport) return;
+
+    // Track search conversion if this was from a search
+    if (searchQuery && searchResults.length > 0) {
+      analytics.track("search_converted", {
+        query: searchQuery,
+        selected_chain: chainKey,
+      });
+    }
 
     // Animate to the island with a moderate zoom level
     viewport.animate({
