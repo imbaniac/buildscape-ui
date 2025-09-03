@@ -125,7 +125,9 @@
 
   function handleRowClick(chain: Chain) {
     // Pass state to track that we came from the table view
-    goto(`/chain/${chain.slug}`, { state: { from: "/chains" } });
+    goto(`/chain/${chain.slug}`, {
+      state: { from: "/chains", period: selectedPeriod },
+    });
   }
 
   // Column configurations
@@ -238,6 +240,8 @@
   }
 
   .table-wrapper {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
     flex: 1;
     overflow-y: auto;
     overflow-x: auto;

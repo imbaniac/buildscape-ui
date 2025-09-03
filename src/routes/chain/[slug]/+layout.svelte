@@ -54,8 +54,10 @@
   const overviewStoreState = $derived($overviewStore);
 
   // State for metrics span - shared across all tabs
-  // Default to 24h, will be updated from store if different
-  let metricsSpan = $state<PeriodType>("24h");
+  // Default to global period from overviewStore, fallback to 24h
+  let metricsSpan = $state<PeriodType>(
+    (overviewStore.getCurrentPeriod() as PeriodType) || "24h",
+  );
 
   // Check if the overview data matches the requested period
   const isCorrectPeriod = $derived(
