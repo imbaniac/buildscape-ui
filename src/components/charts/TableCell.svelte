@@ -1,10 +1,12 @@
 <script lang="ts">
   import { formatChartValue } from "$lib/utils/chartFormatters";
 
+  import Tooltip from "../book/ui/Tooltip.svelte";
+
   import type { Chain } from "./types";
 
   interface Props {
-    type: "logo" | "name" | "tvl" | "metric" | "type";
+    type: "logo" | "name" | "tvl" | "metric" | "type" | "txCost";
     chain: Chain;
     index: number;
     isLoading?: boolean;
@@ -26,6 +28,13 @@
   }: Props = $props();
 
   const isAltRow = $derived(index % 2 === 1);
+
+  // Create tooltip text for tx cost
+  const txCostTooltipText = $derived(
+    type === "txCost" && chain.txCost && chain.txCost > 0
+      ? `$${chain.txCost.toFixed(8)} USD`
+      : "",
+  );
 </script>
 
 {#if type === "logo"}
@@ -102,6 +111,28 @@
           ? " TPS"
           : ""}
       </span>
+    {/if}
+  </button>
+{:else if type === "txCost"}
+  <button class="grid-cell" class:alt-row={isAltRow} onclick={onClick}>
+    {#if isLoading}
+      <span class="skeleton-metric"></span>
+    {:else if chain.txCost && chain.txCost > 0}
+      <Tooltip text={txCostTooltipText}>
+        <span class="value-text tx-cost-value">
+          {#if chain.txCost < 0.0001}
+            &lt;$0.0001
+          {:else if chain.txCost < 0.01}
+            ${chain.txCost.toFixed(4)}
+          {:else if chain.txCost < 1}
+            ${chain.txCost.toFixed(2)}
+          {:else}
+            ${chain.txCost.toFixed(2)}
+          {/if}
+        </span>
+      </Tooltip>
+    {:else}
+      <span class="value-text">-</span>
     {/if}
   </button>
 {:else if type === "type"}

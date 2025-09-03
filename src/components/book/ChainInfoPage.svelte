@@ -269,6 +269,8 @@
     {loadingStatus}
     brandColor={chainStatic.color}
     nativeCurrency={chainStatic.nativeCurrency}
+    nativeTokenPriceUSD={chainOverview?.native_token_price_usd}
+    nativeTokenPriceUpdatedAt={chainOverview?.native_token_price_updated_at}
   />
 
   <ActivityMetrics

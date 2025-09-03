@@ -11,6 +11,8 @@
     loadingStatus: boolean;
     brandColor?: string;
     nativeCurrency?: string;
+    nativeTokenPriceUSD?: number;
+    nativeTokenPriceUpdatedAt?: string;
   }
 
   let {
@@ -19,6 +21,8 @@
     loadingStatus,
     brandColor = "#8b5cf6",
     nativeCurrency = "ETH",
+    nativeTokenPriceUSD,
+    nativeTokenPriceUpdatedAt,
   }: Props = $props();
 
   // Only show skeleton on initial load, not on updates
@@ -43,6 +47,8 @@
       networkStatus={chainStatus?.status ||
         (loadingStatus ? "connecting" : "no_data")}
       {brandColor}
+      {nativeTokenPriceUSD}
+      {nativeTokenPriceUpdatedAt}
     />
   {/if}
 </div>

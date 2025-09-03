@@ -53,6 +53,7 @@
   metricType="blockTime"
   metricValue={chain.blockTime}
 />
+<TableCell type="txCost" {chain} {index} {isLoading} onClick={handleClick} />
 <TableCell
   type="metric"
   {chain}
