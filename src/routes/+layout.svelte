@@ -229,7 +229,7 @@
         antialias: false, // Better mobile performance
         resolution: window.devicePixelRatio || 1,
         autoDensity: true,
-        backgroundColor: 0x5ca9ce,
+        backgroundColor: 0x00a5e6,
         resizeTo: window,
         hello: true,
         autoStart: false, // Don't start ticker automatically
@@ -290,6 +290,10 @@
         .pinch()
         .wheel({
           smooth: 3, // Reduce smoothing for faster response
+        })
+        .decelerate({
+          friction: 0.98,
+          minSpeed: 0.01,
         });
 
       // Set zoom limits
