@@ -75,9 +75,6 @@ export default class PixiMapRenderer {
     // Enable sorting for islands by Y position (for isometric depth)
     this.islandsContainer.sortableChildren = true;
 
-    // Initialize ocean
-    this.createOceanBackground();
-
     // Setup global drag move handler
     this.setupGlobalDragHandler();
   }
@@ -118,20 +115,6 @@ export default class PixiMapRenderer {
         event.stopPropagation();
       }
     });
-  }
-
-  private createOceanBackground(): void {
-    const graphics = new Graphics();
-
-    // Draw large ocean background
-    const size = 20000;
-    graphics.rect(-size / 2, -size / 2, size, size);
-    graphics.fill({ color: 0x5ca9ce });
-
-    // Disable events on ocean background for performance
-    graphics.eventMode = "none";
-
-    this.oceanContainer.addChild(graphics);
   }
 
   async setIslands(islands: Island[]): Promise<void> {
@@ -202,13 +185,13 @@ export default class PixiMapRenderer {
 
     // IMPORTANT: Set hit area for better interaction detection
     // The island sprite is centered, so we need to ensure hit area is correct
-    const bounds = container.getLocalBounds();
-    container.hitArea = new Rectangle(
-      bounds.x,
-      bounds.y,
-      bounds.width,
-      bounds.height,
-    );
+    // const bounds = container.getLocalBounds();
+    // container.hitArea = new Rectangle(
+    //   bounds.x,
+    //   bounds.y,
+    //   bounds.width,
+    //   bounds.height,
+    // );
 
     // Setup drag events for edit mode
     this.setupIslandInteraction(container, island);
@@ -346,7 +329,7 @@ export default class PixiMapRenderer {
     if (island.slug === this.currentSearchResult) return;
 
     // Hover gets cyan tint and scale
-    container.tint = 0xccffff; // Light cyan tint for hover
+    container.tint = 0x99ffff; // Light cyan tint for hover
     container.alpha = 1;
   }
 
