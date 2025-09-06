@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { isNewChain } from "$lib/chainUtils";
   import { formatChartValue } from "$lib/utils/chartFormatters";
 
   import Tooltip from "../book/ui/Tooltip.svelte";
@@ -76,9 +77,14 @@
         <span class="skeleton-chain-id"></span>
       </div>
     {:else}
-      <div class="name-wrapper">
-        <span class="name-text">{chain.name}</span>
-        <span class="chain-id-text">#{chain.chainId}</span>
+      <div class="name-content">
+        <div class="name-wrapper">
+          <span class="name-text">{chain.name}</span>
+          <span class="chain-id-text">#{chain.chainId}</span>
+        </div>
+        {#if isNewChain(chain.created_at)}
+          <span class="new-badge">NEW</span>
+        {/if}
       </div>
     {/if}
   </button>
@@ -252,6 +258,14 @@
     font-weight: 600;
     color: var(--chain-color);
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+
+  .name-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.5rem;
+    flex: 1;
   }
 
   .name-wrapper {
@@ -464,6 +478,30 @@
 
     .value-text {
       font-size: 0.8rem;
+    }
+  }
+
+  /* New badge */
+  .new-badge {
+    display: inline-block;
+    padding: 0.125rem 0.375rem;
+    background: linear-gradient(135deg, #4a7c59, #3a6c49);
+    color: white;
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    border-radius: 2px;
+    font-family: var(--font-ui);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 640px) {
+    .new-badge {
+      font-size: 0.5625rem;
+      padding: 0.125rem 0.25rem;
+      margin-left: 0.25rem;
+      margin-right: 0.25rem;
     }
   }
 </style>

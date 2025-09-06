@@ -65,9 +65,19 @@
       getPeriodFromHours(overviewStoreState.data.period_hours) === metricsSpan,
   );
 
+  // Determine data availability state
+  const dataAvailability = $derived(() => {
+    if (overviewStoreState.isLoading) return "loading";
+    // If store has loaded and chain is not found, it's not indexed
+    if (overviewStoreState.data && !chainOverview) return "not_indexed";
+    if (chainOverview) return "available";
+    return "loading"; // Initial state
+  });
+
   // Actual loading state considering period mismatch
   const actualLoadingDynamic = $derived(
-    overviewStoreState.isLoading || !isCorrectPeriod || !chainOverview,
+    dataAvailability() === "loading" ||
+      (dataAvailability() === "available" && !isCorrectPeriod),
   );
 
   // One-time initialization from store's current period
@@ -171,6 +181,9 @@
     },
     get activeTab() {
       return activeTab;
+    },
+    get dataAvailability() {
+      return dataAvailability();
     },
     setMetricsSpan: (span: PeriodType) => {
       metricsSpan = span;

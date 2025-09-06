@@ -11,6 +11,7 @@
     onSpanChange: (span: PeriodType) => void;
     loadingDynamic: boolean;
     chainDynamic: any;
+    dataAvailability?: "loading" | "available" | "not_indexed";
     brandColor?: string;
   }
 
@@ -19,12 +20,15 @@
     onSpanChange,
     loadingDynamic,
     chainDynamic,
+    dataAvailability,
     brandColor = "#3b82f6",
   }: Props = $props();
 
   const spans: Array<PeriodType> = ["1h", "24h", "7d", "30d"];
 
-  const showSkeleton = $derived(loadingDynamic);
+  const showSkeleton = $derived(
+    loadingDynamic && dataAvailability !== "not_indexed",
+  );
 
   // Check if current data is incomplete
   const isDataIncomplete = $derived(
@@ -97,14 +101,16 @@
   <div class="metrics-grid">
     <MetricCard
       label="TPS"
-      value={chainDynamic?.tps}
+      value={dataAvailability === "not_indexed" ? null : chainDynamic?.tps}
       formatter={(v) => v.toFixed(2)}
       loading={showSkeleton}
       {brandColor}
     />
     <MetricCard
       label="Transactions"
-      value={chainDynamic?.transactions}
+      value={dataAvailability === "not_indexed"
+        ? null
+        : chainDynamic?.transactions}
       formatter={(v) => formatNumber(v)}
       tooltip={chainDynamic?.transactions
         ? formatNumberWithCommas(chainDynamic.transactions)
@@ -114,7 +120,9 @@
     />
     <MetricCard
       label="Population"
-      value={chainDynamic?.active_addresses}
+      value={dataAvailability === "not_indexed"
+        ? null
+        : chainDynamic?.active_addresses}
       formatter={(v) => formatNumber(v)}
       tooltip={chainDynamic?.active_addresses
         ? formatNumberWithCommas(chainDynamic.active_addresses)
@@ -124,7 +132,9 @@
     />
     <MetricCard
       label="Contracts"
-      value={chainDynamic?.contracts}
+      value={dataAvailability === "not_indexed"
+        ? null
+        : chainDynamic?.contracts}
       formatter={(v) => formatNumber(v)}
       tooltip={chainDynamic?.contracts
         ? formatNumberWithCommas(chainDynamic.contracts)
@@ -133,6 +143,24 @@
       {brandColor}
     />
   </div>
+
+  {#if dataAvailability === "not_indexed"}
+    <div class="no-data-message">
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <circle cx="12" cy="12" r="10" />
+        <line x1="12" y1="8" x2="12" y2="12" />
+        <line x1="12" y1="16" x2="12.01" y2="16" />
+      </svg>
+      <span>Live metrics will be available soon</span>
+    </div>
+  {/if}
 </div>
 
 <style>
@@ -290,6 +318,30 @@
     .metrics-grid {
       grid-template-columns: repeat(2, 1fr);
       gap: 0.625rem;
+    }
+  }
+
+  .no-data-message {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding: 0.625rem 0.875rem;
+    background: rgba(107, 114, 128, 0.05);
+    border-radius: 6px;
+    color: #6b7280;
+    font-size: 0.75rem;
+    font-family: var(--font-ui);
+  }
+
+  .no-data-message svg {
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 640px) {
+    .no-data-message {
+      font-size: 0.6875rem;
+      padding: 0.5rem 0.75rem;
     }
   }
 </style>

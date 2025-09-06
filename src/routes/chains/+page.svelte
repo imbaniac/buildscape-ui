@@ -127,6 +127,7 @@
         nativeTokenPriceUSD,
         nativeTokenPriceUpdatedAt: overviewData?.native_token_price_updated_at,
         txCost,
+        created_at: overviewData?.created_at,
         // Use technology data from frontmatter if available, otherwise determine from patterns
         type:
           typedChain.technology?.layer === "L2"

@@ -19,6 +19,7 @@ export interface Chain {
   nativeTokenPriceUpdatedAt?: string;
   txCost?: number;
   status?: string;
+  created_at?: string;
   technology?: {
     type?: string; // "Optimistic Rollup", "ZK Rollup", "PoS", "PoW", etc.
     layer?: string; // "L1", "L2", "L3", "Sidechain", "Appchain"

@@ -475,30 +475,6 @@
     pointer-events: none;
   }
 
-  .tooltip-arrow-top {
-    transform: translateX(-50%) translateY(50%) rotate(45deg);
-    border-top: none;
-    border-left: none;
-  }
-
-  .tooltip-arrow-bottom {
-    transform: translateX(-50%) translateY(-50%) rotate(45deg);
-    border-bottom: none;
-    border-right: none;
-  }
-
-  .tooltip-arrow-left {
-    transform: translateY(-50%) translateX(50%) rotate(45deg);
-    border-left: none;
-    border-bottom: none;
-  }
-
-  .tooltip-arrow-right {
-    transform: translateY(-50%) translateX(-50%) rotate(45deg);
-    border-right: none;
-    border-top: none;
-  }
-
   @media (max-width: 480px) {
     .gas-tooltip {
       width: calc(100vw - 40px);

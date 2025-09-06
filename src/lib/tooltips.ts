@@ -51,6 +51,15 @@ const proofOfAuthorityContent: TooltipContent = {
   text: "PoA (Proof of Authority) - Consensus mechanism where approved validators are pre-selected based on their reputation or identity to validate transactions.",
 };
 
+const settlementLayerContent: TooltipContent = {
+  text: "The settlement layer is where the Layer 2's state transitions are finalized and secured. This is typically a Layer 1 blockchain that provides ultimate security.",
+};
+
+const optimisticRollupContent: TooltipContent = {
+  text: "Optimistic Rollups assume transactions are valid by default and only run computations when challenged. They offer high throughput with a 7-day withdrawal delay for security.",
+  link: "https://ethereum.org/en/developers/docs/scaling/optimistic-rollups/",
+};
+
 export const glossary: Record<string, TooltipContent> = {
   // Layer types - full names and abbreviations
   layer1: layer1Content,
@@ -63,13 +72,10 @@ export const glossary: Record<string, TooltipContent> = {
   l3: layer3Content,
 
   // Technology stacks
-  settlementLayer: {
-    text: "The settlement layer is where the Layer 2's state transitions are finalized and secured. This is typically a Layer 1 blockchain that provides ultimate security.",
-  },
-  optimisticRollup: {
-    text: "Optimistic Rollups assume transactions are valid by default and only run computations when challenged. They offer high throughput with a 7-day withdrawal delay for security.",
-    link: "https://ethereum.org/en/developers/docs/scaling/optimistic-rollups/",
-  },
+  settlementLayer: settlementLayerContent,
+  "settlement layer": settlementLayerContent,
+  optimisticRollup: optimisticRollupContent,
+  "optimistic rollup": optimisticRollupContent,
   zkRollup: {
     text: "ZK Rollups use zero-knowledge proofs to validate transactions cryptographically. They provide instant finality but require more complex computation.",
     link: "https://ethereum.org/en/developers/docs/scaling/zk-rollups/",

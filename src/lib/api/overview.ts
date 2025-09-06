@@ -26,6 +26,7 @@ export interface ChainOverview {
   native_token_symbol: string;
   native_token_price_usd: number;
   native_token_price_updated_at: string;
+  created_at?: string;
 }
 
 export interface OverviewData {

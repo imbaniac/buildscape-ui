@@ -69,6 +69,8 @@
         return { color: "#6b7280", label: "STOPPED", pulse: false };
       case "connecting":
         return { color: "#3b82f6", label: "CONNECTING", pulse: true };
+      case "no_data":
+        return { color: "#6b7280", label: "NO DATA", pulse: false };
       default:
         return { color: "#6b7280", label: status.toUpperCase(), pulse: false };
     }

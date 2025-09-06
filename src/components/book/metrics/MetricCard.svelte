@@ -57,7 +57,9 @@
       {#if typeof value === "number" && formatter}
         <span class="metric-value">{formatter(value)}</span>
       {:else}
-        <span class="metric-value">{value || "0"}</span>
+        <span class="metric-value"
+          >{value === null || value === undefined ? "--" : value || "0"}</span
+        >
       {/if}
     </div>
   {/if}
