@@ -263,6 +263,7 @@ export default class PixiMapRenderer {
         if (dist < 5) {
           // It was a click, not a drag - navigate to chain page
           // Pass state to track that we came from the map view
+          // eslint-disable-next-line svelte/no-navigation-without-resolve
           goto(`/chain/${island.slug}`, { state: { from: "/" } });
         }
       }

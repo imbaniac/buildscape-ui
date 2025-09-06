@@ -30,7 +30,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: #00a5e6;
+    background: #28a0cf;
     z-index: 10;
   }
 

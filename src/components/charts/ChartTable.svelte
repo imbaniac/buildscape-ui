@@ -179,7 +179,7 @@
         <!-- Data Rows -->
         {#if chains.length === 0 && isLoading}
           <!-- Show skeleton rows when no data loaded yet -->
-          {#each Array(20) as _, index}
+          {#each Array(20) as _, index (index)}
             <TableRow
               chain={{
                 slug: `skeleton-${index}`,
@@ -272,21 +272,6 @@
     min-width: 1000px;
   }
 
-  .grid-header {
-    background: linear-gradient(135deg, #4a5568, #3a4456);
-    padding: 0.75rem 1rem;
-    font-family: var(--font-display);
-    font-size: 0.85rem;
-    color: #f0e6d2;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-    border-bottom: 1px solid #525e72;
-    display: flex;
-    align-items: center;
-    border-right: 1px solid rgba(82, 94, 114, 0.5);
-    border-top: none;
-    border-left: none;
-  }
-
   .sticky-header {
     position: sticky;
     top: 0;
@@ -302,9 +287,16 @@
 
   .logo-header {
     min-width: 0;
+    background: linear-gradient(135deg, #4a5568, #3a4456);
+    border-bottom: 1px solid #525e72;
+    border-right: 1px solid rgba(82, 94, 114, 0.5);
+    min-height: 44px;
+    max-height: 44px;
+    box-sizing: border-box;
   }
 
   .type-header {
+    background: linear-gradient(135deg, #4a5568, #3a4456);
     padding: 0.75rem 1rem;
     font-family: var(--font-display);
     font-size: 0.85rem;
@@ -312,6 +304,12 @@
     text-align: left;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     min-width: 70px;
+    min-height: 44px;
+    max-height: 44px;
+    box-sizing: border-box;
+    border-bottom: 1px solid #525e72;
+    border-left: none;
+    border-top: none;
   }
 
   .no-results {
@@ -326,11 +324,11 @@
   /* Mobile responsiveness */
   @media (max-width: 768px) {
     .chart-container {
-      padding-top: 100px;
+      padding-top: 90px;
     }
 
     .table-container {
-      height: calc(100dvh - 100px);
+      height: calc(100dvh - 90px);
     }
 
     .table-wrapper {
@@ -341,14 +339,16 @@
       -webkit-overflow-scrolling: touch;
     }
 
-    .grid-header {
-      padding: 0.6rem 0.75rem;
-      font-size: 0.85rem;
+    .logo-header {
+      min-height: 42px;
+      max-height: 42px;
     }
 
     .type-header {
       padding: 0.6rem 0.75rem;
       font-size: 0.85rem;
+      min-height: 42px;
+      max-height: 42px;
     }
   }
 
@@ -374,18 +374,19 @@
       grid-template-columns:
         50px 140px minmax(140px, 1.5fr) minmax(100px, 1fr)
         minmax(60px, 0.8fr) minmax(100px, 1fr) minmax(80px, 1fr)
-        minmax(80px, 1fr) minmax(120px, 1fr) minmax(40px, 0.6fr);
+        minmax(80px, 1fr) minmax(120px, 1fr) minmax(80px, 0.8fr);
     }
 
-    .grid-header {
-      padding: 0.5rem 0.6rem;
-      font-size: 0.8rem;
-      cursor: pointer;
+    .logo-header {
+      min-height: 40px;
+      max-height: 40px;
     }
 
     .type-header {
       padding: 0.5rem 0.6rem;
       font-size: 0.8rem;
+      min-height: 40px;
+      max-height: 40px;
     }
   }
 </style>

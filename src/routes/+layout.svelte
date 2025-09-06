@@ -229,7 +229,7 @@
         antialias: false, // Better mobile performance
         resolution: window.devicePixelRatio || 1,
         autoDensity: true,
-        backgroundColor: 0x00a5e6,
+        backgroundColor: 0x28a0cf,
         resizeTo: window,
         hello: true,
         autoStart: false, // Don't start ticker automatically

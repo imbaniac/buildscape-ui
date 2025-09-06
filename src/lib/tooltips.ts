@@ -14,7 +14,7 @@ const layer1Content: TooltipContent = {
 };
 
 const layer2Content: TooltipContent = {
-  text: "Layer 2 (L2) blockchains are scaling solutions built on top of Layer 1 networks. They process transactions off the main chain while inheriting its security guarantees.",
+  text: "Layer 2 (L2) blockchains are scaling solutions built on top of Layer 1 blockchains like Ethereum. They process transactions off the main chain while inheriting its security guarantees.",
 };
 
 const layer3Content: TooltipContent = {

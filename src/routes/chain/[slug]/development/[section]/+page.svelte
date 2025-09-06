@@ -71,6 +71,7 @@
   {bookmarks}
   activeTab={section || "rpcs"}
   onTabChange={(tab) =>
+    // eslint-disable-next-line svelte/no-navigation-without-resolve
     goto(`/chain/${layoutData.slug}/development/${tab}`, {
       replaceState: true,
     })}

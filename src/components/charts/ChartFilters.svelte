@@ -129,7 +129,7 @@
           </button>
 
           {#if isOpen}
-            <div class="dropdown-menu">
+            <div class="dropdown-menu" data-dropdown-id={config.id}>
               <div class="dropdown-header">
                 <span class="dropdown-title">{config.label}</span>
                 {#if activeValues.size > 0}
@@ -187,7 +187,6 @@
 
   .filter-dropdown {
     position: relative;
-    z-index: auto;
   }
 
   .filter-dropdown-btn {
