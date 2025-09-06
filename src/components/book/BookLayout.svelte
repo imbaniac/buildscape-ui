@@ -37,11 +37,19 @@
 
   let touchStartX = 0;
   let touchStartY = 0;
+  let isSwiping = false;
+  let swipeDistance = 0;
 
   // Handle swipe gestures on mobile
   function handleTouchStart(e: TouchEvent) {
     touchStartX = e.touches[0].clientX;
     touchStartY = e.touches[0].clientY;
+    isSwiping = true;
+  }
+
+  function handleTouchMove(e: TouchEvent) {
+    if (!isSwiping) return;
+    swipeDistance = e.touches[0].clientX - touchStartX;
   }
 
   function handleTouchEnd(e: TouchEvent) {
@@ -63,6 +71,10 @@
         }
       }
     }
+
+    // Reset swipe state
+    isSwiping = false;
+    swipeDistance = 0;
   }
 
   // Prevent wheel zoom when modal is open
@@ -77,6 +89,7 @@
 <div
   class="book-fullscreen"
   ontouchstart={handleTouchStart}
+  ontouchmove={handleTouchMove}
   ontouchend={handleTouchEnd}
   onwheel={handleWheel}
 >
@@ -86,6 +99,7 @@
   <!-- Mobile header - hidden on desktop via CSS -->
   <div class="book-header">
     <div class="mobile-page-indicator" style="--brand-color: {brandColor}">
+      <div class="page-indicator-bg"></div>
       <button
         class="page-dot"
         class:active={!showRightPage}
@@ -107,6 +121,13 @@
         aria-label="Show details page"
       ></button>
     </div>
+
+    <!-- Edge gradients for swipe hints -->
+    <div class="swipe-hint-left" class:visible={showRightPage}></div>
+    <div
+      class="swipe-hint-right"
+      class:visible={!showRightPage && !isSubRoute()}
+    ></div>
     {#if onClose}
       <button class="mobile-close-button" onclick={onClose} aria-label="Close">
         ×
@@ -145,6 +166,7 @@
         <div
           class="book-page-wrapper book-page-wrapper-left"
           class:mobile-hide={showRightPage}
+          class:initial-peek={!showRightPage}
         >
           <div class="book-page book-page-left">
             <div class="book-page-content">
@@ -430,6 +452,12 @@
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     }
 
+    /* Extend backdrop to cover animation area */
+    .book-backdrop {
+      width: calc(100% + 40px);
+      left: -20px;
+    }
+
     .book-spread {
       flex-direction: column;
       padding: 0;
@@ -438,6 +466,8 @@
       gap: 0;
       width: 100%;
       max-width: none;
+      overflow: hidden; /* Clip content during animation */
+      background: #fafaf8; /* Match page background */
     }
 
     /* Hide all book decoration effects */
@@ -492,6 +522,7 @@
       height: 100%;
       overflow: hidden;
       border: none;
+      background: #fafaf8; /* Ensure consistent background */
     }
 
     .book-page-content {
@@ -525,31 +556,45 @@
   /* Mobile page indicator */
   .mobile-page-indicator {
     display: flex;
-    gap: 10px;
+    gap: 8px;
+    position: relative;
+    padding: 6px 12px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .page-indicator-bg {
     position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    inset: 0;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
   }
 
   .page-dot {
-    width: 10px;
-    height: 10px;
+    width: 14px;
+    height: 14px;
     border-radius: 50%;
-    background: #cbd5e1;
+    background: #94a3b8;
     border: none;
     padding: 0;
-    transition: all 0.2s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
+    position: relative;
+    z-index: 1;
   }
 
   .page-dot:hover {
-    background: #94a3b8;
+    background: #64748b;
+    transform: scale(1.1);
   }
 
   .page-dot.active {
     background: var(--brand-color, #3b82f6);
-    width: 24px;
-    border-radius: 5px;
+    width: 32px;
+    border-radius: 7px;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
   }
 
   /* Bookmark Close Button */
@@ -650,5 +695,67 @@
   .mobile-close-button:hover {
     background: rgba(0, 0, 0, 0.1);
     color: #475569;
+  }
+
+  /* Swipe hint gradients */
+  .swipe-hint-left,
+  .swipe-hint-right {
+    position: fixed;
+    top: 50px;
+    bottom: 0;
+    width: 40px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 20;
+  }
+
+  .swipe-hint-left {
+    left: 0;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.05), transparent);
+  }
+
+  .swipe-hint-right {
+    right: 0;
+    background: linear-gradient(to left, rgba(0, 0, 0, 0.05), transparent);
+  }
+
+  .swipe-hint-left.visible,
+  .swipe-hint-right.visible {
+    opacity: 1;
+  }
+
+  @media (max-width: 1280px) {
+    /* Initial peek animation */
+    @keyframes peekHint {
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+      50% {
+        transform: translateX(-10px);
+      }
+    }
+
+    .book-page-wrapper.initial-peek {
+      animation: peekHint 0.6s ease-out 0.3s;
+    }
+
+    /* Enhanced page transitions */
+    .book-page-wrapper {
+      transition:
+        transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.3s ease;
+    }
+
+    .book-page-wrapper-left.mobile-hide {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+
+    .book-page-wrapper-right:not(.mobile-show) {
+      transform: translateX(100%);
+      opacity: 0;
+    }
   }
 </style>
