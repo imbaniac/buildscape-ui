@@ -303,7 +303,7 @@
     color: #f0e6d2;
     text-align: left;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-    min-width: 70px;
+    min-width: 120px;
     min-height: 44px;
     max-height: 44px;
     box-sizing: border-box;

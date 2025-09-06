@@ -26,6 +26,8 @@
   import { connectSSE, disconnectSSE } from "$lib/stores/sse";
 
   import BoatLoader from "../components/BoatLoader.svelte";
+  import HelpPanel from "../components/HelpPanel.svelte";
+  import OnboardingOverlay from "../components/OnboardingOverlay.svelte";
 
   import "../app.css";
 
@@ -59,6 +61,9 @@
   let showLoader = $derived(
     (!overviewStoreState.data && overviewStoreState.isLoading) || !mapReady,
   );
+
+  // Onboarding state
+  let showOnboarding = $state(false);
 
   // Track if initial viewport has been set
   let hasInitialViewportBeenSet = false;
@@ -196,12 +201,28 @@
     }
   });
 
+  // Handle onboarding close
+  function handleOnboardingClose() {
+    showOnboarding = false;
+    localStorage.setItem("buildscape_onboarding_seen", "true");
+  }
+
   // Add cleanup tracking
   let isCleaningUp = false;
   let keyboardHandler: ((event: KeyboardEvent) => void) | null = null;
   let metricsInterval: ReturnType<typeof setInterval> | null = null;
 
   onMount(() => {
+    // Check if user has seen onboarding (will be shown after map loads)
+    if (browser) {
+      const hasSeenOnboarding = localStorage.getItem(
+        "buildscape_onboarding_seen",
+      );
+      if (!hasSeenOnboarding) {
+        showOnboarding = true;
+      }
+    }
+
     if (!pixiContainer) {
       console.error("Pixi container not found");
       return;
@@ -471,10 +492,18 @@
   {/if}
 </div>
 
+<!-- Onboarding Overlay -->
+{#if showOnboarding && mapReady}
+  <OnboardingOverlay onClose={handleOnboardingClose} />
+{/if}
+
 <!-- Page content overlays on top of map -->
 <div class="page-content" class:chain-page={isChainPage}>
   {@render children()}
 </div>
+
+<!-- Help Panel - Available on all pages -->
+<HelpPanel />
 
 <style>
   .pixi-container {
