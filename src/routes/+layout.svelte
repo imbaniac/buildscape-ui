@@ -153,8 +153,8 @@
       // Center on Ethereum (position 0, 0)
       viewport.moveCenter(0, 0);
 
-      // Set zoom to show more islands (farther away)
-      viewport.setZoom(0.1); // Adjust this value - lower = farther away
+      const defaultZoom = window.innerWidth <= 768 ? 0.07 : 0.1;
+      viewport.setZoom(defaultZoom);
 
       hasInitialViewportBeenSet = true;
       renderManager?.markDirty();
