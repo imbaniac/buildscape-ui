@@ -175,7 +175,7 @@
     z-index: 1;
     width: 380px;
     height: 50px;
-    opacity: 0.6;
+    opacity: 0.8;
   }
 
   .search-bar:hover:not(.active) {
