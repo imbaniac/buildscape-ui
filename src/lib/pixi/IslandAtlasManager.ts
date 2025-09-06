@@ -61,9 +61,7 @@ export default class IslandAtlasManager {
       const gl = (this.renderer as any).gl;
       const maxSize = gl.getParameter(gl.MAX_TEXTURE_SIZE);
 
-      if (maxSize >= 8192) {
-        this.atlasSize = 8192; // Best for future growth
-      } else if (maxSize >= 4096) {
+      if (maxSize >= 4096) {
         this.atlasSize = 4096; // Optimal for current needs
       } else {
         this.atlasSize = 2048; // Fallback for very old devices
