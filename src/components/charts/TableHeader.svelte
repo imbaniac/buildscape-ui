@@ -52,6 +52,9 @@
     border-right: 1px solid rgba(82, 94, 114, 0.5);
     border-top: none;
     border-left: none;
+    min-height: 44px;
+    max-height: 44px;
+    box-sizing: border-box;
   }
 
   .grid-header.sortable {
@@ -105,6 +108,8 @@
     .grid-header {
       padding: 0.6rem 0.75rem;
       font-size: 0.85rem;
+      min-height: 42px;
+      max-height: 42px;
     }
   }
 
@@ -112,6 +117,8 @@
     .grid-header {
       padding: 0.5rem 0.6rem;
       font-size: 0.8rem;
+      min-height: 40px;
+      max-height: 40px;
     }
   }
 </style>

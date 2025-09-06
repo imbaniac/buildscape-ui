@@ -178,32 +178,6 @@
     }
   });
 
-  // Handle island clicks from viewport
-  $effect(() => {
-    if (viewport) {
-      // Remove any existing listener
-      viewport.off("clicked");
-
-      // Add click handler
-      viewport.on("clicked", (event) => {
-        // Don't navigate if in edit mode
-        if (editMode) {
-          return;
-        }
-
-        const island = mapRenderer?.getIslandAtPosition(
-          event.world.x,
-          event.world.y,
-        );
-
-        if (island) {
-          // Pass state to track that we came from the map view
-          goto(`/chain/${island.slug}`, { state: { from: "/" } });
-        }
-      });
-    }
-  });
-
   // Keyboard shortcuts
   onMount(() => {
     const keyboardHandler = (event: KeyboardEvent) => {
@@ -292,7 +266,7 @@
         name: "What is a Layer 2 blockchain?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Layer 2 (L2) blockchains are scaling solutions built on top of Layer 1 networks like Ethereum. They process transactions off the main chain for faster speeds and lower costs while inheriting security from the L1.",
+          text: "Layer 2 (L2) blockchains are scaling solutions built on top of Layer 1 blockchains like Ethereum. They process transactions off the main chain for faster speeds and lower costs while inheriting security from the L1.",
         },
       },
     ],
