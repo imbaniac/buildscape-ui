@@ -101,11 +101,6 @@
     -webkit-animation: fadeIn 300ms ease-out forwards;
   }
 
-  .overlay-container.fade-out {
-    animation: fadeOut 300ms ease-out forwards;
-    -webkit-animation: fadeOut 300ms ease-out forwards;
-  }
-
   .map-backdrop {
     position: absolute;
     top: 0;
@@ -132,12 +127,6 @@
     animation: fadeIn 300ms ease-out 150ms backwards;
     -webkit-animation: fadeIn 300ms ease-out 150ms backwards;
   }
-
-  .content-box.fade-out {
-    animation: fadeOut 300ms ease-out forwards;
-    -webkit-animation: fadeOut 300ms ease-out forwards;
-  }
-
   .content-box::before {
     content: "";
     position: absolute;

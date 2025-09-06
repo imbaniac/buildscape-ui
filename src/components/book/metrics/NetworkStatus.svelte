@@ -9,6 +9,7 @@
     chainDynamic: any;
     chainStatus: any;
     loadingStatus: boolean;
+    dataAvailability?: "loading" | "available" | "not_indexed";
     brandColor?: string;
     nativeCurrency?: string;
     nativeTokenPriceUSD?: number;
@@ -19,6 +20,7 @@
     chainDynamic,
     chainStatus,
     loadingStatus,
+    dataAvailability,
     brandColor = "#8b5cf6",
     nativeCurrency = "ETH",
     nativeTokenPriceUSD,
@@ -26,7 +28,12 @@
   }: Props = $props();
 
   // Only show skeleton on initial load, not on updates
-  const showSkeleton = $derived(loadingStatus && !chainStatus && !chainDynamic);
+  const showSkeleton = $derived(
+    loadingStatus &&
+      !chainStatus &&
+      !chainDynamic &&
+      dataAvailability !== "not_indexed",
+  );
 </script>
 
 <div class="network-status">
@@ -44,8 +51,9 @@
       lastBlock={formatNumberWithCommas(
         chainStatus?.current_block || chainDynamic?.last_block || 0,
       )}
-      networkStatus={chainStatus?.status ||
-        (loadingStatus ? "connecting" : "no_data")}
+      networkStatus={dataAvailability === "not_indexed"
+        ? "no_data"
+        : chainStatus?.status || (loadingStatus ? "connecting" : "no data")}
       {brandColor}
       {nativeTokenPriceUSD}
       {nativeTokenPriceUpdatedAt}

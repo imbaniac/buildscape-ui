@@ -1,12 +1,11 @@
 <script lang="ts">
   import { getContext } from "svelte";
 
-  import { glossary } from "$lib/tooltips";
+  import { isNewChain } from "$lib/chainUtils";
   import { getAccessibleBrandColor } from "$lib/utils/colorUtils";
   import { formatTVL } from "$lib/utils/formatters";
 
   import GlossaryTerm from "../GlossaryTerm.svelte";
-  import Tooltip from "../Tooltip.svelte";
 
   import ActivityMetrics from "./metrics/ActivityMetrics.svelte";
   import NetworkStatus from "./metrics/NetworkStatus.svelte";
@@ -27,6 +26,7 @@
     chainStatus: any;
     loadingStatus: boolean;
     chainOverview: any;
+    dataAvailability: "loading" | "available" | "not_indexed";
     setMetricsSpan: (span: PeriodType) => void;
   }>("chainDynamicData");
 
@@ -37,6 +37,7 @@
   const loadingDynamic = $derived(dynamicData.loadingDynamic);
   const loadingStatus = $derived(dynamicData.loadingStatus);
   const metricsSpan = $derived(dynamicData.metricsSpan);
+  const dataAvailability = $derived(dynamicData.dataAvailability);
   const onSpanChange = dynamicData.setMetricsSpan;
 
   // Get accessible color for UI elements
@@ -122,6 +123,11 @@
   }
 </script>
 
+{#if isNewChain(chainOverview?.created_at)}
+  <div class="new-ribbon">NEW</div>
+  <div class="new-badge-mobile">NEW</div>
+{/if}
+
 <div class="page-content">
   <div class="chain-header">
     {#if chainStatic.logoUrl}
@@ -141,6 +147,7 @@
       </div>
       {#if chainStatic.website}
         <span class="separator">•</span>
+        <!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
         <a
           href={chainStatic.website}
           target="_blank"
@@ -267,6 +274,7 @@
     {chainDynamic}
     {chainStatus}
     {loadingStatus}
+    {dataAvailability}
     brandColor={chainStatic.color}
     nativeCurrency={chainStatic.nativeCurrency}
     nativeTokenPriceUSD={chainOverview?.native_token_price_usd}
@@ -278,12 +286,15 @@
     {onSpanChange}
     {loadingDynamic}
     {chainDynamic}
+    {dataAvailability}
     brandColor={accessibleColor}
   />
 
   <div class="footnotes">
     <div class="footnote">
-      <sup>1</sup> Total Value Locked: {formatTVL(chainOverview?.tvl)}
+      <sup>1</sup> Total Value Locked: {dataAvailability === "not_indexed"
+        ? "Data pending"
+        : formatTVL(chainOverview?.tvl)}
     </div>
     {#if chainStatic.launchDate}
       <div class="footnote">
@@ -311,7 +322,7 @@
     right: 3rem;
     bottom: 1rem;
     left: 3rem;
-    overflow: hidden;
+    overflow: visible;
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
@@ -685,6 +696,88 @@
 
     .disclaimer-ornament {
       font-size: 0.5625rem;
+    }
+  }
+
+  /* New ribbon badge */
+  .new-ribbon {
+    position: absolute;
+    top: 15px;
+    left: -45px;
+    background: linear-gradient(135deg, #4a7c59 0%, #3a6c49 50%, #2a5c39 100%);
+    color: #ffffff;
+    padding: 0.5rem 3.5rem;
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-family: var(--font-ui);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    box-shadow:
+      0 3px 8px rgba(0, 0, 0, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    z-index: 50;
+    transform: rotate(-45deg);
+    width: 150px;
+    text-align: center;
+  }
+
+  /* Ribbon shadow for depth */
+  .new-ribbon::before {
+    content: "";
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), transparent);
+    z-index: -1;
+  }
+
+  /* Ribbon fold effect */
+  .new-ribbon::after {
+    content: "";
+    position: absolute;
+    bottom: -6px;
+    right: -6px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 6px 6px 0 0;
+    border-color: #2a5c39 transparent transparent transparent;
+  }
+
+  @media (max-width: 1280px) {
+    .new-ribbon {
+      display: none; /* Hide ribbon on mobile */
+    }
+  }
+
+  /* Mobile new badge */
+  .new-badge-mobile {
+    display: none;
+  }
+
+  @media (max-width: 1280px) {
+    .new-badge-mobile {
+      display: block;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: linear-gradient(135deg, #4a7c59, #3a6c49);
+      color: #ffffff;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.625rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-family: var(--font-ui);
+      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+      border-radius: 4px;
+      box-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      z-index: 100;
     }
   }
 </style>
