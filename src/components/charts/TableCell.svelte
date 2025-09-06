@@ -136,7 +136,11 @@
     {/if}
   </button>
 {:else if type === "type"}
-  <button class="grid-cell" class:alt-row={isAltRow} onclick={onClick}>
+  <button
+    class="grid-cell type-cell"
+    class:alt-row={isAltRow}
+    onclick={onClick}
+  >
     {#if isLoading}
       <span class="skeleton-metric"></span>
     {:else}
@@ -147,10 +151,7 @@
             ? 'badge-l2'
             : 'badge-default'}"
       >
-        <span class="type-full">{chain.type}</span>
-        <span class="type-short">
-          {chain.type === "Sidechain" ? "Side" : chain.type}
-        </span>
+        <span>{chain.type}</span>
       </span>
     {/if}
   </button>
@@ -330,13 +331,8 @@
     background: linear-gradient(135deg, #5a7a8b, #476472);
   }
 
-  /* Show/hide full vs short type labels */
-  .type-full {
-    display: inline;
-  }
-
-  .type-short {
-    display: none;
+  .type-cell {
+    width: 120px;
   }
 
   .skeleton-metric {
@@ -468,15 +464,6 @@
 
     .value-text {
       font-size: 0.8rem;
-    }
-
-    /* Show short type labels on mobile */
-    .type-full {
-      display: none;
-    }
-
-    .type-short {
-      display: inline;
     }
   }
 </style>
