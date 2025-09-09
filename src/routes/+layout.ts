@@ -23,7 +23,7 @@ export const load: LayoutLoad = async ({ data }) => {
     }
 
     // Only initialize PostHog if API key is provided and not in development
-    const posthogApiKey = import.meta.env.PUBLIC_POSTHOG_API_KEY;
+    const posthogApiKey = import.meta.env.VITE_POSTHOG_API_KEY;
     const isDevelopment = import.meta.env.DEV;
 
     if (posthogApiKey && !posthog.__loaded && !isDevelopment) {
