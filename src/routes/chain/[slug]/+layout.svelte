@@ -3,6 +3,7 @@
   import { setContext } from "svelte";
 
   import { afterNavigate, goto, preloadCode } from "$app/navigation";
+  import { resolve } from "$app/paths";
   import { page } from "$app/stores";
 
   import { analytics } from "$lib/analytics";
@@ -193,18 +194,22 @@
   function handleClose() {
     // Smart navigation with snapshot preservation
 
-    // If we navigated here from within the app, use history.back()
+    // Only use history.back() if we have somewhere to go back to
     // This preserves snapshots (e.g., scroll position in table view)
-    if (previousUrl && previousUrl.origin === window.location.origin) {
+    if (
+      previousUrl &&
+      previousUrl.origin === window.location.origin &&
+      window.history.length > 1
+    ) {
       history.back();
     }
     // For direct links/bookmarks, use goto() as fallback
     else if (navigationState?.from) {
-      goto(navigationState.from);
+      goto(resolve(navigationState.from, {}));
     }
     // Default fallback to home (map view)
     else {
-      goto("/");
+      goto(resolve("/", {}));
     }
   }
 
