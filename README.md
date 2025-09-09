@@ -62,3 +62,4 @@ Buildscape™ is a trademark of Tymofii Reznichenko. See [NOTICE](NOTICE) for de
 
 - [Live Site](https://buildscape.org)
 - [GitHub](https://github.com/buildscape/buildscape-ui)
+- [Telegram](https://t.me/buildscape)
