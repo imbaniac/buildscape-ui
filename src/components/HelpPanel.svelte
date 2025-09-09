@@ -238,6 +238,14 @@
             GitHub Repository
           </a>
           <a
+            href="https://t.me/buildscape"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="secondary-link"
+          >
+            Join Telegram
+          </a>
+          <a
             href="https://github.com/imbaniac/buildscape-ui/issues"
             target="_blank"
             rel="noopener noreferrer"
