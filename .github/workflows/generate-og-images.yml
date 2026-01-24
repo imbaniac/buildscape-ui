@@ -39,3 +39,6 @@ jobs:
           git add -f static/og/
           git commit -m "chore: update og images $(date -u +%Y-%m-%d)"
           git push --force origin og-assets-temp:og-assets
+
+      - name: Trigger Cloudflare Pages deploy
+        run: curl -X POST "${{ secrets.CLOUDFLARE_DEPLOY_HOOK }}"
