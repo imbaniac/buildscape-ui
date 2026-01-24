@@ -8,6 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "prepare": "lefthook install && svelte-kit sync || echo ''",
+    "prebuild": "bun scripts/fetch-og-images.ts",
     "check": "svelte-kit sync && svelte-check",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "format": "prettier --write .",
@@ -15,7 +16,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "validate": "bun run format:check && bun run lint && bun run check",
-    "generate-og": "bun scripts/generate-og-images.ts"
+    "generate-og": "bun scripts/generate-og-images.ts",
+    "fetch-og": "bun scripts/fetch-og-images.ts"
   },
   "devDependencies": {
     "@arkweid/lefthook": "^0.7.7",

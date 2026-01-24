@@ -27,3 +27,5 @@ rpcs.json
 # Lefthook
 .lefthook-local/
 
+# OG images (stored in og-assets branch, fetched at build time)
+static/og/

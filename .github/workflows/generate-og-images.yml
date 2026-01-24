@@ -2,9 +2,8 @@ name: Generate OG Images
 
 on:
   schedule:
-    # Run daily at 2 AM UTC
     - cron: "0 2 * * *"
-  workflow_dispatch: # Allow manual trigger
+  workflow_dispatch:
 
 jobs:
   generate-og-images:
@@ -29,10 +28,14 @@ jobs:
       - name: Generate OG images
         run: bun run scripts/generate-og-images.ts
 
-      - name: Commit and push changes
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "chore: update og images"
-          file_pattern: "static/og/*.png"
-          commit_user_name: github-actions[bot]
-          commit_user_email: github-actions[bot]@users.noreply.github.com
+      - name: Push to og-assets branch (orphan, no history)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Create orphan branch with only OG images
+          git checkout --orphan og-assets-temp
+          git rm -rf --cached .
+          git add -f static/og/
+          git commit -m "chore: update og images $(date -u +%Y-%m-%d)"
+          git push --force origin og-assets-temp:og-assets

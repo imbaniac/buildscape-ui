@@ -2,15 +2,27 @@
 
 This script generates Open Graph images for all chains and the homepage map.
 
-## Usage
+## OG Image Storage
+
+OG images are stored on the `og-assets` branch (not in main) to avoid git history bloat.
+They are fetched automatically during build via the `prebuild` script.
+
+## Local Development
+
+OG images are optional for local development. To fetch them:
 
 ```bash
-# Generate all OG images
-bun run generate-og
-
-# Or run directly
-bun scripts/generate-og-images.ts
+bun run fetch-og
 ```
+
+## Generating New Images
+
+```bash
+# Generate all OG images locally
+bun run generate-og
+```
+
+Images are generated automatically daily by GitHub Actions and pushed to the `og-assets` branch.
 
 ## Generated Images
 
@@ -33,37 +45,6 @@ const metrics = {
 ```
 
 2. You can fetch metrics from your API or use the existing chain data loaders.
-
-## Automated Generation
-
-For production, you should run this script:
-
-- Daily via cron job or GitHub Actions
-- After major data updates
-- Before deployments
-
-Example GitHub Action:
-
-```yaml
-name: Generate OG Images
-on:
-  schedule:
-    - cron: "0 0 * * *" # Daily at midnight UTC
-  workflow_dispatch:
-
-jobs:
-  generate:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: oven-sh/setup-bun@v1
-      - run: bun install
-      - run: bun run generate-og
-      - uses: actions/upload-artifact@v4
-        with:
-          name: og-images
-          path: static/og/
-```
 
 ## Customization
 

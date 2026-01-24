@@ -14,10 +14,11 @@ By contributing to this project, you agree that:
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Make your changes
-4. Run tests (`bun run check`)
-5. Commit with DCO sign-off (`git commit -s -m "feat: add amazing feature"`)
-6. Push to your fork (`git push origin feature/amazing-feature`)
-7. Open a Pull Request
+4. (Optional) Fetch OG images: `bun run fetch-og`
+5. Run tests (`bun run check`)
+6. Commit with DCO sign-off (`git commit -s -m "feat: add amazing feature"`)
+7. Push to your fork (`git push origin feature/amazing-feature`)
+8. Open a Pull Request
 
 ## ✍️ Developer Certificate of Origin (DCO)
 
