@@ -58,6 +58,9 @@ rpcs:
   - name: GetBlock
     url: https://getblock.io/
     type: private
+  - name: Dwellir
+    url: https://www.dwellir.com/networks/binance-smart-chain
+    type: private
   - name: PublicNode
     url: https://bsc-rpc.publicnode.com
     type: public

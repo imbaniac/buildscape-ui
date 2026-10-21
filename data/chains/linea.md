@@ -70,6 +70,9 @@ rpcs:
   - name: Owlracle
     url: https://rpc.owlracle.info/linea/70d38ce1826c4a60bb2a8e05a6c8b20f
     type: public
+  - name: Dwellir
+    url: https://www.dwellir.com/networks/linea
+    type: private
 sourceCode:
   - name: Linea Monorepo
     url: https://github.com/Consensys/linea-monorepo
