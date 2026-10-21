@@ -109,6 +109,9 @@ rpcs:
   - name: Nodies
     url: https://nodies.app/
     type: private
+  - name: Dwellir
+    url: https://www.dwellir.com/networks/optimism
+    type: private
   - name: Polkachu
     url: https://optimism-rpc.polkachu.com
     type: public
