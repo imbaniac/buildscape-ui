@@ -113,6 +113,9 @@ rpcs:
   - name: Nodies
     url: https://nodies.app/
     type: private
+  - name: Dwellir
+    url: https://www.dwellir.com/networks/base
+    type: private
   - name: Polkachu
     url: https://base-rpc.polkachu.com
     type: public
